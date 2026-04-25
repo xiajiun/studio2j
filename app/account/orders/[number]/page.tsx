@@ -16,10 +16,17 @@ export default async function AccountOrderDetail({ params }: { params: { number:
     .from('orders')
     .select('*')
     .eq('order_number', params.number)
-    .eq('customer_id', user.id)
+    .or(`customer_id.eq.${user.id},customer_email.eq.${user.email}`)
     .single()
 
   if (!order) notFound()
+
+  // Link the order to this user if it wasn't already
+  if (!order.customer_id) {
+    await supabase.from('orders')
+      .update({ customer_id: user.id })
+      .eq('id', order.id)
+  }
 
   const { data: events } = await supabase
     .from('order_events')

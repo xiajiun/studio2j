@@ -12,7 +12,7 @@ export default async function AccountPage() {
   const { data: orders } = await supabase
     .from('orders')
     .select('*')
-    .eq('customer_id', user.id)
+    .or(`customer_id.eq.${user.id},customer_email.eq.${user.email}`)
     .order('created_at', { ascending: false })
 
   const active = (orders as Order[] ?? []).filter(o => !['delivered', 'cancelled'].includes(o.status))

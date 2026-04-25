@@ -26,7 +26,8 @@
       "Bash(echo \"DONE:$?\")",
       "Bash(echo \"EXIT:$?\")",
       "Bash(npx @cloudflare/next-on-pages)",
-      "Bash(echo \"CF_EXIT:$?\")"
+      "Bash(echo \"CF_EXIT:$?\")",
+      "Bash(git commit *)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order"
