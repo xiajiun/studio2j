@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FAIRS, formatDate } from '@/lib/fairs'
-import type { Fair } from '@/lib/types'
+import { formatDate } from '@/lib/fairs'
+import type { FairRow } from '@/lib/database.types'
 
 type View = 'upcoming' | 'going' | 'deadline' | 'saved' | 'asia' | 'europe'
 
@@ -14,7 +14,7 @@ function dlInfo(deadline: string, today: Date): { cls: string; label: string } {
   return { cls: 'dl-open', label: 'Open' }
 }
 
-export default function FairTracker() {
+export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   const today = new Date()
   const [view, setView] = useState<View>('upcoming')
   const [search, setSearch] = useState('')
@@ -56,7 +56,7 @@ export default function FairTracker() {
   }).length
 
   // Group by month
-  const groups: { month: string; fairs: Fair[] }[] = []
+  const groups: { month: string; fairs: FairRow[] }[] = []
   filtered.forEach(f => {
     const mo = new Date(f.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     const last = groups[groups.length - 1]
@@ -260,7 +260,7 @@ export default function FairTracker() {
 }
 
 function FairCard({ fair: f, today, saved, onSave }: {
-  fair: Fair
+  fair: FairRow
   today: Date
   saved: Set<number>
   onSave: (id: number) => void
