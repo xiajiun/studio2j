@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -s http://localhost:3001)",
+      "Bash(python3 -c \"import sys, json; d=sys.stdin.read\\(\\); idx=d.find\\('__NEXT_DATA__'\\); print\\(d[idx:idx+500] if idx>0 else 'NOT FOUND'\\)\")",
+      "Bash(python3 -c \"import sys; d=sys.stdin.read\\(\\); print\\('ERROR' if '__NEXT_DATA__' in d and 'statusCode\\\\\":500' in d else 'OK', d[d.find\\('Korean and'\\):d.find\\('Korean and'\\)+30] if 'Korean and' in d else 'content not found'\\)\")",
+      "Bash(python3 -c ' *)",
+      "Read(//private/tmp/claude-501/-Users-xiajiun/Downloads/studio2j-cc/04471b11-6514-4273-8c70-702298e74ccd/tasks/**)",
+      "Bash(curl -s \"http://localhost:3001/_next/static/css/app/layout.css?v=1777104964313\")",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f \"node.*next\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(npx wrangler *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

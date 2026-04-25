@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio2J — Your Hands at the Fair</title>
+<meta name="description" content="Personal shopping for illustration and stationery fairs in Korea and Japan. From Seoul, with care.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:      #F5EFE6;
+  --brown:      #7A5C45;
+  --dark-blue:  #1F3A5F;
+  --beige:      #E8DFD1;
+  --tan:        #C8A98D;
+  --muted-blue: #4A6A8A;
+  --dark-brown: #4B372A;
+  --soft-tan:   #D8CFC0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--cream);
+  color:var(--dark-brown);
+  font-family:'Inter',system-ui,sans-serif;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.serif{font-family:'Fraunces',serif;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--beige);}
+::-webkit-scrollbar-thumb{background:var(--tan);border-radius:99px;}
+
+.container{max-width:1240px;margin:0 auto;padding:0 48px;}
+
+/* ═══ NAVIGATION ═══════════════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:18px 0;transition:all 0.3s ease;
+}
+nav.scrolled{
+  background:rgba(245,239,230,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:0.5px solid rgba(122,92,69,0.1);
+  padding:12px 0;
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  display:flex;align-items:baseline;gap:2px;text-decoration:none;
+}
+.logo-text{
+  font-family:'Fraunces',serif;font-size:26px;font-weight:500;
+  color:var(--dark-brown);letter-spacing:-0.02em;
+  font-variation-settings:"opsz" 144, "SOFT" 100;
+}
+.logo-text em{
+  font-style:italic;color:var(--dark-blue);
+  font-weight:400;
+}
+.nav-links{display:flex;align-items:center;gap:40px;}
+.nav-links a{
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:400;letter-spacing:0.02em;
+  color:var(--brown);text-decoration:none;
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-links a:hover{color:var(--dark-brown);}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--dark-blue);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform 0.25s ease;
+}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-cta{
+  background:var(--dark-blue);color:var(--cream);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:0.04em;
+  padding:10px 22px;border-radius:99px;text-decoration:none;
+  transition:all 0.2s ease;
+}
+.nav-cta:hover{
+  background:var(--muted-blue);
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(31,58,95,0.15);
+}
+
+/* ═══ HERO ═════════════════════════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1.1fr 1fr;
+  padding-top:90px;overflow:hidden;
+}
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:60px 48px 80px 80px;position:relative;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:0.2em;color:var(--brown);
+  text-transform:uppercase;margin-bottom:36px;
+  animation:fadeUp 0.8s ease both;
+}
+.hero-eyebrow::before{
+  content:'';width:32px;height:1px;background:var(--brown);display:inline-block;
+}
+.hero-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:clamp(54px,6.5vw,92px);
+  line-height:0.98;letter-spacing:-0.03em;
+  color:var(--dark-brown);margin-bottom:32px;
+  font-variation-settings:"opsz" 144, "SOFT" 100;
+  animation:fadeUp 0.8s ease 0.1s both;
+}
+.hero-title em{
+  font-style:italic;color:var(--dark-blue);
+  font-weight:300;
+}
+.hero-body{
+  font-family:'Inter',sans-serif;font-size:15px;font-weight:300;
+  line-height:1.8;color:var(--brown);
+  max-width:440px;margin-bottom:44px;
+  animation:fadeUp 0.8s ease 0.2s both;
+}
+.hero-actions{
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  animation:fadeUp 0.8s ease 0.3s both;
+}
+.btn-primary{
+  background:var(--dark-blue);color:var(--cream);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
+  letter-spacing:0.03em;
+  padding:15px 32px;border-radius:99px;text-decoration:none;
+  transition:all 0.25s ease;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{
+  background:var(--muted-blue);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(31,58,95,0.2);
+}
+.btn-secondary{
+  border:1px solid var(--brown);color:var(--brown);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:400;
+  letter-spacing:0.03em;
+  padding:14px 28px;border-radius:99px;text-decoration:none;
+  transition:all 0.25s ease;background:transparent;cursor:pointer;
+}
+.btn-secondary:hover{background:var(--beige);}
+
+.hero-trust{
+  display:flex;gap:48px;margin-top:72px;
+  animation:fadeUp 0.8s ease 0.4s both;
+}
+.trust-item{}
+.trust-num{
+  font-family:'Fraunces',serif;font-size:32px;font-weight:400;
+  color:var(--dark-blue);line-height:1;
+  letter-spacing:-0.02em;
+}
+.trust-num em{font-style:italic;}
+.trust-label{
+  font-family:'Inter',sans-serif;font-size:11px;
+  color:var(--tan);letter-spacing:0.08em;
+  text-transform:uppercase;margin-top:6px;
+}
+
+.hero-right{
+  background:var(--dark-blue);
+  position:relative;overflow:hidden;
+  animation:fadeIn 1.2s ease 0.2s both;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-bg-texture{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 40%,rgba(200,169,141,0.08),transparent 50%);
+  pointer-events:none;
+}
+.hero-stack{
+  position:relative;z-index:2;padding:48px;
+  width:100%;max-width:440px;
+}
+.hero-stack-label{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:14px;color:var(--tan);margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-stack-label::before{
+  content:'';width:24px;height:1px;background:var(--tan);
+}
+.hero-fc{
+  background:rgba(245,239,230,0.04);
+  backdrop-filter:blur(8px);
+  border:0.5px solid rgba(245,239,230,0.12);
+  border-radius:14px;padding:20px 22px;margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  transition:all 0.3s ease;
+  animation:slideRight 0.6s ease both;
+}
+.hero-fc:nth-child(2){animation-delay:0.15s;}
+.hero-fc:nth-child(3){animation-delay:0.3s;}
+.hero-fc:nth-child(4){animation-delay:0.45s;}
+.hero-fc:hover{background:rgba(245,239,230,0.07);border-color:rgba(245,239,230,0.2);}
+.hfc-name{
+  font-family:'Fraunces',serif;font-size:16px;font-weight:400;
+  color:var(--cream);margin-bottom:5px;letter-spacing:-0.01em;
+}
+.hfc-loc{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:300;
+  color:rgba(245,239,230,0.5);letter-spacing:0.02em;
+}
+.hfc-tags{display:flex;gap:5px;margin-top:10px;}
+.hfc-tag{
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:400;
+  padding:3px 9px;border-radius:99px;letter-spacing:0.02em;
+  background:rgba(245,239,230,0.08);color:rgba(245,239,230,0.7);
+}
+.hfc-chip{
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;
+  padding:5px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;
+  margin-left:12px;letter-spacing:0.02em;
+}
+.chip-u{background:rgba(200,169,141,0.18);color:#E6C9AE;border:0.5px solid rgba(200,169,141,0.3);}
+.chip-o{background:rgba(74,106,138,0.18);color:#9FB7D4;border:0.5px solid rgba(74,106,138,0.3);}
+.chip-s{background:rgba(200,169,141,0.1);color:rgba(200,169,141,0.8);border:0.5px solid rgba(200,169,141,0.2);}
+
+/* ═══ MARQUEE ══════════════════════════════════════════════════════════════ */
+.marquee{
+  background:var(--dark-brown);
+  padding:22px 0;overflow:hidden;
+  border-top:0.5px solid rgba(245,239,230,0.08);
+  border-bottom:0.5px solid rgba(245,239,230,0.08);
+}
+.marquee-inner{
+  display:flex;white-space:nowrap;
+  animation:marquee 40s linear infinite;
+}
+.mi{
+  font-family:'Fraunces',serif;font-style:italic;font-size:18px;
+  font-weight:300;letter-spacing:0.02em;
+  color:rgba(245,239,230,0.7);margin-right:64px;
+  display:inline-flex;align-items:center;gap:64px;
+}
+.mi::after{
+  content:'';width:4px;height:4px;border-radius:50%;background:var(--tan);
+  opacity:0.5;
+}
+
+/* ═══ SERVICES ═════════════════════════════════════════════════════════════ */
+.section{padding:140px 0;}
+.section-eyebrow{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:18px;color:var(--brown);margin-bottom:20px;
+  display:flex;align-items:center;gap:14px;
+}
+.section-eyebrow::before{
+  content:'';width:40px;height:0.5px;background:var(--tan);
+}
+.section-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:clamp(42px,4.5vw,64px);
+  line-height:1.04;letter-spacing:-0.03em;
+  color:var(--dark-brown);margin-bottom:24px;
+  font-variation-settings:"opsz" 144, "SOFT" 100;
+}
+.section-title em{font-style:italic;color:var(--dark-blue);font-weight:300;}
+.section-intro{
+  font-family:'Inter',sans-serif;font-size:16px;font-weight:300;
+  line-height:1.75;color:var(--brown);
+  max-width:600px;
+}
+
+.services{background:var(--beige);}
+.service-head{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+  align-items:end;margin-bottom:80px;
+}
+.service-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+}
+.service-card{
+  background:var(--cream);border-radius:20px;
+  padding:48px 36px;position:relative;
+  transition:all 0.3s ease;
+  border:0.5px solid transparent;
+}
+.service-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(31,58,95,0.08);
+  border-color:rgba(122,92,69,0.15);
+}
+.sc-icon{
+  width:56px;height:56px;border-radius:16px;
+  background:var(--beige);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;
+  border:0.5px solid rgba(122,92,69,0.1);
+}
+.sc-num{
+  position:absolute;top:36px;right:36px;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:44px;color:var(--beige);line-height:1;
+}
+.sc-title{
+  font-family:'Fraunces',serif;font-weight:400;font-size:26px;
+  color:var(--dark-brown);margin-bottom:14px;letter-spacing:-0.01em;
+}
+.sc-title em{font-style:italic;color:var(--dark-blue);}
+.sc-body{
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:300;
+  line-height:1.75;color:var(--brown);margin-bottom:24px;
+}
+.sc-detail{
+  padding-top:20px;border-top:0.5px solid rgba(122,92,69,0.12);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sc-detail-label{
+  font-family:'Inter',sans-serif;font-size:11px;
+  color:var(--tan);letter-spacing:0.08em;text-transform:uppercase;
+}
+.sc-detail-val{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+  font-size:15px;color:var(--dark-blue);
+}
+
+.fee-note{
+  background:var(--dark-brown);color:var(--cream);
+  padding:40px 48px;border-radius:20px;margin-top:56px;
+  display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;
+}
+.fee-label{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:20px;color:var(--tan);
+}
+.fee-text{
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:300;
+  line-height:1.75;color:rgba(245,239,230,0.8);
+}
+.fee-text strong{color:var(--cream);font-weight:500;}
+
+/* ═══ FAIR TRACKER ═════════════════════════════════════════════════════════ */
+.tracker{padding:140px 0;}
+.tracker-head{
+  display:grid;grid-template-columns:1.3fr 1fr;gap:80px;
+  align-items:end;margin-bottom:48px;
+}
+.tracker-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  padding-bottom:8px;
+}
+.tstat{text-align:center;}
+.tstat-num{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:48px;color:var(--dark-blue);line-height:1;
+  letter-spacing:-0.03em;
+}
+.tstat-num em{font-style:italic;}
+.tstat-label{
+  font-family:'Inter',sans-serif;font-size:11px;
+  color:var(--tan);letter-spacing:0.1em;
+  text-transform:uppercase;margin-top:10px;
+}
+
+.tracker-filters{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  margin-bottom:32px;
+  padding:16px 0;border-top:0.5px solid rgba(122,92,69,0.1);
+  border-bottom:0.5px solid rgba(122,92,69,0.1);
+}
+.tf-label{
+  font-family:'Fraunces',serif;font-style:italic;font-size:14px;
+  color:var(--tan);margin-right:12px;
+}
+.tf-search{
+  flex:1;min-width:220px;max-width:280px;
+  padding:9px 18px;border-radius:99px;
+  border:0.5px solid rgba(122,92,69,0.2);
+  background:var(--cream);color:var(--dark-brown);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  outline:none;transition:all 0.2s;
+}
+.tf-search:focus{border-color:var(--brown);background:white;}
+.pill{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:400;
+  padding:8px 18px;border-radius:99px;
+  border:0.5px solid rgba(122,92,69,0.15);
+  color:var(--brown);background:transparent;cursor:pointer;
+  transition:all 0.2s;letter-spacing:0.02em;
+}
+.pill:hover{border-color:var(--brown);}
+.pill.active{
+  background:var(--dark-brown);color:var(--cream);
+  border-color:var(--dark-brown);
+}
+
+.month-div{
+  display:flex;align-items:center;gap:16px;
+  margin:28px 0 16px;
+}
+.month-div:first-of-type{margin-top:0;}
+.month-div-label{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:20px;color:var(--brown);letter-spacing:0.01em;
+}
+.month-div-line{flex:1;height:0.5px;background:rgba(122,92,69,0.15);}
+
+.fair-list{display:flex;flex-direction:column;gap:10px;}
+.fair-card{
+  background:var(--cream);
+  border:0.5px solid rgba(122,92,69,0.15);
+  border-radius:18px;padding:24px 28px;
+  display:grid;grid-template-columns:1fr auto;gap:24px;
+  align-items:start;cursor:pointer;
+  transition:all 0.25s ease;
+}
+.fair-card:hover{
+  border-color:var(--brown);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(31,58,95,0.06);
+}
+.fair-card.featured{
+  background:var(--cream);
+  border-color:rgba(31,58,95,0.25);
+  box-shadow:0 4px 16px rgba(31,58,95,0.04);
+}
+.fc-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+.fc-name{
+  font-family:'Fraunces',serif;font-weight:400;font-size:20px;
+  color:var(--dark-brown);letter-spacing:-0.01em;
+}
+.fc-badge{
+  font-family:'Inter',sans-serif;font-size:9px;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;
+}
+.fc-badge.going{background:var(--dark-blue);color:var(--cream);}
+.fc-badge.featured{background:var(--beige);color:var(--brown);}
+.fc-meta{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  color:var(--tan);display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;
+}
+.fc-meta-sep{color:rgba(200,169,141,0.4);}
+.fc-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.fc-tag{
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:400;
+  padding:4px 11px;border-radius:99px;letter-spacing:0.02em;
+  background:var(--beige);color:var(--brown);
+}
+.fc-notes{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:13px;color:var(--tan);margin-top:10px;
+}
+.fc-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0;}
+.fc-date-block{text-align:right;}
+.fc-date{
+  font-family:'Fraunces',serif;font-weight:400;font-size:18px;
+  color:var(--dark-brown);letter-spacing:-0.01em;
+}
+.fc-year{
+  font-family:'Inter',sans-serif;font-size:11px;
+  color:var(--tan);margin-top:2px;letter-spacing:0.05em;
+}
+.dl-chip{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:500;
+  padding:5px 12px;border-radius:7px;letter-spacing:0.02em;
+}
+.dl-urgent{background:#F5DDD5;color:#8A3A20;border:0.5px solid rgba(138,58,32,0.2);}
+.dl-soon{background:#F0E0C8;color:#7A5020;border:0.5px solid rgba(122,80,32,0.2);}
+.dl-open{background:#D8E5EE;color:#1F3A5F;border:0.5px solid rgba(31,58,95,0.2);}
+.dl-closed{background:var(--beige);color:var(--tan);border:0.5px solid rgba(200,169,141,0.2);}
+.fc-save{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:400;
+  padding:5px 12px;border-radius:7px;
+  border:0.5px solid rgba(122,92,69,0.2);
+  background:transparent;color:var(--brown);cursor:pointer;
+  transition:all 0.2s;
+}
+.fc-save:hover{border-color:var(--brown);background:var(--beige);}
+.fc-save.saved{background:var(--beige);color:var(--dark-blue);border-color:rgba(31,58,95,0.25);}
+
+/* ═══ ALERTS SIGNUP ════════════════════════════════════════════════════════ */
+.alerts-inline{
+  background:var(--dark-blue);color:var(--cream);
+  border-radius:20px;padding:40px 48px;margin-top:32px;
+  display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center;
+}
+.alerts-title{
+  font-family:'Fraunces',serif;font-weight:400;font-size:28px;
+  color:var(--cream);margin-bottom:10px;letter-spacing:-0.01em;line-height:1.2;
+}
+.alerts-title em{font-style:italic;color:var(--tan);}
+.alerts-sub{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  color:rgba(245,239,230,0.6);line-height:1.7;
+}
+.alerts-form{display:flex;gap:8px;}
+.alerts-input{
+  flex:1;padding:13px 20px;border-radius:99px;
+  border:0.5px solid rgba(245,239,230,0.15);
+  background:rgba(245,239,230,0.05);
+  color:var(--cream);font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:300;outline:none;
+}
+.alerts-input::placeholder{color:rgba(245,239,230,0.35);}
+.alerts-input:focus{border-color:var(--tan);background:rgba(245,239,230,0.08);}
+.alerts-btn{
+  background:var(--tan);color:var(--dark-brown);
+  border:none;padding:13px 24px;border-radius:99px;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:0.03em;transition:all 0.2s;
+}
+.alerts-btn:hover{background:var(--cream);}
+
+/* ═══ HOW ══════════════════════════════════════════════════════════════════ */
+.how{background:var(--beige);padding:140px 0;}
+.how-head{text-align:center;margin-bottom:80px;}
+.how-head .section-eyebrow{justify-content:center;}
+.how-head .section-eyebrow::before{margin-left:auto;}
+.how-head .section-eyebrow::after{
+  content:'';width:40px;height:0.5px;background:var(--tan);margin-right:auto;
+}
+.how-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:rgba(122,92,69,0.08);
+  border-radius:24px;overflow:hidden;
+  border:0.5px solid rgba(122,92,69,0.1);
+}
+.how-card{
+  background:var(--cream);padding:56px 44px;position:relative;
+}
+.how-num-big{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:80px;color:var(--beige);line-height:1;
+  margin-bottom:20px;letter-spacing:-0.03em;
+}
+.how-mark{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:52px;height:52px;border-radius:14px;
+  background:var(--beige);margin-bottom:24px;
+  border:0.5px solid rgba(122,92,69,0.1);
+}
+.how-title{
+  font-family:'Fraunces',serif;font-weight:400;font-size:24px;
+  color:var(--dark-brown);margin-bottom:14px;letter-spacing:-0.01em;
+}
+.how-body{
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:300;
+  line-height:1.75;color:var(--brown);
+}
+
+/* ═══ ORDER CTA ════════════════════════════════════════════════════════════ */
+.order-cta{
+  background:var(--dark-blue);padding:140px 0;
+}
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.order-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:clamp(40px,4.5vw,64px);line-height:1.04;
+  color:var(--cream);margin-bottom:24px;letter-spacing:-0.03em;
+}
+.order-title em{font-style:italic;color:var(--tan);}
+.order-body{
+  font-family:'Inter',sans-serif;font-size:15px;font-weight:300;
+  line-height:1.75;color:rgba(245,239,230,0.65);margin-bottom:36px;max-width:440px;
+}
+.order-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-gold{
+  background:var(--tan);color:var(--dark-brown);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
+  letter-spacing:0.03em;
+  padding:15px 32px;border-radius:99px;text-decoration:none;
+  transition:all 0.25s ease;
+}
+.btn-gold:hover{background:var(--cream);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+.btn-ghost{
+  border:0.5px solid rgba(245,239,230,0.25);color:rgba(245,239,230,0.7);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:400;
+  letter-spacing:0.03em;
+  padding:14px 28px;border-radius:99px;text-decoration:none;
+  transition:all 0.25s ease;
+}
+.btn-ghost:hover{background:rgba(245,239,230,0.08);color:var(--cream);}
+
+.order-steps{display:flex;flex-direction:column;gap:18px;}
+.ostep{
+  background:rgba(245,239,230,0.04);
+  border:0.5px solid rgba(245,239,230,0.1);
+  border-radius:16px;padding:24px 28px;
+  display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;
+  transition:all 0.3s;
+}
+.ostep:hover{background:rgba(245,239,230,0.07);}
+.ostep-num{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:36px;line-height:1;color:var(--tan);
+  letter-spacing:-0.02em;
+}
+.ostep-title{
+  font-family:'Fraunces',serif;font-weight:400;font-size:18px;
+  color:var(--cream);margin-bottom:6px;letter-spacing:-0.01em;
+}
+.ostep-body{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  line-height:1.7;color:rgba(245,239,230,0.55);
+}
+
+/* ═══ FAQ ══════════════════════════════════════════════════════════════════ */
+.faq{padding:140px 0;background:var(--cream);}
+.faq-head{text-align:center;margin-bottom:64px;}
+.faq-head .section-eyebrow{justify-content:center;}
+.faq-head .section-eyebrow::before{margin-left:auto;}
+.faq-head .section-eyebrow::after{
+  content:'';width:40px;height:0.5px;background:var(--tan);margin-right:auto;
+}
+.faq-wrap{max-width:820px;margin:0 auto;}
+.faq-cat{
+  margin-bottom:56px;
+}
+.faq-cat-title{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+  font-size:20px;color:var(--dark-blue);margin-bottom:20px;
+  padding-bottom:12px;border-bottom:0.5px solid rgba(122,92,69,0.15);
+}
+.faq-item{
+  border-bottom:0.5px solid rgba(122,92,69,0.12);
+  padding:22px 0;cursor:pointer;
+  transition:all 0.2s;
+}
+.faq-item:hover{padding-left:4px;}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;gap:24px;
+}
+.faq-q-text{
+  font-family:'Fraunces',serif;font-weight:400;font-size:17px;
+  color:var(--dark-brown);letter-spacing:-0.01em;flex:1;
+}
+.faq-icon{
+  font-family:'Fraunces',serif;font-size:22px;font-weight:300;
+  color:var(--brown);transition:transform 0.3s;flex-shrink:0;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.35s ease,margin 0.35s ease;
+}
+.faq-item.open .faq-a{max-height:300px;margin-top:16px;}
+.faq-a-text{
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:300;
+  line-height:1.8;color:var(--brown);
+}
+
+/* ═══ FOOTER ═══════════════════════════════════════════════════════════════ */
+footer{
+  background:var(--dark-brown);padding:80px 0 40px;
+  border-top:0.5px solid rgba(245,239,230,0.05);
+}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:64px;
+  padding-bottom:56px;border-bottom:0.5px solid rgba(245,239,230,0.08);
+  margin-bottom:36px;
+}
+.footer-brand{
+  font-family:'Fraunces',serif;font-weight:500;font-size:32px;
+  color:var(--cream);margin-bottom:16px;letter-spacing:-0.02em;
+}
+.footer-brand em{font-style:italic;color:var(--tan);font-weight:400;}
+.footer-desc{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  line-height:1.8;color:rgba(245,239,230,0.45);max-width:280px;
+}
+.fcol-title{
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(245,239,230,0.4);margin-bottom:18px;
+}
+.fcol ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.fcol a{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  color:rgba(245,239,230,0.55);text-decoration:none;
+  transition:color 0.2s;
+}
+.fcol a:hover{color:var(--cream);}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:300;
+  color:rgba(245,239,230,0.3);letter-spacing:0.04em;flex-wrap:wrap;gap:12px;
+}
+.footer-bottom em{
+  font-family:'Fraunces',serif;font-style:italic;color:rgba(245,239,230,0.45);
+}
+
+/* ═══ ANIMATIONS ═══════════════════════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-16px);}to{opacity:1;transform:translateX(0);}}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ═══ RESPONSIVE ═══════════════════════════════════════════════════════════ */
+@media(max-width:1000px){
+  .container{padding:0 24px;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;}
+  .hero-left{padding:40px 24px 80px;}
+  .hero-right{min-height:420px;}
+  .service-head,.tracker-head,.order-grid,.alerts-inline{
+    grid-template-columns:1fr;gap:32px;
+  }
+  .service-grid,.how-grid{grid-template-columns:1fr;}
+  .how-grid{border-radius:16px;}
+  .fee-note{grid-template-columns:1fr;padding:32px;}
+  .tracker-stats{grid-template-columns:repeat(3,1fr);gap:16px;}
+  .tstat-num{font-size:32px;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+  .section,.how,.order-cta,.faq,.tracker{padding:80px 0;}
+  .fair-card{grid-template-columns:1fr;gap:16px;}
+  .fc-right{flex-direction:row;align-items:center;flex-wrap:wrap;}
+}
+
+/* Visually hidden for a11y */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══════════════════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="nav-logo">
+      <span class="logo-text">Studio<em>2J</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#tracker">Fairs</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" class="nav-cta">Place an order</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ══════════════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Proxy buying · Seoul and Tokyo · Est. 2025</div>
+    <h1 class="hero-title">
+      Korean and<br>Japanese shops,<br><em>delivered.</em>
+    </h1>
+    <p class="hero-body">
+      Send us a link from Twenty, Rakuten, or any region-locked shop — we'll
+      buy it in Seoul or Tokyo and ship it to your door. We also attend
+      illustration and stationery fairs in person.
+    </p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">Send us a link →</a>
+      <a href="#tracker" class="btn-secondary">See upcoming fairs</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">
+        <div class="trust-num">14<em>+</em></div>
+        <div class="trust-label">Fairs tracked</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">10</div>
+        <div class="trust-label">Countries</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">2</div>
+        <div class="trust-label">Founders, one studio</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-texture"></div>
+    <div class="hero-stack">
+      <div class="hero-stack-label">What we handle, every day</div>
+      <div class="hero-fc">
+        <div>
+          <div class="hfc-name">Twenty Korea order</div>
+          <div class="hfc-loc">Proxy buy · Seoul</div>
+          <div class="hfc-tags">
+            <span class="hfc-tag">stationery</span>
+            <span class="hfc-tag">region-locked</span>
+          </div>
+        </div>
+        <span class="hfc-chip chip-o">Active</span>
+      </div>
+      <div class="hero-fc">
+        <div>
+          <div class="hfc-name">Rakuten artist drop</div>
+          <div class="hfc-loc">Proxy buy · Tokyo</div>
+          <div class="hfc-tags">
+            <span class="hfc-tag">illustration</span>
+            <span class="hfc-tag">limited</span>
+          </div>
+        </div>
+        <span class="hfc-chip chip-o">Active</span>
+      </div>
+      <div class="hero-fc">
+        <div>
+          <div class="hfc-name">Illustration Korea COEX</div>
+          <div class="hfc-loc">Fair haul · This week</div>
+          <div class="hfc-tags">
+            <span class="hfc-tag">illustration</span>
+            <span class="hfc-tag">in person</span>
+          </div>
+        </div>
+        <span class="hfc-chip chip-u">Going now</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ══════════════════════════════════════════════════════════ -->
+<section class="section services" id="services">
+  <div class="container">
+    <div class="service-head">
+      <div>
+        <div class="section-eyebrow">Our services</div>
+        <h2 class="section-title">Everything Korea<br>and Japan, <em>shipped.</em></h2>
+      </div>
+      <p class="section-intro">
+        Proxy buying is our core service — any Korean or Japanese shop that
+        won't ship to you, we buy on your behalf. We also attend fairs in
+        person and take bespoke personal requests.
+      </p>
+    </div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="sc-num">01</div>
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A5C45" stroke-width="1.4">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <h3 class="sc-title">Proxy <em>buying</em></h3>
+        <p class="sc-body">
+          Any Korean or Japanese website that won't ship to you — Twenty,
+          Rakuten, brand shops, even limited-edition drops. Send us the link,
+          we'll handle the rest. Our core service.
+        </p>
+        <div class="sc-detail">
+          <span class="sc-detail-label">Best for</span>
+          <span class="sc-detail-val">region-locked shops</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="sc-num">02</div>
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A5C45" stroke-width="1.4">
+            <path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
+            <polyline points="3 9 12 15 21 9"/>
+          </svg>
+        </div>
+        <h3 class="sc-title">Fair haul <em>orders</em></h3>
+        <p class="sc-body">
+          We physically attend illustration and stationery fairs in Korea
+          and Japan. Browse our live tracker, pick a fair we're going to,
+          and send us your wishlist before the order deadline.
+        </p>
+        <div class="sc-detail">
+          <span class="sc-detail-label">Best for</span>
+          <span class="sc-detail-val">exclusive fair-only goods</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="sc-num">03</div>
+        <div class="sc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A5C45" stroke-width="1.4">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <h3 class="sc-title">Personal <em>requests</em></h3>
+        <p class="sc-body">
+          Hunting a specific artist, out-of-stock item, or niche Korean
+          brand? DM us the details and we'll source it in Seoul or Tokyo —
+          even if it means visiting the shop in person.
+        </p>
+        <div class="sc-detail">
+          <span class="sc-detail-label">Best for</span>
+          <span class="sc-detail-val">bespoke sourcing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fee-note">
+      <div class="fee-label">Service fee</div>
+      <p class="fee-text">
+        <strong>Minimum ₩25,000 / ¥2,500 per order</strong>, or
+        <strong>15% of total goods value — whichever is higher</strong>.
+        Item cost and international shipping are invoiced separately. All
+        fees confirmed upfront before we purchase.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══════════════════════════════════════════════════════════ -->
+<div class="marquee">
+  <div class="marquee-inner">
+    <span class="mi">Illustration Korea</span>
+    <span class="mi">Tokyo Gift Show</span>
+    <span class="mi">Washi & Paper Expo</span>
+    <span class="mi">Seoul Illustration Fair</span>
+    <span class="mi">Hyper Japan London</span>
+    <span class="mi">Grafik Fiera Milan</span>
+    <span class="mi">Paper & Pen Tokyo</span>
+    <span class="mi">Illustrative Berlin</span>
+    <span class="mi">Illustration Korea</span>
+    <span class="mi">Tokyo Gift Show</span>
+    <span class="mi">Washi & Paper Expo</span>
+    <span class="mi">Seoul Illustration Fair</span>
+    <span class="mi">Hyper Japan London</span>
+    <span class="mi">Grafik Fiera Milan</span>
+    <span class="mi">Paper & Pen Tokyo</span>
+    <span class="mi">Illustrative Berlin</span>
+  </div>
+</div>
+
+<!-- ═══ FAIR TRACKER ══════════════════════════════════════════════════════ -->
+<section class="tracker" id="tracker">
+  <div class="container">
+    <div class="tracker-head">
+      <div>
+        <div class="section-eyebrow">Why you can trust us</div>
+        <h2 class="section-title">We're <em>physically there</em>,<br>every month.</h2>
+      </div>
+      <div class="tracker-stats">
+        <div class="tstat">
+          <div class="tstat-num" id="st-total">14</div>
+          <div class="tstat-label">Fairs tracked</div>
+        </div>
+        <div class="tstat">
+          <div class="tstat-num" id="st-countries">10</div>
+          <div class="tstat-label">Countries</div>
+        </div>
+        <div class="tstat">
+          <div class="tstat-num" id="st-soon">0</div>
+          <div class="tstat-label">Deadlines soon</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-family:'Inter',sans-serif;font-size:15px;font-weight:300;line-height:1.75;color:var(--brown);max-width:680px;margin-bottom:40px;">
+      This is our live calendar of illustration and stationery fairs around the world.
+      The ones marked <em style="font-family:'Fraunces',serif;font-style:italic;color:var(--dark-blue);">"we're attending"</em> are fairs we'll be at in person — the clearest proof that we're
+      not just another online proxy shop. We're actually on the ground in Seoul and Tokyo.
+    </p>
+
+    <div class="tracker-filters">
+      <span class="tf-label">Filter</span>
+      <input type="text" class="tf-search" id="f-search" placeholder="Search fairs or cities…" oninput="render()">
+      <button class="pill active" data-v="upcoming" onclick="setV(this)">Upcoming</button>
+      <button class="pill" data-v="going" onclick="setV(this)">We're attending</button>
+      <button class="pill" data-v="deadline" onclick="setV(this)">Deadline open</button>
+      <button class="pill" data-v="saved" onclick="setV(this)">Saved</button>
+      <button class="pill" data-v="asia" onclick="setV(this)">Asia</button>
+      <button class="pill" data-v="europe" onclick="setV(this)">Europe</button>
+    </div>
+
+    <div id="fair-list"></div>
+
+    <!-- Email alerts inline -->
+    <div class="alerts-inline">
+      <div>
+        <h3 class="alerts-title">Never miss a <em>deadline</em>.</h3>
+        <p class="alerts-sub">
+          Subscribe for monthly fair roundups and deadline alerts. New fairs,
+          upcoming hauls, and first dibs on our order windows — straight to
+          your inbox.
+        </p>
+      </div>
+      <form class="alerts-form" onsubmit="return subscribe(event)">
+        <input type="email" class="alerts-input" placeholder="your@email.com" required id="sub-email">
+        <button type="submit" class="alerts-btn">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ══════════════════════════════════════════════════════ -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-head">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-title">We're your person<br>on the <em>ground</em>.</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num-big">01</div>
+        <div class="how-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A5C45" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <h3 class="how-title">Send us a link or a list</h3>
+        <p class="how-body">
+          A Korean or Japanese website link, an artist name, or a fair from
+          our tracker — whatever you're after, DM us the details on
+          Instagram.
+        </p>
+      </div>
+      <div class="how-card">
+        <div class="how-num-big">02</div>
+        <div class="how-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A5C45" stroke-width="1.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <h3 class="how-title">We confirm and invoice</h3>
+        <p class="how-body">
+          We check availability, calculate the full cost (item + service
+          fee + shipping), and send you an itemised invoice for approval
+          before we buy.
+        </p>
+      </div>
+      <div class="how-card">
+        <div class="how-num-big">03</div>
+        <div class="how-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A5C45" stroke-width="1.5">
+            <path d="M16 16h6v-5h-6z"/>
+            <path d="M8 16H2v-5h6z"/>
+            <path d="M8 11V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5"/>
+            <line x1="12" y1="16" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <h3 class="how-title">We ship to your door</h3>
+        <p class="how-body">
+          Everything handled — sourcing, packing, international shipping
+          from Seoul or Tokyo. Every parcel leaves with a handwritten note.
+          Care, not corporate.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ORDER CTA ═════════════════════════════════════════════════════════ -->
+<section class="order-cta" id="order">
+  <div class="container order-grid">
+    <div>
+      <div class="section-eyebrow" style="color:var(--tan);">Place an order</div>
+      <h2 class="order-title">Send us<br>a <em>link</em>.</h2>
+      <p class="order-body">
+        Every order is handled personally. We confirm, source, pack, and
+        ship from Seoul or Tokyo. Your only job is to tell us what you love.
+      </p>
+      <div class="order-btns">
+        <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" class="btn-gold">DM on Instagram →</a>
+        <a href="#" onclick="document.getElementById('order-form-modal').scrollIntoView();return false;" class="btn-ghost">How to order</a>
+      </div>
+    </div>
+    <div class="order-steps">
+      <div class="ostep">
+        <div class="ostep-num">01</div>
+        <div>
+          <div class="ostep-title">Send a link or a list</div>
+          <div class="ostep-body">
+            A Korean or Japanese website URL, an artist name, or pick a fair
+            from our tracker — whatever you're after.
+          </div>
+        </div>
+      </div>
+      <div class="ostep">
+        <div class="ostep-num">02</div>
+        <div>
+          <div class="ostep-title">Confirm & pay upfront</div>
+          <div class="ostep-body">
+            We confirm availability, send an invoice (item cost + service fee
+            + shipping), and you pay before we purchase.
+          </div>
+        </div>
+      </div>
+      <div class="ostep">
+        <div class="ostep-num">03</div>
+        <div>
+          <div class="ostep-title">Wait for your haul</div>
+          <div class="ostep-body">
+            We source, photograph, pack carefully, and ship worldwide with
+            tracking. Updates every step.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══════════════════════════════════════════════════════════════ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq-head">
+      <div class="section-eyebrow">Frequently asked</div>
+      <h2 class="section-title">Everything you<br>might <em>wonder</em>.</h2>
+    </div>
+    <div class="faq-wrap" id="order-form-modal">
+
+      <!-- ORDERING -->
+      <div class="faq-cat">
+        <div class="faq-cat-title">Ordering</div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">How do I place an order?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            DM us on Instagram <a href="https://www.instagram.com/studio2j25/" target="_blank" style="color:var(--dark-blue);">@studio2j25</a> with the fair name, artist, or website link you're interested in. We'll reply within 24 hours to confirm availability and send an itemised invoice. Once payment clears, we purchase on your behalf.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">What's the service fee?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Minimum ₩25,000 (or ¥2,500 for Japan-based sourcing), or 15% of the total goods value — whichever is higher. This covers our time, transport to the fair or shop, packing materials, and care.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">When do I pay?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            100% upfront, before we purchase. We send an itemised invoice covering item cost, service fee, and estimated international shipping. Payment via PayPal, bank transfer, or Wise.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">What if the item is sold out?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            If something is unavailable when we arrive at the fair or shop, we refund that portion immediately. For proxy buying, we verify stock before invoicing to avoid this.
+          </div></div>
+        </div>
+      </div>
+
+      <!-- SHIPPING -->
+      <div class="faq-cat">
+        <div class="faq-cat-title">Shipping & delivery</div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">Where do you ship?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Worldwide. From Seoul for Korean orders and from Tokyo for Japan-based orders. We use Korea Post EMS and Japan Post EMS — the most reliable international services, with tracking.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">How long does shipping take?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Typically 7–14 business days from Seoul or Tokyo, depending on destination. North America and Europe are usually on the faster end, South America and Africa slightly longer. Full tracking provided once shipped.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">What about customs and duties?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Any customs fees or import duties are the buyer's responsibility. We declare the accurate value on all packages. Most stationery orders under $100 rarely incur duties, but we can't guarantee this varies by country.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">Is packaging included?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Yes. Every parcel includes protective packaging, tissue paper, and a handwritten thank-you note. We pack stationery flat to prevent bending and wrap fragile items individually.
+          </div></div>
+        </div>
+      </div>
+
+      <!-- RETURNS -->
+      <div class="faq-cat">
+        <div class="faq-cat-title">Returns & refunds</div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">Can I cancel my order?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Cancellations are accepted until we've purchased the items. Once we've bought them at the fair or from the website, full refunds are not possible as we cannot return the goods. We'll offer alternatives where possible.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">What if my order arrives damaged?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Photograph everything as soon as the package arrives — exterior, interior, and damaged items. DM us within 48 hours of delivery. We'll work with the postal service on a claim and compensate you directly once resolved.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">Do you accept returns for change of mind?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Because we source items specifically for your order, we cannot accept returns for change of mind. If you're unsure about an item, ask us for more photos before confirming — we're happy to share extra details.
+          </div></div>
+        </div>
+      </div>
+
+      <!-- PRIVACY -->
+      <div class="faq-cat">
+        <div class="faq-cat-title">Privacy</div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">What data do you collect?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Only what's necessary to fulfil your order — name, shipping address, email for order updates, and payment confirmation. We never share your information with third parties. Newsletter subscribers can unsubscribe at any time.
+          </div></div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-q">
+            <span class="faq-q-text">How are payments handled?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a"><div class="faq-a-text">
+            Through secure third-party services — PayPal, Wise, or direct bank transfer. We never store your payment details. All transactions are processed by these services with their own security standards.
+          </div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Studio<em>2J</em></div>
+        <p class="footer-desc">
+          Personal shopping for illustration and stationery fairs in Korea
+          and Japan. Based in Seoul and Tokyo. Founded 2025.
+        </p>
+      </div>
+      <div class="fcol">
+        <div class="fcol-title">Explore</div>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#tracker">Fair Tracker</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <div class="fcol-title">Connect</div>
+        <ul>
+          <li><a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://www.threads.com/@studio2j25" target="_blank" rel="noreferrer">Threads</a></li>
+          <li><a href="mailto:studio2j25@gmail.com">studio2j25@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <div class="fcol-title">Based in</div>
+        <ul>
+          <li><a href="#">Seoul · 서울</a></li>
+          <li><a href="#">Tokyo · 東京</a></li>
+          <li><a href="#" style="color:rgba(245,239,230,0.35);">Shipping worldwide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© Studio2J 2026 · <em>From Seoul and Tokyo, with care</em></span>
+      <span>Est. 2025 · 서울과 도쿄에서 세계로 · Seoul and Tokyo to the world</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const TODAY=new Date('2026-04-24');
+const SAVED=new Set();
+let VIEW='upcoming';
+
+const FAIRS=[
+  {id:1,name:'Illustration Korea COEX',city:'Seoul',country:'Korea',region:'Asia',date:'2026-04-25',deadline:'2026-04-22',types:['illustration','stationery'],featured:true,going:true,notes:'We\'re there this week — order window open'},
+  {id:2,name:'Stationery Fest',city:'Austin',country:'USA',region:'North America',date:'2026-05-02',deadline:'2026-04-25',types:['stationery','illustration'],featured:true,going:false},
+  {id:3,name:'BCN Pen & Paper Fest',city:'Barcelona',country:'Spain',region:'Europe',date:'2026-04-26',deadline:'2026-04-21',types:['stationery'],featured:false,going:false},
+  {id:4,name:'LA Zine Fest',city:'Los Angeles',country:'USA',region:'North America',date:'2026-06-06',deadline:'2026-04-26',types:['zine'],featured:false,going:false},
+  {id:5,name:'Printfair Melbourne',city:'Melbourne',country:'Australia',region:'Oceania',date:'2026-06-14',deadline:'2026-04-30',types:['zine','illustration'],featured:false,going:false},
+  {id:6,name:'Hyper Japan Market',city:'London',country:'UK',region:'Europe',date:'2026-07-10',deadline:'2026-05-01',types:['illustration','craft'],featured:false,going:false},
+  {id:7,name:'SNAP! Edinburgh',city:'Edinburgh',country:'UK',region:'Europe',date:'2026-07-04',deadline:'2026-05-15',types:['zine','illustration'],featured:false,going:false},
+  {id:8,name:'Washi & Paper Expo',city:'Osaka',country:'Japan',region:'Asia',date:'2026-08-08',deadline:'2026-06-01',types:['stationery'],featured:true,going:true,notes:'One of our favourite Japan fairs'},
+  {id:9,name:'Tokyo Int\'l Gift Show',city:'Tokyo',country:'Japan',region:'Asia',date:'2026-09-02',deadline:'2026-06-15',types:['stationery','craft'],featured:false,going:true},
+  {id:10,name:'Illustrative Berlin',city:'Berlin',country:'Germany',region:'Europe',date:'2026-09-18',deadline:'2026-06-30',types:['illustration','art'],featured:false,going:false},
+  {id:11,name:'NY Art Book Fair',city:'New York',country:'USA',region:'North America',date:'2026-10-17',deadline:'2026-07-01',types:['zine','art'],featured:false,going:false},
+  {id:12,name:'Grafik Fiera',city:'Milan',country:'Italy',region:'Europe',date:'2026-10-03',deadline:'2026-07-20',types:['illustration','art'],featured:false,going:false},
+  {id:13,name:'Seoul Illustration Fair',city:'Seoul',country:'Korea',region:'Asia',date:'2026-11-20',deadline:'2026-08-31',types:['illustration'],featured:true,going:true,notes:'Our biggest haul event of the year'},
+  {id:14,name:'Paper & Pen Tokyo',city:'Tokyo',country:'Japan',region:'Asia',date:'2026-11-05',deadline:'2026-09-01',types:['stationery'],featured:false,going:true},
+];
+
+function dlInfo(d){
+  const diff=(new Date(d)-TODAY)/86400000;
+  if(diff<0) return ['dl-closed','Passed'];
+  if(diff<=7) return ['dl-urgent',`${Math.ceil(diff)}d left`];
+  if(diff<=30) return ['dl-soon',`${Math.ceil(diff)} days`];
+  return ['dl-open','Open'];
+}
+function fmtDate(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+
+function setV(el){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  VIEW=el.dataset.v;
+  render();
+}
+
+function toggleSave(id,e){
+  e.stopPropagation();
+  SAVED.has(id)?SAVED.delete(id):SAVED.add(id);
+  try{localStorage.setItem('s2j-saved',JSON.stringify([...SAVED]));}catch(e){}
+  render();
+}
+
+function loadSaved(){
+  try{const s=localStorage.getItem('s2j-saved');if(s)JSON.parse(s).forEach(i=>SAVED.add(i));}catch(e){}
+}
+
+function render(){
+  const q=(document.getElementById('f-search').value||'').toLowerCase();
+  let list=FAIRS.filter(f=>{
+    const d=new Date(f.date);
+    if(VIEW==='upcoming'&&d<TODAY) return false;
+    if(VIEW==='going'&&!f.going) return false;
+    if(VIEW==='deadline'&&(new Date(f.deadline)-TODAY)/86400000<0) return false;
+    if(VIEW==='saved'&&!SAVED.has(f.id)) return false;
+    if(VIEW==='asia'&&f.region!=='Asia') return false;
+    if(VIEW==='europe'&&f.region!=='Europe') return false;
+    if(q&&!f.name.toLowerCase().includes(q)&&!f.city.toLowerCase().includes(q)&&!f.country.toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  const soon=FAIRS.filter(f=>{const d=(new Date(f.deadline)-TODAY)/86400000;return d>=0&&d<=30;});
+  document.getElementById('st-soon').textContent=soon.length;
+  document.getElementById('st-total').textContent=FAIRS.length;
+  document.getElementById('st-countries').textContent=new Set(FAIRS.map(f=>f.country)).size;
+
+  const wrap=document.getElementById('fair-list');
+  if(!list.length){wrap.innerHTML='<div style="text-align:center;padding:60px;font-family:\'Fraunces\',serif;font-style:italic;font-size:18px;color:var(--tan);">No fairs match your filters.</div>';return;}
+
+  let html='',lastMonth='';
+  list.forEach(f=>{
+    const mo=new Date(f.date).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+    if(mo!==lastMonth){
+      html+=`<div class="month-div"><div class="month-div-label">${mo}</div><div class="month-div-line"></div></div>`;
+      lastMonth=mo;
+    }
+    const[dlCls,dlTxt]=dlInfo(f.deadline);
+    const isSaved=SAVED.has(f.id);
+    html+=`<div class="fair-card${f.featured?' featured':''}">
+      <div>
+        <div class="fc-header">
+          <span class="fc-name">${f.name}</span>
+          ${f.going?'<span class="fc-badge going">We\'re attending</span>':(f.featured?'<span class="fc-badge featured">Featured</span>':'')}
+        </div>
+        <div class="fc-meta">
+          <span>${f.city}</span><span class="fc-meta-sep">·</span>
+          <span>${f.country}</span><span class="fc-meta-sep">·</span>
+          <span>${f.region}</span>
+        </div>
+        <div class="fc-tags">${f.types.map(t=>`<span class="fc-tag">${t}</span>`).join('')}</div>
+        ${f.notes?`<div class="fc-notes">"${f.notes}"</div>`:''}
+      </div>
+      <div class="fc-right">
+        <div class="fc-date-block">
+          <div class="fc-date">${fmtDate(f.date)}</div>
+          <div class="fc-year">2026</div>
+        </div>
+        <span class="dl-chip ${dlCls}">${dlTxt}</span>
+        <button class="fc-save${isSaved?' saved':''}" onclick="toggleSave(${f.id},event)">${isSaved?'Saved ✓':'Save'}</button>
+      </div>
+    </div>`;
+  });
+  wrap.innerHTML=html;
+}
+
+function toggleFAQ(el){
+  el.classList.toggle('open');
+}
+
+function subscribe(e){
+  e.preventDefault();
+  const email=document.getElementById('sub-email').value;
+  try{
+    const subs=JSON.parse(localStorage.getItem('s2j-subs')||'[]');
+    if(!subs.includes(email))subs.push(email);
+    localStorage.setItem('s2j-subs',JSON.stringify(subs));
+  }catch(err){}
+  const btn=e.target.querySelector('.alerts-btn');
+  btn.textContent='Subscribed ✓';
+  btn.style.background='var(--cream)';
+  document.getElementById('sub-email').value='';
+  setTimeout(()=>{btn.textContent='Subscribe';btn.style.background='';},3000);
+  return false;
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>30);
+});
+
+loadSaved();
+render();
+</script>
+</body>
+</html>
