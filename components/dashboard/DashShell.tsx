@@ -5,9 +5,18 @@ export function DashShell({ variant, children }: {
   children: React.ReactNode
 }) {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--cream)' }}>
+    <div style={{
+      display: 'flex',
+      height: '100vh',
+      overflow: 'hidden',
+      background: 'var(--cream)',
+    }}>
       <DashNav variant={variant} />
-      <main style={{ flex: 1, padding: '48px', overflowY: 'auto', maxWidth: '1000px' }}>
+      <main style={{
+        flex: 1,
+        overflowY: 'auto',
+        padding: '48px',
+      }}>
         {children}
       </main>
     </div>

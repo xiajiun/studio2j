@@ -1,11 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
-const ADMIN_NAV = [
+const ADMIN_LINKS = [
   { href: '/admin',             label: 'Overview' },
   { href: '/admin/orders',      label: 'Orders' },
   { href: '/admin/fairs',       label: 'Fairs' },
@@ -13,14 +12,24 @@ const ADMIN_NAV = [
   { href: '/admin/subscribers', label: 'Subscribers' },
 ]
 
-const ACCOUNT_NAV = [
+const ACCOUNT_LINKS = [
   { href: '/account', label: 'My orders' },
 ]
 
+const link: React.CSSProperties = {
+  display: 'block',
+  padding: '8px 12px',
+  borderRadius: '8px',
+  textDecoration: 'none',
+  fontFamily: 'var(--font-inter), sans-serif',
+  fontSize: '13px',
+  fontWeight: 300,
+  color: 'var(--brown)',
+}
+
 export function DashNav({ variant }: { variant: 'admin' | 'account' }) {
-  const pathname = usePathname()
-  const router   = useRouter()
-  const nav      = variant === 'admin' ? ADMIN_NAV : ACCOUNT_NAV
+  const router = useRouter()
+  const links  = variant === 'admin' ? ADMIN_LINKS : ACCOUNT_LINKS
 
   async function signOut() {
     const supabase = createClient()
@@ -30,79 +39,50 @@ export function DashNav({ variant }: { variant: 'admin' | 'account' }) {
   }
 
   return (
-    <aside style={{
+    <div style={{
       width: '200px',
-      flexShrink: 0,
-      borderRight: '0.5px solid rgba(122,92,69,0.12)',
+      minWidth: '200px',
       height: '100vh',
-      position: 'sticky',
-      top: 0,
+      borderRight: '0.5px solid rgba(122,92,69,0.12)',
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'hidden',
     }}>
 
       {/* Wordmark */}
-      <div style={{ padding: '28px 20px 24px', borderBottom: '0.5px solid rgba(122,92,69,0.08)' }}>
+      <div style={{ padding: '24px 20px', borderBottom: '0.5px solid rgba(122,92,69,0.08)', flexShrink: 0 }}>
         <Link href="/" style={{ textDecoration: 'none' }}>
-          <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '19px', fontWeight: 500, color: 'var(--dark-brown)', letterSpacing: '-0.02em' }}>
+          <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', fontWeight: 500, color: 'var(--dark-brown)', letterSpacing: '-0.02em' }}>
             Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
           </span>
         </Link>
       </div>
 
-      {/* Nav section */}
-      <div style={{ flex: 1, padding: '16px 10px', overflowY: 'auto' }}>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', padding: '4px 10px', marginBottom: '6px' }}>
+      {/* Nav */}
+      <div style={{ padding: '16px 10px', flexShrink: 0 }}>
+        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', padding: '0 12px', marginBottom: '8px' }}>
           {variant === 'admin' ? 'Admin' : 'Account'}
         </div>
-
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-          {nav.map(({ href, label }) => {
-            const active = href === '/admin' || href === '/account'
-              ? pathname === href
-              : pathname.startsWith(href)
-            return (
-              <Link key={href} href={href} style={{
-                display: 'block',
-                padding: '8px 10px',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: '13px',
-                fontWeight: active ? 500 : 300,
-                color: active ? 'var(--dark-brown)' : 'var(--brown)',
-                background: active ? 'var(--beige)' : 'transparent',
-                transition: 'background 0.15s',
-              }}>
-                {label}
-              </Link>
-            )
-          })}
-        </nav>
-
-        {variant === 'admin' && (
-          <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '0.5px solid rgba(122,92,69,0.1)' }}>
-            <Link href="/" style={{
-              display: 'block', padding: '8px 10px', borderRadius: '8px', textDecoration: 'none',
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)',
-            }}>
-              ← Homepage
-            </Link>
-          </div>
-        )}
+        {links.map(({ href, label }) => (
+          <Link key={href} href={href} style={link}>{label}</Link>
+        ))}
       </div>
 
+      {variant === 'admin' && (
+        <div style={{ padding: '0 10px', flexShrink: 0, borderTop: '0.5px solid rgba(122,92,69,0.08)', paddingTop: '12px', marginTop: '4px' }}>
+          <Link href="/" style={link}>← Homepage</Link>
+        </div>
+      )}
+
+      {/* Spacer */}
+      <div style={{ flex: 1 }} />
+
       {/* Sign out */}
-      <div style={{ padding: '16px 20px', borderTop: '0.5px solid rgba(122,92,69,0.08)' }}>
-        <button onClick={signOut} style={{
-          fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300,
-          color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-        }}>
+      <div style={{ padding: '16px 20px', borderTop: '0.5px solid rgba(122,92,69,0.08)', flexShrink: 0 }}>
+        <button onClick={signOut} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
           Sign out
         </button>
       </div>
 
-    </aside>
+    </div>
   )
 }
