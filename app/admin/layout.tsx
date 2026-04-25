@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { requireAdmin } from '@/lib/auth'
 import { DashShell } from '@/components/dashboard/DashShell'
 

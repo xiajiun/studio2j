@@ -1,0 +1,10 @@
+name = "studio2j"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_SUPABASE_URL = "https://hclclmdfcswdrdpqtyyl.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMDc1MzAsImV4cCI6MjA5MjY4MzUzMH0.XH4EH-zH8lqLvpCswMP01HoGVVpDd5vKzIT4qlZikeA"
+ADMIN_EMAIL = "studio2j25@gmail.com"

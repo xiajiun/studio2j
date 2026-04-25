@@ -22,7 +22,11 @@
       "Bash(git commit -m ' *)",
       "Bash(gh repo *)",
       "Bash(echo \"BUILD_EXIT:$?\")",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(echo \"DONE:$?\")",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npx @cloudflare/next-on-pages)",
+      "Bash(echo \"CF_EXIT:$?\")"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order"

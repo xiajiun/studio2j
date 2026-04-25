@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { createClient } from '@/lib/supabase/server'
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'

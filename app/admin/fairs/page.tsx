@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { createClient } from '@/lib/supabase/server'
 import { FairForm } from '@/components/dashboard/FairForm'
 import type { FairRow } from '@/lib/database.types'

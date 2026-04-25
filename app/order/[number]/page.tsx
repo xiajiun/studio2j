@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { STATUS_LABELS, STATUS_ORDER } from '@/lib/database.types'

@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { createClient } from '@/lib/supabase/server'
 import { OrderForm } from '@/components/dashboard/OrderForm'
 import { OrderTimeline } from '@/components/dashboard/OrderTimeline'
