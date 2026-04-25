@@ -1,51 +1,58 @@
 export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
-import { FairForm } from '@/components/dashboard/FairForm'
+import { AddFairButton, EditFairButton, SeedFairsButton } from '@/components/dashboard/FairForm'
 import type { FairRow } from '@/lib/database.types'
 
 export default async function AdminFairs() {
   const supabase = createClient()
   const { data: fairs } = await supabase.from('fairs').select('*').order('date', { ascending: true })
+  const list = (fairs ?? []) as FairRow[]
 
   return (
     <div>
-      <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', letterSpacing: '-0.03em', marginBottom: '32px' }}>
+      <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', letterSpacing: '-0.03em', marginBottom: '24px' }}>
         Fairs
       </h1>
 
-      <FairForm />
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap' }}>
+        <AddFairButton />
+        <SeedFairsButton count={list.length} />
+      </div>
 
-      <div style={{ marginTop: '40px' }}>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px' }}>
-          {fairs?.length ?? 0} fairs
-        </div>
+      {list.length === 0 ? (
+        <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)', textAlign: 'center', padding: '60px 0' }}>
+          No fairs yet. Import the defaults or add one above.
+        </p>
+      ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {(fairs as FairRow[] ?? []).map(f => (
-            <div key={f.id} style={{
-              background: 'white',
-              border: '0.5px solid rgba(122,92,69,0.12)',
-              borderRadius: '14px',
-              padding: '16px 20px',
-              display: 'grid',
-              gridTemplateColumns: '1fr auto',
-              alignItems: 'center',
-              gap: '16px',
-            }}>
-              <div>
-                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', color: 'var(--dark-brown)', marginBottom: '4px' }}>
-                  {f.name}
-                  {f.going && <span style={{ marginLeft: '8px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '99px', background: 'var(--dark-blue)', color: 'var(--cream)' }}>Going</span>}
+          {list.map(f => (
+            <div key={f.id} style={{ background: 'white', border: '0.5px solid rgba(122,92,69,0.12)', borderRadius: '14px', padding: '16px 20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center', gap: '16px' }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', color: 'var(--dark-brown)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {f.name}
+                    {f.going && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '99px', background: 'var(--dark-blue)', color: 'var(--cream)' }}>Going</span>}
+                    {f.featured && !f.going && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '99px', background: 'var(--beige)', color: 'var(--brown)' }}>Featured</span>}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <span>{f.city}, {f.country}</span>
+                    <span>·</span>
+                    <span>{new Date(f.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span>·</span>
+                    <span>Deadline {new Date(f.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    {f.notes && <><span>·</span><span style={{ fontStyle: 'italic' }}>{f.notes}</span></>}
+                  </div>
                 </div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)' }}>
-                  {f.city}, {f.country} · {new Date(f.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                  <EditFairButton fair={f} />
+                  <DeleteFairButton id={f.id} />
                 </div>
               </div>
-              <DeleteFairButton id={f.id} />
             </div>
           ))}
         </div>
-      </div>
+      )}
     </div>
   )
 }
@@ -53,11 +60,7 @@ export default async function AdminFairs() {
 function DeleteFairButton({ id }: { id: number }) {
   return (
     <form action={`/api/admin/fairs/${id}/delete`} method="POST">
-      <button type="submit" style={{
-        fontFamily: 'var(--font-inter), sans-serif',
-        fontSize: '11px', fontWeight: 300,
-        color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px',
-      }}>
+      <button type="submit" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px' }}>
         Delete
       </button>
     </form>

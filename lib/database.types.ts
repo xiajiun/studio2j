@@ -12,6 +12,7 @@ export type OrderKind = 'proxy' | 'fair' | 'personal'
 
 export interface OrderItem {
   name: string
+  url?: string
   qty: number
   price: number
 }
