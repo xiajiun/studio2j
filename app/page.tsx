@@ -12,6 +12,7 @@ import FAQ from '@/components/FAQ'
 import Footer from '@/components/Footer'
 import { FAIRS } from '@/lib/fairs'
 import type { FairRow } from '@/lib/database.types'
+import { AuthRedirect } from '@/components/AuthRedirect'
 
 export default async function Home() {
   // Fetch from Supabase; fall back to static data if DB not seeded yet
@@ -39,6 +40,7 @@ export default async function Home() {
 
   return (
     <>
+      <AuthRedirect />
       <Nav />
       <Hero />
       <Services />
