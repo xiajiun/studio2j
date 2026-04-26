@@ -2,7 +2,7 @@ export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
 import { AddFairButton, SeedFairsButton } from '@/components/dashboard/FairForm'
-import { DeleteFairButton, KeepOnlyKoreaJapanButton } from './FairActions'
+import { DeleteFairButton } from './FairActions'
 import { EditFairButton } from '@/components/dashboard/FairForm'
 import type { FairRow } from '@/lib/database.types'
 
@@ -20,7 +20,6 @@ export default async function AdminFairs() {
       <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap', alignItems: 'center' }}>
         <AddFairButton />
         <SeedFairsButton count={list.length} />
-        {list.length > 0 && <KeepOnlyKoreaJapanButton />}
       </div>
 
       {list.length === 0 ? (

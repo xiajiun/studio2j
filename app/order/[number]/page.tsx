@@ -31,6 +31,16 @@ export default async function PublicOrderPage({ params }: { params: { number: st
         </div>
       </Link>
 
+      {/* Save link banner */}
+      <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '14px 18px', marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap', border: '0.5px solid rgba(122,92,69,0.12)' }}>
+        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--brown)' }}>
+          💾 <strong style={{ fontWeight: 500 }}>Save this page link</strong> to check your order status anytime.
+        </div>
+        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', letterSpacing: '0.02em' }}>
+          studio2j.pages.dev/order/{order.order_number}
+        </div>
+      </div>
+
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '8px' }}>
         {order.order_number}
       </div>

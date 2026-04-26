@@ -37,5 +37,41 @@ export async function POST(req: Request) {
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-  return NextResponse.json({ order_number: data.order_number })
+
+  // Send email notification to admin via Resend
+  const resendKey = process.env.RESEND_API_KEY
+  if (resendKey && data) {
+    const itemLines = (body.items ?? [])
+      .filter((i: any) => i.name)
+      .map((i: any) => `<li>${i.name}${i.url ? ` — <a href="${i.url}">${i.url}</a>` : ''} (qty: ${i.qty})</li>`)
+      .join('')
+
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from:    'Studio2J Orders <orders@studio2j.com>',
+        to:      ['studio2j25@gmail.com'],
+        subject: `New order ${data.order_number} from ${body.name}`,
+        html: `
+          <h2>New order: ${data.order_number}</h2>
+          <p><strong>Name:</strong> ${body.name}</p>
+          <p><strong>Email:</strong> ${body.email}</p>
+          ${body.phone ? `<p><strong>Phone:</strong> ${body.phone}</p>` : ''}
+          ${body.instagram ? `<p><strong>Instagram:</strong> @${body.instagram}</p>` : ''}
+          <p><strong>Country:</strong> ${body.country}</p>
+          <p><strong>Payment:</strong> ${body.payment_method}</p>
+          ${itemLines ? `<p><strong>Items:</strong></p><ul>${itemLines}</ul>` : ''}
+          ${body.notes ? `<p><strong>Notes:</strong> ${body.notes}</p>` : ''}
+          <hr/>
+          <p><a href="https://studio2j.pages.dev/admin/orders">View in admin →</a></p>
+        `,
+      }),
+    }).catch(() => {}) // don't fail the order if email fails
+  }
+
+  return NextResponse.json({ order_number: data!.order_number })
 }

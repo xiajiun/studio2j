@@ -1,14 +1,22 @@
-import { STATUS_LABELS, STATUS_ORDER, type OrderStatus, type OrderEvent } from '@/lib/database.types'
+import { STATUS_LABELS, STATUS_ORDER, type OrderStatus, type OrderKind, type OrderEvent } from '@/lib/database.types'
 
-export function OrderTimeline({ currentStatus, events }: {
+// "going_to_fair" only makes sense for fair haul orders
+function getSteps(kind?: OrderKind): OrderStatus[] {
+  if (kind === 'fair') return STATUS_ORDER
+  return STATUS_ORDER.filter(s => s !== 'going_to_fair')
+}
+
+export function OrderTimeline({ currentStatus, events, kind }: {
   currentStatus: OrderStatus
   events: OrderEvent[]
+  kind?: OrderKind
 }) {
-  const currentIdx = STATUS_ORDER.indexOf(currentStatus)
+  const steps      = getSteps(kind)
+  const currentIdx = steps.indexOf(currentStatus)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {STATUS_ORDER.map((s, i) => {
+      {steps.map((s, i) => {
         const isDone    = i < currentIdx
         const isCurrent = i === currentIdx
         const event     = events.find(e => e.status === s)
@@ -24,7 +32,7 @@ export function OrderTimeline({ currentStatus, events }: {
               }}>
                 {isDone && <span style={{ color: 'white', fontSize: '9px' }}>✓</span>}
               </div>
-              {i < STATUS_ORDER.length - 1 && (
+              {i < steps.length - 1 && (
                 <div style={{ width: '1.5px', flex: 1, minHeight: '32px', background: isDone ? 'var(--dark-blue)' : 'rgba(122,92,69,0.1)' }} />
               )}
             </div>
@@ -39,7 +47,6 @@ export function OrderTimeline({ currentStatus, events }: {
               }}>
                 {STATUS_LABELS[s]}
               </div>
-
               {event && (
                 <>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginBottom: '6px' }}>

@@ -67,7 +67,7 @@ export default async function AccountOrderDetail({ params }: { params: { number:
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px' }}>
         Order timeline
       </div>
-      <OrderTimeline currentStatus={o.status} events={events as OrderEvent[] ?? []} />
+      <OrderTimeline currentStatus={o.status} events={events as OrderEvent[] ?? []} kind={o.kind} />
 
       {o.tracking_number && (
         <div style={{ marginTop: '32px', padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px' }}>

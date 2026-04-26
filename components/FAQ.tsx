@@ -18,7 +18,7 @@ const CATEGORIES: FAQCategory[] = [
     items: [
       {
         q: 'How do I place an order?',
-        a: <>DM us on Instagram <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ color: 'var(--dark-blue)' }}>@studio2j25</a> with the fair name, artist, or website link you&apos;re interested in. We&apos;ll reply within 24 hours to confirm availability and send an itemised invoice. Once payment clears, we purchase on your behalf.</>,
+        a: <>Fill in our <a href="/order/new" style={{ color: 'var(--dark-blue)' }}>online order form</a>, or DM us on Instagram <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ color: 'var(--dark-blue)' }}>@studio2j25</a> with the fair name, artist, or website link you&apos;re interested in. We&apos;ll confirm availability and send a quotation within 24 hours. Nothing is purchased until you approve and pay.</>,
       },
       {
         q: "What's the service fee?",
@@ -81,7 +81,7 @@ const CATEGORIES: FAQCategory[] = [
       },
       {
         q: 'How are payments handled?',
-        a: "Through secure third-party services — PayPal, Wise, or direct bank transfer. We never store your payment details. All transactions are processed by these services with their own security standards.",
+        a: "Through secure third-party services — Wise or direct bank transfer. We never store your payment details. All transactions are processed by these services with their own security standards.",
       },
     ],
   },

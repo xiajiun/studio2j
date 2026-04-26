@@ -79,7 +79,7 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px' }}>
             Timeline
           </div>
-          <OrderTimeline currentStatus={o.status} events={events as OrderEvent[] ?? []} />
+          <OrderTimeline currentStatus={o.status} events={events as OrderEvent[] ?? []} kind={o.kind} />
           <div style={{ marginTop: '24px', borderTop: '0.5px solid rgba(122,92,69,0.1)', paddingTop: '24px' }}>
             <AddEventForm orderId={o.id} />
           </div>
