@@ -16,25 +16,26 @@ type ItemRow = { name: string; url: string; qty: string }
 
 export default function CustomerOrderForm() {
   const [form, setForm] = useState({
-    name: '', email: '', phone: '',
+    name: '', email: '', phone: '', instagram: '',
     address: '', city: '', country: '', postal_code: '',
-    payment_method: 'wise',
-    notes: '',
+    payment_method: 'wise', notes: '',
   })
-  const [items, setItems]   = useState<ItemRow[]>([{ name: '', url: '', qty: '1' }])
+  const [items,   setItems]   = useState<ItemRow[]>([{ name: '', url: '', qty: '1' }])
+  const [agreed,  setAgreed]  = useState(false)
   const [loading, setLoading] = useState(false)
-  const [done, setDone]       = useState<string | null>(null)
-  const [error, setError]     = useState('')
+  const [done,    setDone]    = useState<string | null>(null)
+  const [error,   setError]   = useState('')
 
   function set(k: string, v: string) { setForm(p => ({ ...p, [k]: v })) }
   function setItem(i: number, k: keyof ItemRow, v: string) {
     setItems(prev => prev.map((row, idx) => idx === i ? { ...row, [k]: v } : row))
   }
-  function addItem()    { setItems(p => [...p, { name: '', url: '', qty: '1' }]) }
+  function addItem()          { setItems(p => [...p, { name: '', url: '', qty: '1' }]) }
   function remItem(i: number) { setItems(p => p.filter((_, idx) => idx !== i)) }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
+    if (!agreed) { setError('Please agree to the terms before submitting.'); return }
     setLoading(true)
     setError('')
 
@@ -48,13 +49,7 @@ export default function CustomerOrderForm() {
       body: JSON.stringify({ ...form, items: parsedItems }),
     })
     const data = await res.json()
-
-    if (!res.ok) {
-      setError('Something went wrong — please try again or DM us on Instagram.')
-      setLoading(false)
-      return
-    }
-
+    if (!res.ok) { setError('Something went wrong — please try again or DM us on Instagram.'); setLoading(false); return }
     setDone(data.order_number)
     setLoading(false)
   }
@@ -62,19 +57,43 @@ export default function CustomerOrderForm() {
   if (done) {
     return (
       <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-        <div style={{ maxWidth: '480px', width: '100%', textAlign: 'center' }}>
+        <div style={{ maxWidth: '520px', width: '100%' }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 500, color: 'var(--dark-brown)', marginBottom: '48px', letterSpacing: '-0.02em' }}>
               Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
             </div>
           </Link>
-          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 300, color: 'var(--dark-brown)', marginBottom: '12px', letterSpacing: '-0.02em' }}>
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 300, color: 'var(--dark-brown)', marginBottom: '16px', letterSpacing: '-0.02em' }}>
             Order received <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>✓</em>
           </div>
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '8px' }}>
-            Your order <strong style={{ fontWeight: 500 }}>{done}</strong> has been submitted. We&apos;ll review it and send you a quotation within 24 hours.
-          </p>
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', lineHeight: 1.7, marginBottom: '32px' }}>
+
+          {/* Order link */}
+          <div style={{ background: 'var(--beige)', borderRadius: '14px', padding: '20px 24px', marginBottom: '24px', border: '0.5px solid rgba(122,92,69,0.15)' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '8px' }}>Your order number</div>
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '8px' }}>{done}</div>
+            <Link href={`/order/${done}`} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: 'var(--dark-blue)', textDecoration: 'none', fontWeight: 400 }}>
+              Track your order status →
+            </Link>
+          </div>
+
+          {/* What happens next */}
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '14px' }}>What happens next</div>
+            {[
+              { step: '1', text: 'We review your order and confirm item availability within 24 hours.' },
+              { step: '2', text: 'We send Invoice 1 — items cost only. You pay this so we can purchase.' },
+              { step: '3', text: 'We source your items (at the fair or online).' },
+              { step: '4', text: 'We send Invoice 2 — service fee + international shipping. You pay the balance.' },
+              { step: '5', text: 'We pack carefully and ship to your door with tracking.' },
+            ].map(({ step, text }) => (
+              <div key={step} style={{ display: 'flex', gap: '14px', marginBottom: '12px' }}>
+                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', color: 'var(--tan)', width: '20px', flexShrink: 0 }}>{step}</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>{text}</div>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginBottom: '24px' }}>
             Questions? DM us <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ color: 'var(--dark-blue)' }}>@studio2j25</a>
           </p>
           <Link href="/" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(122,92,69,0.2)', padding: '12px 24px', borderRadius: '99px' }}>
@@ -87,7 +106,6 @@ export default function CustomerOrderForm() {
 
   return (
     <main style={{ minHeight: '100vh', background: 'var(--cream)', paddingBottom: '80px' }}>
-      {/* Nav */}
       <div style={{ padding: '20px 40px', borderBottom: '0.5px solid rgba(122,92,69,0.1)', marginBottom: '48px' }}>
         <Link href="/" style={{ textDecoration: 'none' }}>
           <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 500, color: 'var(--dark-brown)', letterSpacing: '-0.02em' }}>
@@ -104,9 +122,18 @@ export default function CustomerOrderForm() {
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(36px, 5vw, 56px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '16px' }}>
           Tell us what<br />you <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>love</em>.
         </h1>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '48px', maxWidth: '480px' }}>
-          Fill in your details and the items you want. We&apos;ll send you a full quotation (including service fee and shipping) within 24 hours before anything is purchased.
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '20px', maxWidth: '520px' }}>
+          Fill in your details and the items you want. We&apos;ll review and send a quotation within 24 hours. <strong style={{ fontWeight: 500 }}>Nothing is purchased until you approve and pay.</strong>
         </p>
+
+        {/* Payment flow note */}
+        <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '16px 20px', marginBottom: '40px', border: '0.5px solid rgba(122,92,69,0.12)' }}>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>How payment works</div>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8 }}>
+            <strong style={{ fontWeight: 500, color: 'var(--dark-brown)' }}>Invoice 1</strong> — We send you the item costs first. You pay upfront so we can purchase.<br />
+            <strong style={{ fontWeight: 500, color: 'var(--dark-brown)' }}>Invoice 2</strong> — After items arrive, we send service fee + international shipping. You pay the balance before we ship.
+          </div>
+        </div>
 
         <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
@@ -119,13 +146,19 @@ export default function CustomerOrderForm() {
               <FormField label="Email">
                 <input style={input} type="email" required value={form.email} onChange={e => set('email', e.target.value)} placeholder="maya@example.com" />
               </FormField>
-              <FormField label="Phone" style={{ gridColumn: '1 / -1' }}>
-                <input style={input} value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+1 234 567 8900" />
+              <FormField label="Phone">
+                <input style={input} value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+65 9123 4567" />
+              </FormField>
+              <FormField label="Instagram handle (optional)">
+                <div style={{ display: 'flex', alignItems: 'center', border: '0.5px solid rgba(122,92,69,0.2)', borderRadius: '10px', background: 'white', overflow: 'hidden' }}>
+                  <span style={{ padding: '12px 12px 12px 16px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>@</span>
+                  <input style={{ ...input, border: 'none', borderRadius: 0, paddingLeft: 0 }} value={form.instagram} onChange={e => set('instagram', e.target.value)} placeholder="studio2j25" />
+                </div>
               </FormField>
             </div>
           </FormSection>
 
-          {/* Shipping address */}
+          {/* Shipping */}
           <FormSection label="Shipping address">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <FormField label="Street address" style={{ gridColumn: '1 / -1' }}>
@@ -146,7 +179,7 @@ export default function CustomerOrderForm() {
           {/* Items */}
           <FormSection label="Items you want">
             <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginBottom: '16px', lineHeight: 1.6 }}>
-              Add the artist name or item name. Paste the product URL if you have it — otherwise we&apos;ll find it.
+              Add each item. Paste the product URL if you have it — otherwise just the artist/brand name is fine.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {items.map((item, i) => (
@@ -187,26 +220,42 @@ export default function CustomerOrderForm() {
 
           {/* Notes */}
           <FormSection label="Additional notes (optional)">
-            <textarea style={{ ...input, minHeight: '80px', resize: 'vertical' }} value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Any colour preferences, sizes, or other details we should know…" />
+            <textarea style={{ ...input, minHeight: '80px', resize: 'vertical' }} value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Colour preferences, sizes, or anything else we should know…" />
+          </FormSection>
+
+          {/* Service agreement */}
+          <FormSection label="Terms & policies">
+            <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '20px', fontSize: '13px', fontFamily: 'var(--font-inter), sans-serif', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '16px' }}>
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginBottom: '8px' }}>Service fee</strong>
+              Minimum ₩25,000 (or ¥2,500 for Japan), or 15% of total goods value — whichever is higher. This covers sourcing, transport, packing, and care.
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>Payment</strong>
+              Invoice 1 (item costs) is sent first — please pay within 24 hours so we can purchase. Invoice 2 (service fee + shipping) is sent after items are confirmed.
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>Refund & cancellation</strong>
+              Cancellations are accepted before we purchase. Once items are bought we cannot refund for change of mind — we source specifically for your order. If items arrive damaged, photograph everything within 48 hours and DM us — we will resolve it. International customs fees are the buyer&apos;s responsibility.
+            </div>
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer' }}>
+              <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: '3px', flexShrink: 0, width: '16px', height: '16px', cursor: 'pointer' }} />
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>
+                I have read and agree to the service terms, payment structure, and refund policy above.
+              </span>
+            </label>
           </FormSection>
 
           {error && (
             <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#8A3A20', padding: '12px 16px', background: '#F5DDD5', borderRadius: '10px' }}>{error}</p>
           )}
 
-          <button type="submit" disabled={loading} style={{
-            background: 'var(--dark-blue)', color: 'var(--cream)',
+          <button type="submit" disabled={loading || !agreed} style={{
+            background: agreed ? 'var(--dark-blue)' : 'rgba(31,58,95,0.3)',
+            color: 'var(--cream)',
             fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 500,
             padding: '16px 40px', borderRadius: '99px', border: 'none',
-            cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.7 : 1,
+            cursor: loading ? 'wait' : agreed ? 'pointer' : 'not-allowed',
+            opacity: loading ? 0.7 : 1,
             letterSpacing: '0.02em', alignSelf: 'flex-start', transition: 'all 0.2s',
           }}>
             {loading ? 'Submitting…' : 'Submit order request'}
           </button>
-
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', lineHeight: 1.7 }}>
-            We&apos;ll send a full quotation to your email within 24 hours. Nothing is purchased until you approve the invoice.
-          </p>
         </form>
       </div>
     </main>

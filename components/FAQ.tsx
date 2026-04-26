@@ -26,7 +26,7 @@ const CATEGORIES: FAQCategory[] = [
       },
       {
         q: 'When do I pay?',
-        a: '100% upfront, before we purchase. We send an itemised invoice covering item cost, service fee, and estimated international shipping. Payment via PayPal, bank transfer, or Wise.',
+        a: 'There are two separate invoices. Invoice 1 covers item costs only — you pay this upfront so we can purchase. Invoice 2 covers our service fee and international shipping — sent after items are confirmed and before we ship. Payment via Wise or bank transfer.',
       },
       {
         q: 'What if the item is sold out?',

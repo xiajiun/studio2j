@@ -26,6 +26,7 @@ export interface ShippingAddress {
   country: string
   postal_code: string
   phone?: string
+  instagram?: string
   payment_method?: 'wise' | 'korea' | 'malaysia' | 'japan'
 }
 

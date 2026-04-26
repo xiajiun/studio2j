@@ -25,6 +25,7 @@ export async function POST(req: Request) {
       shipping_address: {
         name:           body.name,
         phone:          body.phone,
+        instagram:      body.instagram || undefined,
         address:        body.address,
         city:           body.city,
         country:        body.country,

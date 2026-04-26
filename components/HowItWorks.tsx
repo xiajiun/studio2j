@@ -42,8 +42,8 @@ export default function HowItWorks() {
                 <line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
             }
-            title="Send us a link or a list"
-            body="A Korean or Japanese website link, an artist name, or a fair from our tracker — whatever you're after, DM us the details on Instagram."
+            title="Submit your order"
+            body="Send us your wishlist — website links, artist names, or a fair from our tracker. Use the order form on this site or DM us on Instagram."
           />
           <HowCard
             num="02"
@@ -53,8 +53,8 @@ export default function HowItWorks() {
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
             }
-            title="We confirm and invoice"
-            body="We check availability, calculate the full cost (item + service fee + shipping), and send you an itemised invoice for approval before we buy."
+            title="Two invoices, two payments"
+            body="Invoice 1 covers item costs — you pay upfront so we can buy. Invoice 2 covers our service fee and international shipping — sent after items are confirmed."
           />
           <HowCard
             num="03"
@@ -67,7 +67,7 @@ export default function HowItWorks() {
               </svg>
             }
             title="We ship to your door"
-            body="Everything handled — sourcing, packing, international shipping from Seoul or Tokyo. Every parcel leaves with a handwritten note. Care, not corporate."
+            body="We source, photograph, pack carefully, and ship worldwide with tracking from Seoul or Tokyo. Every parcel leaves with a handwritten note."
           />
         </div>
       </div>

@@ -41,7 +41,9 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
         <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
         <Link href={`/order/${o.order_number}`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>Customer view ↗</Link>
         <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
-        <Link href={`/admin/orders/${o.id}/invoice`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>🧾 Invoice ↗</Link>
+        <Link href={`/admin/orders/${o.id}/invoice?type=1`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>🧾 Invoice 1 (items) ↗</Link>
+        <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+        <Link href={`/admin/orders/${o.id}/invoice?type=2`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>🧾 Invoice 2 (fee+ship) ↗</Link>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
