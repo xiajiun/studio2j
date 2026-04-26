@@ -55,7 +55,6 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               customer_name:   o.customer_name  ?? '',
               kind:            o.kind,
               fair_id:         o.fair_id?.toString() ?? '',
-              source_url:      o.source_url      ?? '',
               title:           o.title,
               description:     o.description     ?? '',
               goods_total:     o.goods_total?.toString()  ?? '',
@@ -66,6 +65,7 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               tracking_number: o.tracking_number ?? '',
               notes:           o.notes           ?? '',
               customer_notes:  o.customer_notes  ?? '',
+              items:           (o.items as any[]) ?? [],
             }}
           />
         </div>
