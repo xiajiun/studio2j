@@ -226,6 +226,20 @@ nav.scrolled {
 /* Footer */
 .footer-link:hover { color: var(--cream) !important; }
 
+/* Print — hide dashboard chrome, show only page content */
+@media print {
+  .dash-sidebar { display: none !important; }
+  .dash-shell {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .dash-main {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+}
+
 @media (max-width: 1000px) {
   .container { padding: 0 24px; }
   .how-grid { grid-template-columns: 1fr !important; border-radius: 16px; }

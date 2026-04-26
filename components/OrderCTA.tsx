@@ -51,12 +51,10 @@ export default function OrderCTA() {
             </p>
             <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
               <a
-                href="https://www.instagram.com/studio2j25/"
-                target="_blank"
-                rel="noreferrer"
+                href="/order/new"
                 className="btn-gold-order"
               >
-                DM on Instagram →
+                Place an order →
               </a>
               <a href="#how" className="btn-ghost-order">
                 How to order

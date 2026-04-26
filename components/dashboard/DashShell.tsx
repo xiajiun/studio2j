@@ -5,14 +5,14 @@ export function DashShell({ variant, children }: {
   children: React.ReactNode
 }) {
   return (
-    <div style={{
+    <div className="dash-shell" style={{
       display: 'flex',
       height: '100vh',
       overflow: 'hidden',
       background: 'var(--cream)',
     }}>
-      <DashNav variant={variant} />
-      <main style={{
+      <div className="dash-sidebar"><DashNav variant={variant} /></div>
+      <main className="dash-main" style={{
         flex: 1,
         overflowY: 'auto',
         padding: '48px',

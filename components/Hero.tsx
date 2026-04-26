@@ -75,7 +75,7 @@ export default function Hero() {
           flexWrap: 'wrap',
           animation: 'fadeUp 0.8s ease 0.3s both',
         }}>
-          <a href="#services" className="btn-primary-hero">Send us a link →</a>
+          <a href="/order/new" className="btn-primary-hero">Send us a link →</a>
           <a href="#tracker" className="btn-secondary-hero">See upcoming fairs</a>
         </div>
 

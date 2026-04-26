@@ -339,9 +339,9 @@ function PayBlock({ label, lines, link, reference, highlight }: {
         {label}
       </div>
       {link ? (
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#1F3A5F', fontWeight: 400, marginBottom: '8px' }}>
+        <a href={link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#1F3A5F', fontWeight: 400, marginBottom: '8px', display: 'block', textDecoration: 'underline' }}>
           {link}
-        </div>
+        </a>
       ) : (
         lines.map((line, i) => (
           <div key={i} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: i === 0 ? 400 : 300, color: i === 0 ? '#4B372A' : '#7A5C45', marginBottom: '3px' }}>

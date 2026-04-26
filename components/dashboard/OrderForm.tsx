@@ -176,10 +176,10 @@ export function OrderForm({ fairs, orderId, initial }: {
       <Section label="Customer">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
           <Field label="Email">
-            <input style={inputStyle} type="email" required value={form.customer_email} onChange={e => set('customer_email', e.target.value)} placeholder="customer@email.com" />
+            <input style={inputStyle} type="email" required value={form.customer_email} onChange={e => set('customer_email', e.target.value)} placeholder="maya@example.com" />
           </Field>
           <Field label="Name">
-            <input style={inputStyle} value={form.customer_name} onChange={e => set('customer_name', e.target.value)} placeholder="Felicia Rusdi" />
+            <input style={inputStyle} value={form.customer_name} onChange={e => set('customer_name', e.target.value)} placeholder="Maya Chen" />
           </Field>
         </div>
       </Section>
@@ -188,22 +188,22 @@ export function OrderForm({ fairs, orderId, initial }: {
       <Section label="Shipping & payment">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
           <Field label="Recipient name">
-            <input style={inputStyle} value={addr.name} onChange={e => setA('name', e.target.value)} placeholder="Felicia Rusdi" />
+            <input style={inputStyle} value={addr.name} onChange={e => setA('name', e.target.value)} placeholder="Maya Chen" />
           </Field>
           <Field label="Phone">
-            <input style={inputStyle} value={addr.phone} onChange={e => setA('phone', e.target.value)} placeholder="+628578..." />
+            <input style={inputStyle} value={addr.phone} onChange={e => setA('phone', e.target.value)} placeholder="+65 9123 4567" />
           </Field>
           <Field label="Address" style={{ gridColumn: '1 / -1' }}>
-            <input style={inputStyle} value={addr.address} onChange={e => setA('address', e.target.value)} placeholder="Jl Rosini Utara 1 no 27, Cluster Rossini..." />
+            <input style={inputStyle} value={addr.address} onChange={e => setA('address', e.target.value)} placeholder="123 Orchard Road, #08-01" />
           </Field>
           <Field label="City">
-            <input style={inputStyle} value={addr.city} onChange={e => setA('city', e.target.value)} placeholder="Tangerang" />
+            <input style={inputStyle} value={addr.city} onChange={e => setA('city', e.target.value)} placeholder="Singapore" />
           </Field>
           <Field label="Postal code">
-            <input style={inputStyle} value={addr.postal_code} onChange={e => setA('postal_code', e.target.value)} placeholder="15334" />
+            <input style={inputStyle} value={addr.postal_code} onChange={e => setA('postal_code', e.target.value)} placeholder="238858" />
           </Field>
           <Field label="Country">
-            <input style={inputStyle} value={addr.country} onChange={e => setA('country', e.target.value)} placeholder="Indonesia" />
+            <input style={inputStyle} value={addr.country} onChange={e => setA('country', e.target.value)} placeholder="Singapore" />
           </Field>
           <Field label="Currency">
             <select style={inputStyle} value={form.currency} onChange={e => set('currency', e.target.value)}>

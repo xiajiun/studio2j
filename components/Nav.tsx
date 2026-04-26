@@ -55,9 +55,7 @@ export default function Nav() {
         </div>
 
         <a
-          href="https://www.instagram.com/studio2j25/"
-          target="_blank"
-          rel="noreferrer"
+          href="/order/new"
           className="nav-cta-btn"
           style={{
             background: 'var(--dark-blue)',
