@@ -103,6 +103,26 @@ export default async function PublicOrderPage({ params }: { params: { number: st
           <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>{order.customer_notes}</p>
         </div>
       )}
+
+      {/* Help footer */}
+      <div style={{ marginTop: '40px', paddingTop: '24px', borderTop: '0.5px solid rgba(122,92,69,0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)' }}>
+          Questions about your order?
+        </span>
+        <a
+          href="https://www.instagram.com/studio2j25/"
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
+            color: 'var(--dark-blue)', textDecoration: 'none',
+            border: '0.5px solid rgba(31,58,95,0.25)', padding: '8px 16px', borderRadius: '99px',
+            letterSpacing: '0.02em',
+          }}
+        >
+          DM us @studio2j25 →
+        </a>
+      </div>
     </main>
   )
 }

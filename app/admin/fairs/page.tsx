@@ -1,7 +1,9 @@
 export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
-import { AddFairButton, EditFairButton, SeedFairsButton } from '@/components/dashboard/FairForm'
+import { AddFairButton, SeedFairsButton } from '@/components/dashboard/FairForm'
+import { DeleteFairButton, KeepOnlyKoreaJapanButton } from './FairActions'
+import { EditFairButton } from '@/components/dashboard/FairForm'
 import type { FairRow } from '@/lib/database.types'
 
 export default async function AdminFairs() {
@@ -15,9 +17,10 @@ export default async function AdminFairs() {
         Fairs
       </h1>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap', alignItems: 'center' }}>
         <AddFairButton />
         <SeedFairsButton count={list.length} />
+        {list.length > 0 && <KeepOnlyKoreaJapanButton />}
       </div>
 
       {list.length === 0 ? (
@@ -54,15 +57,5 @@ export default async function AdminFairs() {
         </div>
       )}
     </div>
-  )
-}
-
-function DeleteFairButton({ id }: { id: number }) {
-  return (
-    <form action={`/api/admin/fairs/${id}/delete`} method="POST">
-      <button type="submit" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px' }}>
-        Delete
-      </button>
-    </form>
   )
 }

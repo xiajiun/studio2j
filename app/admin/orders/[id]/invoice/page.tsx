@@ -5,6 +5,12 @@ import { notFound } from 'next/navigation'
 import type { Order, OrderItem, ShippingAddress } from '@/lib/database.types'
 import { PrintButton } from './PrintButton'
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const supabase = createClient()
+  const { data } = await supabase.from('orders').select('order_number').eq('id', params.id).single()
+  return { title: `Studio2J Invoice ${data?.order_number ?? ''}` }
+}
+
 const PAYMENT = {
   wise: {
     label: 'Wise',
