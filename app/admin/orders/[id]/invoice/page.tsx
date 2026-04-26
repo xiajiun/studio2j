@@ -28,7 +28,7 @@ export default async function InvoicePage({
   searchParams,
 }: {
   params: { id: string }
-  searchParams: { type?: string }
+  searchParams: { type?: string; paid?: string }
 }) {
   const supabase = createClient()
   const { data: order } = await supabase.from('orders').select('*').eq('id', params.id).single()
@@ -38,7 +38,8 @@ export default async function InvoicePage({
   const items  = (o.items ?? []) as OrderItem[]
   const addr   = o.shipping_address as ShippingAddress | null
   const ccy    = o.currency ?? 'KRW'
-  const type   = searchParams.type
+  const type      = searchParams.type
+  const itemsPaid = searchParams.paid !== '0' // default: paid
 
   const isPart1 = type === '1'
   const isPart2 = type === '2'
@@ -83,7 +84,7 @@ export default async function InvoicePage({
           </span>
         </span>
         {/* Type switcher */}
-        <div style={{ display: 'flex', gap: '6px' }}>
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           {[
             { label: 'Part 1 · Items', t: '1' },
             { label: 'Part 2 · Fee+Ship', t: '2' },
@@ -96,6 +97,16 @@ export default async function InvoicePage({
               border: `0.5px solid ${type === t ? 'var(--dark-blue)' : 'rgba(122,92,69,0.2)'}`,
             }}>{label}</a>
           ))}
+          {/* Part 1 paid toggle — only shown on Part 2 */}
+          {isPart2 && (
+            <a href={`/admin/orders/${params.id}/invoice?type=2&paid=${itemsPaid ? '0' : '1'}`} style={{
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400,
+              padding: '8px 14px', borderRadius: '99px', textDecoration: 'none',
+              background: itemsPaid ? '#D5E8D8' : '#F5DDD5',
+              color: itemsPaid ? '#2A5C35' : '#8A3A20',
+              border: `0.5px solid ${itemsPaid ? 'rgba(42,92,53,0.25)' : 'rgba(138,58,32,0.25)'}`,
+            }}>Part 1: {itemsPaid ? 'Paid ✓' : 'Unpaid'}</a>
+          )}
         </div>
         <PrintButton />
         <a href={`/admin/orders/${params.id}`} style={{
@@ -192,14 +203,19 @@ export default async function InvoicePage({
               {/* Totals */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
                 {/* Part 1: items subtotal only */}
+                {/* Part 1 / default: items subtotal */}
                 {(isPart1 || !type) && (
                   <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
                 )}
-                {/* Part 2: fee + shipping */}
+                {/* Part 2: items subtotal (paid/unpaid) + fee + shipping */}
                 {(isPart2 || !type) && (
                   <>
-                    {!isPart2 && <TotalRow label="Items subtotal" value={goods.toLocaleString()} />}
-                    <TotalRow label={`Handling fee (15% or min ₩25,000)`} value={fee ? fee.toLocaleString() : '—'} />
+                    <TotalRowBadge
+                      label="Items subtotal"
+                      value={goods.toLocaleString()}
+                      paid={isPart2 ? itemsPaid : undefined}
+                    />
+                    <TotalRow label="Handling fee (15% or min ₩25,000)" value={fee ? fee.toLocaleString() : '—'} />
                     <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
                   </>
                 )}
@@ -248,7 +264,7 @@ export default async function InvoicePage({
             <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
               <div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Bookmark this to check your order status anytime — no login required.</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Check your order status anytime — no login required.</div>
               </div>
               <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(31,58,95,0.2)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                 Track order {o.order_number} →
@@ -272,6 +288,25 @@ export default async function InvoicePage({
         }
       `}</style>
     </>
+  )
+}
+
+function TotalRowBadge({ label, value, paid }: { label: string; value: string; paid?: boolean }) {
+  return (
+    <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>{label}</span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: paid !== undefined ? '#aaa' : '#2a1f18', textDecoration: paid ? 'line-through' : 'none' }}>{value}</span>
+        {paid !== undefined && (
+          <span style={{
+            fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500,
+            padding: '2px 8px', borderRadius: '99px',
+            background: paid ? '#D5E8D8' : '#F5DDD5',
+            color: paid ? '#2A5C35' : '#8A3A20',
+          }}>{paid ? 'Paid ✓' : 'Unpaid'}</span>
+        )}
+      </span>
+    </div>
   )
 }
 
