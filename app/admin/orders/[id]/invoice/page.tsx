@@ -37,14 +37,17 @@ export default async function InvoicePage({
   const o      = order as Order
   const items  = (o.items ?? []) as OrderItem[]
   const addr   = o.shipping_address as ShippingAddress | null
-  const goods  = o.goods_total   ?? 0
-  const fee    = o.service_fee   ?? 0
-  const ship   = o.shipping_cost ?? 0
   const ccy    = o.currency ?? 'KRW'
-  const type   = searchParams.type   // '1' | '2' | undefined
+  const type   = searchParams.type
 
   const isPart1 = type === '1'
   const isPart2 = type === '2'
+
+  // Compute goods from items if goods_total not set
+  const itemsTotal = items.reduce((sum, i) => sum + (i.price ?? 0) * (i.qty ?? 1), 0)
+  const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
+  const fee    = o.service_fee   ?? 0
+  const ship   = o.shipping_cost ?? 0
 
   // Part 1: items only. Part 2: fee + shipping. Default: full total.
   const grandTotal = isPart1 ? goods : (isPart2 ? (fee + ship) : (goods + fee + ship))
@@ -245,10 +248,10 @@ export default async function InvoicePage({
             <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
               <div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Bookmark this link to track your order status anytime — no login required.</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Bookmark this to check your order status anytime — no login required.</div>
               </div>
-              <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
-                https://studio2j.pages.dev/order/{o.order_number}
+              <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(31,58,95,0.2)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                Track order {o.order_number} →
               </a>
             </div>
 

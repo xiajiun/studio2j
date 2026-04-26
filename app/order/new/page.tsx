@@ -70,12 +70,18 @@ export default function CustomerOrderForm() {
           {/* Order link + save prompt */}
           <div style={{ background: 'var(--beige)', borderRadius: '14px', padding: '20px 24px', marginBottom: '24px', border: '0.5px solid rgba(122,92,69,0.15)' }}>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '8px' }}>Your order number</div>
-            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '10px' }}>{done}</div>
-            <a href={`/order/${done}`} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: 'var(--dark-blue)', textDecoration: 'none', fontWeight: 500, display: 'block', marginBottom: '10px' }}>
-              https://studio2j.pages.dev/order/{done} →
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '14px' }}>{done}</div>
+            <a href={`/order/${done}`} style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
+              textDecoration: 'none',
+              background: 'var(--dark-blue)', color: 'var(--cream)',
+              padding: '10px 20px', borderRadius: '99px', marginBottom: '12px',
+            }}>
+              Track order {done} →
             </a>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--brown)', background: 'rgba(122,92,69,0.06)', borderRadius: '8px', padding: '10px 14px' }}>
-              💾 <strong style={{ fontWeight: 500 }}>Bookmark this link</strong> — it&apos;s the only way to access your order status. We don&apos;t require login.
+              💾 <strong style={{ fontWeight: 500 }}>Bookmark this page</strong> — it&apos;s the only way to check your order status. No login required.
             </div>
           </div>
 

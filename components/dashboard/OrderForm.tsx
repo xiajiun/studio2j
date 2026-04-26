@@ -148,7 +148,7 @@ export function OrderForm({ fairs, orderId, initial }: {
       customer_name:    form.customer_name  || null,
       kind:             form.kind,
       fair_id:          form.fair_id        ? parseInt(form.fair_id) : null,
-      title:            form.title,
+      title:            form.title || (parsedItems[0]?.name ? `${parsedItems[0].name}${parsedItems.length > 1 ? ` + ${parsedItems.length - 1} more` : ''}` : `Order from ${form.customer_name || form.customer_email}`),
       description:      form.description    || null,
       items:            parsedItems.length  ? parsedItems : null,
       goods_total:      form.goods_total    ? parseFloat(form.goods_total) : null,
@@ -274,9 +274,6 @@ export function OrderForm({ fairs, orderId, initial }: {
           </Field>
         )}
 
-        <Field label="Order title">
-          <input style={inputStyle} required value={form.title} onChange={e => set('title', e.target.value)} placeholder="e.g. Illustration Korea COEX haul" />
-        </Field>
       </Section>
 
       {/* Items */}
