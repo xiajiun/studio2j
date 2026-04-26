@@ -1,4 +1,4 @@
-export default function Hero() {
+export default function Hero({ fairCount, countryCount }: { fairCount?: number; countryCount?: number }) {
   return (
     <section
       id="top"
@@ -86,8 +86,8 @@ export default function Hero() {
           animation: 'fadeUp 0.8s ease 0.4s both',
         }}>
           {[
-            { num: <>14<em style={{ fontStyle: 'italic' }}>+</em></>, label: 'Fairs tracked' },
-            { num: '10', label: 'Countries' },
+            { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: 'Fairs tracked' },
+            { num: String(countryCount ?? 10), label: 'Countries' },
             { num: '2', label: 'Founders, one studio' },
           ].map(({ num, label }) => (
             <div key={label}>

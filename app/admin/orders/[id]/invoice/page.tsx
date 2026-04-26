@@ -213,17 +213,6 @@ export default async function InvoicePage({
               </div>
             </div>
 
-            {/* Tracking link */}
-            <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-              <div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Save this link to track your order status at any time.</div>
-              </div>
-              <a href={`https://studio2j.pages.dev/order/${o.order_number}`} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 16px', borderRadius: '6px', border: '0.5px solid rgba(31,58,95,0.2)' }}>
-                studio2j.pages.dev/order/{o.order_number} →
-              </a>
-            </div>
-
             {/* Payment note */}
             <div style={{ background: '#f0ebe3', borderRadius: '4px', padding: '16px 20px', marginBottom: '24px', borderLeft: '3px solid #C8A98D' }}>
               <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#4B372A', lineHeight: 1.7, margin: 0 }}>
@@ -252,8 +241,19 @@ export default async function InvoicePage({
               </div>
             )}
 
+            {/* Tracking link — bottom */}
+            <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Bookmark this link to track your order status anytime — no login required.</div>
+              </div>
+              <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+                https://studio2j.pages.dev/order/{o.order_number}
+              </a>
+            </div>
+
             {/* Footer */}
-            <div style={{ marginTop: '40px', paddingTop: '20px', borderTop: '0.5px solid #ede7de', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '0.5px solid #ede7de', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '13px', fontStyle: 'italic', color: '#C8A98D' }}>Studio<em>2J</em> — Seoul &amp; Tokyo</div>
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: '#C8A98D' }}>studio2j25@gmail.com</div>
             </div>

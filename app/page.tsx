@@ -42,7 +42,10 @@ export default async function Home() {
     <>
       <AuthRedirect />
       <Nav />
-      <Hero />
+      <Hero
+        fairCount={fairs.length}
+        countryCount={new Set(fairs.map(f => f.country)).size}
+      />
       <Services />
       <Marquee />
       <FairTracker fairs={fairs} />

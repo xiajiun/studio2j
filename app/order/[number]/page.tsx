@@ -3,8 +3,13 @@ export const runtime = 'edge'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { STATUS_LABELS, STATUS_ORDER } from '@/lib/database.types'
-import type { Order, OrderEvent } from '@/lib/database.types'
+import type { Order, OrderEvent, OrderKind } from '@/lib/database.types'
 import Link from 'next/link'
+
+function getSteps(kind: OrderKind) {
+  if (kind === 'fair') return STATUS_ORDER
+  return STATUS_ORDER.filter(s => s !== 'going_to_fair')
+}
 
 export default async function PublicOrderPage({ params }: { params: { number: string } }) {
   const supabase = createClient()
@@ -23,6 +28,9 @@ export default async function PublicOrderPage({ params }: { params: { number: st
     .eq('order_id', order.id)
     .order('created_at', { ascending: true })
 
+  const o     = order as Order
+  const steps = getSteps(o.kind)
+
   return (
     <main style={{ minHeight: '100vh', padding: '48px 24px', maxWidth: '640px', margin: '0 auto' }}>
       <Link href="/" style={{ textDecoration: 'none' }}>
@@ -31,30 +39,20 @@ export default async function PublicOrderPage({ params }: { params: { number: st
         </div>
       </Link>
 
-      {/* Save link banner */}
-      <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '14px 18px', marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap', border: '0.5px solid rgba(122,92,69,0.12)' }}>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--brown)' }}>
-          💾 <strong style={{ fontWeight: 500 }}>Save this page link</strong> to check your order status anytime.
-        </div>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', letterSpacing: '0.02em' }}>
-          studio2j.pages.dev/order/{order.order_number}
-        </div>
-      </div>
-
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '8px' }}>
-        {order.order_number}
+        {o.order_number}
       </div>
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', marginBottom: '6px', letterSpacing: '-0.02em' }}>
-        {order.title}
+        {o.title}
       </h1>
       <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', marginBottom: '40px' }}>
-        {STATUS_LABELS[order.status as keyof typeof STATUS_LABELS]}
+        {STATUS_LABELS[o.status as keyof typeof STATUS_LABELS]}
       </p>
 
       {/* Timeline */}
       <div style={{ marginBottom: '40px' }}>
-        {STATUS_ORDER.map((s, i) => {
-          const currentIdx = STATUS_ORDER.indexOf(order.status as any)
+        {steps.map((s, i) => {
+          const currentIdx = steps.indexOf(o.status as any)
           const isDone    = i < currentIdx
           const isCurrent = i === currentIdx
           const event = events?.find(e => e.status === s)
@@ -66,70 +64,47 @@ export default async function PublicOrderPage({ params }: { params: { number: st
                   background: isDone ? 'var(--dark-blue)' : isCurrent ? 'var(--tan)' : 'transparent',
                   border: `1.5px solid ${isDone || isCurrent ? 'transparent' : 'rgba(122,92,69,0.25)'}`,
                   marginTop: '2px',
-                }} />
-                {i < STATUS_ORDER.length - 1 && (
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {isDone && <span style={{ color: 'white', fontSize: '8px' }}>✓</span>}
+                </div>
+                {i < steps.length - 1 && (
                   <div style={{ width: '1px', flex: 1, background: isDone ? 'var(--dark-blue)' : 'rgba(122,92,69,0.12)', minHeight: '24px' }} />
                 )}
               </div>
               <div style={{ paddingBottom: '20px' }}>
-                <div style={{
-                  fontFamily: 'var(--font-inter), sans-serif',
-                  fontSize: '13px',
-                  fontWeight: isCurrent ? 500 : 300,
-                  color: isDone || isCurrent ? 'var(--dark-brown)' : 'var(--tan)',
-                  marginBottom: '2px',
-                }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: isCurrent ? 500 : 300, color: isDone || isCurrent ? 'var(--dark-brown)' : 'var(--tan)', marginBottom: '2px' }}>
                   {STATUS_LABELS[s]}
                 </div>
-                {event?.note && (
-                  <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--brown)' }}>
-                    &quot;{event.note}&quot;
-                  </div>
-                )}
-                {event?.photo_url && (
-                  <img src={event.photo_url} alt="" style={{ marginTop: '8px', borderRadius: '10px', maxWidth: '240px', width: '100%' }} />
-                )}
-                {event && (
-                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '4px' }}>
-                    {new Date(event.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </div>
-                )}
+                {event?.note && <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--brown)' }}>&quot;{event.note}&quot;</div>}
+                {event?.photo_url && <img src={event.photo_url} alt="" style={{ marginTop: '8px', borderRadius: '10px', maxWidth: '240px', width: '100%' }} />}
+                {event && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '4px' }}>{new Date(event.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>}
               </div>
             </div>
           )
         })}
       </div>
 
-      {order.tracking_number && (
-        <div style={{ padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '24px' }}>
+      {o.tracking_number && (
+        <div style={{ padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '16px' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '4px' }}>Tracking number</div>
-          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', color: 'var(--dark-brown)' }}>{order.tracking_number}</div>
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', color: 'var(--dark-brown)' }}>{o.tracking_number}</div>
         </div>
       )}
 
-      {order.customer_notes && (
-        <div style={{ padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px' }}>
+      {o.customer_notes && (
+        <div style={{ padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '16px' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '6px' }}>Note from Studio2J</div>
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>{order.customer_notes}</p>
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>{o.customer_notes}</p>
         </div>
       )}
 
-      {/* Help footer */}
+      {/* Help + save link footer */}
       <div style={{ marginTop: '40px', paddingTop: '24px', borderTop: '0.5px solid rgba(122,92,69,0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)' }}>
-          Questions about your order?
+          Questions? DM us on Instagram.
         </span>
-        <a
-          href="https://www.instagram.com/studio2j25/"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
-            color: 'var(--dark-blue)', textDecoration: 'none',
-            border: '0.5px solid rgba(31,58,95,0.25)', padding: '8px 16px', borderRadius: '99px',
-            letterSpacing: '0.02em',
-          }}
-        >
+        <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(31,58,95,0.25)', padding: '8px 16px', borderRadius: '99px' }}>
           DM us @studio2j25 →
         </a>
       </div>

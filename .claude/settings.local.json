@@ -28,7 +28,9 @@
       "Bash(npx @cloudflare/next-on-pages)",
       "Bash(echo \"CF_EXIT:$?\")",
       "Bash(git commit *)",
-      "Read(//private/tmp/**)"
+      "Read(//private/tmp/**)",
+      "WebFetch(domain:twenty.style)",
+      "Bash(curl -s \"https://twenty.style/list/openMarket\")"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order"

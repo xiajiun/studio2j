@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { FairRow, OrderKind, OrderStatus, OrderItem, ShippingAddress } from '@/lib/database.types'
@@ -103,6 +103,19 @@ export function OrderForm({ fairs, orderId, initial }: {
   }
   function addItem()            { setItems(prev => [...prev, emptyItem()]) }
   function removeItem(idx: number) { setItems(prev => prev.filter((_, i) => i !== idx)) }
+
+  // Auto-calculate goods_total and service_fee from items
+  useEffect(() => {
+    const subtotal = items.reduce((sum, item) => {
+      const price = parseFloat(item.price) || 0
+      const qty   = parseInt(item.qty)     || 0
+      return sum + price * qty
+    }, 0)
+    if (subtotal === 0) return
+    const minFee = form.currency === 'JPY' ? 2500 : 25000
+    const fee    = Math.max(minFee, Math.round(subtotal * 0.15))
+    setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee) }))
+  }, [items, form.currency]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -299,7 +312,7 @@ export function OrderForm({ fairs, orderId, initial }: {
       </Section>
 
       {/* Totals */}
-      <Section label="Totals">
+      <Section label="Totals — auto-calculated from items, editable">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
           <Field label="Goods subtotal">
             <input style={inputStyle} type="number" step="1" value={form.goods_total} onChange={e => set('goods_total', e.target.value)} placeholder="0" />
