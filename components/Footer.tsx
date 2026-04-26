@@ -52,7 +52,7 @@ export default function Footer() {
           <FooterCol title="Connect" links={[
             { href: 'https://www.instagram.com/studio2j25/', label: 'Instagram', external: true },
             { href: 'https://www.threads.com/@studio2j25',  label: 'Threads',   external: true },
-            { href: '/order/new',                            label: 'Place an order' },
+            { href: 'mailto:studio2j25@gmail.com',            label: 'studio2j25@gmail.com' },
           ]} />
 
           <FooterCol title="Based in" links={[

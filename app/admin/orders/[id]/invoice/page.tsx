@@ -50,8 +50,14 @@ export default async function InvoicePage({
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
 
-  // Part 1: items only. Part 2: fee + shipping. Default: full total.
-  const grandTotal = isPart1 ? goods : (isPart2 ? (fee + ship) : (goods + fee + ship))
+  // Part 1: items only.
+  // Part 2: fee + shipping (if Part 1 paid) OR goods + fee + shipping (if Part 1 unpaid).
+  // Default: full total.
+  const grandTotal = isPart1
+    ? goods
+    : isPart2
+    ? (itemsPaid ? fee + ship : goods + fee + ship)
+    : goods + fee + ship
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT
   const payInfo   = PAYMENT[payMethod] ?? PAYMENT.wise
