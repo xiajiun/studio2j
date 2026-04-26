@@ -13,6 +13,8 @@ export type OrderKind = 'proxy' | 'fair' | 'personal'
 export interface OrderItem {
   name: string
   url?: string
+  color?: string
+  item_ccy?: 'KRW' | 'JPY'
   qty: number
   price: number
 }
@@ -23,6 +25,8 @@ export interface ShippingAddress {
   city: string
   country: string
   postal_code: string
+  phone?: string
+  payment_method?: 'wise' | 'korea' | 'malaysia' | 'japan'
 }
 
 export interface FairRow {

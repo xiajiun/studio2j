@@ -67,7 +67,8 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               tracking_number: o.tracking_number ?? '',
               notes:           o.notes           ?? '',
               customer_notes:  o.customer_notes  ?? '',
-              items:           (o.items as any[]) ?? [],
+              items:            (o.items as any[]) ?? [],
+              shipping_address: o.shipping_address,
             }}
           />
         </div>
