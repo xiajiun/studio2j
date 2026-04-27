@@ -30,7 +30,8 @@
       "Bash(git commit *)",
       "Read(//private/tmp/**)",
       "WebFetch(domain:twenty.style)",
-      "Bash(curl -s \"https://twenty.style/list/openMarket\")"
+      "Bash(curl -s \"https://twenty.style/list/openMarket\")",
+      "WebFetch(domain:sites.google.com)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order"

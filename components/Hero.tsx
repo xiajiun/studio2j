@@ -69,9 +69,9 @@ export default function Hero({ fairCount, countryCount, nextFair }: {
           marginBottom: '44px',
           animation: 'fadeUp 0.8s ease 0.2s both',
         }}>
-          Send us a link from Twenty, Rakuten, or any region-locked shop — we&apos;ll
-          buy it in Seoul or Tokyo and ship it to your door. We also attend
-          illustration and stationery fairs in person.
+          Send us a link from Twenty, Loft, Hobonichi, or any Korean or Japanese
+          shop that won&apos;t ship to you — we&apos;ll buy it and ship it worldwide.
+          We also attend illustration and stationery fairs in person.
         </p>
 
         <div style={{
