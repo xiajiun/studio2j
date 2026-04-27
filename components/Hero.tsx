@@ -1,4 +1,10 @@
-export default function Hero({ fairCount, countryCount }: { fairCount?: number; countryCount?: number }) {
+import type { FairRow } from '@/lib/database.types'
+
+export default function Hero({ fairCount, countryCount, nextFair }: {
+  fairCount?: number
+  countryCount?: number
+  nextFair?: FairRow | null
+}) {
   return (
     <section
       id="top"
@@ -148,7 +154,7 @@ export default function Hero({ fairCount, countryCount }: { fairCount?: number; 
           </div>
 
           <HeroCard
-            name="Korean illust market drop"
+            name="Korean Illustrator Market Drop"
             loc="Proxy buy · Seoul"
             tags={['illustration', 'artist popup']}
             chipVariant="open"
@@ -163,14 +169,25 @@ export default function Hero({ fairCount, countryCount }: { fairCount?: number; 
             chipLabel="Active"
             delay="0.15s"
           />
-          <HeroCard
-            name="Next Seoul fair haul"
-            loc="Fair haul · Upcoming"
-            tags={['illustration', 'in person']}
-            chipVariant="open"
-            chipLabel="Watching"
-            delay="0.3s"
-          />
+          {nextFair ? (
+            <HeroCard
+              name={nextFair.name}
+              loc={`Fair haul · ${nextFair.city}`}
+              tags={nextFair.types.slice(0, 2)}
+              chipVariant="urgent"
+              chipLabel="We're going"
+              delay="0.3s"
+            />
+          ) : (
+            <HeroCard
+              name="Next fair haul"
+              loc="Fair haul · Upcoming"
+              tags={['illustration', 'in person']}
+              chipVariant="open"
+              chipLabel="Watching"
+              delay="0.3s"
+            />
+          )}
         </div>
       </div>
     </section>

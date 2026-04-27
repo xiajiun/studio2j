@@ -38,6 +38,11 @@ export default async function Home() {
     }))
   }
 
+  const today = new Date()
+  const nextFair = fairs
+    .filter(f => f.going && new Date(f.date) >= today)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0] ?? null
+
   return (
     <>
       <AuthRedirect />
@@ -45,6 +50,7 @@ export default async function Home() {
       <Hero
         fairCount={fairs.length}
         countryCount={new Set(fairs.map(f => f.country)).size}
+        nextFair={nextFair}
       />
       <Services />
       <Marquee />
