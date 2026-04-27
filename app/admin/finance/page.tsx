@@ -4,8 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import type { Order } from '@/lib/database.types'
 import Link from 'next/link'
 
-function fmt(n: number, ccy: string) {
-  return `${n.toLocaleString()} ${ccy}`
+function handler(ccy: string) {
+  if (ccy === 'KRW') return 'Jin — Korea'
+  if (ccy === 'JPY') return 'Jo — Japan'
+  return 'Other'
 }
 
 function fmtMonth(dateStr: string) {
@@ -139,7 +141,7 @@ export default async function FinancePage() {
       {totals.map(g => (
         <div key={g.currency} style={{ marginBottom: '32px' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px' }}>
-            {g.currency} summary
+            {handler(g.currency)} · {g.currency}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '8px' }}>
             <div style={card}>
@@ -180,8 +182,8 @@ export default async function FinancePage() {
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
             <thead>
               <tr>
-                {['Order', 'Customer', 'Ccy', 'Goods cost', 'Service fee', 'Received', 'Via', 'Transfer fee', 'Net', 'Status'].map((h, i) => (
-                  <th key={h} style={{ ...th, textAlign: i <= 1 ? 'left' : 'right' }}>{h}</th>
+                {['Order', 'Customer', 'Handler', 'Ccy', 'Goods cost', 'Service fee', 'Received', 'Via', 'Transfer fee', 'Net', 'Status'].map((h, i) => (
+                  <th key={h} style={{ ...th, textAlign: i <= 2 ? 'left' : 'right' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -195,6 +197,9 @@ export default async function FinancePage() {
                   </td>
                   <td style={{ ...tdLeft, maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {o.customer_name ?? o.customer_email}
+                  </td>
+                  <td style={{ ...tdLeft, fontSize: '11px', color: o.currency === 'KRW' ? 'var(--dark-blue)' : o.currency === 'JPY' ? 'var(--brown)' : 'var(--tan)' }}>
+                    {handler(o.currency)}
                   </td>
                   <td style={td}>{o.currency}</td>
                   <td style={td}>{o.goods_cost ? o.goods_cost.toLocaleString() : '—'}</td>

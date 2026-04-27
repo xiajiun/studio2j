@@ -44,10 +44,12 @@ export default async function InvoicePage({
   const isPart1 = type === '1'
   const isPart2 = type === '2'
 
+  const hasDomDel  = items.some(i => (i.dom_del ?? 0) > 0)
+
   // Compute goods from items if goods_total not set
   const itemsTotal = items.reduce((sum, i) => {
     if (i.total != null && i.total > 0) return sum + i.total
-    return sum + (i.price ?? 0) * (i.qty ?? 1)
+    return sum + (i.price ?? 0) * (i.qty ?? 1) + (i.dom_del ?? 0)
   }, 0)
   const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
   const fee    = o.service_fee   ?? 0
@@ -183,26 +185,26 @@ export default async function InvoicePage({
 
             {/* Items — always shown */}
             <div style={{ marginBottom: '32px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '8px 0', borderBottom: '1.5px solid #1F3A5F', marginBottom: '4px' }}>
-                {['Item', 'Colour', 'Ccy', 'Qty', 'Unit price', `Total (${ccy})`].map(h => (
-                  <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' ? 'right' : 'left' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '8px 0', borderBottom: '1.5px solid #1F3A5F', marginBottom: '4px' }}>
+                {[...['Item', 'Colour', 'Ccy', 'Qty', 'Unit price'], ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`].map(h => (
+                  <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>
                     {h}
                   </div>
                 ))}
               </div>
 
               {items.length > 0 ? items.map((item, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '11px 0', borderBottom: '0.5px solid #ede7de', alignItems: 'start' }}>
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '11px 0', borderBottom: '0.5px solid #ede7de', alignItems: 'start' }}>
                   <div>
                     <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18' }}>{i + 1}. {item.name}</div>
-                    {item.url && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', color: '#C8A98D', marginTop: '2px', wordBreak: 'break-all' }}>{item.url}</div>}
                   </div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.color ?? ''}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.item_ccy ?? ccy}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.qty}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.price ? item.price.toLocaleString() : '—'}</div>
+                  {hasDomDel && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45', textAlign: 'right' }}>{item.dom_del ? item.dom_del.toLocaleString() : '—'}</div>}
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18', textAlign: 'right' }}>
-                    {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty).toLocaleString() : '—'}
+                    {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty + (item.dom_del ?? 0)).toLocaleString() : '—'}
                   </div>
                 </div>
               )) : (
