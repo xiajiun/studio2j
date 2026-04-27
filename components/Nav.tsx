@@ -29,7 +29,7 @@ export default function Nav() {
 
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
           {[
-            { href: '/shops',    label: 'Shops' },
+            { href: '/brands',   label: 'Brands' },
             { href: '#services', label: 'Services' },
             { href: '#tracker',  label: 'Fairs' },
             { href: '#how',      label: 'How it works' },

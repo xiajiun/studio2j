@@ -13,6 +13,7 @@ import Footer from '@/components/Footer'
 import { FAIRS } from '@/lib/fairs'
 import type { FairRow } from '@/lib/database.types'
 import { AuthRedirect } from '@/components/AuthRedirect'
+import Founders from '@/components/Founders'
 
 export default async function Home() {
   // Fetch from Supabase; fall back to static data if DB not seeded yet
@@ -56,6 +57,7 @@ export default async function Home() {
       <Marquee />
       <FairTracker fairs={fairs} />
       <HowItWorks />
+      <Founders />
       <OrderCTA />
       <FAQ />
       <Footer />

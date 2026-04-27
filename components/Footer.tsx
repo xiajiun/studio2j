@@ -43,9 +43,11 @@ export default function Footer() {
           </div>
 
           <FooterCol title="Explore" links={[
+            { href: '/brands',   label: 'Brand directory' },
             { href: '#services', label: 'Services' },
             { href: '#tracker',  label: 'Fair Tracker' },
             { href: '#how',      label: 'How it works' },
+            { href: '/about',    label: 'About us' },
             { href: '#faq',      label: 'FAQ' },
           ]} />
 

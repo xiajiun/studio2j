@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { BRANDS, CATEGORY_LABELS, type BrandRegion, type BrandCategory } from '@/lib/brands'
 
 const REGIONS: { value: BrandRegion | 'all'; label: string }[] = [
-  { value: 'all',    label: 'All shops' },
+  { value: 'all',    label: 'All brands' },
   { value: 'Korea',  label: '🇰🇷 Korea' },
   { value: 'Japan',  label: '🇯🇵 Japan' },
 ]
@@ -20,7 +20,7 @@ const TAG_COLORS: Record<BrandCategory, { bg: string; color: string }> = {
   'art supplies':{ bg: '#ECF0EA',      color: '#3A5C2A' },
 }
 
-export default function ShopsPage() {
+export default function BrandsPage() {
   const [region, setRegion]     = useState<BrandRegion | 'all'>('all')
   const [search, setSearch]     = useState('')
 
@@ -53,10 +53,10 @@ export default function ShopsPage() {
       <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '80px 48px 56px' }}>
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '14px' }}>
           <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
-          Shop directory
+          Brand directory
         </div>
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 64px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '20px' }}>
-          Shops we buy<br />from <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>every day</em>.
+          Brands we buy<br />from <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>every day</em>.
         </h1>
         <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '48px' }}>
           See something you love? Send us the link and we&apos;ll handle the rest — purchase, packing, and worldwide shipping from Seoul or Tokyo.
@@ -77,7 +77,7 @@ export default function ShopsPage() {
           ))}
           <input
             type="text"
-            placeholder="Search shops…"
+            placeholder="Search brands…"
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{
@@ -110,7 +110,7 @@ export default function ShopsPage() {
           <div>
             {featured.length > 0 && (
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px' }}>
-                All shops
+                All brands
               </div>
             )}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
@@ -121,7 +121,7 @@ export default function ShopsPage() {
 
         {filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>
-            No shops match your search.
+            No brands match your search.
           </div>
         )}
 
