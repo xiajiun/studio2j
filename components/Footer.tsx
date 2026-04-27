@@ -58,9 +58,9 @@ export default function Footer() {
           ]} />
 
           <FooterCol title="Based in" links={[
-            { href: '#', label: 'Seoul · 서울' },
-            { href: '#', label: 'Tokyo · 東京' },
-            { href: '#', label: 'Shipping worldwide', muted: true },
+            { label: 'Seoul · 서울' },
+            { label: 'Tokyo · 東京' },
+            { label: 'Shipping worldwide', muted: true },
           ]} />
         </div>
 
@@ -91,7 +91,7 @@ export default function Footer() {
 
 function FooterCol({ title, links }: {
   title: string
-  links: { href: string; label: string; external?: boolean; muted?: boolean }[]
+  links: { href?: string; label: string; external?: boolean; muted?: boolean }[]
 }) {
   return (
     <div>
@@ -107,6 +107,7 @@ function FooterCol({ title, links }: {
       <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '11px' }}>
         {links.map(({ href, label, external, muted }) => (
           <li key={label}>
+            {href ? (
             <a
               href={href}
               target={external ? '_blank' : undefined}
@@ -123,6 +124,14 @@ function FooterCol({ title, links }: {
             >
               {label}
             </a>
+            ) : (
+            <span style={{
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '13px',
+              fontWeight: 300,
+              color: muted ? 'rgba(245,239,230,0.35)' : 'rgba(245,239,230,0.55)',
+            }}>{label}</span>
+            )}
           </li>
         ))}
       </ul>
