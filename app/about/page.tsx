@@ -95,6 +95,45 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Planner photos */}
+        <div style={{ marginBottom: '64px' }}>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px' }}>
+            What we journal in
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }} className="about-photos">
+            {[
+              {
+                src: 'https://lh3.googleusercontent.com/sitesv/AA5AbUDXAeJOsM9vHjmFCgdB2R9dgHH7Pl-SlZguqSMebdkvP849GIXSG5dpqQ3RDc_blaph_T5EYKeDMoeeGyul746lC9wVjTzLD29QPpPV3ccHbnnml5nyn9Tdtr3636PwLTnyQO1drd22ys-Hqg7Qs7IkQfslZkVF0L3NJ-SkUvh8I_s-znrDSaqKRFli4JMmp4VR1SowIOUpfCwiqUYd43uaPAy_bLgHygi4eQc=w1280',
+                alt: 'Rollbahn Diary — open pages with stickers and washi tape',
+                caption: 'Rollbahn Diary',
+              },
+              {
+                src: 'https://lh3.googleusercontent.com/sitesv/AA5AbUCO5XbWnfNAQDNxZSa9e3yXQLiiIfLEOmXxeYdNEqBVQYDA6ll0cGBh9MZ-ISvLwdK8QhhXh9fXuuCBXpLxa9qObPbny5f-0ebiKv1GTwRS7iCj2_ngwEKdl7vwNVEB-eDpVYY2tdoqkNc8dugEUQSw9BsXrDVUgQkIq-AuvPDEUUghbXVckGvQYxeVP1IArB7hnY0DPkdk9IgUs9COpmX1OEmHlo3MCQDy=w1280',
+                alt: 'Hobonichi Techo — handwritten journal pages',
+                caption: 'Hobonichi Techo',
+              },
+              {
+                src: 'https://lh3.googleusercontent.com/sitesv/AA5AbUDRbkIS8h1MN6G1Pq1nQZ1LkyXLoCzb4KSDZw0ZZ5dV6eT1wS1GHijMUkcxcMp4l0kFs9co3Czpivd6tKibN76rOmgwCgdKrzN_pM4uD6T9qPEsOfYSwcKMVVUBFZiB6LW75bJ0DTSahkKK553n7-pgdCbtGGnQ7oVf8TPw72JuRgP0P3izq2pt5ezFEs1_-xsq3wC-SZmP47Yed6BYgeFYTfMFRo45GyiyhoU=w1280',
+                alt: 'Hobonichi planner — daily pages with handwriting and drawings',
+                caption: 'Hobonichi — daily pages',
+              },
+            ].map(({ src, alt, caption }) => (
+              <div key={caption}>
+                <div style={{ borderRadius: '14px', overflow: 'hidden', aspectRatio: '4/3', marginBottom: '10px', background: 'var(--beige)' }}>
+                  <img
+                    src={src}
+                    alt={alt}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(1.08) contrast(1.04)' }}
+                  />
+                </div>
+                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', fontWeight: 300, color: 'var(--tan)' }}>
+                  {caption}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* CTAs */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <Link href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, padding: '14px 28px', borderRadius: '99px', textDecoration: 'none', letterSpacing: '0.02em' }}>

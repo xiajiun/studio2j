@@ -284,6 +284,7 @@ nav.scrolled {
 
   /* About */
   .about-grid { grid-template-columns: 1fr !important; }
+  .about-photos { grid-template-columns: 1fr !important; }
 
   /* Planner */
   .planner-hero { grid-template-columns: 1fr !important; gap: 40px !important; }

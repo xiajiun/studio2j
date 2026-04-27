@@ -30,7 +30,6 @@ export default function Nav() {
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
           {[
             { href: '/brands',   label: 'Brands' },
-            { href: '/planner',  label: 'Planner guide' },
             { href: '#services', label: 'Services' },
             { href: '#tracker',  label: 'Fairs' },
             { href: '#how',      label: 'How it works' },
