@@ -76,12 +76,6 @@ export default function Founders() {
 
       </div>
 
-      <style jsx>{`
-        @media (max-width: 1000px) {
-          .founders-section { padding: 80px 0 !important; }
-          .founders-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
   )
 }

@@ -107,11 +107,6 @@ export default function AboutPage() {
 
       </div>
 
-      <style jsx>{`
-        @media (max-width: 700px) {
-          .about-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </main>
   )
 }

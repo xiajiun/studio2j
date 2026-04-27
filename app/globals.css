@@ -277,4 +277,11 @@ nav.scrolled {
 
   /* Nav */
   .nav-links { display: none !important; }
+
+  /* Founders */
+  .founders-section { padding: 80px 0 !important; }
+  .founders-grid { grid-template-columns: 1fr !important; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr !important; }
 }
