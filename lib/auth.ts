@@ -1,7 +1,17 @@
 import { createClient } from './supabase/server'
 import { redirect } from 'next/navigation'
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'studio2j25@gmail.com'
+const ADMIN_EMAILS = [
+  process.env.ADMIN_EMAIL ?? 'studio2j25@gmail.com',
+  'xiajiun21@gmail.com',
+  'jovynkw@gmail.com',
+]
+
+export function adminWelcomeName(email: string): string {
+  if (email === 'jovynkw@gmail.com')   return 'Jo'
+  if (email === 'xiajiun21@gmail.com') return 'Jin'
+  return 'Jin and Jo'
+}
 
 export async function getUser() {
   const supabase = createClient()
@@ -11,7 +21,7 @@ export async function getUser() {
 
 export async function isAdmin() {
   const user = await getUser()
-  return user?.email === ADMIN_EMAIL
+  return !!user?.email && ADMIN_EMAILS.includes(user.email)
 }
 
 export async function requireAuth() {
@@ -22,6 +32,6 @@ export async function requireAuth() {
 
 export async function requireAdmin() {
   const user = await getUser()
-  if (user?.email !== ADMIN_EMAIL) redirect('/login')
+  if (!user?.email || !ADMIN_EMAILS.includes(user.email)) redirect('/login')
   return user
 }

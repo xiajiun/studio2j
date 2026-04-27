@@ -1,6 +1,7 @@
 export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
+import { getUser, adminWelcomeName } from '@/lib/auth'
 import { OrderCard } from '@/components/dashboard/OrderCard'
 import Link from 'next/link'
 import type { Order } from '@/lib/database.types'
@@ -16,6 +17,8 @@ function Stat({ label, value }: { label: string; value: number }) {
 
 export default async function AdminHome() {
   const supabase = createClient()
+  const user = await getUser()
+  const name = adminWelcomeName(user?.email ?? '')
 
   const [
     { count: activeOrders },
@@ -34,7 +37,7 @@ export default async function AdminHome() {
   return (
     <div>
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '40px', color: 'var(--dark-brown)', marginBottom: '8px', letterSpacing: '-0.03em' }}>
-        Welcome back, <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>Jin</em>.
+        Welcome back, <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{name}</em>.
       </h1>
       <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--brown)', marginBottom: '40px' }}>
         {activeOrders ?? 0} active orders · {pendingPayment ?? 0} awaiting payment

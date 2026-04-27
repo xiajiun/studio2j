@@ -398,12 +398,13 @@ export function OrderForm({ fairs, orderId, initial }: {
             { num: 1 as const, amtKey: 'paid_1_amount', dateKey: 'paid_1_date', viaKey: 'paid_1_via', feeKey: 'paid_1_transfer_fee', recKey: 'jin_received_1', label: 'Invoice 1 — items' },
             { num: 2 as const, amtKey: 'paid_2_amount', dateKey: 'paid_2_date', viaKey: 'paid_2_via', feeKey: 'paid_2_transfer_fee', recKey: 'jin_received_2', label: 'Invoice 2 — fee + shipping' },
           ]).map(({ num, amtKey, dateKey, viaKey, feeKey, recKey, label }) => {
-            const isJo = (form as any)[viaKey] === 'jo'
+            const isJo       = (form as any)[viaKey] === 'jo'
+            const jinHandles = form.currency === 'KRW'
             const fee  = parseFloat((form as any)[feeKey]) || 0
             return (
               <div key={num} style={{ marginBottom: '20px', padding: '16px', background: 'var(--beige)', borderRadius: '12px' }}>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '12px' }}>{label}</div>
-                <div style={{ display: 'grid', gridTemplateColumns: isJo ? '1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: '10px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: isJo && jinHandles ? '1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: '10px' }}>
                   <Field label="Customer paid">
                     <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={(form as any)[amtKey]} onChange={e => set(amtKey, e.target.value)} />
                   </Field>
@@ -416,7 +417,7 @@ export function OrderForm({ fairs, orderId, initial }: {
                       <option value="jo">Jo (Wise)</option>
                     </select>
                   </Field>
-                  {isJo && (
+                  {isJo && jinHandles && (
                     <>
                       <Field label="Jin received from Jo">
                         <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={(form as any)[recKey]} onChange={e => setJinReceived(num, e.target.value)} />
