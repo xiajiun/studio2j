@@ -1,185 +1,67 @@
 'use client'
 
 import { useState } from 'react'
-
-interface FAQItem {
-  q: string
-  a: React.ReactNode
-}
-
-interface FAQCategory {
-  title: string
-  items: FAQItem[]
-}
-
-const CATEGORIES: FAQCategory[] = [
-  {
-    title: 'Ordering',
-    items: [
-      {
-        q: 'How do I place an order?',
-        a: <>Fill in our <a href="/order/new" style={{ color: 'var(--dark-blue)' }}>online order form</a>, or DM us on Instagram <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ color: 'var(--dark-blue)' }}>@studio2j25</a> with the fair name, artist, or website link you&apos;re interested in. We&apos;ll confirm availability and send a quotation within 24 hours. Nothing is purchased until you approve and pay.</>,
-      },
-      {
-        q: "What's the service fee?",
-        a: 'Minimum ₩25,000 (or ¥2,500 for Japan-based sourcing), or 15% of the total goods value — whichever is higher. This covers our time, transport to the fair or shop, packing materials, and care.',
-      },
-      {
-        q: 'When do I pay?',
-        a: 'There are two separate invoices. Invoice 1 covers item costs only — you pay this upfront so we can purchase. Invoice 2 covers our service fee and international shipping — sent after items are confirmed and before we ship. Payment via Wise or bank transfer.',
-      },
-      {
-        q: 'What if the item is sold out?',
-        a: "If something is unavailable when we arrive at the fair or shop, we refund that portion immediately. For proxy buying, we verify stock before invoicing to avoid this.",
-      },
-    ],
-  },
-  {
-    title: 'Shipping & delivery',
-    items: [
-      {
-        q: 'Where do you ship?',
-        a: 'Worldwide. From Seoul for Korean orders and from Tokyo for Japan-based orders. We use Korea Post EMS and Japan Post EMS — the most reliable international services, with tracking.',
-      },
-      {
-        q: 'How long does shipping take?',
-        a: 'Typically 7–14 business days from Seoul or Tokyo, depending on destination. North America and Europe are usually on the faster end, South America and Africa slightly longer. Full tracking provided once shipped.',
-      },
-      {
-        q: 'What about customs and duties?',
-        a: "Any customs fees or import duties are the buyer's responsibility. We declare the accurate value on all packages. Most stationery orders under $100 rarely incur duties, but we can't guarantee this varies by country.",
-      },
-      {
-        q: 'Is packaging included?',
-        a: 'Yes. Every parcel includes protective packaging, tissue paper, and a handwritten thank-you note. We pack stationery flat to prevent bending and wrap fragile items individually.',
-      },
-    ],
-  },
-  {
-    title: 'Returns & refunds',
-    items: [
-      {
-        q: 'Can I cancel my order?',
-        a: "Cancellations are accepted until we've purchased the items. Once we've bought them at the fair or from the website, full refunds are not possible as we cannot return the goods. We'll offer alternatives where possible.",
-      },
-      {
-        q: 'What if my order arrives damaged?',
-        a: "Photograph everything as soon as the package arrives — exterior, interior, and damaged items. DM us within 48 hours of delivery. We'll work with the postal service on a claim and compensate you directly once resolved.",
-      },
-      {
-        q: 'Do you accept returns for change of mind?',
-        a: "Because we source items specifically for your order, we cannot accept returns for change of mind. If you're unsure about an item, ask us for more photos before confirming — we're happy to share extra details.",
-      },
-    ],
-  },
-  {
-    title: 'Privacy',
-    items: [
-      {
-        q: 'What data do you collect?',
-        a: "Only what's necessary to fulfil your order — name, shipping address, email for order updates, and payment confirmation. We never share your information with third parties. Newsletter subscribers can unsubscribe at any time.",
-      },
-      {
-        q: 'How are payments handled?',
-        a: "Through secure third-party services — Wise or direct bank transfer. We never store your payment details. All transactions are processed by these services with their own security standards.",
-      },
-    ],
-  },
-]
+import { useLang } from '@/components/LangProvider'
 
 export default function FAQ() {
+  const { t } = useLang()
+  const f = t.faq
   const [open, setOpen] = useState<Record<string, boolean>>({})
 
-  function toggle(key: string) {
-    setOpen(prev => ({ ...prev, [key]: !prev[key] }))
-  }
+  const CATEGORIES = [
+    { title: f.cat1, items: [
+      { q: f.q1, a: <>{f.a1} <a href="/order/new" style={{ color: 'var(--dark-blue)' }}>order form</a>.</> },
+      { q: f.q2, a: f.a2 },
+      { q: f.q3, a: f.a3 },
+      { q: f.q4, a: f.a4 },
+    ]},
+    { title: f.cat2, items: [
+      { q: f.q5, a: f.a5 },
+      { q: f.q6, a: f.a6 },
+      { q: f.q7, a: f.a7 },
+      { q: f.q8, a: f.a8 },
+    ]},
+    { title: f.cat3, items: [
+      { q: f.q9,  a: f.a9  },
+      { q: f.q10, a: f.a10 },
+      { q: f.q11, a: f.a11 },
+    ]},
+    { title: f.cat4, items: [
+      { q: f.q12, a: f.a12 },
+      { q: f.q13, a: f.a13 },
+    ]},
+  ]
+
+  function toggle(key: string) { setOpen(prev => ({ ...prev, [key]: !prev[key] })) }
 
   return (
     <section id="faq" className="faq-section" style={{ padding: '140px 0', background: 'var(--cream)' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-          <div style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontStyle: 'italic',
-            fontWeight: 300,
-            fontSize: '18px',
-            color: 'var(--brown)',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '14px',
-          }}>
-            <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block', marginLeft: 'auto' }} />
-            Frequently asked
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px' }}>
+            <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block', marginLeft: 'auto' }} />{f.eyebrow}
             <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block', marginRight: 'auto' }} />
           </div>
-          <h2 style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 300,
-            fontSize: 'clamp(42px, 4.5vw, 64px)',
-            lineHeight: '1.04',
-            letterSpacing: '-0.03em',
-            color: 'var(--dark-brown)',
-          }}>
-            Everything you<br />might <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>wonder</em>.
+          <h2 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(42px, 4.5vw, 64px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)' }}>
+            {f.title1}<br />{f.title2}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{f.titleEm}</em>
           </h2>
         </div>
 
         <div id="order-form-modal" style={{ maxWidth: '820px', margin: '0 auto' }}>
           {CATEGORIES.map(cat => (
             <div key={cat.title} style={{ marginBottom: '56px' }}>
-              <div style={{
-                fontFamily: 'var(--font-fraunces), serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                fontSize: '20px',
-                color: 'var(--dark-blue)',
-                marginBottom: '20px',
-                paddingBottom: '12px',
-                borderBottom: '0.5px solid rgba(122,92,69,0.15)',
-              }}>{cat.title}</div>
-
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 400, fontSize: '20px', color: 'var(--dark-blue)', marginBottom: '20px', paddingBottom: '12px', borderBottom: '0.5px solid rgba(122,92,69,0.15)' }}>{cat.title}</div>
               {cat.items.map((item, idx) => {
                 const key = `${cat.title}-${idx}`
                 const isOpen = !!open[key]
                 return (
-                  <div
-                    key={key}
-                    className={`faq-item${isOpen ? ' open' : ''}`}
-                    onClick={() => toggle(key)}
-                    style={{
-                      borderBottom: '0.5px solid rgba(122,92,69,0.12)',
-                      padding: '22px 0',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                    }}
-                  >
+                  <div key={key} className={`faq-item${isOpen ? ' open' : ''}`} onClick={() => toggle(key)} style={{ borderBottom: '0.5px solid rgba(122,92,69,0.12)', padding: '22px 0', cursor: 'pointer', transition: 'all 0.2s' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
-                      <span style={{
-                        fontFamily: 'var(--font-fraunces), serif',
-                        fontWeight: 400,
-                        fontSize: '17px',
-                        color: 'var(--dark-brown)',
-                        letterSpacing: '-0.01em',
-                        flex: 1,
-                      }}>{item.q}</span>
-                      <span className="faq-icon" style={{
-                        fontFamily: 'var(--font-fraunces), serif',
-                        fontSize: '22px',
-                        fontWeight: 300,
-                        color: 'var(--brown)',
-                        flexShrink: 0,
-                      }}>+</span>
+                      <span style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 400, fontSize: '17px', color: 'var(--dark-brown)', letterSpacing: '-0.01em', flex: 1 }}>{item.q}</span>
+                      <span className="faq-icon" style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 300, color: 'var(--brown)', flexShrink: 0 }}>+</span>
                     </div>
                     <div className="faq-a">
-                      <div style={{
-                        fontFamily: 'var(--font-inter), sans-serif',
-                        fontSize: '14px',
-                        fontWeight: 300,
-                        lineHeight: '1.8',
-                        color: 'var(--brown)',
-                      }}>{item.a}</div>
+                      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)' }}>{item.a}</div>
                     </div>
                   </div>
                 )

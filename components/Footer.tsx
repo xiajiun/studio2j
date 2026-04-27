@@ -1,4 +1,10 @@
+'use client'
+
+import { useLang } from '@/components/LangProvider'
+
 export default function Footer() {
+  const { t } = useLang()
+  const f = t.footer
   return (
     <footer style={{
       background: 'var(--dark-brown)',
@@ -37,12 +43,11 @@ export default function Footer() {
               color: 'rgba(245,239,230,0.45)',
               maxWidth: '280px',
             }}>
-              Personal shopping for illustration and stationery fairs in Korea
-              and Japan. Based in Seoul and Tokyo. Founded 2025.
+              {f.desc}
             </p>
           </div>
 
-          <FooterCol title="Explore" links={[
+          <FooterCol title={f.explore} links={[
             { href: '/brands',   label: 'Brand directory' },
             { href: '#services', label: 'Services' },
             { href: '#tracker',  label: 'Fair Tracker' },
@@ -51,13 +56,13 @@ export default function Footer() {
             { href: '#faq',      label: 'FAQ' },
           ]} />
 
-          <FooterCol title="Connect" links={[
+          <FooterCol title={f.connect} links={[
             { href: 'https://www.instagram.com/studio2j25/', label: 'Instagram', external: true },
             { href: 'https://www.threads.com/@studio2j25',  label: 'Threads',   external: true },
             { href: 'mailto:studio2j25@gmail.com',            label: 'Email us' },
           ]} />
 
-          <FooterCol title="Based in" links={[
+          <FooterCol title={f.basedIn} links={[
             { label: 'Seoul · 서울' },
             { label: 'Tokyo · 東京' },
             { label: 'Shipping worldwide', muted: true },
@@ -79,7 +84,7 @@ export default function Footer() {
           <span>
             © Studio2J 2026 ·{' '}
             <em style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', color: 'rgba(245,239,230,0.45)' }}>
-              From Seoul and Tokyo, with care
+              {f.copyright}
             </em>
           </span>
           <span>Est. 2025 · 서울과 도쿄에서 세계로 · Seoul and Tokyo to the world</span>

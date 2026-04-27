@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { formatDate } from '@/lib/fairs'
 import type { FairRow } from '@/lib/database.types'
+import { useLang } from '@/components/LangProvider'
 
 type View = 'upcoming' | 'going' | 'deadline' | 'saved' | 'asia' | 'europe'
 
@@ -16,6 +17,8 @@ function dlInfo(deadline: string, today: Date): { cls: string; label: string } {
 
 export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   const today = new Date()
+  const { t } = useLang()
+  const tr = t.tracker
   const [view, setView] = useState<View>('upcoming')
   const [search, setSearch] = useState('')
   const [saved, setSaved] = useState<Set<number>>(new Set())
@@ -65,12 +68,12 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   })
 
   const views: { key: View; label: string }[] = [
-    { key: 'upcoming', label: 'Upcoming' },
-    { key: 'going',    label: "We're attending" },
-    { key: 'deadline', label: 'Deadline open' },
-    { key: 'saved',    label: 'Saved' },
-    { key: 'asia',     label: 'Asia' },
-    { key: 'europe',   label: 'Europe' },
+    { key: 'upcoming', label: tr.pUpcoming },
+    { key: 'going',    label: tr.pGoing },
+    { key: 'deadline', label: tr.pDeadline },
+    { key: 'saved',    label: tr.pSaved },
+    { key: 'asia',     label: tr.pAsia },
+    { key: 'europe',   label: tr.pEurope },
   ]
 
   return (
@@ -97,7 +100,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               gap: '14px',
             }}>
               <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
-              Why you can trust us
+              {tr.eyebrow}
             </div>
             <h2 style={{
               fontFamily: 'var(--font-fraunces), serif',
@@ -106,9 +109,8 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               lineHeight: '1.04',
               letterSpacing: '-0.03em',
               color: 'var(--dark-brown)',
-              fontVariationSettings: '"opsz" 144, "SOFT" 100',
             }}>
-              We&apos;re <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>physically there</em>,<br />every month.
+              {tr.title1}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{tr.titleEm}</em>{tr.title2}
             </h2>
           </div>
           {/* Stats */}
@@ -119,9 +121,9 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
             paddingBottom: '8px',
           }} className="tracker-stats">
             {[
-              { num: totalFairs, label: 'Fairs tracked' },
-              { num: countries, label: 'Countries' },
-              { num: deadlinesSoon, label: 'Deadlines soon' },
+              { num: totalFairs, label: tr.statFairs },
+              { num: countries, label: tr.statCountries },
+              { num: deadlinesSoon, label: tr.statSoon },
             ].map(({ num, label }) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{
@@ -154,9 +156,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           maxWidth: '680px',
           marginBottom: '40px',
         }}>
-          This is our live calendar of illustration and stationery fairs around the world.
-          The ones marked <em style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', color: 'var(--dark-blue)' }}>&quot;we&apos;re attending&quot;</em> are fairs we&apos;ll be at in person — the clearest proof that we&apos;re
-          not just another online proxy shop. We&apos;re actually on the ground in Seoul and Tokyo.
+          {tr.body}
         </p>
 
         {/* Filters */}
@@ -176,10 +176,10 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
             fontSize: '14px',
             color: 'var(--tan)',
             marginRight: '12px',
-          }}>Filter</span>
+          }}>{tr.filterLabel}</span>
           <input
             type="text"
-            placeholder="Search fairs or cities…"
+            placeholder={tr.searchPlaceholder}
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{
@@ -218,7 +218,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontStyle: 'italic',
               fontSize: '18px',
               color: 'var(--tan)',
-            }}>No fairs match your filters.</div>
+            }}>{tr.noFairs}</div>
           ) : groups.map(({ month, fairs }) => (
             <div key={month}>
               <div style={{
@@ -425,6 +425,8 @@ function FairCard({ fair: f, today, saved, onSave }: {
 function EmailAlerts() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const { t } = useLang()
+  const tr = t.tracker
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -461,7 +463,7 @@ function EmailAlerts() {
           letterSpacing: '-0.01em',
           lineHeight: '1.2',
         }}>
-          Never miss a <em style={{ fontStyle: 'italic', color: 'var(--tan)' }}>deadline</em>.
+          {tr.emailTitle} <em style={{ fontStyle: 'italic', color: 'var(--tan)' }}>{tr.emailTitleEm}</em>
         </h3>
         <p style={{
           fontFamily: 'var(--font-inter), sans-serif',
@@ -470,16 +472,14 @@ function EmailAlerts() {
           color: 'rgba(245,239,230,0.6)',
           lineHeight: '1.7',
         }}>
-          Subscribe for monthly fair roundups and deadline alerts. New fairs,
-          upcoming hauls, and first dibs on our order windows — straight to
-          your inbox.
+          {tr.emailBody}
         </p>
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px' }}>
         <input
           type="email"
           required
-          placeholder="your@email.com"
+          placeholder={tr.emailPlaceholder}
           value={email}
           onChange={e => setEmail(e.target.value)}
           style={{
@@ -511,7 +511,7 @@ function EmailAlerts() {
             transition: 'all 0.2s',
             whiteSpace: 'nowrap',
           }}
-        >{subscribed ? 'Subscribed ✓' : 'Subscribe'}</button>
+        >{subscribed ? tr.emailDone : tr.emailBtn}</button>
       </form>
 
       <style jsx>{`

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Fraunces, Inter } from 'next/font/google'
 import './globals.css'
+import { LangProvider } from '@/components/LangProvider'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -23,7 +24,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
-      <body style={{ backgroundColor: '#F5EFE6', color: '#4B372A' }}>{children}</body>
+      <body style={{ backgroundColor: '#F5EFE6', color: '#4B372A' }}>
+        <LangProvider>{children}</LangProvider>
+      </body>
     </html>
   )
 }
