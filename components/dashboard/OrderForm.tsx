@@ -57,6 +57,9 @@ export function OrderForm({ fairs, orderId, initial }: {
     notes: string; customer_notes: string
     items: OrderItem[]
     shipping_address?: ShippingAddress | null
+    paid_1_amount?: string; paid_1_date?: string; paid_1_via?: string; paid_1_transfer_fee?: string
+    paid_2_amount?: string; paid_2_date?: string; paid_2_via?: string; paid_2_transfer_fee?: string
+    actual_goods_cost?: string
   }
 }) {
   const router  = useRouter()
@@ -75,9 +78,18 @@ export function OrderForm({ fairs, orderId, initial }: {
     shipping_cost:   initial?.shipping_cost   ?? '',
     currency:        initial?.currency        ?? 'KRW',
     status:          (initial?.status         ?? 'awaiting_payment') as OrderStatus,
-    tracking_number: initial?.tracking_number ?? '',
-    notes:           initial?.notes           ?? '',
-    customer_notes:  initial?.customer_notes  ?? '',
+    tracking_number:     initial?.tracking_number     ?? '',
+    notes:               initial?.notes               ?? '',
+    customer_notes:      initial?.customer_notes      ?? '',
+    paid_1_amount:       initial?.paid_1_amount       ?? '',
+    paid_1_date:         initial?.paid_1_date         ?? '',
+    paid_1_via:          initial?.paid_1_via          ?? 'jin',
+    paid_1_transfer_fee: initial?.paid_1_transfer_fee ?? '',
+    paid_2_amount:       initial?.paid_2_amount       ?? '',
+    paid_2_date:         initial?.paid_2_date         ?? '',
+    paid_2_via:          initial?.paid_2_via          ?? 'jin',
+    paid_2_transfer_fee: initial?.paid_2_transfer_fee ?? '',
+    actual_goods_cost:   initial?.actual_goods_cost   ?? '',
   })
 
   const [addr, setAddr] = useState<AddrForm>(emptyAddr(initial?.shipping_address))
@@ -174,8 +186,17 @@ export function OrderForm({ fairs, orderId, initial }: {
       status:           form.status,
       tracking_number:  form.tracking_number || null,
       notes:            form.notes          || null,
-      customer_notes:   form.customer_notes || null,
-      shipping_address: shippingAddress,
+      customer_notes:      form.customer_notes      || null,
+      shipping_address:    shippingAddress,
+      paid_1_amount:       form.paid_1_amount       ? parseFloat(form.paid_1_amount)       : null,
+      paid_1_date:         form.paid_1_date         || null,
+      paid_1_via:          form.paid_1_amount       ? (form.paid_1_via as 'jin' | 'jo')    : null,
+      paid_1_transfer_fee: form.paid_1_transfer_fee ? parseFloat(form.paid_1_transfer_fee) : null,
+      paid_2_amount:       form.paid_2_amount       ? parseFloat(form.paid_2_amount)       : null,
+      paid_2_date:         form.paid_2_date         || null,
+      paid_2_via:          form.paid_2_amount       ? (form.paid_2_via as 'jin' | 'jo')    : null,
+      paid_2_transfer_fee: form.paid_2_transfer_fee ? parseFloat(form.paid_2_transfer_fee) : null,
+      actual_goods_cost:   form.actual_goods_cost   ? parseFloat(form.actual_goods_cost)   : null,
     }
 
     if (isEdit) {
@@ -353,6 +374,40 @@ export function OrderForm({ fairs, orderId, initial }: {
               <input style={inputStyle} value={form.tracking_number} onChange={e => set('tracking_number', e.target.value)} placeholder="EK123456789KR" />
             </Field>
           </div>
+        </Section>
+      )}
+
+      {/* Payments received — edit only */}
+      {isEdit && (
+        <Section label="Payments received">
+          {[
+            { num: '1', amtKey: 'paid_1_amount', dateKey: 'paid_1_date', viaKey: 'paid_1_via', feeKey: 'paid_1_transfer_fee', label: 'Invoice 1 — items' },
+            { num: '2', amtKey: 'paid_2_amount', dateKey: 'paid_2_date', viaKey: 'paid_2_via', feeKey: 'paid_2_transfer_fee', label: 'Invoice 2 — fee + shipping' },
+          ].map(({ num, amtKey, dateKey, viaKey, feeKey, label }) => (
+            <div key={num} style={{ marginBottom: '20px', padding: '16px', background: 'var(--beige)', borderRadius: '12px' }}>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '12px' }}>{label}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '10px' }}>
+                <Field label="Amount received">
+                  <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={(form as any)[amtKey]} onChange={e => set(amtKey, e.target.value)} />
+                </Field>
+                <Field label="Date">
+                  <input style={inputStyle} type="date" value={(form as any)[dateKey]} onChange={e => set(dateKey, e.target.value)} />
+                </Field>
+                <Field label="Received by">
+                  <select style={inputStyle} value={(form as any)[viaKey]} onChange={e => set(viaKey, e.target.value)}>
+                    <option value="jin">Jin (Shinhan / Yuucho)</option>
+                    <option value="jo">Jo (Wise)</option>
+                  </select>
+                </Field>
+                <Field label="Transfer fee (if via Jo)">
+                  <input style={{ ...inputStyle, opacity: (form as any)[viaKey] === 'jo' ? 1 : 0.4 }} type="text" inputMode="decimal" placeholder="0" value={(form as any)[feeKey]} onChange={e => set(feeKey, e.target.value)} disabled={(form as any)[viaKey] !== 'jo'} />
+                </Field>
+              </div>
+            </div>
+          ))}
+          <Field label="Actual goods cost (what you spent buying)">
+            <input style={{ ...inputStyle, maxWidth: '200px' }} type="text" inputMode="decimal" placeholder="0" value={form.actual_goods_cost} onChange={e => set('actual_goods_cost', e.target.value)} />
+          </Field>
         </Section>
       )}
 

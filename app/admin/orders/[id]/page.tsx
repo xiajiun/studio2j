@@ -69,8 +69,17 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               tracking_number: o.tracking_number ?? '',
               notes:           o.notes           ?? '',
               customer_notes:  o.customer_notes  ?? '',
-              items:            (o.items as any[]) ?? [],
-              shipping_address: o.shipping_address,
+              items:               (o.items as any[]) ?? [],
+              shipping_address:    o.shipping_address,
+              paid_1_amount:       o.paid_1_amount?.toString()       ?? '',
+              paid_1_date:         o.paid_1_date                     ?? '',
+              paid_1_via:          o.paid_1_via                      ?? 'jin',
+              paid_1_transfer_fee: o.paid_1_transfer_fee?.toString() ?? '',
+              paid_2_amount:       o.paid_2_amount?.toString()       ?? '',
+              paid_2_date:         o.paid_2_date                     ?? '',
+              paid_2_via:          o.paid_2_via                      ?? 'jin',
+              paid_2_transfer_fee: o.paid_2_transfer_fee?.toString() ?? '',
+              actual_goods_cost:   o.actual_goods_cost?.toString()   ?? '',
             }}
           />
         </div>

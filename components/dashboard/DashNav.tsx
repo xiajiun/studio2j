@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 const ADMIN_LINKS = [
   { href: '/admin',             label: 'Overview' },
   { href: '/admin/orders',      label: 'Orders' },
+  { href: '/admin/finance',     label: 'Finance' },
   { href: '/admin/fairs',       label: 'Fairs' },
   { href: '/admin/customers',   label: 'Customers' },
   { href: '/admin/subscribers', label: 'Subscribers' },

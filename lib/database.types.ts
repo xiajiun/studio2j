@@ -77,6 +77,16 @@ export interface Order {
   shipping_address: ShippingAddress | null
   notes: string | null
   customer_notes: string | null
+  // Payment tracking
+  paid_1_amount: number | null
+  paid_1_date: string | null
+  paid_1_via: 'jin' | 'jo' | null
+  paid_1_transfer_fee: number | null
+  paid_2_amount: number | null
+  paid_2_date: string | null
+  paid_2_via: 'jin' | 'jo' | null
+  paid_2_transfer_fee: number | null
+  actual_goods_cost: number | null
   created_at: string
   updated_at: string
 }
