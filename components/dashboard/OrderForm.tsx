@@ -124,8 +124,11 @@ export function OrderForm({ fairs, orderId, initial }: {
       return sum + price * qty
     }, 0)
     if (subtotal === 0) return
-    const minFee = form.currency === 'JPY' ? 2500 : 25000
-    const fee    = Math.max(minFee, Math.round(subtotal * 0.15))
+    const minFee  = form.currency === 'JPY' ? 2500 : 25000
+    const rawFee  = subtotal * 0.15
+    const unit    = form.currency === 'JPY' ? 100 : 1000
+    const rounded = Math.ceil(rawFee / unit) * unit
+    const fee     = Math.max(minFee, rounded)
     setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee) }))
   }, [items, form.currency]) // eslint-disable-line react-hooks/exhaustive-deps
 
