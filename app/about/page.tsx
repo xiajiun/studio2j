@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata = { title: 'About Us — Studio2J' }
 
-const PHOTOS = 'https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photos'
+const PHOTOS = 'https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photo'
 
 export default function AboutPage() {
   return (
@@ -45,7 +45,7 @@ export default function AboutPage() {
           {/* Jin */}
           <div style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative', aspectRatio: '3/4' }}>
             <img
-              src={`${PHOTOS}/jin-room.jpg`}
+              src={`${PHOTOS}/hello_im_Jin.png`}
               alt="Jin's workspace in Seoul"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
@@ -68,7 +68,7 @@ export default function AboutPage() {
           {/* Jo */}
           <div style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative', aspectRatio: '3/4' }}>
             <img
-              src={`${PHOTOS}/jo-desk.jpg`}
+              src={`${PHOTOS}/IMG_9280.JPG`}
               alt="Jo's workspace in Tokyo"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
@@ -92,14 +92,14 @@ export default function AboutPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '72px' }} className="about-grid">
           <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
             <img
-              src={`${PHOTOS}/rollbahn.jpg`}
+              src={`${PHOTOS}/IMG_1765.JPG`}
               alt="Rollbahn Diary spread with stickers and handwriting"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(1.06) contrast(1.03)' }}
             />
           </div>
           <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
             <img
-              src={`${PHOTOS}/hobonichi.jpg`}
+              src={`${PHOTOS}/IMG_1766.JPG`}
               alt="Hobonichi Techo weekly spread with drawings and plans"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(1.06) contrast(1.03)' }}
             />

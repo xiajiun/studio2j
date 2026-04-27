@@ -48,7 +48,7 @@ export default function PlannerPage() {
           {/* Hero photo — replace with your own */}
           <div style={{ borderRadius: '20px', overflow: 'hidden', aspectRatio: '4/3', background: 'var(--beige)' }}>
             <img
-              src={`https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photos/hobonichi-hero.jpg`}
+              src={`https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photo/hobonichi-hero.jpg`}
               alt="Hobonichi Techo open to handwritten journal pages"
               style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(1.08) contrast(1.05)' }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}

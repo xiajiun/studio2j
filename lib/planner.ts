@@ -11,8 +11,8 @@ export interface PlannerPick {
 }
 
 // Replace photo URLs with Supabase Storage public URLs
-// Example: https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photos/rollbahn.jpg
-const SUPABASE_PHOTOS = 'https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photos'
+// Example: https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photo/rollbahn.jpg
+const SUPABASE_PHOTOS = 'https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photo'
 
 export const STAFF_PICKS: PlannerPick[] = [
   {
