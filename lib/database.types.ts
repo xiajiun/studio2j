@@ -17,6 +17,7 @@ export interface OrderItem {
   item_ccy?: 'KRW' | 'JPY'
   qty: number
   price: number
+  total?: number
 }
 
 export interface ShippingAddress {

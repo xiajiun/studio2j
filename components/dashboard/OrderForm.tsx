@@ -23,10 +23,10 @@ const ALL_STATUSES: { value: OrderStatus; label: string }[] = [
   { value: 'cancelled',        label: 'Cancelled' },
 ]
 
-type ItemRow = { name: string; url: string; color: string; item_ccy: string; qty: string; price: string }
+type ItemRow = { name: string; url: string; color: string; item_ccy: string; qty: string; price: string; total: string }
 
 function emptyItem(): ItemRow {
-  return { name: '', url: '', color: '', item_ccy: 'KRW', qty: '1', price: '' }
+  return { name: '', url: '', color: '', item_ccy: 'KRW', qty: '1', price: '', total: '' }
 }
 
 type AddrForm = {
@@ -91,6 +91,7 @@ export function OrderForm({ fairs, orderId, initial }: {
           item_ccy: i.item_ccy ?? 'KRW',
           qty:      String(i.qty),
           price:    String(i.price),
+          total:    i.total != null ? String(i.total) : '',
         }))
       : [emptyItem()]
   )
@@ -99,7 +100,16 @@ export function OrderForm({ fairs, orderId, initial }: {
   function setA(k: string, v: string) { setAddr(p => ({ ...p, [k]: v })) }
 
   function setItem(idx: number, k: keyof ItemRow, v: string) {
-    setItems(prev => prev.map((row, i) => i === idx ? { ...row, [k]: v } : row))
+    setItems(prev => prev.map((row, i) => {
+      if (i !== idx) return row
+      const updated = { ...row, [k]: v }
+      if (k === 'price' || k === 'qty') {
+        const p = parseFloat(k === 'price' ? v : updated.price) || 0
+        const q = parseInt(k === 'qty'   ? v : updated.qty)    || 0
+        if (p > 0 && q > 0) updated.total = String(p * q)
+      }
+      return updated
+    }))
   }
   function addItem()            { setItems(prev => [...prev, emptyItem()]) }
   function removeItem(idx: number) { setItems(prev => prev.filter((_, i) => i !== idx)) }
@@ -107,6 +117,8 @@ export function OrderForm({ fairs, orderId, initial }: {
   // Auto-calculate goods_total and service_fee from items
   useEffect(() => {
     const subtotal = items.reduce((sum, item) => {
+      const manual = parseFloat(item.total) || 0
+      if (manual > 0) return sum + manual
       const price = parseFloat(item.price) || 0
       const qty   = parseInt(item.qty)     || 0
       return sum + price * qty
@@ -131,6 +143,7 @@ export function OrderForm({ fairs, orderId, initial }: {
         item_ccy: (i.item_ccy as 'KRW' | 'JPY'),
         qty:      parseInt(i.qty) || 1,
         price:    parseFloat(i.price) || 0,
+        total:    parseFloat(i.total) || undefined,
       }))
 
     const shippingAddress: ShippingAddress = {
@@ -280,13 +293,13 @@ export function OrderForm({ fairs, orderId, initial }: {
       <Section label="Items">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {/* Header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px auto', gap: '6px', padding: '0 4px' }}>
-            {['Item name', 'Color/size', 'Ccy', 'Qty', 'Unit price', 'Dom.del', ''].map(h => (
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px 90px auto', gap: '6px', padding: '0 4px' }}>
+            {['Item name', 'Color/size', 'Ccy', 'Qty', 'Unit price', 'Dom.del', 'Total', ''].map(h => (
               <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--tan)' }}>{h}</div>
             ))}
           </div>
           {items.map((item, idx) => (
-            <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px auto', gap: '6px', alignItems: 'center', background: 'var(--beige)', padding: '10px', borderRadius: '10px' }}>
+            <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px 90px auto', gap: '6px', alignItems: 'center', background: 'var(--beige)', padding: '10px', borderRadius: '10px' }}>
               <input style={inputStyle} placeholder="Artist / item name" value={item.name} onChange={e => setItem(idx, 'name', e.target.value)} />
               <input style={inputStyle} placeholder="A5, pink…" value={item.color} onChange={e => setItem(idx, 'color', e.target.value)} />
               <select style={inputStyle} value={item.item_ccy} onChange={e => setItem(idx, 'item_ccy', e.target.value)}>
@@ -296,6 +309,7 @@ export function OrderForm({ fairs, orderId, initial }: {
               <input style={{ ...inputStyle, textAlign: 'center' }} type="number" min="1" value={item.qty} onChange={e => setItem(idx, 'qty', e.target.value)} />
               <input style={inputStyle} type="number" step="1" placeholder="0" value={item.price} onChange={e => setItem(idx, 'price', e.target.value)} />
               <input style={inputStyle} type="number" step="1" placeholder="0" value={item.url} onChange={e => setItem(idx, 'url', e.target.value)} />
+              <input style={{ ...inputStyle, background: item.total ? 'white' : 'rgba(122,92,69,0.04)', fontWeight: item.total ? 500 : 300 }} type="number" step="1" placeholder="auto" value={item.total} onChange={e => setItem(idx, 'total', e.target.value)} />
               <button type="button" onClick={() => removeItem(idx)} disabled={items.length === 1} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '18px', color: 'var(--tan)', background: 'none', border: 'none', cursor: items.length === 1 ? 'default' : 'pointer', opacity: items.length === 1 ? 0.3 : 1, padding: '0 4px' }}>×</button>
             </div>
           ))}

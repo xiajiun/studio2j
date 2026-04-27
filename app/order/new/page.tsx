@@ -76,13 +76,10 @@ export default function CustomerOrderForm() {
               fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
               textDecoration: 'none',
               background: 'var(--dark-blue)', color: 'var(--cream)',
-              padding: '10px 20px', borderRadius: '99px', marginBottom: '12px',
+              padding: '10px 20px', borderRadius: '99px',
             }}>
               Track order {done} →
             </a>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--brown)', background: 'rgba(122,92,69,0.06)', borderRadius: '8px', padding: '10px 14px' }}>
-              💾 <strong style={{ fontWeight: 500 }}>Bookmark this page</strong> — it&apos;s the only way to check your order status. No login required.
-            </div>
           </div>
 
           {/* What happens next */}
