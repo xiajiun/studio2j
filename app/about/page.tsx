@@ -4,8 +4,6 @@ import Link from 'next/link'
 
 export const metadata = { title: 'About Us — Studio2J' }
 
-const PHOTOS = 'https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photo'
-
 export default function AboutPage() {
   return (
     <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
@@ -22,7 +20,7 @@ export default function AboutPage() {
         </Link>
       </div>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 48px 100px' }}>
+      <div style={{ maxWidth: '820px', margin: '0 auto', padding: '80px 48px 100px' }}>
 
         {/* Header */}
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -35,78 +33,47 @@ export default function AboutPage() {
         <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '16px', maxWidth: '620px' }}>
           Studio2J started with late-night voice notes between Seoul and Tokyo. We kept sending each other photos of stationery we&apos;d found — things the other couldn&apos;t get to — and eventually realised we weren&apos;t the only ones who wanted this.
         </p>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '72px', maxWidth: '620px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '64px', maxWidth: '620px' }}>
           We see stationery as a vehicle for memory keeping. Writing with something beautiful, in a notebook that opens flat — it&apos;s a small act of care in a world that moves too fast.
         </p>
 
-        {/* Founders — photo cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }} className="about-grid">
+        {/* Founders */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '64px' }} className="about-grid">
 
           {/* Jin */}
-          <div style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative', aspectRatio: '3/4' }}>
-            <img
-              src={`${PHOTOS}/hello_im_Jin.png`}
-              alt="Jin's workspace in Seoul"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-            {/* Overlay */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(31,20,12,0.85) 0%, rgba(31,20,12,0.1) 50%, transparent 100%)' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.7)', marginBottom: '8px' }}>
-                Co-founder · Seoul 🇰🇷
-              </div>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '8px' }}>Jin</div>
-              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(245,239,230,0.75)', marginBottom: '14px' }}>
-                Finds the hidden gems in Hongdae and Yeonnam. Specialises in Korean character illustration markets and indie brands.
-              </p>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>
-                &ldquo;Stationery is my luxury.&rdquo;
-              </div>
+          <div style={{ background: 'var(--beige)', borderRadius: '20px', padding: '40px', border: '0.5px solid rgba(122,92,69,0.1)' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>
+              Co-founder · Seoul 🇰🇷
+            </div>
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.02em', marginBottom: '6px' }}>Jin</div>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', letterSpacing: '0.04em', marginBottom: '24px' }}>ISTP · Korea curator</div>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '20px' }}>
+              Jin sources from Seoul — from the big platforms like Twenty and 10×10, to the side-street shops in Hongdae and Yeonnam that no foreign site lists. Specialises in Korean character illustration markets and indie brands.
+            </p>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '24px' }}>
+              Views stationery as personal luxury — each piece chosen to recharge, not just to organise.
+            </p>
+            <div style={{ borderTop: '0.5px solid rgba(122,92,69,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--dark-blue)' }}>
+              &ldquo;Stationery is my luxury.&rdquo;
             </div>
           </div>
 
           {/* Jo */}
-          <div style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative', aspectRatio: '3/4' }}>
-            <img
-              src={`${PHOTOS}/IMG_9280.JPG`}
-              alt="Jo's workspace in Tokyo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,20,40,0.88) 0%, rgba(10,20,40,0.1) 50%, transparent 100%)' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.7)', marginBottom: '8px' }}>
-                Co-founder · Tokyo 🇯🇵
-              </div>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '8px' }}>Jo</div>
-              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(245,239,230,0.75)', marginBottom: '14px' }}>
-                Obsessed with paper quality, texture, and the Japanese zakka spirit. Sources from Loft, Hobonichi, and the small shops that don&apos;t have English sites.
-              </p>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>
-                &ldquo;Journaling is my daily ritual.&rdquo;
-              </div>
+          <div style={{ background: 'var(--dark-blue)', borderRadius: '20px', padding: '40px' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.6)', marginBottom: '10px' }}>
+              Co-founder · Tokyo 🇯🇵
             </div>
-          </div>
-        </div>
-
-        {/* Planner spreads */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '72px' }} className="about-grid">
-          <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
-            <img
-              src={`${PHOTOS}/IMG_1765.JPG`}
-              alt="Rollbahn Diary spread with stickers and handwriting"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(1.06) contrast(1.03)' }}
-            />
-          </div>
-          <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
-            <img
-              src={`${PHOTOS}/IMG_1766.JPG`}
-              alt="Hobonichi Techo weekly spread with drawings and plans"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(1.06) contrast(1.03)' }}
-            />
-          </div>
-          <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', padding: '4px 4px 0' }}>
-            <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', fontWeight: 300, color: 'var(--tan)' }}>Rollbahn Diary — Jo&apos;s scrapbooking</span>
-            <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', fontWeight: 300, color: 'var(--tan)' }}>Hobonichi Techo — weekly pages</span>
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '6px' }}>Jo</div>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(200,169,141,0.5)', letterSpacing: '0.04em', marginBottom: '24px' }}>INFJ · Japan curator</div>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(245,239,230,0.65)', marginBottom: '20px' }}>
+              Jo curates from Tokyo — Hobonichi&apos;s Shibuya store, Loft, Sekaido for art supplies, and the smaller stationery shops that live and die by word of mouth. Obsessed with paper texture, notebook structure, and the quiet ritual of Japanese zakka culture.
+            </p>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(245,239,230,0.65)', marginBottom: '24px' }}>
+              Believes daily journaling is not a productivity hack — it&apos;s a way of paying attention.
+            </p>
+            <div style={{ borderTop: '0.5px solid rgba(200,169,141,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--tan)' }}>
+              &ldquo;Journaling is my daily ritual.&rdquo;
+            </div>
           </div>
         </div>
 
