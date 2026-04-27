@@ -148,27 +148,27 @@ export default function Hero({ fairCount, countryCount }: { fairCount?: number; 
           </div>
 
           <HeroCard
-            name="Twenty Korea order"
+            name="Korean illust market drop"
             loc="Proxy buy · Seoul"
-            tags={['stationery', 'region-locked']}
+            tags={['illustration', 'artist popup']}
             chipVariant="open"
             chipLabel="Active"
             delay="0s"
           />
           <HeroCard
-            name="Rakuten artist drop"
+            name="Loft Japan"
             loc="Proxy buy · Tokyo"
-            tags={['illustration', 'limited']}
+            tags={['stationery', 'stickers']}
             chipVariant="open"
             chipLabel="Active"
             delay="0.15s"
           />
           <HeroCard
-            name="Illustration Korea COEX"
-            loc="Fair haul · This week"
+            name="Next Seoul fair haul"
+            loc="Fair haul · Upcoming"
             tags={['illustration', 'in person']}
-            chipVariant="urgent"
-            chipLabel="Going now"
+            chipVariant="open"
+            chipLabel="Watching"
             delay="0.3s"
           />
         </div>
