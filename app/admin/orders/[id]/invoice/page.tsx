@@ -45,7 +45,10 @@ export default async function InvoicePage({
   const isPart2 = type === '2'
 
   // Compute goods from items if goods_total not set
-  const itemsTotal = items.reduce((sum, i) => sum + (i.price ?? 0) * (i.qty ?? 1), 0)
+  const itemsTotal = items.reduce((sum, i) => {
+    if (i.total != null && i.total > 0) return sum + i.total
+    return sum + (i.price ?? 0) * (i.qty ?? 1)
+  }, 0)
   const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
@@ -199,7 +202,7 @@ export default async function InvoicePage({
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.qty}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.price ? item.price.toLocaleString() : '—'}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18', textAlign: 'right' }}>
-                    {item.price && item.qty ? (item.price * item.qty).toLocaleString() : '—'}
+                    {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty).toLocaleString() : '—'}
                   </div>
                 </div>
               )) : (
