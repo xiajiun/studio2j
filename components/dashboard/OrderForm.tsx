@@ -307,9 +307,9 @@ export function OrderForm({ fairs, orderId, initial }: {
                 <option value="JPY">JPY</option>
               </select>
               <input style={{ ...inputStyle, textAlign: 'center' }} type="number" min="1" value={item.qty} onChange={e => setItem(idx, 'qty', e.target.value)} />
-              <input style={inputStyle} type="number" step="1" placeholder="0" value={item.price} onChange={e => setItem(idx, 'price', e.target.value)} />
-              <input style={inputStyle} type="number" step="1" placeholder="0" value={item.url} onChange={e => setItem(idx, 'url', e.target.value)} />
-              <input style={{ ...inputStyle, background: item.total ? 'white' : 'rgba(122,92,69,0.04)', fontWeight: item.total ? 500 : 300 }} type="number" step="1" placeholder="auto" value={item.total} onChange={e => setItem(idx, 'total', e.target.value)} />
+              <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={item.price} onChange={e => setItem(idx, 'price', e.target.value)} />
+              <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={item.url} onChange={e => setItem(idx, 'url', e.target.value)} />
+              <input style={{ ...inputStyle, background: item.total ? 'white' : 'rgba(122,92,69,0.04)', fontWeight: item.total ? 500 : 300 }} type="text" inputMode="decimal" placeholder="auto" value={item.total} onChange={e => setItem(idx, 'total', e.target.value)} />
               <button type="button" onClick={() => removeItem(idx)} disabled={items.length === 1} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '18px', color: 'var(--tan)', background: 'none', border: 'none', cursor: items.length === 1 ? 'default' : 'pointer', opacity: items.length === 1 ? 0.3 : 1, padding: '0 4px' }}>×</button>
             </div>
           ))}
@@ -326,13 +326,13 @@ export function OrderForm({ fairs, orderId, initial }: {
       <Section label="Totals — auto-calculated from items, editable">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
           <Field label="Goods subtotal">
-            <input style={inputStyle} type="number" step="1" value={form.goods_total} onChange={e => set('goods_total', e.target.value)} placeholder="0" />
+            <input style={inputStyle} type="text" inputMode="decimal" value={form.goods_total} onChange={e => set('goods_total', e.target.value)} placeholder="0" />
           </Field>
           <Field label="Handling fee">
-            <input style={inputStyle} type="number" step="1" value={form.service_fee} onChange={e => set('service_fee', e.target.value)} placeholder="0" />
+            <input style={inputStyle} type="text" inputMode="decimal" value={form.service_fee} onChange={e => set('service_fee', e.target.value)} placeholder="0" />
           </Field>
           <Field label="Intl shipping">
-            <input style={inputStyle} type="number" step="1" value={form.shipping_cost} onChange={e => set('shipping_cost', e.target.value)} placeholder="0" />
+            <input style={inputStyle} type="text" inputMode="decimal" value={form.shipping_cost} onChange={e => set('shipping_cost', e.target.value)} placeholder="0" />
           </Field>
         </div>
       </Section>
