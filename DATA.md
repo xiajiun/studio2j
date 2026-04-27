@@ -1,117 +1,185 @@
 # Studio2J — Data
 
-## lib/types.ts
+## Current TypeScript types (`lib/database.types.ts`)
 
 ```ts
-export type FairType = 'illustration' | 'stationery' | 'zine' | 'art' | 'craft'
-export type Region = 'Asia' | 'Europe' | 'North America' | 'Oceania'
-export type DeadlineStatus = 'urgent' | 'soon' | 'open' | 'closed'
+export type OrderStatus =
+  | 'awaiting_payment' | 'paid' | 'going_to_fair' | 'purchased'
+  | 'packing' | 'shipped' | 'delivered' | 'cancelled'
 
-export interface Fair {
+export type OrderKind = 'proxy' | 'fair' | 'personal'
+
+export interface OrderItem {
+  name: string
+  url?: string
+  color?: string          // colour / size variant
+  item_ccy?: 'KRW' | 'JPY'  // per-item origin currency
+  qty: number
+  price: number           // unit price
+}
+
+export interface ShippingAddress {
+  name: string
+  address: string
+  city: string
+  country: string
+  postal_code: string
+  phone?: string
+  instagram?: string
+  payment_method?: 'wise' | 'korea' | 'malaysia' | 'japan'
+}
+
+export interface Order {
+  id: number
+  order_number: string       // 'S2J-0001' format
+  customer_id: string | null
+  customer_email: string
+  customer_name: string | null
+  kind: OrderKind
+  fair_id: number | null
+  source_url: string | null  // legacy — replaced by items[].url
+  title: string              // auto-generated from first item name
+  description: string | null
+  items: OrderItem[] | null
+  goods_total: number | null   // Invoice 1 amount
+  service_fee: number | null   // Invoice 2 partial
+  shipping_cost: number | null // Invoice 2 partial
+  currency: string             // 'KRW' | 'JPY' | 'MYR'
+  status: OrderStatus
+  tracking_number: string | null
+  shipping_address: ShippingAddress | null
+  notes: string | null         // admin-only internal notes
+  customer_notes: string | null  // visible to customer
+  created_at: string
+  updated_at: string
+}
+
+export interface OrderEvent {
+  id: number
+  order_id: number
+  status: OrderStatus
+  note: string | null
+  photo_url: string | null
+  created_at: string
+}
+
+export interface FairRow {
   id: number
   name: string
   city: string
   country: string
-  region: Region
-  date: string          // ISO YYYY-MM-DD
-  deadline: string      // vendor application / Studio2J order deadline
-  types: FairType[]
+  region: string    // 'Asia' | 'Europe' | 'North America' | 'Oceania'
+  date: string      // ISO YYYY-MM-DD
+  deadline: string
+  types: string[]   // 'illustration' | 'stationery' | 'zine' | 'art' | 'craft'
   featured: boolean
-  going: boolean        // Studio2J personally attending
-  notes?: string        // short italic note ("One of our favourite fairs")
+  going: boolean
+  notes: string | null
+  created_at: string
+  updated_at: string
 }
-```
 
-## lib/fairs.ts
+export interface Customer {
+  id: string      // = auth.users.id
+  email: string
+  display_name: string | null
+  instagram: string | null
+  notes: string | null
+  created_at: string
+}
 
-```ts
-import { Fair } from './types'
+export interface Subscriber {
+  id: number
+  email: string
+  source: string | null
+  active: boolean
+  created_at: string
+}
 
-export const FAIRS: Fair[] = [
-  { id: 1,  name: 'Illustration Korea COEX',    city: 'Seoul',       country: 'Korea',     region: 'Asia',          date: '2026-04-25', deadline: '2026-04-22', types: ['illustration','stationery'], featured: true,  going: true,  notes: "We're there this week — order window open" },
-  { id: 2,  name: 'Stationery Fest',             city: 'Austin',      country: 'USA',       region: 'North America', date: '2026-05-02', deadline: '2026-04-25', types: ['stationery','illustration'], featured: true,  going: false },
-  { id: 3,  name: 'BCN Pen & Paper Fest',        city: 'Barcelona',   country: 'Spain',     region: 'Europe',        date: '2026-04-26', deadline: '2026-04-21', types: ['stationery'], featured: false, going: false },
-  { id: 4,  name: 'LA Zine Fest',                city: 'Los Angeles', country: 'USA',       region: 'North America', date: '2026-06-06', deadline: '2026-04-26', types: ['zine'], featured: false, going: false },
-  { id: 5,  name: 'Printfair Melbourne',         city: 'Melbourne',   country: 'Australia', region: 'Oceania',       date: '2026-06-14', deadline: '2026-04-30', types: ['zine','illustration'], featured: false, going: false },
-  { id: 6,  name: 'Hyper Japan Market',          city: 'London',      country: 'UK',        region: 'Europe',        date: '2026-07-10', deadline: '2026-05-01', types: ['illustration','craft'], featured: false, going: false },
-  { id: 7,  name: 'SNAP! Edinburgh',             city: 'Edinburgh',   country: 'UK',        region: 'Europe',        date: '2026-07-04', deadline: '2026-05-15', types: ['zine','illustration'], featured: false, going: false },
-  { id: 8,  name: 'Washi & Paper Expo',          city: 'Osaka',       country: 'Japan',     region: 'Asia',          date: '2026-08-08', deadline: '2026-06-01', types: ['stationery'], featured: true,  going: true,  notes: 'One of our favourite Japan fairs' },
-  { id: 9,  name: "Tokyo Int'l Gift Show",       city: 'Tokyo',       country: 'Japan',     region: 'Asia',          date: '2026-09-02', deadline: '2026-06-15', types: ['stationery','craft'], featured: false, going: true },
-  { id: 10, name: 'Illustrative Berlin',         city: 'Berlin',      country: 'Germany',   region: 'Europe',        date: '2026-09-18', deadline: '2026-06-30', types: ['illustration','art'], featured: false, going: false },
-  { id: 11, name: 'NY Art Book Fair',            city: 'New York',    country: 'USA',       region: 'North America', date: '2026-10-17', deadline: '2026-07-01', types: ['zine','art'], featured: false, going: false },
-  { id: 12, name: 'Grafik Fiera',                city: 'Milan',       country: 'Italy',     region: 'Europe',        date: '2026-10-03', deadline: '2026-07-20', types: ['illustration','art'], featured: false, going: false },
-  { id: 13, name: 'Seoul Illustration Fair',     city: 'Seoul',       country: 'Korea',     region: 'Asia',          date: '2026-11-20', deadline: '2026-08-31', types: ['illustration'], featured: true,  going: true,  notes: 'Our biggest haul event of the year' },
-  { id: 14, name: 'Paper & Pen Tokyo',           city: 'Tokyo',       country: 'Japan',     region: 'Asia',          date: '2026-11-05', deadline: '2026-09-01', types: ['stationery'], featured: false, going: true },
+// Status display
+export const STATUS_LABELS: Record<OrderStatus, string> = {
+  awaiting_payment: 'Awaiting payment',
+  paid:             'Paid',
+  going_to_fair:    'Going to fair',
+  purchased:        'Purchased',
+  packing:          'Packing',
+  shipped:          'Shipped',
+  delivered:        'Delivered',
+  cancelled:        'Cancelled',
+}
+
+// Timeline steps — going_to_fair filtered out for proxy/personal orders
+export const STATUS_ORDER: OrderStatus[] = [
+  'awaiting_payment', 'paid', 'going_to_fair', 'purchased',
+  'packing', 'shipped', 'delivered',
 ]
-
-export function getDeadlineStatus(deadline: string, today = new Date()): DeadlineStatus {
-  const diff = (new Date(deadline).getTime() - today.getTime()) / 86400000
-  if (diff < 0) return 'closed'
-  if (diff <= 7) return 'urgent'
-  if (diff <= 30) return 'soon'
-  return 'open'
-}
-
-export function getDeadlineLabel(deadline: string, today = new Date()): string {
-  const diff = (new Date(deadline).getTime() - today.getTime()) / 86400000
-  if (diff < 0) return 'Passed'
-  if (diff <= 7) return `${Math.ceil(diff)}d left`
-  if (diff <= 30) return `${Math.ceil(diff)} days`
-  return 'Open'
-}
-
-export function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-}
 ```
 
 ---
 
-## Filter logic (for FairTracker component)
+## Database tables (Supabase)
 
-The tracker supports 6 views (pill buttons):
+- `orders` — main order table. `order_number` uses a dedicated sequence `order_number_seq`
+- `order_events` — timeline entries (status + note + photo_url per step)
+- `customers` — created on first magic link click; linked to `auth.users`
+- `fairs` — managed via `/admin/fairs`; seeded from `lib/fairs.ts` static data
+- `subscribers` — email signups from homepage fair tracker
 
-| View        | Filter                                            |
-|-------------|---------------------------------------------------|
-| `upcoming`  | Fair date >= today                                |
-| `going`     | `fair.going === true`                             |
-| `deadline`  | Deadline in future (diff >= 0)                    |
-| `saved`     | ID in localStorage `s2j-saved` array              |
-| `asia`      | `fair.region === 'Asia'`                          |
-| `europe`    | `fair.region === 'Europe'`                        |
+**Order number sequence fix** (run in Supabase SQL editor if numbers skip):
+```sql
+CREATE SEQUENCE IF NOT EXISTS order_number_seq START WITH 1;
+ALTER TABLE orders ALTER COLUMN order_number
+  SET DEFAULT ('S2J-' || lpad(nextval('order_number_seq')::text, 4, '0'));
+```
 
-Plus a free-text search (matches `name`, `city`, or `country` case-insensitively).
-
-After filtering, fairs are sorted by date ascending and grouped by month using a "Month YYYY" header with a hairline divider.
+**Reset all orders for fresh start:**
+```sql
+TRUNCATE order_events, orders RESTART IDENTITY CASCADE;
+DROP SEQUENCE IF EXISTS order_number_seq;
+CREATE SEQUENCE order_number_seq START WITH 1;
+ALTER TABLE orders ALTER COLUMN order_number
+  SET DEFAULT ('S2J-' || lpad(nextval('order_number_seq')::text, 4, '0'));
+```
 
 ---
 
-## Stats computed above tracker
+## Payment methods
 
-```ts
-const totalFairs = FAIRS.length
-const countries  = new Set(FAIRS.map(f => f.country)).size
-const deadlinesSoon = FAIRS.filter(f => {
-  const diff = (new Date(f.deadline).getTime() - Date.now()) / 86400000
-  return diff >= 0 && diff <= 30
-}).length
-```
-
-These display as three stats above the tracker with Fraunces 48px numbers.
+| Value | Bank | Details |
+|-------|------|---------|
+| `wise` | Wise | wise.com/pay/me/keweih6 |
+| `korea` | Shinhan Bank | LAU XIA JIUN · 110-437-478592 · Swift SHBKKRSE · TEL 01029838831 |
+| `malaysia` | Maybank | HO KE WEI · 1624 3302 2400 |
+| `japan` | Yuucho Bank (9900) | Branch 038 · ホカウェイ · 普通 Futsuu · 8992079 |
 
 ---
 
-## Email subscription (temporary localStorage)
+## Order flow
 
-```ts
-// TODO: migrate to Beehiiv or Resend in production
-function subscribe(email: string) {
-  try {
-    const subs = JSON.parse(localStorage.getItem('s2j-subs') || '[]')
-    if (!subs.includes(email)) subs.push(email)
-    localStorage.setItem('s2j-subs', JSON.stringify(subs))
-  } catch {}
-}
-```
+1. Customer submits `/order/new` → POST `/api/orders` → order created (status: `awaiting_payment`) → admin emailed via Resend
+2. Admin reviews → fills in item prices → generates **Invoice 1** (`?type=1`) → sends tracking link
+3. Customer pays Invoice 1 → admin marks `paid` → goes to buy items
+4. Admin buys items → marks `purchased`, then `packing`
+5. Admin fills in service_fee + shipping_cost → generates **Invoice 2** (`?type=2`) → sends
+6. Customer pays Invoice 2 → admin ships → marks `shipped`, then `delivered`
 
-Button flashes "Subscribed ✓" for 3 seconds, then resets.
+---
+
+## Static fairs fallback (`lib/fairs.ts`)
+
+14 fairs used when Supabase `fairs` table is empty. Homepage `/` fetches from Supabase first; falls back to static data. Admin can seed via "Import default fairs" button at `/admin/fairs`.
+
+---
+
+## Filter logic (FairTracker)
+
+| View | Filter |
+|------|--------|
+| `upcoming` | Fair date >= today |
+| `going` | `fair.going === true` |
+| `deadline` | Deadline in future |
+| `saved` | ID in localStorage `s2j-saved` |
+| `asia` | region === 'Asia' |
+| `europe` | region === 'Europe' |
+
+Plus free-text search matching name, city, or country. Results sorted by date ascending, grouped by month.
