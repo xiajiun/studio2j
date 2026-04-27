@@ -294,8 +294,9 @@ export default async function InvoicePage({
       <style>{`
         @media print {
           .no-print { display: none !important; }
-          .no-print-bg { background: white !important; padding: 0 !important; }
+          .no-print-bg { background: white !important; padding: 0 !important; min-height: 0 !important; height: auto !important; }
           #invoice { box-shadow: none !important; border-radius: 0 !important; max-width: 100% !important; margin: 0 !important; }
+          body { background: white !important; }
         }
       `}</style>
     </>

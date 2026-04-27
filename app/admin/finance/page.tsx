@@ -1,6 +1,7 @@
 export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import type { Order } from '@/lib/database.types'
 import Link from 'next/link'
 
@@ -49,11 +50,17 @@ function addToGroup(map: Map<string, GroupRow>, key: string, o: Order) {
 
 export default async function FinancePage() {
   const supabase = createClient()
-  const { data } = await supabase
-    .from('orders')
-    .select('*')
-    .neq('status', 'cancelled')
-    .order('created_at', { ascending: false })
+  const user     = await getUser()
+  const email    = user?.email ?? ''
+
+  // Jo sees only JPY (Japan), Jin sees only KRW (Korea), shared email sees all
+  const currencies =
+    email === 'jovynkw@gmail.com'   ? ['JPY'] :
+    email === 'xiajiun21@gmail.com' ? ['KRW'] : null
+
+  let query = supabase.from('orders').select('*').neq('status', 'cancelled').order('created_at', { ascending: false })
+  if (currencies) query = query.in('currency', currencies)
+  const { data } = await query
 
   const orders = (data ?? []) as Order[]
 
