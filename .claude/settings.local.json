@@ -31,7 +31,8 @@
       "Read(//private/tmp/**)",
       "WebFetch(domain:twenty.style)",
       "Bash(curl -s \"https://twenty.style/list/openMarket\")",
-      "WebFetch(domain:sites.google.com)"
+      "WebFetch(domain:sites.google.com)",
+      "Bash(curl -s \"https://sites.google.com/view/studio2j/about-us\")"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order"

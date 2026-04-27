@@ -4,6 +4,8 @@ import Link from 'next/link'
 
 export const metadata = { title: 'About Us — Studio2J' }
 
+const PHOTOS = 'https://hclclmdfcswdrdpqtyyl.supabase.co/storage/v1/object/public/photos'
+
 export default function AboutPage() {
   return (
     <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
@@ -15,123 +17,113 @@ export default function AboutPage() {
             Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
           </span>
         </Link>
-        <Link href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, padding: '10px 22px', borderRadius: '99px', textDecoration: 'none', letterSpacing: '0.03em' }}>
+        <Link href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, padding: '10px 22px', borderRadius: '99px', textDecoration: 'none' }}>
           Place an order
         </Link>
       </div>
 
-      <div style={{ maxWidth: '820px', margin: '0 auto', padding: '80px 48px 100px' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 48px 100px' }}>
 
         {/* Header */}
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '14px' }}>
           <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
           About us
         </div>
-        <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 64px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '32px' }}>
+        <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 64px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '28px' }}>
           Two friends,<br />one <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>studio</em>.
         </h1>
         <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '16px', maxWidth: '620px' }}>
-          Studio2J started with late-night voice notes between Seoul and Tokyo. We kept sending each other photos of stationery we'd found — things the other couldn't get to easily — and eventually realised we weren't the only ones who wanted this.
+          Studio2J started with late-night voice notes between Seoul and Tokyo. We kept sending each other photos of stationery we&apos;d found — things the other couldn&apos;t get to — and eventually realised we weren&apos;t the only ones who wanted this.
         </p>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '64px', maxWidth: '620px' }}>
-          We see stationery as a vehicle for memory keeping. Writing with something beautiful, in a notebook that opens flat, on paper that holds ink just right — it's a small act of care in a world that moves too fast. We wanted to make that accessible to anyone, wherever they are.
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '72px', maxWidth: '620px' }}>
+          We see stationery as a vehicle for memory keeping. Writing with something beautiful, in a notebook that opens flat — it&apos;s a small act of care in a world that moves too fast.
         </p>
 
-        {/* Founders */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '64px' }} className="about-grid">
+        {/* Founders — photo cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }} className="about-grid">
 
           {/* Jin */}
-          <div style={{ background: 'var(--beige)', borderRadius: '20px', padding: '40px', border: '0.5px solid rgba(122,92,69,0.1)' }}>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>
-              Co-founder · Seoul 🇰🇷
-            </div>
-            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.02em', marginBottom: '6px' }}>Jin</div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', letterSpacing: '0.04em', marginBottom: '24px' }}>ISTP · Korea curator</div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '20px' }}>
-              Jin sources from Seoul — from the big platforms like Twenty and 10×10, to the side-street shops in Hongdae and Yeonnam that no foreign site lists. Specialises in Korean character illustration markets and indie brands.
-            </p>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '24px' }}>
-              Views stationery as personal luxury — each piece chosen to recharge, not just to organise.
-            </p>
-            <div style={{ borderTop: '0.5px solid rgba(122,92,69,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--dark-blue)' }}>
-              &ldquo;Stationery is my luxury.&rdquo;
+          <div style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative', aspectRatio: '3/4' }}>
+            <img
+              src={`${PHOTOS}/jin-room.jpg`}
+              alt="Jin's workspace in Seoul"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+            {/* Overlay */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(31,20,12,0.85) 0%, rgba(31,20,12,0.1) 50%, transparent 100%)' }} />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.7)', marginBottom: '8px' }}>
+                Co-founder · Seoul 🇰🇷
+              </div>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '8px' }}>Jin</div>
+              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(245,239,230,0.75)', marginBottom: '14px' }}>
+                Finds the hidden gems in Hongdae and Yeonnam. Specialises in Korean character illustration markets and indie brands.
+              </p>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>
+                &ldquo;Stationery is my luxury.&rdquo;
+              </div>
             </div>
           </div>
 
           {/* Jo */}
-          <div style={{ background: 'var(--dark-blue)', borderRadius: '20px', padding: '40px' }}>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.6)', marginBottom: '10px' }}>
-              Co-founder · Tokyo 🇯🇵
+          <div style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative', aspectRatio: '3/4' }}>
+            <img
+              src={`${PHOTOS}/jo-desk.jpg`}
+              alt="Jo's workspace in Tokyo"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,20,40,0.88) 0%, rgba(10,20,40,0.1) 50%, transparent 100%)' }} />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.7)', marginBottom: '8px' }}>
+                Co-founder · Tokyo 🇯🇵
+              </div>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '8px' }}>Jo</div>
+              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(245,239,230,0.75)', marginBottom: '14px' }}>
+                Obsessed with paper quality, texture, and the Japanese zakka spirit. Sources from Loft, Hobonichi, and the small shops that don&apos;t have English sites.
+              </p>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>
+                &ldquo;Journaling is my daily ritual.&rdquo;
+              </div>
             </div>
-            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '6px' }}>Jo</div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(200,169,141,0.5)', letterSpacing: '0.04em', marginBottom: '24px' }}>INFJ · Japan curator</div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(245,239,230,0.65)', marginBottom: '20px' }}>
-              Jo curates from Tokyo — Hobonichi's Shibuya store, Loft, Sekaido for art supplies, and the smaller stationery shops that live and die by word of mouth. Obsessed with paper texture, notebook structure, and the quiet ritual of Japanese zakka culture.
-            </p>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(245,239,230,0.65)', marginBottom: '24px' }}>
-              Believes daily journaling is not a productivity hack — it's a way of paying attention.
-            </p>
-            <div style={{ borderTop: '0.5px solid rgba(200,169,141,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--tan)' }}>
-              &ldquo;Journaling is my daily ritual.&rdquo;
-            </div>
+          </div>
+        </div>
+
+        {/* Planner spreads */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '72px' }} className="about-grid">
+          <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
+            <img
+              src={`${PHOTOS}/rollbahn.jpg`}
+              alt="Rollbahn Diary spread with stickers and handwriting"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(1.06) contrast(1.03)' }}
+            />
+          </div>
+          <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
+            <img
+              src={`${PHOTOS}/hobonichi.jpg`}
+              alt="Hobonichi Techo weekly spread with drawings and plans"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(1.06) contrast(1.03)' }}
+            />
+          </div>
+          <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', padding: '4px 4px 0' }}>
+            <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', fontWeight: 300, color: 'var(--tan)' }}>Rollbahn Diary — Jo&apos;s scrapbooking</span>
+            <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', fontWeight: 300, color: 'var(--tan)' }}>Hobonichi Techo — weekly pages</span>
           </div>
         </div>
 
         {/* Values */}
         <div style={{ marginBottom: '64px' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '24px' }}>What we believe</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-            {[
-              { num: '01', text: 'Writing with beautiful tools is a radical act of self-care in a digital world.' },
-              { num: '02', text: 'A well-made notebook opens flat, feels right in the hand, and changes how you think on the page.' },
-              { num: '03', text: 'The best stationery doesn\'t announce itself — it just works, beautifully, every day.' },
-              { num: '04', text: 'Korean and Japanese makers produce some of the finest paper goods in the world. More people should have access to them.' },
-            ].map(({ num, text }) => (
-              <div key={num} style={{ display: 'flex', gap: '24px', padding: '24px 0', borderBottom: '0.5px solid rgba(122,92,69,0.1)', alignItems: 'flex-start' }}>
-                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '20px', color: 'var(--tan)', flexShrink: 0, width: '32px' }}>{num}</div>
-                <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: 1.75, color: 'var(--brown)' }}>{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Planner photos */}
-        <div style={{ marginBottom: '64px' }}>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px' }}>
-            What we journal in
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }} className="about-photos">
-            {[
-              {
-                src: 'https://lh3.googleusercontent.com/sitesv/AA5AbUDXAeJOsM9vHjmFCgdB2R9dgHH7Pl-SlZguqSMebdkvP849GIXSG5dpqQ3RDc_blaph_T5EYKeDMoeeGyul746lC9wVjTzLD29QPpPV3ccHbnnml5nyn9Tdtr3636PwLTnyQO1drd22ys-Hqg7Qs7IkQfslZkVF0L3NJ-SkUvh8I_s-znrDSaqKRFli4JMmp4VR1SowIOUpfCwiqUYd43uaPAy_bLgHygi4eQc=w1280',
-                alt: 'Rollbahn Diary — open pages with stickers and washi tape',
-                caption: 'Rollbahn Diary',
-              },
-              {
-                src: 'https://lh3.googleusercontent.com/sitesv/AA5AbUCO5XbWnfNAQDNxZSa9e3yXQLiiIfLEOmXxeYdNEqBVQYDA6ll0cGBh9MZ-ISvLwdK8QhhXh9fXuuCBXpLxa9qObPbny5f-0ebiKv1GTwRS7iCj2_ngwEKdl7vwNVEB-eDpVYY2tdoqkNc8dugEUQSw9BsXrDVUgQkIq-AuvPDEUUghbXVckGvQYxeVP1IArB7hnY0DPkdk9IgUs9COpmX1OEmHlo3MCQDy=w1280',
-                alt: 'Hobonichi Techo — handwritten journal pages',
-                caption: 'Hobonichi Techo',
-              },
-              {
-                src: 'https://lh3.googleusercontent.com/sitesv/AA5AbUDRbkIS8h1MN6G1Pq1nQZ1LkyXLoCzb4KSDZw0ZZ5dV6eT1wS1GHijMUkcxcMp4l0kFs9co3Czpivd6tKibN76rOmgwCgdKrzN_pM4uD6T9qPEsOfYSwcKMVVUBFZiB6LW75bJ0DTSahkKK553n7-pgdCbtGGnQ7oVf8TPw72JuRgP0P3izq2pt5ezFEs1_-xsq3wC-SZmP47Yed6BYgeFYTfMFRo45GyiyhoU=w1280',
-                alt: 'Hobonichi planner — daily pages with handwriting and drawings',
-                caption: 'Hobonichi — daily pages',
-              },
-            ].map(({ src, alt, caption }) => (
-              <div key={caption}>
-                <div style={{ borderRadius: '14px', overflow: 'hidden', aspectRatio: '4/3', marginBottom: '10px', background: 'var(--beige)' }}>
-                  <img
-                    src={src}
-                    alt={alt}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(1.08) contrast(1.04)' }}
-                  />
-                </div>
-                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', fontWeight: 300, color: 'var(--tan)' }}>
-                  {caption}
-                </div>
-              </div>
-            ))}
-          </div>
+          {[
+            { num: '01', text: 'Writing with beautiful tools is a radical act of self-care in a digital world.' },
+            { num: '02', text: 'A well-made notebook opens flat, feels right in the hand, and changes how you think on the page.' },
+            { num: '03', text: 'Korean and Japanese makers produce some of the finest paper goods in the world. More people should have access to them.' },
+            { num: '04', text: 'Every order is handled personally. Every parcel leaves with a handwritten note. Care, not corporate.' },
+          ].map(({ num, text }) => (
+            <div key={num} style={{ display: 'flex', gap: '24px', padding: '20px 0', borderBottom: '0.5px solid rgba(122,92,69,0.1)', alignItems: 'flex-start' }}>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--tan)', flexShrink: 0, width: '28px' }}>{num}</div>
+              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: 1.75, color: 'var(--brown)' }}>{text}</p>
+            </div>
+          ))}
         </div>
 
         {/* CTAs */}
@@ -145,7 +137,6 @@ export default function AboutPage() {
         </div>
 
       </div>
-
     </main>
   )
 }
