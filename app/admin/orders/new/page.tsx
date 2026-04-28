@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { OrderForm } from '@/components/dashboard/OrderForm'
 import Link from 'next/link'
 import type { FairRow } from '@/lib/database.types'

@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { AddFairButton, SeedFairsButton } from '@/components/dashboard/FairForm'
 import { DeleteFairButton } from './FairActions'
 import { EditFairButton } from '@/components/dashboard/FairForm'

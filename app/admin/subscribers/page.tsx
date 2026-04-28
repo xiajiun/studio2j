@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { GmailDraftButton } from '@/components/dashboard/GmailDraftButton'
 import type { Subscriber } from '@/lib/database.types'
 
