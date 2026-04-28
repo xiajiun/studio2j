@@ -13,14 +13,16 @@ const inputStyle: React.CSSProperties = {
 }
 
 const ALL_STATUSES: { value: OrderStatus; label: string }[] = [
-  { value: 'awaiting_payment', label: 'Awaiting payment' },
-  { value: 'paid',             label: 'Paid' },
-  { value: 'going_to_fair',    label: 'Going to fair' },
-  { value: 'purchased',        label: 'Purchased' },
-  { value: 'packing',          label: 'Packing' },
-  { value: 'shipped',          label: 'Shipped' },
-  { value: 'delivered',        label: 'Delivered' },
-  { value: 'cancelled',        label: 'Cancelled' },
+  { value: 'awaiting_payment',   label: 'Awaiting payment' },
+  { value: 'paid',               label: 'Paid' },
+  { value: 'going_to_fair',      label: 'Going to fair' },
+  { value: 'purchased',          label: 'Purchased' },
+  { value: 'packing',            label: 'Packing' },
+  { value: 'awaiting_payment_2', label: 'Awaiting final payment' },
+  { value: 'paid_2',             label: 'Final payment confirmed' },
+  { value: 'shipped',            label: 'Shipped' },
+  { value: 'delivered',          label: 'Delivered' },
+  { value: 'cancelled',          label: 'Cancelled' },
 ]
 
 type ItemRow = { name: string; color: string; item_ccy: string; qty: string; price: string; dom_del: string; total: string }

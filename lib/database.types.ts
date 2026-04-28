@@ -4,6 +4,8 @@ export type OrderStatus =
   | 'going_to_fair'
   | 'purchased'
   | 'packing'
+  | 'awaiting_payment_2'
+  | 'paid_2'
   | 'shipped'
   | 'delivered'
   | 'cancelled'
@@ -110,14 +112,16 @@ export interface Subscriber {
 }
 
 export const STATUS_LABELS: Record<OrderStatus, string> = {
-  awaiting_payment: 'Awaiting payment',
-  paid:             'Paid',
-  going_to_fair:    'Going to fair',
-  purchased:        'Purchased',
-  packing:          'Packing',
-  shipped:          'Shipped',
-  delivered:        'Delivered',
-  cancelled:        'Cancelled',
+  awaiting_payment:   'Awaiting payment',
+  paid:               'Paid',
+  going_to_fair:      'Going to fair',
+  purchased:          'Purchased',
+  packing:            'Packing',
+  awaiting_payment_2: 'Awaiting final payment',
+  paid_2:             'Final payment confirmed',
+  shipped:            'Shipped',
+  delivered:          'Delivered',
+  cancelled:          'Cancelled',
 }
 
 export const STATUS_ORDER: OrderStatus[] = [
@@ -126,6 +130,8 @@ export const STATUS_ORDER: OrderStatus[] = [
   'going_to_fair',
   'purchased',
   'packing',
+  'awaiting_payment_2',
+  'paid_2',
   'shipped',
   'delivered',
 ]

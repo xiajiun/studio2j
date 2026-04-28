@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Order, OrderEvent, FairRow } from '@/lib/database.types'
 import { AddEventForm } from './AddEventForm'
+import { ShippedEmailButton } from '@/components/dashboard/ShippedEmailButton'
 
 export default async function AdminOrderDetail({ params }: { params: { id: string } }) {
   const supabase = createClient()
@@ -44,6 +45,17 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
         <Link href={`/admin/orders/${o.id}/invoice?type=1`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>🧾 Invoice 1 (items) ↗</Link>
         <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
         <Link href={`/admin/orders/${o.id}/invoice?type=2`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>🧾 Invoice 2 (fee+ship) ↗</Link>
+        {o.tracking_number && (
+          <>
+            <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+            <ShippedEmailButton
+              customerEmail={o.customer_email}
+              customerName={o.customer_name}
+              orderNumber={o.order_number}
+              trackingNumber={o.tracking_number}
+            />
+          </>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
