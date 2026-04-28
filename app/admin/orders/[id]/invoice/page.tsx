@@ -35,7 +35,10 @@ export default async function InvoicePage({
   const { data: order } = await supabase.from('orders').select('*').eq('id', params.id).single()
   if (!order) notFound()
 
-  const o      = order as Order
+  const o    = order as Order
+  const fair = o.fair_id
+    ? (await supabase.from('fairs').select('name, date').eq('id', o.fair_id).single()).data
+    : null
   const items  = (o.items ?? []) as OrderItem[]
   const addr   = o.shipping_address as ShippingAddress | null
   const ccy    = o.currency ?? 'KRW'
@@ -184,6 +187,8 @@ export default async function InvoicePage({
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Order details</div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 2 }}>
+                  <span style={{ color: '#4B372A', fontWeight: 500 }}>Type</span> {o.kind === 'proxy' ? 'Proxy buy' : o.kind === 'fair' ? 'Fair haul' : 'Personal request'}<br />
+                  {fair && <><span style={{ color: '#4B372A', fontWeight: 500 }}>Fair</span> {fair.name} · {new Date(fair.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}<br /></>}
                   <span style={{ color: '#4B372A', fontWeight: 500 }}>Currency</span> {ccy}<br />
                   <span style={{ color: '#4B372A', fontWeight: 500 }}>Payment</span> {payInfo.label}
                 </div>
