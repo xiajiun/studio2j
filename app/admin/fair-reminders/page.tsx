@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 
 interface ReminderRow {
   id: number
@@ -17,7 +17,7 @@ function fmtDate(d: string) {
 }
 
 export default async function FairRemindersPage() {
-  const supabase = createClient()
+  const supabase = createServiceClient()
   const { data } = await supabase
     .from('fair_reminders')
     .select('*')
