@@ -133,8 +133,11 @@ export default async function CustomerInvoicePage({
                 </div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.7 }}>
                   {o.customer_email}
-                  {addr?.phone && <><br />{addr.phone}</>}
-                  {addr?.country && <><br />{addr.country}</>}
+                  {addr?.phone     && <><br />{addr.phone}</>}
+                  {addr?.instagram && <><br />@{addr.instagram}</>}
+                  {addr?.address   && <><br />{addr.address}</>}
+                  {(addr?.city || addr?.postal_code) && <><br />{[addr.city, addr.postal_code].filter(Boolean).join('  ')}</>}
+                  {addr?.country   && <><br />{addr.country}</>}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -221,6 +224,16 @@ export default async function CustomerInvoicePage({
                 <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.7, margin: 0 }}>{o.customer_notes}</p>
               </div>
             )}
+
+            <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Check your order status anytime — no login required.</div>
+              </div>
+              <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(31,58,95,0.2)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                Track order {o.order_number} →
+              </a>
+            </div>
 
             <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '0.5px solid #ede7de', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '13px', fontStyle: 'italic', color: '#C8A98D' }}>Studio<em>2J</em> — Seoul &amp; Tokyo</div>

@@ -29,7 +29,7 @@ export default async function InvoicePage({
   searchParams,
 }: {
   params: { id: string }
-  searchParams: { type?: string; paid?: string }
+  searchParams: { type?: string }
 }) {
   const supabase = createClient()
   const { data: order } = await supabase.from('orders').select('*').eq('id', params.id).single()
@@ -40,7 +40,7 @@ export default async function InvoicePage({
   const addr   = o.shipping_address as ShippingAddress | null
   const ccy    = o.currency ?? 'KRW'
   const type      = searchParams.type
-  const itemsPaid = searchParams.paid !== '0' // default: paid
+  const itemsPaid = !!(o.paid_1_amount && o.paid_1_amount > 0)
 
   const isPart1 = type === '1'
   const isPart2 = type === '2'
@@ -109,15 +109,13 @@ export default async function InvoicePage({
               border: `0.5px solid ${type === t ? 'var(--dark-blue)' : 'rgba(122,92,69,0.2)'}`,
             }}>{label}</a>
           ))}
-          {/* Part 1 paid toggle — only shown on Part 2 */}
           {isPart2 && (
-            <a href={`/admin/orders/${params.id}/invoice?type=2&paid=${itemsPaid ? '0' : '1'}`} style={{
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400,
-              padding: '8px 14px', borderRadius: '99px', textDecoration: 'none',
+            <span style={{
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
+              padding: '8px 14px', borderRadius: '99px',
               background: itemsPaid ? '#D5E8D8' : '#F5DDD5',
               color: itemsPaid ? '#2A5C35' : '#8A3A20',
-              border: `0.5px solid ${itemsPaid ? 'rgba(42,92,53,0.25)' : 'rgba(138,58,32,0.25)'}`,
-            }}>Part 1: {itemsPaid ? 'Paid ✓' : 'Unpaid'}</a>
+            }}>Part 1: {itemsPaid ? 'Paid ✓' : 'Unpaid'}</span>
           )}
         </div>
         <GmailDraftButton
@@ -187,7 +185,6 @@ export default async function InvoicePage({
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Order details</div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 2 }}>
                   <span style={{ color: '#4B372A', fontWeight: 500 }}>Currency</span> {ccy}<br />
-                  <span style={{ color: '#4B372A', fontWeight: 500 }}>Type</span> {o.kind === 'proxy' ? 'Proxy buy' : o.kind === 'fair' ? 'Fair haul' : 'Personal request'}<br />
                   <span style={{ color: '#4B372A', fontWeight: 500 }}>Payment</span> {payInfo.label}
                 </div>
               </div>
