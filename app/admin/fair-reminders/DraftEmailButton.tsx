@@ -13,15 +13,15 @@ export function DraftEmailButton({ fairName, fairDate, fairDeadline, emails }: {
   emails: string[]
 }) {
   const subject = `${fairName} is coming up — order with Studio2J`
-  const body = `Hi there,
+  const body = `Dear there,
 
 You saved ${fairName} on Studio2J's fair tracker.
 
-📅 ${fmtDate(fairDate)}${fairDeadline ? `\n🗓 Order deadline: ${fmtDate(fairDeadline)}` : ''}
+Date: ${fmtDate(fairDate)}${fairDeadline ? `\nOrder deadline: ${fmtDate(fairDeadline)}` : ''}
 
-We'll be picking up items at the fair! If you'd like us to get something for you, place your order before the deadline.
+We will be picking up items at the fair! If you would like us to get something for you, please place your order before the deadline.
 
-→ Place an order: https://studio2j.pages.dev/order/new
+Place an order: https://studio2j.pages.dev/order/new
 
 Questions? DM us @studio2j25 on Instagram or reply to this email.`
 

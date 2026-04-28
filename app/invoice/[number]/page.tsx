@@ -2,67 +2,59 @@ export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
+import { PrintButton } from '@/app/admin/orders/[id]/invoice/PrintButton'
 import type { Order, OrderItem, ShippingAddress } from '@/lib/database.types'
-import { PrintButton } from './PrintButton'
-import { GmailDraftButton } from '@/components/dashboard/GmailDraftButton'
-
-export async function generateMetadata({ params, searchParams }: { params: { id: string }; searchParams: { type?: string } }) {
-  const supabase = createClient()
-  const { data } = await supabase.from('orders').select('order_number').eq('id', params.id).single()
-  const part = searchParams.type === '1' ? ' — Part 1 (Procurement)' : searchParams.type === '2' ? ' — Part 2 (Final)' : ''
-  return { title: `Studio2J Invoice ${data?.order_number ?? ''}${part}` }
-}
 
 const PAYMENT = {
   wise:     { label: 'Wise (international)', lines: [], link: 'https://wise.com/pay/me/keweih6' },
   korea:    { label: 'Bank Transfer — South Korea', lines: ['Shinhan Bank', 'LAU XIA JIUN', '110-437-478592', 'Swift: SHBKKRSE · TEL: 01029838831'] },
   malaysia: { label: 'Bank Transfer — Malaysia',     lines: ['Maybank', 'HO KE WEI', '1624 3302 2400'] },
-  japan:    { label: 'Bank Transfer — Japan',         lines: ['Yuucho Bank (9900)', 'Branch: 038', 'ホカウェイ', '普通 Futsuu Savings · 8992079'] },
+  japan:    { label: 'Bank Transfer — Japan',         lines: ['Yuucho Bank (9900)', 'Branch: 038', 'HO KE WEI', 'Futsuu Savings · 8992079'] },
 }
 
 function fmtDate(d: string) {
   return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-export default async function InvoicePage({
+export default async function CustomerInvoicePage({
   params,
   searchParams,
 }: {
-  params: { id: string }
-  searchParams: { type?: string; paid?: string }
+  params: { number: string }
+  searchParams: { type?: string }
 }) {
   const supabase = createClient()
-  const { data: order } = await supabase.from('orders').select('*').eq('id', params.id).single()
+  const { data: order } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('order_number', params.number)
+    .single()
+
   if (!order) notFound()
 
   const o      = order as Order
   const items  = (o.items ?? []) as OrderItem[]
   const addr   = o.shipping_address as ShippingAddress | null
   const ccy    = o.currency ?? 'KRW'
-  const type      = searchParams.type
-  const itemsPaid = searchParams.paid !== '0' // default: paid
+  const type   = searchParams.type
 
   const isPart1 = type === '1'
   const isPart2 = type === '2'
 
   const hasDomDel  = items.some(i => (i.dom_del ?? 0) > 0)
-
-  // Compute goods from items if goods_total not set
   const itemsTotal = items.reduce((sum, i) => {
     if (i.total != null && i.total > 0) return sum + i.total
     return sum + (i.price ?? 0) * (i.qty ?? 1) + (i.dom_del ?? 0)
   }, 0)
+
   const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
 
-  // Part 1: items only.
-  // Part 2: fee + shipping (if Part 1 paid) OR goods + fee + shipping (if Part 1 unpaid).
-  // Default: full total.
   const grandTotal = isPart1
     ? goods
     : isPart2
-    ? (itemsPaid ? fee + ship : goods + fee + ship)
+    ? fee + ship
     : goods + fee + ship
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT
@@ -95,13 +87,9 @@ export default async function InvoicePage({
             {invoiceLabel}
           </span>
         </span>
-        {/* Type switcher */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          {[
-            { label: 'Part 1 · Items', t: '1' },
-            { label: 'Part 2 · Fee+Ship', t: '2' },
-          ].map(({ label, t }) => (
-            <a key={t} href={`/admin/orders/${params.id}/invoice?type=${t}`} style={{
+        <div style={{ display: 'flex', gap: '6px' }}>
+          {[{ label: 'Invoice 1', t: '1' }, { label: 'Invoice 2', t: '2' }].map(({ label, t }) => (
+            <a key={t} href={`/invoice/${params.number}?type=${t}`} style={{
               fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: type === t ? 500 : 300,
               padding: '8px 16px', borderRadius: '99px', textDecoration: 'none',
               background: type === t ? 'var(--dark-blue)' : 'white',
@@ -109,44 +97,17 @@ export default async function InvoicePage({
               border: `0.5px solid ${type === t ? 'var(--dark-blue)' : 'rgba(122,92,69,0.2)'}`,
             }}>{label}</a>
           ))}
-          {/* Part 1 paid toggle — only shown on Part 2 */}
-          {isPart2 && (
-            <a href={`/admin/orders/${params.id}/invoice?type=2&paid=${itemsPaid ? '0' : '1'}`} style={{
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400,
-              padding: '8px 14px', borderRadius: '99px', textDecoration: 'none',
-              background: itemsPaid ? '#D5E8D8' : '#F5DDD5',
-              color: itemsPaid ? '#2A5C35' : '#8A3A20',
-              border: `0.5px solid ${itemsPaid ? 'rgba(42,92,53,0.25)' : 'rgba(138,58,32,0.25)'}`,
-            }}>Part 1: {itemsPaid ? 'Paid ✓' : 'Unpaid'}</a>
-          )}
         </div>
-        <GmailDraftButton
-          to={o.customer_email}
-          subject={`Studio2J ${invoiceLabel} — ${o.order_number}`}
-          body={`Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nThank you so much for shopping with Studio2J! We have reviewed your order.\n\nPlease find your official ${isPart1 ? 'quotation' : 'invoice'} attached. This PDF includes your full price breakdown, shipping estimate, and payment instructions.\n\nAmount due: ${grandTotal.toLocaleString()} ${ccy}\n\nView and download your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}?type=${type ?? '1'}\n\nNext steps: Please reply to this email with a screenshot of your payment. We will proceed once the payment is received.\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
-          label="Email customer"
-        />
         <PrintButton />
-        <a href={`/admin/orders/${params.id}`} style={{
-          fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
-          color: 'var(--brown)', textDecoration: 'none',
-          border: '0.5px solid rgba(122,92,69,0.2)', padding: '9px 20px', borderRadius: '99px', background: 'white',
-        }}>← Back</a>
       </div>
 
-      {/* Invoice body */}
+      {/* Invoice body — identical layout to admin invoice */}
       <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }} className="no-print-bg">
         <div id="invoice" style={{
-          maxWidth: '720px', margin: '0 auto',
-          background: 'white',
-          boxShadow: '0 4px 40px rgba(31,58,95,0.08)',
-          borderRadius: '4px',
-          overflow: 'hidden',
-          fontFamily: 'Georgia, serif',
-          color: '#2a1f18',
+          maxWidth: '720px', margin: '0 auto', background: 'white',
+          boxShadow: '0 4px 40px rgba(31,58,95,0.08)', borderRadius: '4px',
+          overflow: 'hidden', fontFamily: 'Georgia, serif', color: '#2a1f18',
         }}>
-
-          {/* Header */}
           <div style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div>
               <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 500, color: 'white', letterSpacing: '-0.02em', marginBottom: '4px' }}>
@@ -163,8 +124,6 @@ export default async function InvoicePage({
           </div>
 
           <div style={{ padding: '40px 48px' }}>
-
-            {/* Customer info */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginBottom: '40px' }}>
               <div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Billed to</div>
@@ -173,38 +132,30 @@ export default async function InvoicePage({
                 </div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.7 }}>
                   {o.customer_email}
-                  {addr?.phone     && <><br />{addr.phone}</>}
-                  {addr?.instagram && <><br />@{addr.instagram}</>}
-                  {addr?.address   && <><br />{addr.address}</>}
-                  {(addr?.city || addr?.postal_code) && <><br />{[addr.city, addr.postal_code].filter(Boolean).join('  ')}</>}
-                  {addr?.country   && <><br />{addr.country}</>}
+                  {addr?.phone && <><br />{addr.phone}</>}
+                  {addr?.country && <><br />{addr.country}</>}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Order details</div>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 2 }}>
                   <span style={{ color: '#4B372A', fontWeight: 500 }}>Currency</span> {ccy}<br />
-                  <span style={{ color: '#4B372A', fontWeight: 500 }}>Type</span> {o.kind === 'proxy' ? 'Proxy buy' : o.kind === 'fair' ? 'Fair haul' : 'Personal request'}<br />
                   <span style={{ color: '#4B372A', fontWeight: 500 }}>Payment</span> {payInfo.label}
                 </div>
               </div>
             </div>
 
-            {/* Items — always shown */}
+            {/* Items */}
             <div style={{ marginBottom: '32px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '8px 0', borderBottom: '1.5px solid #1F3A5F', marginBottom: '4px' }}>
                 {[...['Item', 'Colour', 'Ccy', 'Qty', 'Unit price'], ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`].map(h => (
-                  <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>
-                    {h}
-                  </div>
+                  <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>{h}</div>
                 ))}
               </div>
 
               {items.length > 0 ? items.map((item, i) => (
                 <div key={i} style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '11px 0', borderBottom: '0.5px solid #ede7de', alignItems: 'start' }}>
-                  <div>
-                    <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18' }}>{i + 1}. {item.name}</div>
-                  </div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18' }}>{i + 1}. {item.name}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.color ?? ''}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.item_ccy ?? ccy}</div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.qty}</div>
@@ -220,25 +171,14 @@ export default async function InvoicePage({
 
               {/* Totals */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
-                {/* Part 1: items subtotal only */}
-                {/* Part 1 / default: items subtotal */}
-                {(isPart1 || !type) && (
-                  <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
-                )}
-                {/* Part 2: items subtotal (paid/unpaid) + fee + shipping */}
+                {(isPart1 || !type) && <TotalRow label="Items subtotal" value={goods.toLocaleString()} />}
                 {(isPart2 || !type) && (
                   <>
-                    <TotalRowBadge
-                      label="Items subtotal"
-                      value={goods.toLocaleString()}
-                      paid={isPart2 ? itemsPaid : undefined}
-                    />
-                    <TotalRow label="Handling fee (15% or min ₩25,000)" value={fee ? fee.toLocaleString() : '—'} />
+                    <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
+                    <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
                     <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
                   </>
                 )}
-
-                {/* Grand total */}
                 <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F' }}>
                     {isPart1 ? 'Amount due (Part 1)' : isPart2 ? 'Amount due (Part 2)' : 'Grand total'}
@@ -252,16 +192,12 @@ export default async function InvoicePage({
 
             {/* Payment note */}
             <div style={{ background: '#f0ebe3', borderRadius: '4px', padding: '16px 20px', marginBottom: '24px', borderLeft: '3px solid #C8A98D' }}>
-              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#4B372A', lineHeight: 1.7, margin: 0 }}>
-                {payNote}
-              </p>
+              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#4B372A', lineHeight: 1.7, margin: 0 }}>{payNote}</p>
             </div>
 
             {/* Payment block */}
             <div style={{ background: '#f5efe6', borderRadius: '4px', padding: '28px 32px' }}>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '16px' }}>
-                Payment
-              </div>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '16px' }}>Payment</div>
               <div style={{ display: 'grid', gridTemplateColumns: payMethod === 'wise' ? '1fr' : '1fr 1fr', gap: '16px' }}>
                 <PayBlock label="Wise (international)" link="https://wise.com/pay/me/keweih6" lines={[]} reference={o.order_number} highlight={payMethod === 'wise'} />
                 {payMethod !== 'wise' && (
@@ -270,7 +206,6 @@ export default async function InvoicePage({
               </div>
             </div>
 
-            {/* Note */}
             {o.customer_notes && (
               <div style={{ marginTop: '24px', padding: '20px 24px', borderLeft: '2px solid #C8A98D' }}>
                 <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '8px' }}>Note</div>
@@ -278,18 +213,6 @@ export default async function InvoicePage({
               </div>
             )}
 
-            {/* Tracking link — bottom */}
-            <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-              <div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Check your order status anytime — no login required.</div>
-              </div>
-              <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(31,58,95,0.2)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                Track order {o.order_number} →
-              </a>
-            </div>
-
-            {/* Footer */}
             <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '0.5px solid #ede7de', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '13px', fontStyle: 'italic', color: '#C8A98D' }}>Studio<em>2J</em> — Seoul &amp; Tokyo</div>
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: '#C8A98D' }}>studio2j25@gmail.com</div>
@@ -310,25 +233,6 @@ export default async function InvoicePage({
   )
 }
 
-function TotalRowBadge({ label, value, paid }: { label: string; value: string; paid?: boolean }) {
-  return (
-    <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>{label}</span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: paid !== undefined ? '#aaa' : '#2a1f18', textDecoration: paid ? 'line-through' : 'none' }}>{value}</span>
-        {paid !== undefined && (
-          <span style={{
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500,
-            padding: '2px 8px', borderRadius: '99px',
-            background: paid ? '#D5E8D8' : '#F5DDD5',
-            color: paid ? '#2A5C35' : '#8A3A20',
-          }}>{paid ? 'Paid ✓' : 'Unpaid'}</span>
-        )}
-      </span>
-    </div>
-  )
-}
-
 function TotalRow({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '16px' }}>
@@ -343,7 +247,7 @@ function PayBlock({ label, lines, link, reference, highlight }: { label: string;
     <div style={{ background: highlight ? 'white' : 'rgba(255,255,255,0.6)', borderRadius: '4px', padding: '16px 20px', border: highlight ? '1px solid #C8A98D' : '1px solid rgba(200,169,141,0.3)' }}>
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#4B372A', marginBottom: '10px', letterSpacing: '0.04em' }}>{label}</div>
       {link
-        ? <a href={link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#1F3A5F', fontWeight: 500, marginBottom: '8px', display: 'inline-block', textDecoration: 'none', background: '#E8F0F8', padding: '6px 14px', borderRadius: '6px' }}>Pay via Wise →</a>
+        ? <a href={link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#1F3A5F', fontWeight: 500, marginBottom: '8px', display: 'inline-block', textDecoration: 'none', background: '#E8F0F8', padding: '6px 14px', borderRadius: '6px' }}>Pay via Wise</a>
         : lines.map((l, i) => <div key={i} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: i === 0 ? 400 : 300, color: i === 0 ? '#4B372A' : '#7A5C45', marginBottom: '3px' }}>{l}</div>)
       }
       <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '0.5px solid rgba(122,92,69,0.15)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: '#7A5C45' }}>

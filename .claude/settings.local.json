@@ -36,7 +36,8 @@
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",
-      "/Users/xiajiun/Downloads/studio2j-cc"
+      "/Users/xiajiun/Downloads/studio2j-cc",
+      "/Users/xiajiun/Downloads/studio2j-cc/app/invoice"
     ]
   }
 }

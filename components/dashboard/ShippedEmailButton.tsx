@@ -26,21 +26,21 @@ export function ShippedEmailButton({ customerEmail, customerName, orderNumber, t
   const url  = trackingUrl(trackingNumber)
   const car  = carrier(trackingNumber)
 
-  const body = `Hi ${name},
+  const body = `Dear ${name},
 
-Great news! We have successfully packed your stationery goodies and they are officially on their way to you. ✈️
+Great news! We have successfully packed your stationery goodies and they are officially on their way to you.
 
 We had so much fun curating these pieces for you. Everything has been inspected and packed with extra care to ensure it arrives safely.
 
-📦 Tracking Information
+Tracking Information
 
 Courier: ${car}
 Tracking Number: ${trackingNumber}
 Track Here: ${url}
 
-⏳ What to expect: International shipping typically takes 7–14 business days. Please keep an eye on your tracking link for the most up-to-date status. (Note: Once the package arrives in your country, your local postal service will handle the final delivery).
+What to expect: International shipping typically takes 7–14 business days. Please keep an eye on your tracking link for the most up-to-date status. Once the package arrives in your country, your local postal service will handle the final delivery.
 
-✨ Share the Joy: We would love to see your haul! When your package arrives, please tag us @studio2j25 in your unboxing stories or posts. Seeing our stationery find a new home makes our day!
+Share the Joy: We would love to see your haul! When your package arrives, please tag us @studio2j25 in your unboxing stories or posts. Seeing our stationery find a new home makes our day!
 
 Thank you for trusting us with your journaling journey.
 
