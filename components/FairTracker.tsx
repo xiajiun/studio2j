@@ -299,6 +299,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
       const json = await res.json()
       if (!res.ok) throw new Error(json.error ?? 'Unknown error')
       onSave(f.id)
+      if (!json.email_sent) setErr(`Saved! (Email not sent: ${json.reason})`)
       setMode('done')
     } catch (e: any) {
       setErr(e.message ?? 'Something went wrong — try again.')

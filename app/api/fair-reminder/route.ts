@@ -24,6 +24,10 @@ export async function POST(req: Request) {
   }
 
   const resendKey = process.env.RESEND_API_KEY
+  if (!resendKey) {
+    return NextResponse.json({ ok: true, email_sent: false, reason: 'RESEND_API_KEY not set' })
+  }
+
   if (resendKey) {
     const daysUntil   = Math.ceil((new Date(fair_date).getTime() - Date.now()) / 86400000)
     const fairFmt     = new Date(fair_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -89,7 +93,7 @@ export async function POST(req: Request) {
 </body>
 </html>`
 
-    await fetch('https://api.resend.com/emails', {
+    const resendRes  = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -98,8 +102,14 @@ export async function POST(req: Request) {
         subject: `You saved ${fair_name} — ${daysUntil > 0 ? `${daysUntil} days to go` : 'coming up soon!'}`,
         html,
       }),
-    }).catch(() => {})
+    }).catch(() => null)
+
+    const resendJson = resendRes ? await resendRes.json().catch(() => null) : null
+    if (!resendRes?.ok) {
+      console.error('Resend error:', resendJson)
+      return NextResponse.json({ ok: true, email_sent: false, reason: resendJson?.message ?? 'Resend failed' })
+    }
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true, email_sent: true })
 }
