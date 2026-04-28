@@ -503,20 +503,25 @@ function FairCard({ fair: f, today, saved, onSave }: {
 function EmailAlerts() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [err, setErr] = useState('')
   const { t } = useLang()
   const tr = t.tracker
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // TODO: migrate to Beehiiv or Resend in production
-    try {
-      const subs: string[] = JSON.parse(localStorage.getItem('s2j-subs') || '[]')
-      if (!subs.includes(email)) subs.push(email)
-      localStorage.setItem('s2j-subs', JSON.stringify(subs))
-    } catch {}
+    setLoading(true)
+    setErr('')
+    const res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    const json = await res.json()
+    setLoading(false)
+    if (!res.ok) { setErr(json.error ?? 'Something went wrong'); return }
     setSubscribed(true)
     setEmail('')
-    setTimeout(() => setSubscribed(false), 3000)
   }
 
   return (
@@ -553,43 +558,49 @@ function EmailAlerts() {
           {tr.emailBody}
         </p>
       </div>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px' }}>
-        <input
-          type="email"
-          required
-          placeholder={tr.emailPlaceholder}
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          style={{
-            flex: 1,
-            padding: '13px 20px',
-            borderRadius: '99px',
-            border: '0.5px solid rgba(245,239,230,0.15)',
-            background: 'rgba(245,239,230,0.05)',
-            color: 'var(--cream)',
-            fontFamily: 'var(--font-inter), sans-serif',
-            fontSize: '13px',
-            fontWeight: 300,
-            outline: 'none',
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            background: subscribed ? 'var(--cream)' : 'var(--tan)',
-            color: 'var(--dark-brown)',
-            border: 'none',
-            padding: '13px 24px',
-            borderRadius: '99px',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-inter), sans-serif',
-            fontSize: '12px',
-            fontWeight: 500,
-            letterSpacing: '0.03em',
-            transition: 'all 0.2s',
-            whiteSpace: 'nowrap',
-          }}
-        >{subscribed ? tr.emailDone : tr.emailBtn}</button>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="email"
+            required
+            placeholder={tr.emailPlaceholder}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            disabled={subscribed}
+            style={{
+              flex: 1,
+              padding: '13px 20px',
+              borderRadius: '99px',
+              border: '0.5px solid rgba(245,239,230,0.15)',
+              background: 'rgba(245,239,230,0.05)',
+              color: 'var(--cream)',
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '13px',
+              fontWeight: 300,
+              outline: 'none',
+            }}
+          />
+          <button
+            type="submit"
+            disabled={loading || subscribed}
+            style={{
+              background: subscribed ? 'var(--cream)' : 'var(--tan)',
+              color: 'var(--dark-brown)',
+              border: 'none',
+              padding: '13px 24px',
+              borderRadius: '99px',
+              cursor: loading ? 'wait' : 'pointer',
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '12px',
+              fontWeight: 500,
+              letterSpacing: '0.03em',
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
+              opacity: loading ? 0.7 : 1,
+            }}
+          >{subscribed ? tr.emailDone : loading ? '…' : tr.emailBtn}</button>
+        </div>
+        {err && <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#F5DDD5', margin: 0, paddingLeft: '8px' }}>{err}</p>}
       </form>
 
       <style jsx>{`
