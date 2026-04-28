@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 
 interface ReminderRow {
   id: number
@@ -17,8 +17,11 @@ function fmtDate(d: string) {
 }
 
 export default async function FairRemindersPage() {
-  const supabase = createServiceClient()
-  const { data } = await supabase
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  )
+  const { data, error } = await supabase
     .from('fair_reminders')
     .select('*')
     .order('fair_date', { ascending: true })
@@ -58,9 +61,15 @@ export default async function FairRemindersPage() {
         {rows.length} signup{rows.length !== 1 ? 's' : ''} across {fairs.length} fair{fairs.length !== 1 ? 's' : ''}
       </p>
 
+      {error && (
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#8A3A20', background: '#F5DDD5', padding: '12px 16px', borderRadius: '10px', marginBottom: '24px' }}>
+          DB error: {error.message}
+        </p>
+      )}
+
       {fairs.length === 0 ? (
         <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)', textAlign: 'center', padding: '60px 0' }}>
-          No signups yet.
+          No signups yet — try saving a fair on the homepage first.
         </p>
       ) : fairs.map(fair => (
         <div key={fair.name} style={{ marginBottom: '40px' }}>
