@@ -1,6 +1,7 @@
 export const runtime = 'edge'
 
 import { createClient } from '@supabase/supabase-js'
+import { DraftEmailButton } from './DraftEmailButton'
 
 interface ReminderRow {
   id: number
@@ -82,8 +83,16 @@ export default async function FairRemindersPage() {
               {fmtDate(fair.date)}
               {fair.deadline && ` · order by ${fmtDate(fair.deadline)}`}
             </span>
-            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.06)', padding: '4px 12px', borderRadius: '99px' }}>
-              {fair.signups.length} interested
+            <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.06)', padding: '4px 12px', borderRadius: '99px' }}>
+                {fair.signups.length} interested
+              </span>
+              <DraftEmailButton
+                fairName={fair.name}
+                fairDate={fair.date}
+                fairDeadline={fair.deadline}
+                emails={fair.signups.map(r => r.email)}
+              />
             </span>
           </div>
 
