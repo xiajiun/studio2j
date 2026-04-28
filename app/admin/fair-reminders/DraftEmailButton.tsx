@@ -25,16 +25,12 @@ You saved ${fairName} on Studio2J's fair tracker.
 
 We'll be picking up items at the fair! If you'd like us to get something for you, place your order before the deadline.
 
-→ Place an order: https://studio2j.pages.dev/order/new
+→ Place an order
 
-Questions? DM us @studio2j25 on Instagram or reply to this email.
-
-Jin & Jo
-Studio2J · Seoul & Tokyo
-studio2j25@gmail.com`
+Questions? DM us @studio2j25 on Instagram or reply to this email.`
 
   const bcc = emails.join(', ')
-  const mailtoHref = `mailto:?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&bcc=${encodeURIComponent(bcc)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
   function copyEmails() {
     navigator.clipboard.writeText(bcc)
@@ -129,14 +125,16 @@ studio2j25@gmail.com`
             {/* Actions */}
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               <a
-                href={mailtoHref}
+                href={gmailHref}
+                target="_blank"
+                rel="noreferrer"
                 style={{
                   fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
                   padding: '12px 24px', borderRadius: '99px', textDecoration: 'none',
                   background: 'var(--dark-blue)', color: 'var(--cream)',
                 }}
               >
-                Open in mail app →
+                Open in Gmail →
               </a>
               <button onClick={() => setOpen(false)} style={{
                 fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
