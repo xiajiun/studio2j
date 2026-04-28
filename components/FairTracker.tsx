@@ -267,6 +267,43 @@ function FairCard({ fair: f, today, saved, onSave }: {
 }) {
   const dl = dlInfo(f.deadline, today)
   const isSaved = saved.has(f.id)
+  const [mode, setMode] = useState<'idle' | 'input' | 'saving' | 'done'>('idle')
+  const [emailVal, setEmailVal] = useState('')
+  const [err, setErr] = useState('')
+
+  async function handleSaveClick(e: React.MouseEvent) {
+    e.stopPropagation()
+    if (isSaved) { onSave(f.id); setMode('idle'); return }
+    setMode('input')
+  }
+
+  async function submitEmail(e: React.FormEvent) {
+    e.preventDefault()
+    setMode('saving')
+    setErr('')
+    try {
+      const res = await fetch('/api/fair-reminder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:        emailVal,
+          fair_id:      f.id,
+          fair_name:    f.name,
+          fair_date:    f.date,
+          fair_deadline: f.deadline,
+          fair_city:    f.city,
+          fair_country: f.country,
+          going:        f.going,
+        }),
+      })
+      if (!res.ok) throw new Error()
+      onSave(f.id)
+      setMode('done')
+    } catch {
+      setErr('Something went wrong — try again.')
+      setMode('input')
+    }
+  }
 
   return (
     <div className={`fair-card-item${f.featured ? ' fair-featured' : ''}`} style={{
@@ -388,7 +425,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
         }}>{dl.label}</span>
         <button
           className={`fc-save-btn${isSaved ? ' saved' : ''}`}
-          onClick={e => { e.stopPropagation(); onSave(f.id) }}
+          onClick={handleSaveClick}
           style={{
             fontFamily: 'var(--font-inter), sans-serif',
             fontSize: '11px',
@@ -403,6 +440,46 @@ function FairCard({ fair: f, today, saved, onSave }: {
           }}
         >{isSaved ? 'Saved ✓' : 'Save'}</button>
       </div>
+
+      {/* Inline email input */}
+      {(mode === 'input' || mode === 'saving') && (
+        <form
+          onSubmit={submitEmail}
+          onClick={e => e.stopPropagation()}
+          style={{ gridColumn: '1 / -1', borderTop: '0.5px solid rgba(122,92,69,0.1)', paddingTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}
+        >
+          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', flexShrink: 0 }}>
+            Get a reminder email:
+          </span>
+          <input
+            type="email"
+            required
+            autoFocus
+            placeholder="your@email.com"
+            value={emailVal}
+            onChange={e => setEmailVal(e.target.value)}
+            style={{
+              flex: 1, minWidth: '180px', padding: '8px 16px', borderRadius: '99px',
+              border: '0.5px solid rgba(122,92,69,0.25)', background: 'white',
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
+              color: 'var(--dark-brown)', outline: 'none',
+            }}
+          />
+          <button type="submit" disabled={mode === 'saving'} style={{
+            background: 'var(--dark-blue)', color: 'var(--cream)', border: 'none',
+            padding: '8px 18px', borderRadius: '99px', cursor: mode === 'saving' ? 'wait' : 'pointer',
+            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
+            opacity: mode === 'saving' ? 0.7 : 1,
+          }}>
+            {mode === 'saving' ? '…' : 'Notify me →'}
+          </button>
+          <button type="button" onClick={e => { e.stopPropagation(); setMode('idle') }} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)',
+          }}>Cancel</button>
+          {err && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: '#8A3A20', width: '100%' }}>{err}</span>}
+        </form>
+      )}
 
       <style jsx>{`
         .fair-card-item:hover {
