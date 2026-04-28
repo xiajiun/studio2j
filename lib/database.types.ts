@@ -103,6 +103,18 @@ export interface OrderEvent {
   created_at: string
 }
 
+export interface TwentyMarket {
+  marketUID: string
+  marketTitle: string
+  marketCover: string
+  marketST: number   // ms timestamp
+  marketED: number   // ms timestamp
+  marketPublicId: number
+  sellerPublicId: string
+  sellerInfoName: string
+  sellerCategory: string
+}
+
 export interface Subscriber {
   id: number
   email: string

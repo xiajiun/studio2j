@@ -32,7 +32,13 @@
       "WebFetch(domain:twenty.style)",
       "Bash(curl -s \"https://twenty.style/list/openMarket\")",
       "WebFetch(domain:sites.google.com)",
-      "Bash(curl -s \"https://sites.google.com/view/studio2j/about-us\")"
+      "Bash(curl -s \"https://sites.google.com/view/studio2j/about-us\")",
+      "Bash(curl -s -L \"https://twenty.style/list/openMarket\")",
+      "Bash(gunzip)",
+      "WebFetch(domain:api.twenty.style)",
+      "Bash(curl -s https://twenty.style)",
+      "Bash(curl -s -I https://twenty.style)",
+      "Bash(grep -oE '\\(https?://[^\"<>]+|/[^\"<>]*\\)\\\\.\\([a-zA-Z]{2,4}\\)')"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",
