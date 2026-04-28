@@ -11,7 +11,9 @@ export function DashShell({ variant, children }: {
       overflow: 'hidden',
       background: 'var(--cream)',
     }}>
-      <div className="dash-sidebar"><DashNav variant={variant} /></div>
+      <div className="dash-sidebar">
+        <DashNav variant={variant} />
+      </div>
       <main className="dash-main" style={{
         flex: 1,
         overflowY: 'auto',

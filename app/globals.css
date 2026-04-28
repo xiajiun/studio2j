@@ -226,6 +226,38 @@ nav.scrolled {
 /* Footer */
 .footer-link:hover { color: var(--cream) !important; }
 
+/* ── Admin mobile ── */
+@media (max-width: 768px) {
+  /* Switch from sidebar to top bar */
+  .dash-shell {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: auto !important;
+  }
+  .dash-sidebar {
+    width: 100% !important;
+    min-width: unset !important;
+    height: auto !important;
+    border-right: none !important;
+    overflow: visible !important;
+    flex-shrink: 0 !important;
+  }
+  .dash-nav-desktop { display: none !important; }
+  .dash-nav-mobile  { display: block !important; }
+  .dash-main {
+    padding: 20px 16px !important;
+    overflow: visible !important;
+  }
+
+  /* Tables scroll horizontally */
+  .dash-main table { min-width: 600px; }
+  .dash-main > div > div[style*="overflow"] { overflow-x: auto !important; }
+
+  /* Stack grids in order form */
+  .dash-main .order-grid-2col { grid-template-columns: 1fr !important; }
+}
+
 /* Print — hide dashboard chrome, show only page content */
 @media print {
   .dash-sidebar { display: none !important; }
