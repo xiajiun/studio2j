@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 
 export function GmailDraftButton({ to, bcc, subject, body, label = 'Draft email' }: {
   to?: string
@@ -42,10 +43,10 @@ export function GmailDraftButton({ to, bcc, subject, body, label = 'Draft email'
         {label}
       </button>
 
-      {open && (
+      {open && createPortal(
         <div
           onClick={() => setOpen(false)}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(31,20,12,0.4)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(31,20,12,0.4)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
         >
           <div
             onClick={e => e.stopPropagation()}
@@ -93,7 +94,8 @@ export function GmailDraftButton({ to, bcc, subject, body, label = 'Draft email'
               {bcc && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>Use BCC so recipients don't see each other.</span>}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )
