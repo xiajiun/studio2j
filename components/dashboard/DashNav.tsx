@@ -9,8 +9,9 @@ const ADMIN_LINKS = [
   { href: '/admin/orders',      label: 'Orders' },
   { href: '/admin/finance',     label: 'Finance' },
   { href: '/admin/fairs',       label: 'Fairs' },
-  { href: '/admin/customers',   label: 'Customers' },
-  { href: '/admin/subscribers', label: 'Subscribers' },
+  { href: '/admin/customers',      label: 'Customers' },
+  { href: '/admin/fair-reminders', label: 'Fair reminders' },
+  { href: '/admin/subscribers',    label: 'Subscribers' },
 ]
 
 const ACCOUNT_LINKS = [

@@ -88,7 +88,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from:    'Studio2J <orders@studio2j.com>',
+        from:    'Studio2J <onboarding@resend.dev>',
         to:      [email],
         subject: `You saved ${fair_name} — ${daysUntil > 0 ? `${daysUntil} days to go` : 'coming up soon!'}`,
         html,
