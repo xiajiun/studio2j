@@ -38,8 +38,9 @@ export default async function CustomerInvoicePage({
   const ccy    = o.currency ?? 'KRW'
   const type   = searchParams.type
 
-  const isPart1 = type === '1'
-  const isPart2 = type === '2'
+  const isPart1   = type === '1'
+  const isPart2   = type === '2'
+  const itemsPaid = !!(o.paid_1_amount && o.paid_1_amount > 0)
 
   const hasDomDel  = items.some(i => (i.dom_del ?? 0) > 0)
   const itemsTotal = items.reduce((sum, i) => {
@@ -54,7 +55,7 @@ export default async function CustomerInvoicePage({
   const grandTotal = isPart1
     ? goods
     : isPart2
-    ? fee + ship
+    ? (itemsPaid ? fee + ship : goods + fee + ship)
     : goods + fee + ship
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT
@@ -174,7 +175,15 @@ export default async function CustomerInvoicePage({
                 {(isPart1 || !type) && <TotalRow label="Items subtotal" value={goods.toLocaleString()} />}
                 {(isPart2 || !type) && (
                   <>
-                    <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
+                    <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>Items subtotal</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: itemsPaid ? '#aaa' : '#2a1f18', textDecoration: itemsPaid ? 'line-through' : 'none' }}>{goods.toLocaleString()}</span>
+                        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '2px 8px', borderRadius: '99px', background: itemsPaid ? '#D5E8D8' : '#F5DDD5', color: itemsPaid ? '#2A5C35' : '#8A3A20' }}>
+                          {itemsPaid ? 'Paid' : 'Unpaid'}
+                        </span>
+                      </span>
+                    </div>
                     <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
                     <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
                   </>
