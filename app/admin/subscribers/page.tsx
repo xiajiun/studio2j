@@ -1,6 +1,7 @@
 export const runtime = 'edge'
 
 import { createClient } from '@/lib/supabase/server'
+import { GmailDraftButton } from '@/components/dashboard/GmailDraftButton'
 import type { Subscriber } from '@/lib/database.types'
 
 export default async function AdminSubscribers() {
@@ -25,13 +26,21 @@ export default async function AdminSubscribers() {
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', letterSpacing: '-0.03em' }}>
           Subscribers
         </h1>
-        <a
-          href={csvDataUrl}
-          download="studio2j-subscribers.csv"
-          style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '11px 22px', borderRadius: '99px', textDecoration: 'none' }}
-        >
-          Export CSV ↓
-        </a>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <GmailDraftButton
+            bcc={(subscribers ?? []).map((s: Subscriber) => s.email).join(', ')}
+            subject="Studio2J updates — new fairs & drops"
+            body={`Hi there,\n\nThank you for following Studio2J!\n\n[Your message here]\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
+            label="Draft newsletter"
+          />
+          <a
+            href={csvDataUrl}
+            download="studio2j-subscribers.csv"
+            style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '11px 22px', borderRadius: '99px', textDecoration: 'none' }}
+          >
+            Export CSV ↓
+          </a>
+        </div>
       </div>
 
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px' }}>

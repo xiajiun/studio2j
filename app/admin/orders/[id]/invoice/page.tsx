@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import type { Order, OrderItem, ShippingAddress } from '@/lib/database.types'
 import { PrintButton } from './PrintButton'
+import { GmailDraftButton } from '@/components/dashboard/GmailDraftButton'
 
 export async function generateMetadata({ params, searchParams }: { params: { id: string }; searchParams: { type?: string } }) {
   const supabase = createClient()
@@ -119,6 +120,12 @@ export default async function InvoicePage({
             }}>Part 1: {itemsPaid ? 'Paid ✓' : 'Unpaid'}</a>
           )}
         </div>
+        <GmailDraftButton
+          to={o.customer_email}
+          subject={`Studio2J ${invoiceLabel} — ${o.order_number}`}
+          body={`Hi ${o.customer_name ?? addr?.name ?? 'there'},\n\nYour ${isPart1 ? 'Invoice 1 (item costs)' : isPart2 ? 'Invoice 2 (service fee + international shipping)' : 'invoice'} is ready.\n\nAmount due: ${grandTotal.toLocaleString()} ${ccy}\n\nPlease complete payment within 24 hours:\nhttps://studio2j.pages.dev/admin/orders/${o.id}/invoice?type=${type ?? '1'}\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
+          label="Email customer"
+        />
         <PrintButton />
         <a href={`/admin/orders/${params.id}`} style={{
           fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
