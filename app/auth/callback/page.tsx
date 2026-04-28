@@ -6,7 +6,11 @@ import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? 'studio2j25@gmail.com'
+const ADMIN_EMAILS = [
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? 'studio2j25@gmail.com',
+  'xiajiun21@gmail.com',
+  'jovynkw@gmail.com',
+]
 
 export default function AuthCallback() {
   const router      = useRouter()
@@ -44,7 +48,7 @@ export default function AuthCallback() {
     }
 
     function redirect(email: string | undefined, order: string | null) {
-      if (email === ADMIN_EMAIL) return router.push('/admin')
+      if (email && ADMIN_EMAILS.includes(email)) return router.push('/admin')
       if (order) return router.push(`/account/orders/${order}`)
       return router.push('/account')
     }

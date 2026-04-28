@@ -87,7 +87,7 @@ export default async function InvoicePage({
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: 'rgba(245,239,230,0.95)', backdropFilter: 'blur(12px)',
         borderBottom: '0.5px solid rgba(122,92,69,0.12)',
-        padding: '12px 32px', display: 'flex', gap: '10px', alignItems: 'center',
+        padding: '12px 32px', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap',
       }}>
         <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '15px', fontWeight: 500, color: 'var(--dark-brown)', flex: 1 }}>
           Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
