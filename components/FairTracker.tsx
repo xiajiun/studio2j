@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { formatDate } from '@/lib/fairs'
-import type { FairRow, TwentyMarket } from '@/lib/database.types'
+import type { FairRow } from '@/lib/database.types'
 import { useLang } from '@/components/LangProvider'
 
-type View = 'upcoming' | 'going' | 'deadline' | 'saved' | 'asia' | 'europe' | 'online'
+type View = 'upcoming' | 'going' | 'deadline' | 'saved' | 'asia' | 'europe'
 
 function dlInfo(deadline: string, today: Date): { cls: string; label: string } {
   const diff = (new Date(deadline).getTime() - today.getTime()) / 86400000
@@ -15,7 +15,7 @@ function dlInfo(deadline: string, today: Date): { cls: string; label: string } {
   return { cls: 'dl-open', label: 'Open' }
 }
 
-export default function FairTracker({ fairs: FAIRS, twentyMarkets = [] }: { fairs: FairRow[]; twentyMarkets?: TwentyMarket[] }) {
+export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   const today = new Date()
   const { t } = useLang()
   const tr = t.tracker
@@ -74,7 +74,6 @@ export default function FairTracker({ fairs: FAIRS, twentyMarkets = [] }: { fair
     { key: 'saved',    label: tr.pSaved },
     { key: 'asia',     label: tr.pAsia },
     { key: 'europe',   label: tr.pEurope },
-    { key: 'online',   label: 'Online' },
   ]
 
   return (
@@ -209,19 +208,8 @@ export default function FairTracker({ fairs: FAIRS, twentyMarkets = [] }: { fair
           ))}
         </div>
 
-        {/* Online markets (Twenty Style) */}
-        {view === 'online' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {twentyMarkets.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '60px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)' }}>
-                No online markets right now.
-              </div>
-            ) : twentyMarkets.map(m => <TwentyMarketCard key={m.marketUID} market={m} />)}
-          </div>
-        )}
-
         {/* Fair list */}
-        {view !== 'online' && <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {filtered.length === 0 ? (
             <div style={{
               textAlign: 'center',
@@ -254,7 +242,7 @@ export default function FairTracker({ fairs: FAIRS, twentyMarkets = [] }: { fair
               ))}
             </div>
           ))}
-        </div>}
+        </div>
 
         {/* Email alerts */}
         <EmailAlerts />
@@ -621,62 +609,5 @@ function EmailAlerts() {
         }
       `}</style>
     </div>
-  )
-}
-
-function TwentyMarketCard({ market: m }: { market: TwentyMarket }) {
-  const [imgError, setImgError] = useState(false)
-  const start = new Date(m.marketST).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  const end   = new Date(m.marketED).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-  const url   = `https://twenty.style/m/${m.sellerPublicId}/${m.marketPublicId}`
-  const imgSrc = `https://image.twenty.style/${m.marketCover}`
-
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer"
-      className="fair-card-item"
-      style={{
-        background: 'var(--cream)',
-        border: '0.5px solid rgba(122,92,69,0.15)',
-        borderRadius: '18px',
-        padding: '20px 28px',
-        display: 'grid',
-        gridTemplateColumns: imgError ? '1fr auto' : '56px 1fr auto',
-        gap: '20px',
-        alignItems: 'center',
-        marginBottom: '10px',
-        textDecoration: 'none',
-        transition: 'all 0.25s ease',
-      }}
-    >
-      {!imgError && (
-        <img
-          src={imgSrc}
-          alt=""
-          onError={() => setImgError(true)}
-          style={{ width: '56px', height: '56px', borderRadius: '10px', objectFit: 'cover', flexShrink: 0 }}
-        />
-      )}
-      <div>
-        <div style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 400, fontSize: '18px', color: 'var(--dark-brown)', letterSpacing: '-0.01em', marginBottom: '6px' }}>
-          {m.marketTitle}
-        </div>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', display: 'flex', gap: '10px' }}>
-          <span>{m.sellerInfoName}</span>
-          <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
-          <span>{start} – {end}</span>
-        </div>
-        <div style={{ marginTop: '8px' }}>
-          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '4px 11px', borderRadius: '99px', background: 'var(--beige)', color: 'var(--brown)' }}>
-            Online · Twenty Style
-          </span>
-        </div>
-      </div>
-      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'var(--dark-blue)', whiteSpace: 'nowrap' }}>
-        Shop now →
-      </div>
-    </a>
   )
 }
