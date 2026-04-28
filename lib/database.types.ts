@@ -45,6 +45,7 @@ export interface FairRow {
   types: string[]
   featured: boolean
   going: boolean
+  url: string | null
   notes: string | null
   created_at: string
   updated_at: string

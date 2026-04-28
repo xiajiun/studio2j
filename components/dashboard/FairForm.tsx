@@ -18,7 +18,7 @@ const inputStyle: React.CSSProperties = {
 type FormState = {
   name: string; city: string; country: string; region: string
   date: string; deadline: string; types: string[]
-  featured: boolean; going: boolean; notes: string
+  featured: boolean; going: boolean; url: string; notes: string
 }
 
 function blankForm(f?: FairRow): FormState {
@@ -32,6 +32,7 @@ function blankForm(f?: FairRow): FormState {
     types:    f?.types    ?? [],
     featured: f?.featured ?? false,
     going:    f?.going    ?? false,
+    url:      f?.url      ?? '',
     notes:    f?.notes    ?? '',
   }
 }
@@ -56,6 +57,7 @@ function FairFormInner({ fair, onClose }: { fair?: FairRow; onClose: () => void 
       name: form.name, city: form.city, country: form.country,
       region: form.region, date: form.date, deadline: form.deadline,
       types: form.types, featured: form.featured, going: form.going,
+      url:   form.url   || null,
       notes: form.notes || null,
     }
     if (isEdit) {
@@ -99,6 +101,10 @@ function FairFormInner({ fair, onClose }: { fair?: FairRow; onClose: () => void 
             }}>{t}</button>
           ))}
         </div>
+      </Field>
+
+      <Field label="Website / Instagram URL (optional)" style={{ marginBottom: '10px', gridColumn: '1 / -1' }}>
+        <input style={inputStyle} value={form.url} onChange={e => set('url', e.target.value)} placeholder="https://www.instagram.com/dotdotdot_kr/" />
       </Field>
 
       <Field label="Notes (optional)" style={{ marginBottom: '12px' }}>

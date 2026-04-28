@@ -12,7 +12,7 @@ const en = {
     cta1: 'Send us a link →', cta2: 'See upcoming fairs',
     trustFairs: 'Fairs tracked', trustCountries: 'Countries', trustFounders: 'Founders, one studio',
     stackLabel: 'What we handle, every day',
-    card1Name: 'Korean Illustrator Market Drop', card1Loc: 'Proxy buy · Seoul',
+    card1Name: 'Twenty — Korean Illustrator Market Drop', card1Loc: 'Proxy buy · Seoul',
     card2Name: 'Loft Japan', card2Loc: 'Proxy buy · Tokyo',
     chipActive: 'Active', chipGoing: "We're going", chipWatching: 'Watching',
   },

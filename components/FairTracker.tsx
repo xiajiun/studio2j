@@ -397,6 +397,30 @@ function FairCard({ fair: f, today, saved, onSave }: {
             marginTop: '10px',
           }}>&quot;{f.notes}&quot;</div>
         )}
+        {f.url && (
+          <a
+            href={f.url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={e => e.stopPropagation()}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              marginTop: '10px',
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '11px',
+              fontWeight: 400,
+              color: 'var(--dark-blue)',
+              textDecoration: 'none',
+              background: 'rgba(31,58,95,0.06)',
+              padding: '4px 10px',
+              borderRadius: '99px',
+            }}
+          >
+            {f.url.includes('instagram') ? 'Instagram ↗' : 'Website ↗'}
+          </a>
+        )}
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px', flexShrink: 0 }}>
