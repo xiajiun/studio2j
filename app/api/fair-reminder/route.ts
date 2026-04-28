@@ -13,10 +13,15 @@ export async function POST(req: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
   )
 
-  await supabase.from('fair_reminders').upsert(
+  const { error: dbError } = await supabase.from('fair_reminders').upsert(
     { email, fair_id, fair_name, fair_date, fair_deadline },
     { onConflict: 'email,fair_id' }
   )
+
+  if (dbError) {
+    console.error('fair_reminders insert error:', dbError.message)
+    return NextResponse.json({ error: dbError.message }, { status: 500 })
+  }
 
   const resendKey = process.env.RESEND_API_KEY
   if (resendKey) {

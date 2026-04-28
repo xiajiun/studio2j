@@ -282,25 +282,26 @@ function FairCard({ fair: f, today, saved, onSave }: {
     setMode('saving')
     setErr('')
     try {
-      const res = await fetch('/api/fair-reminder', {
+      const res  = await fetch('/api/fair-reminder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email:        emailVal,
-          fair_id:      f.id,
-          fair_name:    f.name,
-          fair_date:    f.date,
+          email:         emailVal,
+          fair_id:       f.id,
+          fair_name:     f.name,
+          fair_date:     f.date,
           fair_deadline: f.deadline,
-          fair_city:    f.city,
-          fair_country: f.country,
-          going:        f.going,
+          fair_city:     f.city,
+          fair_country:  f.country,
+          going:         f.going,
         }),
       })
-      if (!res.ok) throw new Error()
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error ?? 'Unknown error')
       onSave(f.id)
       setMode('done')
-    } catch {
-      setErr('Something went wrong — try again.')
+    } catch (e: any) {
+      setErr(e.message ?? 'Something went wrong — try again.')
       setMode('input')
     }
   }
