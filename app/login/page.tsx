@@ -24,35 +24,24 @@ export default function Login() {
   const router   = useRouter()
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
-  const [sent,     setSent]     = useState(false)
   const [loading,  setLoading]  = useState(false)
   const [error,    setError]    = useState('')
+
+  const ADMIN_EMAILS = ['studio2j25@gmail.com', 'xiajiun21@gmail.com', 'jovynkw@gmail.com']
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
     const supabase = createClient()
-
-    if (password) {
-      // Email + password login (admin)
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) {
-        setError('Incorrect email or password.')
-        setLoading(false)
-        return
-      }
-      router.push(email === process.env.NEXT_PUBLIC_ADMIN_EMAIL ? '/admin' : '/account')
-      router.refresh()
-    } else {
-      // Magic link (customers)
-      await supabase.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: `${location.origin}/auth/callback` },
-      })
-      setSent(true)
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      setError('Incorrect email or password.')
       setLoading(false)
+      return
     }
+    router.push(ADMIN_EMAILS.includes(email) ? '/admin' : '/account')
+    router.refresh()
   }
 
   return (
@@ -68,14 +57,6 @@ export default function Login() {
           Sign <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>in</em>.
         </h1>
 
-        {sent ? (
-          <div style={{ padding: '20px 24px', background: 'var(--beige)', borderRadius: '14px', border: '0.5px solid rgba(122,92,69,0.15)' }}>
-            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', color: 'var(--dark-brown)', marginBottom: '6px' }}>Check your inbox ✓</div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>
-              Magic link sent to <strong style={{ fontWeight: 500 }}>{email}</strong>. Expires in 1 hour.
-            </p>
-          </div>
-        ) : (
           <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <input
               type="email" required value={email}
@@ -84,18 +65,16 @@ export default function Login() {
               style={inputStyle}
             />
             <input
-              type="password" value={password}
+              type="password" required value={password}
               onChange={e => setPassword(e.target.value)}
-              placeholder="Password (admin only — leave empty for magic link)"
+              placeholder="Password"
               style={inputStyle}
             />
-
             {error && (
               <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#8A3A20', padding: '0 4px' }}>
                 {error}
               </p>
             )}
-
             <button
               type="submit" disabled={loading}
               style={{
@@ -106,14 +85,9 @@ export default function Login() {
                 opacity: loading ? 0.7 : 1, transition: 'all 0.2s', marginTop: '4px',
               }}
             >
-              {loading ? 'Signing in…' : password ? 'Sign in' : 'Send magic link'}
+              {loading ? 'Signing in…' : 'Sign in'}
             </button>
-
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', textAlign: 'center', marginTop: '4px' }}>
-              Customers: leave the password empty to get a magic link
-            </p>
           </form>
-        )}
       </div>
     </main>
   )

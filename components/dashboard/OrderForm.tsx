@@ -221,16 +221,7 @@ export function OrderForm({ fairs, orderId, initial }: {
     if (isEdit) {
       await supabase.from('orders').update(payload).eq('id', orderId)
     } else {
-      const { data } = await supabase.from('orders').insert(payload).select('order_number').single()
-      if (form.customer_email) {
-        await supabase.auth.signInWithOtp({
-          email: form.customer_email,
-          options: {
-            emailRedirectTo: `${location.origin}/auth/callback?order=${data?.order_number}`,
-            shouldCreateUser: true,
-          },
-        })
-      }
+      await supabase.from('orders').insert(payload).select('order_number').single()
     }
 
     setSaving(false)
