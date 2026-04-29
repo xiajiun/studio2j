@@ -256,6 +256,14 @@ nav.scrolled {
 
   /* Stack grids in order form */
   .dash-main .order-grid-2col { grid-template-columns: 1fr !important; }
+
+  /* Admin: stack all 2-col grids */
+  .dash-main > div > div[style*="1fr 1fr"] { grid-template-columns: 1fr !important; }
+  .dash-main > div > div[style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+  .dash-main > div > div[style*="repeat(5"] { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Invoice toolbar: wrap */
+  .no-print[style*="padding: 12px 32px"] { padding: 10px 16px !important; }
 }
 
 /* Print — hide dashboard chrome, show only page content */
@@ -270,6 +278,11 @@ nav.scrolled {
     padding: 0 !important;
     overflow: visible !important;
   }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .footer-top { grid-template-columns: 1fr !important; gap: 32px !important; }
 }
 
 @media (max-width: 1000px) {
@@ -307,8 +320,13 @@ nav.scrolled {
   /* Footer */
   .footer-top { grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
 
+  /* Brands page grid */
+  .brands-page-grid { grid-template-columns: 1fr !important; }
+
   /* Nav */
   .nav-links { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+  .nav-cta-btn { display: none !important; }
 
   /* Founders */
   .founders-section { padding: 80px 0 !important; }

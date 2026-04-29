@@ -221,12 +221,12 @@ export default function CustomerOrderForm() {
           {/* Service agreement */}
           <FormSection label={f.sectionTerms}>
             <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '20px', fontSize: '13px', fontFamily: 'var(--font-inter), sans-serif', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '16px' }}>
-              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginBottom: '8px' }}>Service fee</strong>
-              Minimum ₩25,000 (or ¥2,500 for Japan), or 15% of total goods value — whichever is higher. This covers sourcing, transport, packing, and care.
-              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>Payment</strong>
-              Invoice 1 (item costs) is sent first — please pay within 24 hours so we can purchase. Invoice 2 (service fee + shipping) is sent after items are confirmed.
-              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>Refund & cancellation</strong>
-              Cancellations are accepted before we purchase. Once items are bought we cannot refund for change of mind. International customs fees are the buyer&apos;s responsibility.
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginBottom: '8px' }}>{f.termsFeeTitle}</strong>
+              {f.termsFeeBody}
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>{f.termsPayTitle}</strong>
+              {f.termsPayBody}
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>{f.termsRefTitle}</strong>
+              {f.termsRefBody}
             </div>
             <label style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer' }}>
               <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: '3px', flexShrink: 0, width: '16px', height: '16px', cursor: 'pointer' }} />

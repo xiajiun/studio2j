@@ -141,6 +141,7 @@ lib/
 7. **All admin server pages must use `createServiceClient()` (not `createClient()`)** — bypasses RLS so all admin emails see the same data.
 8. No emojis in email templates.
 9. No Resend — all customer emails are drafted via `GmailDraftButton` and sent manually.
+10. **Always update i18n.ts (EN + JA + ZH-TW) whenever any text changes.** New pages, new sections, form labels, buttons — all must have translations in all three languages before committing. Japanese copy must be Korea-only: remove any mentions of Japan, Tokyo, Loft, Hobonichi, ¥2,500 from the Japanese translations.
 
 ---
 
