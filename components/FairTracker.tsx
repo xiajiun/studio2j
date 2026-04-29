@@ -19,7 +19,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   const today = new Date()
   const { t } = useLang()
   const tr = t.tracker
-  const [view, setView] = useState<View>('all')
+  const [view, setView] = useState<View>('upcoming')
   const [search, setSearch] = useState('')
   const [saved, setSaved] = useState<Set<number>>(new Set())
 

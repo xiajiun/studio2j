@@ -4,7 +4,6 @@ import type { TwentyMarket } from '@/lib/database.types'
 import TwentyMarketsSection from '@/components/TwentyMarketsSection'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
-import { LangProvider } from '@/components/LangProvider'
 
 export default async function MarketsPage() {
   let markets: TwentyMarket[] = []
@@ -16,10 +15,10 @@ export default async function MarketsPage() {
   } catch {}
 
   return (
-    <LangProvider>
+    <>
       <Nav />
       <TwentyMarketsSection markets={markets} standalone />
       <Footer />
-    </LangProvider>
+    </>
   )
 }

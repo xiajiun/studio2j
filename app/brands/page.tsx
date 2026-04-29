@@ -5,7 +5,6 @@ export const runtime = 'edge'
 import { useState } from 'react'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
-import { LangProvider } from '@/components/LangProvider'
 import { BRANDS, CATEGORY_LABELS, type BrandRegion, type BrandCategory } from '@/lib/brands'
 
 const REGIONS: { value: BrandRegion | 'all'; label: string }[] = [
@@ -37,7 +36,6 @@ export default function BrandsPage() {
   const rest     = filtered.filter(b => !b.featured)
 
   return (
-    <LangProvider>
     <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
       <Nav />
 
@@ -133,7 +131,6 @@ export default function BrandsPage() {
         </div>
       </div>
     </main>
-    </LangProvider>
   )
 }
 
