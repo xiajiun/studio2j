@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { TwentyMarket } from '@/lib/database.types'
+import { useLang } from '@/components/LangProvider'
 
 function fmtRange(st: number, ed: number) {
   const s = new Date(st).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -60,10 +61,13 @@ function MarketCard({ m }: { m: TwentyMarket }) {
 }
 
 export default function TwentyMarketsSection({ markets: rawMarkets, standalone = false }: { markets: TwentyMarket[]; standalone?: boolean }) {
-  const markets = rawMarkets.filter(m => !m.marketTitle.includes('테스트'))
+  const { t } = useLang()
+  const m = t.markets
+  const markets = rawMarkets.filter(x => !x.marketTitle.includes('테스트'))
+
   if (markets.length === 0) return (
     <section style={{ background: 'var(--beige)', padding: standalone ? '160px 0' : '100px 0', textAlign: 'center' }}>
-      <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>No markets open right now — check back soon.</p>
+      <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>{m.empty}</p>
     </section>
   )
 
@@ -74,31 +78,27 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
         <div style={{ marginBottom: '48px' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
             <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
-            Korean illustrator markets
+            {m.eyebrow}
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
             <h2 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(36px, 4vw, 56px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)', margin: 0 }}>
-              Open now on <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>Twenty</em>
+              {m.title}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{m.titleEm}</em>
             </h2>
-            <a
-              href="https://twenty.style/list/openMarket"
-              target="_blank"
-              rel="noreferrer"
-              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(122,92,69,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap' }}
-            >
-              See all on Twenty ↗
+            <a href="https://twenty.style/list/openMarket" target="_blank" rel="noreferrer"
+              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(122,92,69,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+              {m.seeAll}
             </a>
           </div>
         </div>
 
         {/* Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-          {markets.map(m => <MarketCard key={m.marketUID} m={m} />)}
+          {markets.map(x => <MarketCard key={x.marketUID} m={x} />)}
         </div>
 
         {/* Footer note */}
         <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginTop: '32px', textAlign: 'center' }}>
-          Want something from these markets? <a href="/order/new" style={{ color: 'var(--dark-blue)', textDecoration: 'none', fontWeight: 400 }}>Send us the link →</a>
+          {m.footerText} <a href="/order/new" style={{ color: 'var(--dark-blue)', textDecoration: 'none', fontWeight: 400 }}>{m.footerLink}</a>
         </p>
       </div>
 
