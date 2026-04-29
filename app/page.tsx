@@ -11,8 +11,9 @@ import OrderCTA from '@/components/OrderCTA'
 import FAQ from '@/components/FAQ'
 import Footer from '@/components/Footer'
 import { FAIRS } from '@/lib/fairs'
-import type { FairRow } from '@/lib/database.types'
+import type { FairRow, TwentyMarket } from '@/lib/database.types'
 import { AuthRedirect } from '@/components/AuthRedirect'
+import TwentyMarketsSection from '@/components/TwentyMarketsSection'
 
 export default async function Home() {
   // Fetch from Supabase; fall back to static data if DB not seeded yet
@@ -39,6 +40,15 @@ export default async function Home() {
     }))
   }
 
+  // Fetch Twenty Style online markets (cached 1 hour)
+  let twentyMarkets: TwentyMarket[] = []
+  try {
+    const res = await fetch('https://api.twenty.style/common/v2/opened-market', {
+      next: { revalidate: 3600 },
+    })
+    if (res.ok) twentyMarkets = await res.json()
+  } catch {}
+
   const today = new Date()
   const nextFair = fairs
     .filter(f => f.going && new Date(f.date) >= today)
@@ -53,6 +63,7 @@ export default async function Home() {
         countryCount={new Set(fairs.map(f => f.country)).size}
         nextFair={nextFair}
       />
+      <TwentyMarketsSection markets={twentyMarkets} />
       <Services />
       <Marquee />
       <FairTracker fairs={fairs} />

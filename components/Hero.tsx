@@ -56,10 +56,10 @@ export default function Hero({ fairCount, countryCount, nextFair }: {
             {t.hero.stackLabel}
           </div>
 
-          <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" href="https://twenty.style/list/openMarket" />
+          <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="#twenty-markets" />
           <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0.15s" />
           {nextFair ? (
-            <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.3s" />
+            <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.3s" shopUrl={nextFair.url ?? undefined} shopExternal />
           ) : (
             <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.3s" />
           )}
@@ -69,27 +69,38 @@ export default function Hero({ fairCount, countryCount, nextFair }: {
   )
 }
 
-function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, href }: { name: string; loc: string; tags: string[]; chipVariant: 'urgent' | 'open'; chipLabel: string; delay: string; href?: string }) {
+function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false }: {
+  name: string; loc: string; tags: string[]; chipVariant: 'urgent' | 'open'
+  chipLabel: string; delay: string; shopUrl?: string; shopExternal?: boolean
+}) {
   const chipStyle = chipVariant === 'urgent'
     ? { background: 'rgba(200,169,141,0.18)', color: '#E6C9AE', border: '0.5px solid rgba(200,169,141,0.3)' }
     : { background: 'rgba(74,106,138,0.18)', color: '#9FB7D4', border: '0.5px solid rgba(74,106,138,0.3)' }
 
-  const Tag = href ? 'a' : 'div'
-
   return (
-    <Tag
-      {...(href ? { href, target: '_blank', rel: 'noreferrer' } : {})}
+    <div
       className="hero-fc-card"
-      style={{ background: 'rgba(245,239,230,0.04)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(245,239,230,0.12)', borderRadius: '14px', padding: '20px 22px', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', transition: 'all 0.3s ease', animation: `slideRight 0.6s ease ${delay} both`, textDecoration: 'none', cursor: href ? 'pointer' : 'default' }}
+      style={{ background: 'rgba(245,239,230,0.04)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(245,239,230,0.12)', borderRadius: '14px', padding: '20px 22px', marginBottom: '10px', transition: 'all 0.3s ease', animation: `slideRight 0.6s ease ${delay} both` }}
     >
-      <div>
-        <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--cream)', marginBottom: '5px', letterSpacing: '-0.01em' }}>{name}</div>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(245,239,230,0.5)', letterSpacing: '0.02em' }}>{loc}</div>
-        <div style={{ display: 'flex', gap: '5px', marginTop: '10px' }}>
-          {tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '3px 9px', borderRadius: '99px', letterSpacing: '0.02em', background: 'rgba(245,239,230,0.08)', color: 'rgba(245,239,230,0.7)' }}>{t}</span>)}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--cream)', marginBottom: '5px', letterSpacing: '-0.01em' }}>{name}</div>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(245,239,230,0.5)', letterSpacing: '0.02em' }}>{loc}</div>
+          <div style={{ display: 'flex', gap: '5px', marginTop: '10px', flexWrap: 'wrap' }}>
+            {tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '3px 9px', borderRadius: '99px', letterSpacing: '0.02em', background: 'rgba(245,239,230,0.08)', color: 'rgba(245,239,230,0.7)' }}>{t}</span>)}
+          </div>
+          {shopUrl && (
+            <a
+              href={shopUrl}
+              {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
+              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#C8A98D', textDecoration: 'none', border: '0.5px solid rgba(200,169,141,0.35)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
+            >
+              Shop now ↗
+            </a>
+          )}
         </div>
+        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', ...chipStyle }}>{chipLabel}</span>
       </div>
-      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', ...chipStyle }}>{chipLabel}</span>
-    </Tag>
+    </div>
   )
 }
