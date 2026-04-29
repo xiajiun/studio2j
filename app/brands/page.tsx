@@ -5,6 +5,7 @@ export const runtime = 'edge'
 import { useState } from 'react'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
+import { useLang } from '@/components/LangProvider'
 import { BRANDS, CATEGORY_LABELS, type BrandRegion, type BrandCategory } from '@/lib/brands'
 
 const REGIONS: { value: BrandRegion | 'all'; label: string }[] = [
@@ -24,9 +25,11 @@ const TAG_COLORS: Record<BrandCategory, { bg: string; color: string }> = {
 export default function BrandsPage() {
   const [region, setRegion]     = useState<BrandRegion | 'all'>('all')
   const [search, setSearch]     = useState('')
+  const { lang } = useLang()
 
   const q = search.toLowerCase()
   const filtered = BRANDS.filter(b => {
+    if (lang === 'ja' && b.region === 'Japan') return false
     if (region !== 'all' && b.region !== region) return false
     if (q && !b.name.toLowerCase().includes(q) && !b.description.toLowerCase().includes(q)) return false
     return true

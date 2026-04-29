@@ -17,7 +17,7 @@ function dlInfo(deadline: string, today: Date): { cls: string; label: string } {
 
 export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   const today = new Date()
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const tr = t.tracker
   const [view, setView] = useState<View>('upcoming')
   const [search, setSearch] = useState('')
@@ -41,6 +41,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
 
   const q = search.toLowerCase()
   const filtered = FAIRS.filter(f => {
+    if (lang === 'ja' && f.country === 'Japan') return false
     if (view === 'upcoming' && new Date(f.date) < today) return false
     if (view === 'going' && !f.going) return false
     if (view === 'deadline' && (new Date(f.deadline).getTime() - today.getTime()) / 86400000 < 0) return false

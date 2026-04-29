@@ -2,6 +2,7 @@ export type Lang = 'en' | 'ja' | 'zh-TW'
 
 const en = {
   nav: {
+    home: 'Home', markets: 'Markets',
     brands: 'Brands', services: 'Services', fairs: 'Fairs',
     howItWorks: 'How it works', faq: 'FAQ', placeOrder: 'Place an order',
   },
@@ -103,11 +104,14 @@ const en = {
     explore: 'Explore', connect: 'Connect', basedIn: 'Based in',
     copyright: 'From Seoul and Tokyo, with care',
     tagline: 'Seoul and Tokyo to the world',
+    linkMarkets: 'Markets', linkBrands: 'Brand directory', linkTracker: 'Fair tracker',
+    linkHow: 'How it works', linkAbout: 'About us', linkFaq: 'FAQ',
   },
 }
 
 const ja: typeof en = {
   nav: {
+    home: 'ホーム', markets: 'マーケット',
     brands: 'ブランド', services: 'サービス', fairs: 'フェア',
     howItWorks: 'ご利用の流れ', faq: 'よくある質問', placeOrder: '注文する',
   },
@@ -209,11 +213,14 @@ const ja: typeof en = {
     explore: '探す', connect: 'つながる', basedIn: '拠点',
     copyright: 'ソウルと東京より、心を込めて',
     tagline: 'ソウルと東京から世界へ',
+    linkMarkets: 'マーケット', linkBrands: 'ブランド一覧', linkTracker: 'フェア一覧',
+    linkHow: 'ご利用の流れ', linkAbout: '私たちについて', linkFaq: 'よくある質問',
   },
 }
 
 const zhTW: typeof en = {
   nav: {
+    home: '首頁', markets: '市集',
     brands: '品牌', services: '服務', fairs: '展覽',
     howItWorks: '服務流程', faq: '常見問題', placeOrder: '立即下單',
   },
@@ -315,6 +322,8 @@ const zhTW: typeof en = {
     explore: '探索', connect: '聯絡我們', basedIn: '我們的據點',
     copyright: '從首爾與東京，帶著心意',
     tagline: '從首爾與東京，送達全世界',
+    linkMarkets: '市集', linkBrands: '品牌目錄', linkTracker: '展覽追蹤器',
+    linkHow: '服務流程', linkAbout: '關於我們', linkFaq: '常見問題',
   },
 }
 
