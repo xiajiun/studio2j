@@ -59,7 +59,8 @@ function MarketCard({ m }: { m: TwentyMarket }) {
   )
 }
 
-export default function TwentyMarketsSection({ markets, standalone = false }: { markets: TwentyMarket[]; standalone?: boolean }) {
+export default function TwentyMarketsSection({ markets: rawMarkets, standalone = false }: { markets: TwentyMarket[]; standalone?: boolean }) {
+  const markets = rawMarkets.filter(m => !m.marketTitle.includes('테스트'))
   if (markets.length === 0) return (
     <section style={{ background: 'var(--beige)', padding: standalone ? '160px 0' : '100px 0', textAlign: 'center' }}>
       <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>No markets open right now — check back soon.</p>

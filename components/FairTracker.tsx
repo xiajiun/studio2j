@@ -66,11 +66,11 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   })
 
   const views: { key: View; label: string }[] = [
-    { key: 'all',      label: 'All' },
     { key: 'upcoming', label: tr.pUpcoming },
     { key: 'going',    label: tr.pGoing },
     { key: 'deadline', label: tr.pDeadline },
     { key: 'saved',    label: tr.pSaved },
+    { key: 'all',      label: 'All' },
   ]
 
   return (
@@ -314,18 +314,20 @@ function FairCard({ fair: f, today, saved, onSave }: {
       transition: 'all 0.25s ease',
       marginBottom: '10px',
     }}>
-      {f.image_url && (
-        <div style={{ width: '100%', height: '200px', overflow: 'hidden' }}>
-          <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
-        </div>
-      )}
-      <div style={{
-        padding: '24px 28px',
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
-        gap: '24px',
-        alignItems: 'start',
-      }}>
+      <div style={{ display: 'flex', alignItems: 'stretch' }}>
+        {f.image_url && (
+          <div style={{ width: '140px', flexShrink: 0, overflow: 'hidden' }}>
+            <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
+          </div>
+        )}
+        <div style={{
+          flex: 1,
+          padding: '24px 28px',
+          display: 'grid',
+          gridTemplateColumns: '1fr auto',
+          gap: '24px',
+          alignItems: 'start',
+        }}>
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
           <span style={{
@@ -470,6 +472,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
           }}
         >{isSaved ? 'Saved ✓' : 'Save'}</button>
       </div>
+      </div> {/* end flex row */}
 
       {/* Inline email input */}
       {(mode === 'input' || mode === 'saving') && (
