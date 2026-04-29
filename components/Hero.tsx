@@ -93,9 +93,11 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
             <a
               href={shopUrl}
               {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
-              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#C8A98D', textDecoration: 'none', border: '0.5px solid rgba(200,169,141,0.35)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'rgba(245,239,230,0.8)', textDecoration: 'none', background: 'rgba(245,239,230,0.08)', padding: '4px 10px', borderRadius: '99px', letterSpacing: '0.02em' }}
             >
-              Shop now ↗
+              {shopExternal
+                ? shopUrl.includes('instagram') ? 'Instagram ↗' : 'Website ↗'
+                : 'Shop now ↗'}
             </a>
           )}
         </div>
