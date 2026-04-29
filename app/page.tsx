@@ -13,7 +13,6 @@ import Footer from '@/components/Footer'
 import { FAIRS } from '@/lib/fairs'
 import type { FairRow, TwentyMarket } from '@/lib/database.types'
 import { AuthRedirect } from '@/components/AuthRedirect'
-import TwentyMarketsSection from '@/components/TwentyMarketsSection'
 
 export default async function Home() {
   // Fetch from Supabase; fall back to static data if DB not seeded yet
@@ -63,7 +62,6 @@ export default async function Home() {
         countryCount={new Set(fairs.map(f => f.country)).size}
         nextFair={nextFair}
       />
-      <TwentyMarketsSection markets={twentyMarkets} />
       <Services />
       <Marquee />
       <FairTracker fairs={fairs} />

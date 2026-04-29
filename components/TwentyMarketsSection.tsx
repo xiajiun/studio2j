@@ -12,7 +12,7 @@ function fmtRange(st: number, ed: number) {
 function MarketCard({ m }: { m: TwentyMarket }) {
   const [imgOk, setImgOk] = useState(true)
   const url    = `https://twenty.style/m/${m.sellerPublicId}/${m.marketPublicId}`
-  const imgSrc = `https://image.twenty.style/${m.marketCover}`
+  const imgSrc = `https://cdn.twenty.style/${m.marketCover}`
 
   return (
     <a
@@ -59,11 +59,15 @@ function MarketCard({ m }: { m: TwentyMarket }) {
   )
 }
 
-export default function TwentyMarketsSection({ markets }: { markets: TwentyMarket[] }) {
-  if (markets.length === 0) return null
+export default function TwentyMarketsSection({ markets, standalone = false }: { markets: TwentyMarket[]; standalone?: boolean }) {
+  if (markets.length === 0) return (
+    <section style={{ background: 'var(--beige)', padding: standalone ? '160px 0' : '100px 0', textAlign: 'center' }}>
+      <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>No markets open right now — check back soon.</p>
+    </section>
+  )
 
   return (
-    <section id="twenty-markets" style={{ background: 'var(--beige)', padding: '100px 0' }}>
+    <section id="twenty-markets" style={{ background: 'var(--beige)', padding: standalone ? '120px 0 100px' : '100px 0' }}>
       <div className="container">
         {/* Header */}
         <div style={{ marginBottom: '48px' }}>

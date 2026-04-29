@@ -56,7 +56,7 @@ export default function Hero({ fairCount, countryCount, nextFair }: {
             {t.hero.stackLabel}
           </div>
 
-          <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="#twenty-markets" />
+          <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
           <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0.15s" />
           {nextFair ? (
             <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.3s" shopUrl={nextFair.url ?? undefined} shopExternal />

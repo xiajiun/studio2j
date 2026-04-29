@@ -38,7 +38,10 @@
       "WebFetch(domain:api.twenty.style)",
       "Bash(curl -s https://twenty.style)",
       "Bash(curl -s -I https://twenty.style)",
-      "Bash(grep -oE '\\(https?://[^\"<>]+|/[^\"<>]*\\)\\\\.\\([a-zA-Z]{2,4}\\)')"
+      "Bash(grep -oE '\\(https?://[^\"<>]+|/[^\"<>]*\\)\\\\.\\([a-zA-Z]{2,4}\\)')",
+      "WebFetch(domain:image.twenty.style)",
+      "WebFetch(domain:cdn.twenty.style)",
+      "WebFetch(domain:img.twenty.style)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",
