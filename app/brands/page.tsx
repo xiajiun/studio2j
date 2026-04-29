@@ -144,6 +144,22 @@ export default function BrandsPage() {
   )
 }
 
+function BrandLogo({ brand: b }: { brand: typeof BRANDS[0] }) {
+  const [ok, setOk] = useState(true)
+  const src = b.image ?? `https://www.google.com/s2/favicons?domain=${b.url}&sz=128`
+  const initial = b.name.charAt(0).toUpperCase()
+
+  return (
+    <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '0.5px solid rgba(122,92,69,0.1)' }}>
+      {ok ? (
+        <img src={src} alt={b.name} onError={() => setOk(false)} style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+      ) : (
+        <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: 'var(--brown)' }}>{initial}</span>
+      )}
+    </div>
+  )
+}
+
 function BrandCard({ brand: b, featured }: { brand: typeof BRANDS[0]; featured?: boolean }) {
   const flag = b.region === 'Korea' ? '🇰🇷' : '🇯🇵'
 
@@ -160,8 +176,9 @@ function BrandCard({ brand: b, featured }: { brand: typeof BRANDS[0]; featured?:
       transition: 'transform 0.2s, box-shadow 0.2s',
     }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
-        <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+        <BrandLogo brand={b} />
+        <div style={{ flex: 1 }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '20px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', marginBottom: '2px' }}>
             {b.name}
           </div>

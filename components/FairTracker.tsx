@@ -312,15 +312,23 @@ function FairCard({ fair: f, today, saved, onSave }: {
       border: f.featured ? '0.5px solid rgba(31,58,95,0.25)' : '0.5px solid rgba(122,92,69,0.15)',
       boxShadow: f.featured ? '0 4px 16px rgba(31,58,95,0.04)' : 'none',
       borderRadius: '18px',
-      padding: '24px 28px',
-      display: 'grid',
-      gridTemplateColumns: '1fr auto',
-      gap: '24px',
-      alignItems: 'start',
+      overflow: 'hidden',
       cursor: 'pointer',
       transition: 'all 0.25s ease',
       marginBottom: '10px',
     }}>
+      {f.image_url && (
+        <div style={{ width: '100%', height: '180px', overflow: 'hidden' }}>
+          <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        </div>
+      )}
+      <div style={{
+        padding: '24px 28px',
+        display: 'grid',
+        gridTemplateColumns: '1fr auto',
+        gap: '24px',
+        alignItems: 'start',
+      }}>
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
           <span style={{
@@ -505,6 +513,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
           {err && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: '#8A3A20', width: '100%' }}>{err}</span>}
         </form>
       )}
+      </div>
 
       <style jsx>{`
         .fair-card-item:hover {

@@ -46,6 +46,7 @@ export interface FairRow {
   featured: boolean
   going: boolean
   url: string | null
+  image_url: string | null
   notes: string | null
   created_at: string
   updated_at: string

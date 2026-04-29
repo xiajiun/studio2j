@@ -33,6 +33,7 @@ export default async function Home() {
     fairs = FAIRS.map(f => ({
       ...f,
       url:        null,
+      image_url:  null,
       notes:      f.notes ?? null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

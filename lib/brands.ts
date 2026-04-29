@@ -8,6 +8,7 @@ export interface Brand {
   description: string
   categories: BrandCategory[]
   featured?: boolean
+  image?: string  // custom image URL; falls back to favicon
 }
 
 export const BRANDS: Brand[] = [
