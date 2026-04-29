@@ -4,6 +4,8 @@ export const runtime = 'edge'
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
+import { LangProvider } from '@/components/LangProvider'
 import { BRANDS, CATEGORY_LABELS, type BrandRegion, type BrandCategory } from '@/lib/brands'
 
 const REGIONS: { value: BrandRegion | 'all'; label: string }[] = [
@@ -35,22 +37,12 @@ export default function BrandsPage() {
   const rest     = filtered.filter(b => !b.featured)
 
   return (
+    <LangProvider>
     <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
-
-      {/* Nav */}
-      <div style={{ padding: '20px 48px', borderBottom: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 500, color: 'var(--dark-brown)', letterSpacing: '-0.02em' }}>
-            Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
-          </span>
-        </Link>
-        <Link href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, padding: '10px 22px', borderRadius: '99px', textDecoration: 'none', letterSpacing: '0.03em' }}>
-          Place an order
-        </Link>
-      </div>
+      <Nav />
 
       {/* Header */}
-      <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '80px 48px 56px' }}>
+      <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '120px 48px 56px' }}>
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '14px' }}>
           <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
           Brand directory
@@ -141,6 +133,7 @@ export default function BrandsPage() {
         </div>
       </div>
     </main>
+    </LangProvider>
   )
 }
 
