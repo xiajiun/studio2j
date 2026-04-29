@@ -5,7 +5,7 @@ import { formatDate } from '@/lib/fairs'
 import type { FairRow } from '@/lib/database.types'
 import { useLang } from '@/components/LangProvider'
 
-type View = 'upcoming' | 'going' | 'deadline' | 'saved' | 'asia' | 'europe'
+type View = 'all' | 'upcoming' | 'going' | 'deadline' | 'saved'
 
 function dlInfo(deadline: string, today: Date): { cls: string; label: string } {
   const diff = (new Date(deadline).getTime() - today.getTime()) / 86400000
@@ -19,7 +19,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   const today = new Date()
   const { t } = useLang()
   const tr = t.tracker
-  const [view, setView] = useState<View>('upcoming')
+  const [view, setView] = useState<View>('all')
   const [search, setSearch] = useState('')
   const [saved, setSaved] = useState<Set<number>>(new Set())
 
@@ -45,8 +45,6 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
     if (view === 'going' && !f.going) return false
     if (view === 'deadline' && (new Date(f.deadline).getTime() - today.getTime()) / 86400000 < 0) return false
     if (view === 'saved' && !saved.has(f.id)) return false
-    if (view === 'asia' && f.region !== 'Asia') return false
-    if (view === 'europe' && f.region !== 'Europe') return false
     if (q && !f.name.toLowerCase().includes(q) && !f.city.toLowerCase().includes(q) && !f.country.toLowerCase().includes(q)) return false
     return true
   }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
@@ -68,12 +66,11 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   })
 
   const views: { key: View; label: string }[] = [
+    { key: 'all',      label: 'All' },
     { key: 'upcoming', label: tr.pUpcoming },
     { key: 'going',    label: tr.pGoing },
     { key: 'deadline', label: tr.pDeadline },
     { key: 'saved',    label: tr.pSaved },
-    { key: 'asia',     label: tr.pAsia },
-    { key: 'europe',   label: tr.pEurope },
   ]
 
   return (
@@ -318,8 +315,8 @@ function FairCard({ fair: f, today, saved, onSave }: {
       marginBottom: '10px',
     }}>
       {f.image_url && (
-        <div style={{ width: '100%', height: '180px', overflow: 'hidden' }}>
-          <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        <div style={{ width: '100%', height: '200px', overflow: 'hidden' }}>
+          <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
         </div>
       )}
       <div style={{

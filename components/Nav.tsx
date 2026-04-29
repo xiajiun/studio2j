@@ -32,9 +32,10 @@ export default function Nav() {
 
         <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
           {[
+            { href: '/',          label: 'Home' },
+            { href: '/#tracker',  label: t.nav.fairs },
             { href: '/markets',   label: 'Markets' },
             { href: '/brands',    label: t.nav.brands },
-            { href: '/#tracker',  label: t.nav.fairs },
             { href: '/#how',      label: t.nav.howItWorks },
             { href: '/#faq',      label: t.nav.faq },
           ].map(({ href, label }) => (

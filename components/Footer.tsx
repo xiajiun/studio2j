@@ -48,12 +48,12 @@ export default function Footer() {
           </div>
 
           <FooterCol title={f.explore} links={[
-            { href: '/brands',   label: 'Brand directory' },
-            { href: '#services', label: 'Services' },
-            { href: '#tracker',  label: 'Fair Tracker' },
-            { href: '#how',      label: 'How it works' },
-            { href: '/about',    label: 'About us' },
-            { href: '#faq',      label: 'FAQ' },
+            { href: '/markets',   label: 'Markets' },
+            { href: '/brands',    label: 'Brand directory' },
+            { href: '/#tracker',  label: 'Fair tracker' },
+            { href: '/#how',      label: 'How it works' },
+            { href: '/about',     label: 'About us' },
+            { href: '/#faq',      label: 'FAQ' },
           ]} />
 
           <FooterCol title={f.connect} links={[
