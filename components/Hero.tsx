@@ -49,39 +49,34 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
       </div>
 
       {/* Right */}
-      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
 
-        {/* Market image mosaic background */}
+        {/* Market image strip — 2 rows */}
         {markets.length > 0 && (() => {
-          // Repeat images to fill grid (need ~24 cells for 4col × 6row)
+          const clean = markets.filter(m => !m.marketTitle.includes('테스트'))
+          // Repeat to fill 2 rows of 6 = 12 cells minimum
           const imgs: TwentyMarket[] = []
-          while (imgs.length < 24) imgs.push(...markets.filter(m => !m.marketTitle.includes('테스트')))
+          while (imgs.length < 12) imgs.push(...clean)
           return (
-            <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '3px',
-                opacity: 0.35,
-                transform: 'scale(1.05)',
-              }}>
-                {imgs.slice(0, 24).map((m, i) => (
+            <div style={{ width: '100%', flexShrink: 0 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '3px' }}>
+                {imgs.slice(0, 12).map((m, i) => (
                   <img
                     key={i}
                     src={`https://cdn.twenty.style/${m.marketCover}`}
-                    alt=""
+                    alt={m.marketTitle}
                     style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }}
                   />
                 ))}
               </div>
-              {/* Dark gradient overlay so cards stay readable */}
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(31,58,95,0.5) 0%, rgba(31,58,95,0.3) 100%)' }} />
+              {/* Fade to dark blue */}
+              <div style={{ height: '40px', background: 'linear-gradient(to bottom, transparent, var(--dark-blue))', marginTop: '-40px', position: 'relative' }} />
             </div>
           )
         })()}
 
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(200,169,141,0.08), transparent 50%)', pointerEvents: 'none', zIndex: 1 }} />
-        <div style={{ position: 'relative', zIndex: 3, padding: '48px', width: '100%', maxWidth: '440px' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(200,169,141,0.08), transparent 50%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', maxWidth: '440px', alignSelf: 'center' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--tan)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'var(--tan)', display: 'inline-block' }} />
             {t.hero.stackLabel}
