@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
-  const { email, fair_id, fair_name, fair_date, fair_deadline } = await req.json()
+  const { email, fair_id, fair_name, fair_date, fair_deadline, lang = 'en' } = await req.json()
 
   if (!email || !fair_id) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
 
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   )
 
   const { error: dbError } = await supabase.from('fair_reminders').upsert(
-    { email, fair_id, fair_name, fair_date, fair_deadline },
+    { email, fair_id, fair_name, fair_date, fair_deadline, lang },
     { onConflict: 'email,fair_id' }
   )
 

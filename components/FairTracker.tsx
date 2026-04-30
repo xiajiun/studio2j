@@ -292,6 +292,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
           fair_city:     f.city,
           fair_country:  f.country,
           going:         f.going,
+          lang,
         }),
       })
       const json = await res.json()
