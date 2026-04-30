@@ -263,6 +263,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
   saved: Set<number>
   onSave: (id: number) => void
 }) {
+  const { lang } = useLang()
   const dl = dlInfo(f.deadline, today)
   const isSaved = saved.has(f.id)
   const [mode, setMode] = useState<'idle' | 'input' | 'saving' | 'done'>('idle')
