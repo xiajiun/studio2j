@@ -59,6 +59,7 @@ export default async function Home() {
       <AuthRedirect />
       <Nav />
       <Hero
+        markets={twentyMarkets}
         fairCount={fairs.length}
         countryCount={new Set(fairs.map(f => f.country)).size}
         nextFair={nextFair}
