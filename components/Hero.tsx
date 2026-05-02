@@ -51,23 +51,37 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
       {/* Right */}
       <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
 
-        {/* Market image strip — 2 rows of 6, clickable to /markets */}
+        {/* Market image carousel — 2 rows scrolling opposite directions */}
         {markets.length > 0 && (() => {
           const clean = markets.filter(m => !m.marketTitle.includes('테스트'))
-          const imgs: TwentyMarket[] = []
-          while (imgs.length < 12) imgs.push(...clean)
+          const row1: TwentyMarket[] = []
+          const row2: TwentyMarket[] = []
+          while (row1.length < 16) row1.push(...clean)
+          while (row2.length < 16) row2.push(...[...clean].reverse())
+
+          const img: React.CSSProperties = { width: '90px', height: '90px', objectFit: 'cover', flexShrink: 0, display: 'block' }
+
           return (
-            <div style={{ width: '100%', flexShrink: 0 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '3px' }}>
-                {imgs.slice(0, 12).map((m, i) => (
-                  <a key={i} href="/markets" style={{ display: 'block', overflow: 'hidden' }}>
-                    <img
-                      src={`https://cdn.twenty.style/${m.marketCover}`}
-                      alt={m.marketTitle}
-                      style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block', transition: 'transform 0.3s ease' }}
-                    />
-                  </a>
-                ))}
+            <div style={{ width: '100%', flexShrink: 0, overflow: 'hidden' }}>
+              {/* Row 1 — scrolls left */}
+              <div style={{ overflow: 'hidden', marginBottom: '3px' }}>
+                <div style={{ display: 'flex', gap: '3px', animation: 'carouselLeft 25s linear infinite', willChange: 'transform' }}>
+                  {[...row1, ...row1].map((m, i) => (
+                    <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
+                      <img src={`https://cdn.twenty.style/${m.marketCover}`} alt="" style={img} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+              {/* Row 2 — scrolls right */}
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ display: 'flex', gap: '3px', animation: 'carouselRight 25s linear infinite', willChange: 'transform' }}>
+                  {[...row2, ...row2].map((m, i) => (
+                    <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
+                      <img src={`https://cdn.twenty.style/${m.marketCover}`} alt="" style={img} />
+                    </a>
+                  ))}
+                </div>
               </div>
               <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, var(--dark-blue))', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
             </div>
