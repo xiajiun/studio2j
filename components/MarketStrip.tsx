@@ -26,7 +26,7 @@ export default function MarketStrip({ markets }: { markets: TwentyMarket[] }) {
   })
 
   return (
-    <section style={{ background: 'var(--dark-brown)', padding: '48px 0 40px', overflow: 'hidden' }}>
+    <section style={{ background: 'var(--dark-brown)', paddingTop: '128px', paddingBottom: '40px', overflow: 'hidden' }}>
       {/* Label */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 48px', marginBottom: '24px', maxWidth: '1240px', margin: '0 auto 24px' }}>
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '20px', color: 'var(--tan)' }}>

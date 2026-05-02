@@ -12,7 +12,7 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
   const { t } = useLang()
 
   return (
-    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', paddingTop: '90px', overflow: 'hidden' }}>
+    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', overflow: 'hidden' }}>
       {/* Left */}
       <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 48px 80px 80px', position: 'relative' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
