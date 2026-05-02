@@ -12,7 +12,7 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
   const { t } = useLang()
 
   return (
-    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', overflow: 'hidden' }}>
+    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', paddingTop: '90px', overflow: 'hidden' }}>
       {/* Left */}
       <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 48px 80px 80px', position: 'relative' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
@@ -49,9 +49,33 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
       </div>
 
       {/* Right */}
-      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
+
+        {/* Market image strip — 2 rows of 6, clickable to /markets */}
+        {markets.length > 0 && (() => {
+          const clean = markets.filter(m => !m.marketTitle.includes('테스트'))
+          const imgs: TwentyMarket[] = []
+          while (imgs.length < 12) imgs.push(...clean)
+          return (
+            <div style={{ width: '100%', flexShrink: 0 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '3px' }}>
+                {imgs.slice(0, 12).map((m, i) => (
+                  <a key={i} href="/markets" style={{ display: 'block', overflow: 'hidden' }}>
+                    <img
+                      src={`https://cdn.twenty.style/${m.marketCover}`}
+                      alt={m.marketTitle}
+                      style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block', transition: 'transform 0.3s ease' }}
+                    />
+                  </a>
+                ))}
+              </div>
+              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, var(--dark-blue))', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
+            </div>
+          )
+        })()}
+
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(200,169,141,0.08), transparent 50%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '48px', width: '100%', maxWidth: '440px' }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', maxWidth: '440px', alignSelf: 'center' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--tan)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'var(--tan)', display: 'inline-block' }} />
             {t.hero.stackLabel}

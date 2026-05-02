@@ -59,8 +59,8 @@ export default async function Home() {
     <>
       <AuthRedirect />
       <Nav />
-      <MarketStrip markets={twentyMarkets} />
       <Hero
+        markets={twentyMarkets}
         fairCount={fairs.length}
         countryCount={new Set(fairs.map(f => f.country)).size}
         nextFair={nextFair}
