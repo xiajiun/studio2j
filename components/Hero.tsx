@@ -49,53 +49,9 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
       </div>
 
       {/* Right */}
-      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
-
-        {/* Market image carousel — 2 rows scrolling in opposite directions */}
-        {markets.length > 0 && (() => {
-          const clean = markets.filter(m => !m.marketTitle.includes('테스트'))
-          // Duplicate enough times for seamless loop (need 8+ per row visible)
-          const row1: TwentyMarket[] = []
-          const row2: TwentyMarket[] = []
-          while (row1.length < 16) row1.push(...clean)
-          while (row2.length < 16) row2.push(...[...clean].reverse())
-
-          const imgStyle: React.CSSProperties = {
-            width: '110px', height: '110px', objectFit: 'cover',
-            flexShrink: 0, display: 'block',
-          }
-          const trackStyle = (dir: 'left' | 'right'): React.CSSProperties => ({
-            display: 'flex', gap: '3px',
-            animation: `${dir === 'left' ? 'carouselLeft' : 'carouselRight'} 30s linear infinite`,
-            willChange: 'transform',
-          })
-
-          return (
-            <div style={{ width: '100%', flexShrink: 0, overflow: 'hidden' }}>
-              {/* Row 1 — scrolls left */}
-              <div style={{ overflow: 'hidden', marginBottom: '3px' }}>
-                <div style={trackStyle('left')}>
-                  {[...row1, ...row1].map((m, i) => (
-                    <img key={i} src={`https://cdn.twenty.style/${m.marketCover}`} alt="" style={imgStyle} />
-                  ))}
-                </div>
-              </div>
-              {/* Row 2 — scrolls right */}
-              <div style={{ overflow: 'hidden' }}>
-                <div style={trackStyle('right')}>
-                  {[...row2, ...row2].map((m, i) => (
-                    <img key={i} src={`https://cdn.twenty.style/${m.marketCover}`} alt="" style={imgStyle} />
-                  ))}
-                </div>
-              </div>
-              {/* Fade to dark blue */}
-              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, var(--dark-blue))', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
-            </div>
-          )
-        })()}
-
+      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(200,169,141,0.08), transparent 50%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', maxWidth: '440px', alignSelf: 'center' }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '48px', width: '100%', maxWidth: '440px' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--tan)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'var(--tan)', display: 'inline-block' }} />
             {t.hero.stackLabel}
