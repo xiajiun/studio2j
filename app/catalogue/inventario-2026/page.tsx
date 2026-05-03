@@ -74,7 +74,7 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: 'HOWkidsFUL', korean: '하우키즈풀', category: 'Daily Finds' },
   { name: 'FRANZ', korean: '프란츠', url: 'franz.co.kr', category: 'Daily Finds' },
   { name: 'CIRCUS BOY BAND', korean: '서커스보이밴드', instagram: 'circusboyband', category: 'Daily Finds' },
-  { name: 'TRAVELER'"'"'S COMPANY', country: 'JP', korean: '트래블러스컴퍼니', instagram: 'travelerscompany', url: 'travelers-company.com', category: 'Daily Finds' },
+  { name: "TRAVELER'S COMPANY", country: 'JP', korean: '트래블러스컴퍼니', instagram: 'travelerscompany', url: 'travelers-company.com', category: 'Daily Finds' },
   // PAPER
   { name: 'DOOSUNG PAPER', korean: '두성종이', instagram: 'doosungpaper', url: 'doosung.co.kr', category: 'Paper' },
   { name: 'PAPER TAILOR', korean: '페이퍼테일러', category: 'Paper' },
