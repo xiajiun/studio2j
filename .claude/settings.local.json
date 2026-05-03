@@ -41,7 +41,9 @@
       "Bash(grep -oE '\\(https?://[^\"<>]+|/[^\"<>]*\\)\\\\.\\([a-zA-Z]{2,4}\\)')",
       "WebFetch(domain:image.twenty.style)",
       "WebFetch(domain:cdn.twenty.style)",
-      "WebFetch(domain:img.twenty.style)"
+      "WebFetch(domain:img.twenty.style)",
+      "Bash(git pull *)",
+      "Bash(git stash *)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",

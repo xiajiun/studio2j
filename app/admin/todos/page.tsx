@@ -100,7 +100,6 @@ function TodoItem({ t, editingId, editText, editCat, editRef,
             style={{ ...inp, flex: 1, padding: '4px 8px', fontSize: '13px' }}
             value={editText}
             onChange={e => onEditText(e.target.value)}
-            onBlur={() => onSaveEdit(t.id)}
             onKeyDown={e => onKey(e, t.id)}
           />
         ) : (
