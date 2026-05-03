@@ -123,15 +123,15 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
 
 const CATEGORIES = [...new Set(BRANDS.map(b => b.category))]
 
-function BrandLogo({ brand }: { brand: typeof BRANDS[0] }) {
+function BrandIcon({ brand }: { brand: typeof BRANDS[0] }) {
   const [ok, setOk] = useState(true)
   const src = brand.image ?? (brand.url ? `https://www.google.com/s2/favicons?domain=${brand.url}&sz=128` : null)
   return (
-    <div style={{ width: '100%', aspectRatio: '1', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+    <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: 'var(--beige)', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
       {src && ok ? (
-        <img src={src} alt={brand.name} onError={() => setOk(false)} style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+        <img src={src} alt={brand.name} onError={() => setOk(false)} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
       ) : (
-        <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '28px', fontWeight: 300, color: 'var(--tan)', userSelect: 'none' }}>
+        <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', fontWeight: 300, color: 'var(--tan)' }}>
           {brand.name.charAt(0)}
         </span>
       )}
@@ -181,27 +181,30 @@ export default function InventarioCataloguePage() {
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px', paddingBottom: '10px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
                 {cat}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '8px' }}>
                 {BRANDS.filter(b => b.category === cat).map(b => (
-                  <div key={b.name} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', flexDirection: 'column' }}>
-                    <BrandLogo brand={b} />
-                    {/* Info */}
-                    <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
-                      <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '14px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
+                  <div key={b.name} style={{ background: 'white', borderRadius: '14px', padding: '16px 18px', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <BrandIcon brand={b} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
                         {b.name}
                       </div>
-                      {b.korean && (
-                        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)' }}>
-                          {b.korean}
-                        </div>
-                      )}
-                      {b.instagram && (
-                        <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer"
-                          style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', marginTop: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                          Instagram ↗
-                        </a>
-                      )}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '3px', flexWrap: 'wrap' }}>
+                        {b.url && (
+                          <a href={`https://${b.url}`} target="_blank" rel="noreferrer"
+                            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>
+                            {b.url} ↗
+                          </a>
+                        )}
+                        {b.instagram && (
+                          <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer"
+                            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>
+                            {b.url ? '· Instagram ↗' : 'Instagram ↗'}
+                          </a>
+                        )}
+                      </div>
                     </div>
+                    <span style={{ fontSize: '16px', flexShrink: 0 }}>🇰🇷</span>
                   </div>
                 ))}
               </div>
