@@ -96,7 +96,7 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
           </div>
 
           <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
-          <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0.15s" />
+          <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.15s" />
           {nextFair ? (
             <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.3s" shopUrl={nextFair.url ?? undefined} shopExternal />
           ) : (
@@ -110,7 +110,7 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
 
 function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false }: {
   name: string; loc: string; tags: string[]; chipVariant: 'urgent' | 'open'
-  chipLabel: string; delay: string; shopUrl?: string; shopExternal?: boolean
+  chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean
 }) {
   const chipStyle = chipVariant === 'urgent'
     ? { background: 'rgba(200,169,141,0.18)', color: '#E6C9AE', border: '0.5px solid rgba(200,169,141,0.3)' }
@@ -140,10 +140,12 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
             </a>
           )}
         </div>
-        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '4px', ...chipStyle }}>
-          {chipVariant === 'open' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4CAF7D', animation: 'livePulse 2s ease-in-out infinite', flexShrink: 0, display: 'inline-block' }} />}
-          {chipLabel}
-        </span>
+        {chipLabel && (
+          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '4px', ...chipStyle }}>
+            {chipVariant === 'open' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4CAF7D', animation: 'livePulse 2s ease-in-out infinite', flexShrink: 0, display: 'inline-block' }} />}
+            {chipLabel}
+          </span>
+        )}
       </div>
     </div>
   )
