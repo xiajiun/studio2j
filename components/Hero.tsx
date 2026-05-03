@@ -30,8 +30,8 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
         </p>
 
         <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', animation: 'fadeUp 0.8s ease 0.3s both' }}>
-          <a href="/order/new" className="btn-primary-hero">{t.hero.cta1}</a>
-          <a href="#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
+          <a href="/markets" className="btn-primary-hero">{t.hero.cta1}</a>
+          <a href="/#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
         </div>
 
         <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
@@ -140,7 +140,10 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
             </a>
           )}
         </div>
-        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', ...chipStyle }}>{chipLabel}</span>
+        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '4px', ...chipStyle }}>
+          {chipVariant === 'open' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4CAF7D', animation: 'livePulse 2s ease-in-out infinite', flexShrink: 0, display: 'inline-block' }} />}
+          {chipLabel}
+        </span>
       </div>
     </div>
   )
