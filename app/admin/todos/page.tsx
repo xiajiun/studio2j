@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 type Category = 'inbox' | 'idea' | 'task' | 'feature' | 'bug' | 'note'
-type Filter   = 'all' | 'active' | 'done'
 
 interface Todo {
   id: number
@@ -33,13 +32,22 @@ const inp: React.CSSProperties = {
   fontSize: '13px', fontWeight: 300, outline: 'none',
 }
 
+function fmtDate(d: string) {
+  const date = new Date(d)
+  const now  = new Date()
+  const sameYear = date.getFullYear() === now.getFullYear()
+  return date.toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric',
+    ...(!sameYear ? { year: 'numeric' } : {}),
+  })
+}
+
 export default function TodosPage() {
-  const [todos, setTodos]       = useState<Todo[]>([])
-  const [text, setText]         = useState('')
-  const [category, setCategory] = useState<Category>('inbox')
-  const [filter, setFilter]     = useState<Filter>('active')
-  const [loading, setLoading]   = useState(true)
-  const [saving, setSaving]     = useState(false)
+  const [todos, setTodos]           = useState<Todo[]>([])
+  const [text, setText]             = useState('')
+  const [category, setCategory]     = useState<Category>('inbox')
+  const [loading, setLoading]       = useState(true)
+  const [saving, setSaving]         = useState(false)
   const [editingId, setEditingId]   = useState<number | null>(null)
   const [editText, setEditText]     = useState('')
   const [editCat, setEditCat]       = useState<Category>('inbox')
@@ -63,8 +71,7 @@ export default function TodosPage() {
     e.preventDefault()
     if (!text.trim()) return
     setSaving(true)
-    const { data, error } = await supabase
-      .from('todos').insert({ text: text.trim(), category }).select().single()
+    const { data, error } = await supabase.from('todos').insert({ text: text.trim(), category }).select().single()
     if (!error && data) setTodos(prev => [data as Todo, ...prev])
     setText('')
     setSaving(false)
@@ -80,11 +87,7 @@ export default function TodosPage() {
     setTodos(prev => prev.filter(t => t.id !== id))
   }
 
-  function startEdit(t: Todo) {
-    setEditingId(t.id)
-    setEditText(t.text)
-    setEditCat(t.category)
-  }
+  function startEdit(t: Todo) { setEditingId(t.id); setEditText(t.text); setEditCat(t.category) }
 
   async function saveEdit(id: number) {
     if (!editText.trim()) { setEditingId(null); return }
@@ -93,181 +96,145 @@ export default function TodosPage() {
     setEditingId(null)
   }
 
-  function handleEditKey(e: React.KeyboardEvent, id: number) {
-    if (e.key === 'Enter')  saveEdit(id)
+  function onKey(e: React.KeyboardEvent, id: number) {
+    if (e.key === 'Enter') saveEdit(id)
     if (e.key === 'Escape') setEditingId(null)
   }
 
-  const filtered = todos.filter(t =>
-    filter === 'all'    ? true :
-    filter === 'active' ? !t.completed : t.completed
-  )
+  const active = todos.filter(t => !t.completed)
+  const done   = todos.filter(t =>  t.completed)
 
-  const active = todos.filter(t => !t.completed).length
-  const done   = todos.filter(t =>  t.completed).length
+  function TodoItem({ t }: { t: Todo }) {
+    const cat     = CAT[t.category] ?? CAT.inbox
+    const editing = editingId === t.id
+    return (
+      <div style={{
+        display: 'flex', flexDirection: 'column', gap: '6px',
+        background: 'white', borderRadius: '12px', padding: '12px 14px',
+        border: editing ? '0.5px solid var(--dark-blue)' : '0.5px solid rgba(122,92,69,0.1)',
+        opacity: t.completed && !editing ? 0.65 : 1, transition: 'all 0.15s',
+      }}>
+        {/* Top row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button onClick={() => { if (!editing) toggle(t.id, t.completed) }} style={{
+            width: '18px', height: '18px', borderRadius: '5px', flexShrink: 0,
+            border: `1.5px solid ${t.completed ? 'var(--dark-blue)' : 'rgba(122,92,69,0.3)'}`,
+            background: t.completed ? 'var(--dark-blue)' : 'white',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', fontSize: '10px', padding: 0,
+          }}>{t.completed ? '✓' : ''}</button>
+
+          {editing ? (
+            <input ref={editRef} style={{ ...inp, flex: 1, padding: '4px 8px', fontSize: '13px' }}
+              value={editText} onChange={e => setEditText(e.target.value)}
+              onBlur={() => saveEdit(t.id)} onKeyDown={e => onKey(e, t.id)} />
+          ) : (
+            <span onClick={() => startEdit(t)} style={{
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
+              color: 'var(--dark-brown)', flex: 1, lineHeight: 1.5, cursor: 'text',
+              textDecoration: t.completed ? 'line-through' : 'none',
+            }}>{t.text}</span>
+          )}
+
+          {editing ? (
+            <button onClick={() => saveEdit(t.id)} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', flexShrink: 0 }}>Save</button>
+          ) : (
+            <button onClick={() => remove(t.id)} style={{ fontSize: '15px', color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', lineHeight: 1, flexShrink: 0 }}>×</button>
+          )}
+        </div>
+
+        {/* Bottom row — category + date */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingLeft: '28px' }}>
+          {editing ? (
+            <select style={{ ...inp, padding: '3px 8px', fontSize: '11px', width: '100px' }}
+              value={editCat} onChange={e => setEditCat(e.target.value as Category)}>
+              {CATS.map(c => <option key={c} value={c}>{CAT[c].label}</option>)}
+            </select>
+          ) : (
+            <span onClick={() => startEdit(t)} style={{
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500,
+              padding: '2px 8px', borderRadius: '99px', letterSpacing: '0.04em',
+              background: cat.bg, color: cat.color, cursor: 'pointer',
+            }}>{cat.label}</span>
+          )}
+          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>
+            {fmtDate(t.created_at)}
+          </span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', letterSpacing: '-0.03em', marginBottom: '8px' }}>
         To-do
       </h1>
-      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginBottom: '32px' }}>
-        {active} active · {done} done
+      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginBottom: '28px' }}>
+        {active.length} active · {done.length} done
       </p>
 
       {/* Add form */}
-      <form onSubmit={add} style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap' }}>
-        <input
-          style={{ ...inp, flex: 1, minWidth: '200px' }}
+      <form onSubmit={add} style={{ display: 'flex', gap: '8px', marginBottom: '36px', flexWrap: 'wrap' }}>
+        <input style={{ ...inp, flex: 1, minWidth: '200px' }}
           placeholder="Add a task, idea, or note…"
-          value={text}
-          onChange={e => setText(e.target.value)}
-        />
+          value={text} onChange={e => setText(e.target.value)} />
         <select style={{ ...inp, width: '110px' }} value={category} onChange={e => setCategory(e.target.value as Category)}>
           {CATS.map(c => <option key={c} value={c}>{CAT[c].label}</option>)}
         </select>
-        <button
-          type="submit"
-          disabled={saving || !text.trim()}
-          style={{
-            background: 'var(--dark-blue)', color: 'var(--cream)',
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
-            padding: '10px 22px', borderRadius: '99px', border: 'none',
-            cursor: saving || !text.trim() ? 'default' : 'pointer',
-            opacity: saving || !text.trim() ? 0.5 : 1,
-          }}
-        >{saving ? '…' : '+ Add'}</button>
+        <button type="submit" disabled={saving || !text.trim()} style={{
+          background: 'var(--dark-blue)', color: 'var(--cream)',
+          fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
+          padding: '10px 22px', borderRadius: '99px', border: 'none',
+          cursor: saving || !text.trim() ? 'default' : 'pointer',
+          opacity: saving || !text.trim() ? 0.5 : 1,
+        }}>{saving ? '…' : '+ Add'}</button>
       </form>
 
-      {/* Filter tabs */}
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '20px' }}>
-        {(['active', 'all', 'done'] as Filter[]).map(f => (
-          <button key={f} onClick={() => setFilter(f)} style={{
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px',
-            fontWeight: filter === f ? 500 : 300,
-            padding: '7px 16px', borderRadius: '99px', cursor: 'pointer',
-            background: filter === f ? 'var(--dark-brown)' : 'transparent',
-            color: filter === f ? 'var(--cream)' : 'var(--brown)',
-            border: `0.5px solid ${filter === f ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
-            textTransform: 'capitalize',
-          }}>{f}</button>
-        ))}
-      </div>
-
-      {/* List */}
       {loading ? (
         <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', color: 'var(--tan)' }}>Loading…</p>
-      ) : filtered.length === 0 ? (
-        <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)', padding: '40px 0', textAlign: 'center' }}>
-          {filter === 'done' ? 'Nothing completed yet.' : 'All clear!'}
-        </p>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {filtered.map(t => {
-            const cat     = CAT[t.category] ?? CAT.inbox
-            const editing = editingId === t.id
-            return (
-              <div
-                key={t.id}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '12px',
-                  background: 'white', borderRadius: '12px', padding: '12px 16px',
-                  border: editing ? '0.5px solid var(--dark-blue)' : '0.5px solid rgba(122,92,69,0.1)',
-                  opacity: t.completed && !editing ? 0.6 : 1, transition: 'all 0.15s',
-                }}
-              >
-                {/* Checkbox */}
-                <button
-                  onClick={() => { if (!editing) toggle(t.id, t.completed) }}
-                  style={{
-                    width: '20px', height: '20px', borderRadius: '6px', flexShrink: 0,
-                    border: `1.5px solid ${t.completed ? 'var(--dark-blue)' : 'rgba(122,92,69,0.3)'}`,
-                    background: t.completed ? 'var(--dark-blue)' : 'white',
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'white', fontSize: '11px', padding: 0,
-                  }}
-                >
-                  {t.completed ? '✓' : ''}
-                </button>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', alignItems: 'start' }}>
 
-                {/* Text — click to edit */}
-                {editing ? (
-                  <input
-                    ref={editRef}
-                    style={{ ...inp, flex: 1, padding: '6px 10px' }}
-                    value={editText}
-                    onChange={e => setEditText(e.target.value)}
-                    onBlur={() => saveEdit(t.id)}
-                    onKeyDown={e => handleEditKey(e, t.id)}
-                  />
-                ) : (
-                  <span
-                    onClick={() => startEdit(t)}
-                    style={{
-                      fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300,
-                      color: 'var(--dark-brown)', flex: 1, lineHeight: 1.5, cursor: 'text',
-                      textDecoration: t.completed ? 'line-through' : 'none',
-                    }}
-                  >
-                    {t.text}
-                  </span>
-                )}
-
-                {/* Category — editable when editing */}
-                {editing ? (
-                  <select
-                    style={{ ...inp, width: '100px', padding: '6px 8px', fontSize: '11px' }}
-                    value={editCat}
-                    onChange={e => setEditCat(e.target.value as Category)}
-                  >
-                    {CATS.map(c => <option key={c} value={c}>{CAT[c].label}</option>)}
-                  </select>
-                ) : (
-                  <span
-                    onClick={() => startEdit(t)}
-                    style={{
-                      fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500,
-                      padding: '3px 9px', borderRadius: '99px', letterSpacing: '0.04em',
-                      background: cat.bg, color: cat.color, flexShrink: 0, cursor: 'pointer',
-                    }}
-                  >
-                    {cat.label}
-                  </span>
-                )}
-
-                {/* Save / Delete */}
-                {editing ? (
-                  <button
-                    onClick={() => saveEdit(t.id)}
-                    style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', background: 'none', border: 'none', cursor: 'pointer', padding: '0 4px', flexShrink: 0 }}
-                  >Save</button>
-                ) : (
-                  <button
-                    onClick={() => remove(t.id)}
-                    style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: '0 4px', lineHeight: 1, flexShrink: 0 }}
-                  >×</button>
-                )}
+          {/* Left — Active */}
+          <div>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '12px', paddingBottom: '8px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
+              Active · {active.length}
+            </div>
+            {active.length === 0 ? (
+              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '15px', color: 'var(--tan)', padding: '20px 0' }}>All clear!</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {active.map(t => <TodoItem key={t.id} t={t} />)}
               </div>
-            )
-          })}
-        </div>
-      )}
+            )}
+          </div>
 
-      {/* Clear done */}
-      {done > 0 && filter !== 'active' && (
-        <button
-          onClick={async () => {
-            await supabase.from('todos').delete().eq('completed', true)
-            setTodos(prev => prev.filter(t => !t.completed))
-          }}
-          style={{
-            marginTop: '24px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px',
-            fontWeight: 300, color: 'var(--tan)', background: 'none', border: 'none',
-            cursor: 'pointer', padding: 0, textDecoration: 'underline',
-          }}
-        >
-          Clear all done ({done})
-        </button>
+          {/* Right — Done */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', paddingBottom: '8px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)' }}>
+                Done · {done.length}
+              </span>
+              {done.length > 0 && (
+                <button onClick={async () => {
+                  await supabase.from('todos').delete().eq('completed', true)
+                  setTodos(prev => prev.filter(t => !t.completed))
+                }} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
+                  Clear all
+                </button>
+              )}
+            </div>
+            {done.length === 0 ? (
+              <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '15px', color: 'var(--tan)', padding: '20px 0' }}>Nothing done yet.</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {done.map(t => <TodoItem key={t.id} t={t} />)}
+              </div>
+            )}
+          </div>
+
+        </div>
       )}
     </div>
   )
