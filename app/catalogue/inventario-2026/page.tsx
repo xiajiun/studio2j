@@ -7,27 +7,27 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 
-const BRANDS: { name: string; korean?: string; instagram?: string; image?: string; url?: string; category: string }[] = [
+const BRANDS: { name: string; korean?: string; instagram?: string; image?: string; url?: string; country?: string; category: string }[] = [
   // SMALL THING
-  { name: 'mt × rolledpaint', korean: 'mt × 롤드페인트', url: 'masking-tape.jp', category: 'Small Thing' },
+  { name: 'mt × rolledpaint', country: 'JP', korean: 'mt × 롤드페인트', url: 'masking-tape.jp', category: 'Small Thing' },
   { name: 'LIMPA LIMPA', korean: '겨울엔토스트가좋아', category: 'Small Thing' },
   { name: 'FRUITFRIES', korean: '후르츠후라이', instagram: 'fruitfries_', category: 'Small Thing' },
-  { name: 'IWAKO', korean: '이와코', instagram: 'iwako_official', url: 'iwako.com', category: 'Small Thing' },
+  { name: 'IWAKO', country: 'JP', korean: '이와코', instagram: 'iwako_official', url: 'iwako.com', category: 'Small Thing' },
   { name: 'HWF.RISOCLUB', korean: '하우풀리소클럽', category: 'Small Thing' },
   { name: 'GOOBER', korean: '구버', category: 'Small Thing' },
   { name: 'MICIA', korean: '미씨아', instagram: 'micia_official', category: 'Small Thing' },
-  { name: 'LYRA', korean: '리라', instagram: 'lyra_art_supplies', url: 'lyra.de', category: 'Small Thing' },
-  { name: 'LIFE&PIECES', korean: '라이프앤피시스', url: 'lifeandpieces.com', category: 'Small Thing' },
-  { name: 'IROHA', korean: '이로하', url: 'pilot-iroha.com', category: 'Small Thing' },
+  { name: 'LYRA', country: 'INTL', korean: '리라', instagram: 'lyra_art_supplies', url: 'lyra.de', category: 'Small Thing' },
+  { name: 'LIFE&PIECES', country: 'INTL', korean: '라이프앤피시스', url: 'lifeandpieces.com', category: 'Small Thing' },
+  { name: 'IROHA', country: 'JP', korean: '이로하', url: 'pilot-iroha.com', category: 'Small Thing' },
   { name: 'FLAGG', korean: '플래그', category: 'Small Thing' },
   { name: 'SOME MOOD DESIGN', korean: '썸무드디자인', category: 'Small Thing' },
   { name: 'BOKI', korean: '보키', category: 'Small Thing' },
   { name: 'SUKIDOKI', korean: '수키도키', instagram: 'sukidoki_official', category: 'Small Thing' },
   { name: 'AHMUGAE_C', korean: '아무개씨', category: 'Small Thing' },
-  { name: 'SANBY', korean: '산비', instagram: 'sanby_jp', url: 'sanby.co.jp', category: 'Small Thing' },
+  { name: 'SANBY', country: 'JP', korean: '산비', instagram: 'sanby_jp', url: 'sanby.co.jp', category: 'Small Thing' },
   { name: '0.1', instagram: '0.1studio_', category: 'Small Thing' },
   { name: 'MINIMONI', korean: '미니모니', category: 'Small Thing' },
-  { name: 'HITOTOKI', korean: '히토토키', instagram: 'hitotoki_inc', url: 'hitotoki.org', category: 'Small Thing' },
+  { name: 'HITOTOKI', country: 'JP', korean: '히토토키', instagram: 'hitotoki_inc', url: 'hitotoki.org', category: 'Small Thing' },
   { name: 'PRESENT PRESENT', korean: '프레젠트프레젠트', category: 'Small Thing' },
   { name: 'KIOSK KIOSK', korean: '키오스크키오스크', instagram: 'kioskiosk_official', category: 'Small Thing' },
   { name: 'LITTLE TEMPO DESIGN', korean: '리틀템포디자인', category: 'Small Thing' },
@@ -35,26 +35,26 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: 'PRELUDE STUDIO', korean: '프렐류드스튜디오', category: 'Small Thing' },
   { name: 'NO NOT NEVER', korean: '노낫네버', category: 'Small Thing' },
   { name: 'PULPUL', korean: '풀풀', category: 'Small Thing' },
-  { name: 'RIFLE PAPER CO.', korean: '라이플페이퍼', instagram: 'riflepaperco', url: 'riflepaperco.com', category: 'Small Thing' },
+  { name: 'RIFLE PAPER CO.', country: 'INTL', korean: '라이플페이퍼', instagram: 'riflepaperco', url: 'riflepaperco.com', category: 'Small Thing' },
   { name: 'GEEHEY', korean: '지헤이', instagram: 'geehey_official', category: 'Small Thing' },
   { name: 'SUATELIER', korean: '슈아뜰리에', instagram: 'suatelier', url: 'suatelier.com', category: 'Small Thing' },
   // WRITING & DRAWING
-  { name: 'FABER-CASTELL', korean: '파버카스텔', instagram: 'fabercastell', url: 'fabercastell.com', category: 'Writing & Drawing' },
-  { name: 'KAKIMORI', korean: '카키모리', instagram: 'kakimori', url: 'kakimori.com', category: 'Writing & Drawing' },
+  { name: 'FABER-CASTELL', country: 'INTL', korean: '파버카스텔', instagram: 'fabercastell', url: 'fabercastell.com', category: 'Writing & Drawing' },
+  { name: 'KAKIMORI', country: 'JP', korean: '카키모리', instagram: 'kakimori', url: 'kakimori.com', category: 'Writing & Drawing' },
   { name: 'BLACKHEART', korean: '흑심', category: 'Writing & Drawing' },
   { name: 'CARAN D\'ACHE', korean: '까렌다쉬', instagram: 'carandache', url: 'carandache.com', category: 'Writing & Drawing' },
-  { name: 'SAILOR', korean: '세일러', instagram: 'sailorpen_official', url: 'sailor-pen.co.jp', category: 'Writing & Drawing' },
+  { name: 'SAILOR', country: 'JP', korean: '세일러', instagram: 'sailorpen_official', url: 'sailor-pen.co.jp', category: 'Writing & Drawing' },
   { name: 'SHIELDCOLORS', korean: '쉴드물감', category: 'Writing & Drawing' },
-  { name: 'COPIC', korean: '코픽', instagram: 'copicmarker', url: 'copic.jp', category: 'Writing & Drawing' },
+  { name: 'COPIC', country: 'JP', korean: '코픽', instagram: 'copicmarker', url: 'copic.jp', category: 'Writing & Drawing' },
   { name: 'WEARINGEUL', korean: '글입다', instagram: 'wearingeul', url: 'wearingeul.com', category: 'Writing & Drawing' },
   { name: 'DOMINANT INDUSTRY', korean: '도미넌트인더스트리', instagram: 'dominantindustry', url: 'dominant.ink', category: 'Writing & Drawing' },
   { name: 'KOREA PILOT', korean: '한국파이롯트', url: 'pilotpen.co.kr', category: 'Writing & Drawing' },
-  { name: 'ZEBRA', korean: '제브라', instagram: 'zebra_pen', url: 'zebra-pen.com', category: 'Writing & Drawing' },
-  { name: 'PENTEL', korean: '펜텔', instagram: 'pentel_official', url: 'pentel.com', category: 'Writing & Drawing' },
-  { name: 'RAYMAY KEPT', korean: '레이메이 켑트', url: 'raymay.co.jp', category: 'Writing & Drawing' },
-  { name: 'WOODHI', korean: '우디', url: 'woodhi.com', category: 'Writing & Drawing' },
-  { name: 'UNI', korean: '유니', url: 'uni.co.kr', category: 'Writing & Drawing' },
-  { name: 'JACQUES HERBIN', korean: '자크 허빈', instagram: 'jacquesherbin', url: 'j-herbin.com', category: 'Writing & Drawing' },
+  { name: 'ZEBRA', country: 'JP', korean: '제브라', instagram: 'zebra_pen', url: 'zebra-pen.com', category: 'Writing & Drawing' },
+  { name: 'PENTEL', country: 'JP', korean: '펜텔', instagram: 'pentel_official', url: 'pentel.com', category: 'Writing & Drawing' },
+  { name: 'RAYMAY KEPT', country: 'JP', korean: '레이메이 켑트', url: 'raymay.co.jp', category: 'Writing & Drawing' },
+  { name: 'WOODHI', country: 'JP', korean: '우디', url: 'woodhi.com', category: 'Writing & Drawing' },
+  { name: 'UNI', country: 'JP', korean: '유니', url: 'uni.co.kr', category: 'Writing & Drawing' },
+  { name: 'JACQUES HERBIN', country: 'INTL', korean: '자크 허빈', instagram: 'jacquesherbin', url: 'j-herbin.com', category: 'Writing & Drawing' },
   { name: 'GLOBE CHEMICAL', korean: '지구화학', url: 'globechemical.co.kr', category: 'Writing & Drawing' },
   { name: 'CLIPEN', korean: '클립펜', category: 'Writing & Drawing' },
   // DAILY FINDS
@@ -74,7 +74,7 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: 'HOWkidsFUL', korean: '하우키즈풀', category: 'Daily Finds' },
   { name: 'FRANZ', korean: '프란츠', url: 'franz.co.kr', category: 'Daily Finds' },
   { name: 'CIRCUS BOY BAND', korean: '서커스보이밴드', instagram: 'circusboyband', category: 'Daily Finds' },
-  { name: 'TRAVELER\'S COMPANY', korean: '트래블러스컴퍼니', instagram: 'travelerscompany', url: 'travelers-company.com', category: 'Daily Finds' },
+  { name: 'TRAVELER'"'"'S COMPANY', country: 'JP', korean: '트래블러스컴퍼니', instagram: 'travelerscompany', url: 'travelers-company.com', category: 'Daily Finds' },
   // PAPER
   { name: 'DOOSUNG PAPER', korean: '두성종이', instagram: 'doosungpaper', url: 'doosung.co.kr', category: 'Paper' },
   { name: 'PAPER TAILOR', korean: '페이퍼테일러', category: 'Paper' },
@@ -86,20 +86,20 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: 'BE ON D', korean: '비온뒤', instagram: 'be_on_d', url: 'beond.co.kr', category: 'Paper' },
   { name: 'WHENIWASYOUNG', korean: '웬아이워즈영', instagram: 'wheniwasyoung_official', category: 'Paper' },
   { name: 'KAWI', korean: '가위', category: 'Paper' },
-  { name: 'TROLLS PAPER', korean: '트롤스페이퍼', instagram: 'trollspaper', url: 'trollspaper.com', category: 'Paper' },
+  { name: 'TROLLS PAPER', country: 'INTL', korean: '트롤스페이퍼', instagram: 'trollspaper', url: 'trollspaper.com', category: 'Paper' },
   { name: 'YANGJISA', korean: '양지사', url: 'yangjisa.co.kr', category: 'Paper' },
   { name: 'SOSOMOONGOO', korean: '소소문구', instagram: 'sosomoongoo', url: 'sosomoongoo.com', category: 'Paper' },
   { name: 'PAPER PLATE', korean: '페이퍼플레이트', category: 'Paper' },
   { name: 'GEULWOL', korean: '글월', category: 'Paper' },
   { name: 'COMPOSITION STUDIO', korean: '컴포지션 스튜디오', instagram: 'composition_studio', category: 'Paper' },
-  { name: 'MOLESKINE', korean: '몰스킨', instagram: 'moleskine', url: 'moleskine.com', category: 'Paper' },
-  { name: 'RHODIA', korean: '로디아', instagram: 'rhodiafrance', url: 'rhodia.com', category: 'Paper' },
+  { name: 'MOLESKINE', country: 'INTL', korean: '몰스킨', instagram: 'moleskine', url: 'moleskine.com', category: 'Paper' },
+  { name: 'RHODIA', country: 'INTL', korean: '로디아', instagram: 'rhodiafrance', url: 'rhodia.com', category: 'Paper' },
   { name: 'PAPERIAN', korean: '페이퍼리안', instagram: 'paperian_official', url: 'paperian.com', category: 'Paper' },
-  { name: 'THE COMPLETIST', korean: '더컴플리티스트', instagram: 'thecompletist', url: 'thecompletist.co.uk', category: 'Paper' },
+  { name: 'THE COMPLETIST', country: 'INTL', korean: '더컴플리티스트', instagram: 'thecompletist', url: 'thecompletist.co.uk', category: 'Paper' },
   // OFFICE & DESK
   { name: 'PENCO®', korean: '펜코', instagram: 'penco_official', url: 'penco.jp', category: 'Office & Desk' },
-  { name: 'LOGITECH', korean: '로지텍', instagram: 'logitech', url: 'logitech.com', category: 'Office & Desk' },
-  { name: 'KOKUYO', korean: '고쿠요', instagram: 'kokuyo_jp', url: 'kokuyo.com', category: 'Office & Desk' },
+  { name: 'LOGITECH', country: 'INTL', korean: '로지텍', instagram: 'logitech', url: 'logitech.com', category: 'Office & Desk' },
+  { name: 'KOKUYO', country: 'JP', korean: '고쿠요', instagram: 'kokuyo_jp', url: 'kokuyo.com', category: 'Office & Desk' },
   { name: 'ILOOM', korean: '일룸', instagram: 'iloom_official', url: 'iloom.com', category: 'Office & Desk' },
   { name: 'WIP', korean: '워크인프로그래스', url: 'workinprogress.co.kr', category: 'Office & Desk' },
   { name: 'BUYHEARTS', korean: '바이하츠', instagram: 'buyhearts_official', url: 'buyhearts.com', category: 'Office & Desk' },
@@ -115,7 +115,7 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: 'MINDOBITTO', korean: '민도비또', category: 'Kiosk' },
   { name: 'HWARANG', korean: '화랑', category: 'Kiosk' },
   { name: 'DONKY CONTÉ', korean: '동키콩테', category: 'Kiosk' },
-  { name: 'ANTERIQUE', korean: '안테리크', instagram: 'anterique', url: 'anterique.com', category: 'Kiosk' },
+  { name: 'ANTERIQUE', country: 'JP', korean: '안테리크', instagram: 'anterique', url: 'anterique.com', category: 'Kiosk' },
   { name: 'SUI GOUACHE', korean: '수이과슈', category: 'Kiosk' },
   { name: 'MEWMEWBEAM', korean: '냥냥빔', category: 'Kiosk' },
   { name: 'NOH YONG-WON', korean: '노용원 혁필화', category: 'Kiosk' },
@@ -183,28 +183,30 @@ export default function InventarioCataloguePage() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '8px' }}>
                 {BRANDS.filter(b => b.category === cat).map(b => (
-                  <div key={b.name} style={{ background: 'white', borderRadius: '14px', padding: '16px 18px', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div key={b.name} style={{ background: 'white', borderRadius: '14px', padding: '14px 16px', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <BrandIcon brand={b} />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+                      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--dark-brown)', lineHeight: 1.3 }}>
                         {b.name}
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '3px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '3px', flexWrap: 'wrap' }}>
                         {b.url && (
                           <a href={`https://${b.url}`} target="_blank" rel="noreferrer"
-                            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>
+                            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>
                             {b.url} ↗
                           </a>
                         )}
-                        {b.instagram && (
+                        {!b.url && b.instagram && (
                           <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer"
-                            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>
-                            {b.url ? '· Instagram ↗' : 'Instagram ↗'}
+                            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>
+                            Instagram ↗
                           </a>
                         )}
                       </div>
                     </div>
-                    <span style={{ fontSize: '16px', flexShrink: 0 }}>🇰🇷</span>
+                    <span style={{ fontSize: '14px', flexShrink: 0 }}>
+                      {b.country === 'JP' ? '🇯🇵' : b.country === 'INTL' ? '🌍' : '🇰🇷'}
+                    </span>
                   </div>
                 ))}
               </div>

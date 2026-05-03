@@ -206,20 +206,6 @@ function BrandCard({ brand: b, featured }: { brand: typeof BRANDS[0]; featured?:
         })}
       </div>
 
-      {/* Order CTA */}
-      <Link
-        href={`/order/new`}
-        style={{
-          display: 'block', textAlign: 'center',
-          fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
-          color: 'var(--dark-blue)', textDecoration: 'none',
-          border: '0.5px solid rgba(31,58,95,0.2)', padding: '9px 16px', borderRadius: '99px',
-          transition: 'all 0.15s', letterSpacing: '0.02em',
-          marginTop: '4px',
-        }}
-      >
-        Order from {b.name} →
-      </Link>
     </div>
   )
 }
