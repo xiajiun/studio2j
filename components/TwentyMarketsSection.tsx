@@ -84,7 +84,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
             <h2 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(36px, 4vw, 56px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)', margin: 0 }}>
               {m.title}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{m.titleEm}</em>
             </h2>
-            <a href="https://twenty.style/list/openMarket" target="_blank" rel="noreferrer"
+            <a href="/markets"
               style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(122,92,69,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
               {m.seeAll}
             </a>
