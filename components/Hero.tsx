@@ -3,9 +3,9 @@
 import { useLang } from '@/components/LangProvider'
 import type { FairRow, TwentyMarket } from '@/lib/database.types'
 
-export default function Hero({ fairCount, countryCount, nextFair, markets = [] }: {
+export default function Hero({ fairCount, marketCount, nextFair, markets = [] }: {
   fairCount?: number
-  countryCount?: number
+  marketCount?: number
   nextFair?: FairRow | null
   markets?: TwentyMarket[]
 }) {
@@ -37,8 +37,7 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
         <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
           {[
             { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: t.hero.trustFairs },
-            { num: String(countryCount ?? 10), label: t.hero.trustCountries },
-            { num: '2', label: t.hero.trustFounders },
+            { num: <><span className="live-dot" style={{ display: 'inline-block', marginRight: '4px' }} />{marketCount ?? 0}</>, label: t.hero.trustMarkets },
           ].map(({ num, label }) => (
             <div key={label}>
               <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-blue)', lineHeight: '1', letterSpacing: '-0.02em' }}>{num}</div>
@@ -98,7 +97,7 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
           <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
           <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.15s" />
           {nextFair ? (
-            <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.3s" shopUrl={nextFair.url ?? undefined} shopExternal />
+            <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.3s" shopUrl="/catalogue/inventario-2026" shopLabel="See catalogue" />
           ) : (
             <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.3s" />
           )}
@@ -108,9 +107,9 @@ export default function Hero({ fairCount, countryCount, nextFair, markets = [] }
   )
 }
 
-function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false }: {
+function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false, shopLabel }: {
   name: string; loc: string; tags: string[]; chipVariant: 'urgent' | 'open'
-  chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean
+  chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean; shopLabel?: string
 }) {
   const chipStyle = chipVariant === 'urgent'
     ? { background: 'rgba(200,169,141,0.18)', color: '#E6C9AE', border: '0.5px solid rgba(200,169,141,0.3)' }
@@ -134,9 +133,11 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
               {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
               style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#C8A98D', textDecoration: 'none', border: '0.5px solid rgba(200,169,141,0.35)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
             >
-              {shopExternal
-                ? shopUrl.includes('instagram') ? 'Instagram ↗' : 'Website ↗'
-                : 'Shop now ↗'}
+              {shopLabel
+                ? `${shopLabel} ↗`
+                : shopExternal
+                  ? shopUrl.includes('instagram') ? 'Instagram ↗' : 'Website ↗'
+                  : 'Shop now ↗'}
             </a>
           )}
         </div>

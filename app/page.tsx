@@ -34,11 +34,12 @@ export default async function Home() {
   if (fairs.length === 0) {
     fairs = FAIRS.map(f => ({
       ...f,
-      url:        null,
-      image_url:  null,
-      notes:      f.notes ?? null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      url:           null,
+      image_url:     null,
+      catalogue_url: null,
+      notes:         f.notes ?? null,
+      created_at:    new Date().toISOString(),
+      updated_at:    new Date().toISOString(),
     }))
   }
 
@@ -63,7 +64,7 @@ export default async function Home() {
       <Hero
         markets={twentyMarkets}
         fairCount={fairs.length}
-        countryCount={new Set(fairs.map(f => f.country)).size}
+        marketCount={twentyMarkets.filter(m => !m.marketTitle.includes('테스트')).length}
         nextFair={nextFair}
       />
       <Services />

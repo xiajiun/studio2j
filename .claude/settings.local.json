@@ -43,7 +43,8 @@
       "WebFetch(domain:cdn.twenty.style)",
       "WebFetch(domain:img.twenty.style)",
       "Bash(git pull *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "WebFetch(domain:inventario.kr)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",

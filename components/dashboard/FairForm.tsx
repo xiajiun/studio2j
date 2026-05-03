@@ -18,7 +18,7 @@ const inputStyle: React.CSSProperties = {
 type FormState = {
   name: string; city: string; country: string; region: string
   date: string; deadline: string; types: string[]
-  featured: boolean; going: boolean; url: string; image_url: string; notes: string
+  featured: boolean; going: boolean; url: string; image_url: string; catalogue_url: string; notes: string
 }
 
 function blankForm(f?: FairRow): FormState {
@@ -32,9 +32,10 @@ function blankForm(f?: FairRow): FormState {
     types:     f?.types     ?? [],
     featured:  f?.featured  ?? false,
     going:     f?.going     ?? false,
-    url:       f?.url       ?? '',
-    image_url: f?.image_url ?? '',
-    notes:     f?.notes     ?? '',
+    url:           f?.url           ?? '',
+    image_url:     f?.image_url     ?? '',
+    catalogue_url: f?.catalogue_url ?? '',
+    notes:         f?.notes         ?? '',
   }
 }
 
@@ -58,9 +59,10 @@ function FairFormInner({ fair, onClose }: { fair?: FairRow; onClose: () => void 
       name: form.name, city: form.city, country: form.country,
       region: form.region, date: form.date, deadline: form.deadline,
       types: form.types, featured: form.featured, going: form.going,
-      url:       form.url       || null,
-      image_url: form.image_url || null,
-      notes:     form.notes     || null,
+      url:           form.url           || null,
+      image_url:     form.image_url     || null,
+      catalogue_url: form.catalogue_url || null,
+      notes:         form.notes         || null,
     }
     if (isEdit) {
       await supabase.from('fairs').update(payload).eq('id', fair.id)
@@ -110,6 +112,9 @@ function FairFormInner({ fair, onClose }: { fair?: FairRow; onClose: () => void 
       </Field>
       <Field label="Cover image URL (optional)" style={{ marginBottom: '10px' }}>
         <input style={inputStyle} value={form.image_url} onChange={e => set('image_url', e.target.value)} placeholder="https://..." />
+      </Field>
+      <Field label="Catalogue URL (optional)" style={{ marginBottom: '10px' }}>
+        <input style={inputStyle} value={form.catalogue_url} onChange={e => set('catalogue_url', e.target.value)} placeholder="/catalogue/inventario-2026" />
       </Field>
 
       <Field label="Notes (optional)" style={{ marginBottom: '12px' }}>
