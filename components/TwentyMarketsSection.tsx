@@ -60,7 +60,7 @@ function MarketCard({ m }: { m: TwentyMarket }) {
   )
 }
 
-export default function TwentyMarketsSection({ markets: rawMarkets, standalone = false }: { markets: TwentyMarket[]; standalone?: boolean }) {
+export default function TwentyMarketsSection({ markets: rawMarkets, standalone = false, maxItems }: { markets: TwentyMarket[]; standalone?: boolean; maxItems?: number }) {
   const { t } = useLang()
   const m = t.markets
   const markets = rawMarkets.filter(x => !x.marketTitle.includes('테스트'))
@@ -78,7 +78,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
         <div style={{ marginBottom: '48px' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '14px' }}>
             <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
-            {m.eyebrow}
+            <span className="live-dot" />{m.eyebrow}
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
             <h2 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(36px, 4vw, 56px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)', margin: 0 }}>
@@ -93,7 +93,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
 
         {/* Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-          {markets.map(x => <MarketCard key={x.marketUID} m={x} />)}
+          {(maxItems ? markets.slice(0, maxItems) : markets).map(x => <MarketCard key={x.marketUID} m={x} />)}
         </div>
 
         {/* Footer note */}

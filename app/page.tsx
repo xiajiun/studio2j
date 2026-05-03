@@ -14,6 +14,7 @@ import { FAIRS } from '@/lib/fairs'
 import type { FairRow, TwentyMarket } from '@/lib/database.types'
 import { AuthRedirect } from '@/components/AuthRedirect'
 import MarketStrip from '@/components/MarketStrip'
+import TwentyMarketsSection from '@/components/TwentyMarketsSection'
 
 export default async function Home() {
   // Fetch from Supabase; fall back to static data if DB not seeded yet
@@ -67,6 +68,7 @@ export default async function Home() {
       />
       <Services />
       <Marquee />
+      <TwentyMarketsSection markets={twentyMarkets} maxItems={4} />
       <FairTracker fairs={fairs} />
       <HowItWorks />
       <OrderCTA />

@@ -49,6 +49,20 @@
   from { opacity: 0; transform: translateX(-16px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+.live-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4CAF7D;
+  animation: livePulse 2s ease-in-out infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
 @keyframes carouselLeft {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }

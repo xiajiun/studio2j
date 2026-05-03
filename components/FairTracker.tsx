@@ -98,7 +98,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               gap: '14px',
             }}>
               <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
-              {tr.eyebrow}
+              <span className="live-dot" />{tr.eyebrow}
             </div>
             <h2 style={{
               fontFamily: 'var(--font-fraunces), serif',
