@@ -121,7 +121,7 @@ const en = {
   markets: {
     eyebrow: 'Korean illustrator markets',
     title: 'Open now on ', titleEm: 'Twenty',
-    seeAll: 'See all on Twenty ↗',
+    seeAll: 'See all ↗',
     footerText: 'Want something from these markets?',
     footerLink: 'Send us the link →',
     empty: 'No markets open right now — check back soon.',

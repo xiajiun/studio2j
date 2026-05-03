@@ -4,7 +4,7 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 
-const BRANDS: { name: string; korean?: string; instagram?: string; category: string }[] = [
+const BRANDS: { name: string; korean?: string; instagram?: string; image?: string; category: string }[] = [
   // SMALL THING
   { name: 'mt × rolledpaint', korean: 'mt × 롤드페인트', category: 'Small Thing' },
   { name: 'LIMPA LIMPA', korean: '겨울엔토스트가좋아', category: 'Small Thing' },
@@ -150,6 +150,9 @@ export default function InventarioCataloguePage() {
               <a href="https://inventario.kr" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>
                 Official site ↗
               </a>
+              <a href="https://www.instagram.com/inventario.seoul/" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>
+                @inventario.seoul ↗
+              </a>
             </div>
           </div>
 
@@ -161,25 +164,33 @@ export default function InventarioCataloguePage() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '10px' }}>
                 {BRANDS.filter(b => b.category === cat).map(b => (
-                  <div key={b.name} style={{ background: 'white', borderRadius: '14px', padding: '18px', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '15px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
-                      {b.name}
-                    </div>
-                    {b.korean && (
-                      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>
-                        {b.korean}
+                  <div key={b.name} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', flexDirection: 'column' }}>
+                    {/* Image or placeholder */}
+                    {b.image ? (
+                      <img src={b.image} alt={b.name} style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }} />
+                    ) : (
+                      <div style={{ width: '100%', aspectRatio: '1', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '28px', fontWeight: 300, color: 'var(--tan)', userSelect: 'none' }}>
+                          {b.name.charAt(0)}
+                        </span>
                       </div>
                     )}
-                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '4px' }}>
+                    {/* Info */}
+                    <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                      <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '14px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
+                        {b.name}
+                      </div>
+                      {b.korean && (
+                        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)' }}>
+                          {b.korean}
+                        </div>
+                      )}
                       {b.instagram && (
                         <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer"
-                          style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.06)', padding: '3px 8px', borderRadius: '99px' }}>
+                          style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', marginTop: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                           Instagram ↗
                         </a>
                       )}
-                      <a href="/order/new" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', background: 'rgba(122,92,69,0.06)', padding: '3px 8px', borderRadius: '99px' }}>
-                        Order →
-                      </a>
                     </div>
                   </div>
                 ))}
