@@ -39,12 +39,6 @@ export default async function CustomerInvoicePage({
   const items  = (o.items ?? []) as OrderItem[]
   const addr   = o.shipping_address as ShippingAddress | null
   const ccy    = o.currency ?? 'KRW'
-  const type   = searchParams.type
-
-  const isPart1   = type === '1'
-  const isPart2   = type === '2'
-  const itemsPaid = !!(o.paid_1_amount && o.paid_1_amount > 0)
-
   const hasDomDel  = items.some(i => (i.dom_del ?? 0) > 0)
   const itemsTotal = items.reduce((sum, i) => {
     if (i.total != null && i.total > 0) return sum + i.total
@@ -54,27 +48,14 @@ export default async function CustomerInvoicePage({
   const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
-
-  const grandTotal = isPart1
-    ? goods
-    : isPart2
-    ? (itemsPaid ? fee + ship : goods + fee + ship)
-    : goods + fee + ship
+  const grandTotal = goods + fee + ship
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT
   const payInfo   = PAYMENT[payMethod] ?? PAYMENT.wise
 
-  const invoiceLabel = isPart1
-    ? 'Invoice — Part 1 of 2 · Item costs'
-    : isPart2
-    ? 'Invoice — Part 2 of 2 · Service fee & shipping'
-    : 'Quotation'
+  const invoiceLabel = (goods > 0 || fee > 0) ? 'Invoice' : 'Quotation'
+  const payNote = 'Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.'
 
-  const payNote = isPart1
-    ? 'Please complete payment within 24 hours so we can purchase your items. You will receive a second invoice for service fee and international shipping once items arrive.'
-    : isPart2
-    ? 'Your items have been confirmed. Please complete the remaining balance (service fee + international shipping) so we can ship your order.'
-    : 'Please complete payment within 24 hours to secure your items.'
 
   return (
     <>
@@ -92,13 +73,12 @@ export default async function CustomerInvoicePage({
           </span>
         </span>
         <div style={{ display: 'flex', gap: '6px' }}>
-          {[{ label: 'Invoice 1', t: '1' }, { label: 'Invoice 2', t: '2' }].map(({ label, t }) => (
-            <a key={t} href={`/invoice/${params.number}?type=${t}`} style={{
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: type === t ? 500 : 300,
+          {[].map(({ label, t }: { label: string; t: string }) => (
+            <a key={t} href={`/invoice/${params.number}`} style={{
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px',
               padding: '8px 16px', borderRadius: '99px', textDecoration: 'none',
-              background: type === t ? 'var(--dark-blue)' : 'white',
-              color: type === t ? 'var(--cream)' : 'var(--brown)',
-              border: `0.5px solid ${type === t ? 'var(--dark-blue)' : 'rgba(122,92,69,0.2)'}`,
+              background: 'white', color: 'var(--brown)',
+              border: '0.5px solid rgba(122,92,69,0.2)',
             }}>{label}</a>
           ))}
         </div>
@@ -180,25 +160,12 @@ export default async function CustomerInvoicePage({
 
               {/* Totals */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
-                {(isPart1 || !type) && <TotalRow label="Items subtotal" value={goods.toLocaleString()} />}
-                {(isPart2 || !type) && (
-                  <>
-                    <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>Items subtotal</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: itemsPaid ? '#aaa' : '#2a1f18', textDecoration: itemsPaid ? 'line-through' : 'none' }}>{goods.toLocaleString()}</span>
-                        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '2px 8px', borderRadius: '99px', background: itemsPaid ? '#D5E8D8' : '#F5DDD5', color: itemsPaid ? '#2A5C35' : '#8A3A20' }}>
-                          {itemsPaid ? 'Paid' : 'Unpaid'}
-                        </span>
-                      </span>
-                    </div>
-                    <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
-                    <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
-                  </>
-                )}
+                <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
+                <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
+                <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
                 <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F' }}>
-                    {isPart1 ? 'Amount due (Part 1)' : isPart2 ? 'Amount due (Part 2)' : 'Grand total'}
+                    Amount due
                   </span>
                   <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: '#1F3A5F', letterSpacing: '-0.01em' }}>
                     {grandTotal.toLocaleString()} {ccy}

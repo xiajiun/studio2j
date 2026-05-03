@@ -384,28 +384,24 @@ export function OrderForm({ fairs, orderId, initial }: {
         </Section>
       )}
 
-      {/* Payments received — edit only */}
+      {/* Payment received — edit only */}
       {isEdit && (
-        <Section label="Payments received">
-          {([
-            { num: 1 as const, amtKey: 'paid_1_amount', dateKey: 'paid_1_date', viaKey: 'paid_1_via', feeKey: 'paid_1_transfer_fee', recKey: 'jin_received_1', label: 'Invoice 1 — items' },
-            { num: 2 as const, amtKey: 'paid_2_amount', dateKey: 'paid_2_date', viaKey: 'paid_2_via', feeKey: 'paid_2_transfer_fee', recKey: 'jin_received_2', label: 'Invoice 2 — fee + shipping' },
-          ]).map(({ num, amtKey, dateKey, viaKey, feeKey, recKey, label }) => {
-            const isJo       = (form as any)[viaKey] === 'jo'
+        <Section label="Payment received">
+          {(() => {
+            const isJo       = form.paid_1_via === 'jo'
             const jinHandles = form.currency === 'KRW'
-            const fee  = parseFloat((form as any)[feeKey]) || 0
+            const fee        = parseFloat(form.paid_1_transfer_fee) || 0
             return (
-              <div key={num} style={{ marginBottom: '20px', padding: '16px', background: 'var(--beige)', borderRadius: '12px' }}>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '12px' }}>{label}</div>
+              <div style={{ padding: '16px', background: 'var(--beige)', borderRadius: '12px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: isJo && jinHandles ? '1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: '10px' }}>
-                  <Field label="Customer paid">
-                    <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={(form as any)[amtKey]} onChange={e => set(amtKey, e.target.value)} />
+                  <Field label="Amount received">
+                    <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.paid_1_amount} onChange={e => set('paid_1_amount', e.target.value)} />
                   </Field>
                   <Field label="Date">
-                    <input style={inputStyle} type="date" value={(form as any)[dateKey]} onChange={e => set(dateKey, e.target.value)} />
+                    <input style={inputStyle} type="date" value={form.paid_1_date} onChange={e => set('paid_1_date', e.target.value)} />
                   </Field>
                   <Field label="Received by">
-                    <select style={inputStyle} value={(form as any)[viaKey]} onChange={e => set(viaKey, e.target.value)}>
+                    <select style={inputStyle} value={form.paid_1_via} onChange={e => set('paid_1_via', e.target.value)}>
                       <option value="jin">Jin (Shinhan)</option>
                       <option value="jo">Jo (Wise)</option>
                     </select>
@@ -413,7 +409,7 @@ export function OrderForm({ fairs, orderId, initial }: {
                   {isJo && jinHandles && (
                     <>
                       <Field label="Jin received from Jo">
-                        <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={(form as any)[recKey]} onChange={e => setJinReceived(num, e.target.value)} />
+                        <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.jin_received_1} onChange={e => setJinReceived(1, e.target.value)} />
                       </Field>
                       <Field label="Transfer fee (auto)">
                         <div style={{ ...inputStyle, background: 'rgba(122,92,69,0.04)', color: fee > 0 ? '#8A3A20' : 'var(--tan)', display: 'flex', alignItems: 'center' }}>
@@ -425,7 +421,7 @@ export function OrderForm({ fairs, orderId, initial }: {
                 </div>
               </div>
             )
-          })}
+          })()}
           <Field label="Actual goods cost">
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <input style={{ ...inputStyle, maxWidth: '200px' }} type="text" inputMode="decimal" placeholder="0" value={form.actual_goods_cost} onChange={e => set('actual_goods_cost', e.target.value)} />

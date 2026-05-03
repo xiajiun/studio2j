@@ -42,15 +42,8 @@ export default async function InvoicePage({
   const items  = (o.items ?? []) as OrderItem[]
   const addr   = o.shipping_address as ShippingAddress | null
   const ccy    = o.currency ?? 'KRW'
-  const type      = searchParams.type
-  const itemsPaid = !!(o.paid_1_amount && o.paid_1_amount > 0)
-
-  const isPart1 = type === '1'
-  const isPart2 = type === '2'
-
   const hasDomDel  = items.some(i => (i.dom_del ?? 0) > 0)
 
-  // Compute goods from items if goods_total not set
   const itemsTotal = items.reduce((sum, i) => {
     if (i.total != null && i.total > 0) return sum + i.total
     return sum + (i.price ?? 0) * (i.qty ?? 1) + (i.dom_del ?? 0)
@@ -58,30 +51,13 @@ export default async function InvoicePage({
   const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
-
-  // Part 1: items only.
-  // Part 2: fee + shipping (if Part 1 paid) OR goods + fee + shipping (if Part 1 unpaid).
-  // Default: full total.
-  const grandTotal = isPart1
-    ? goods
-    : isPart2
-    ? (itemsPaid ? fee + ship : goods + fee + ship)
-    : goods + fee + ship
+  const grandTotal = goods + fee + ship
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT
   const payInfo   = PAYMENT[payMethod] ?? PAYMENT.wise
 
-  const invoiceLabel = isPart1
-    ? 'Invoice — Part 1 of 2 · Item costs'
-    : isPart2
-    ? 'Invoice — Part 2 of 2 · Service fee & shipping'
-    : 'Quotation'
-
-  const payNote = isPart1
-    ? 'Please complete payment within 24 hours so we can purchase your items. You will receive a second invoice for service fee and international shipping once items arrive.'
-    : isPart2
-    ? 'Your items have been confirmed. Please complete the remaining balance (service fee + international shipping) so we can ship your order.'
-    : 'Please complete payment within 24 hours to secure your items.'
+  const invoiceLabel = (goods > 0 || fee > 0) ? 'Invoice' : 'Quotation'
+  const payNote = 'Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.'
 
   return (
     <>
@@ -98,36 +74,10 @@ export default async function InvoicePage({
             {invoiceLabel}
           </span>
         </span>
-        {/* Type switcher */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          {[
-            { label: 'Part 1 · Items', t: '1' },
-            { label: 'Part 2 · Fee+Ship', t: '2' },
-          ].map(({ label, t }) => (
-            <a key={t} href={`/admin/orders/${params.id}/invoice?type=${t}`} style={{
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: type === t ? 500 : 300,
-              padding: '8px 16px', borderRadius: '99px', textDecoration: 'none',
-              background: type === t ? 'var(--dark-blue)' : 'white',
-              color: type === t ? 'var(--cream)' : 'var(--brown)',
-              border: `0.5px solid ${type === t ? 'var(--dark-blue)' : 'rgba(122,92,69,0.2)'}`,
-            }}>{label}</a>
-          ))}
-          {isPart2 && (
-            <span style={{
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
-              padding: '8px 14px', borderRadius: '99px',
-              background: itemsPaid ? '#D5E8D8' : '#F5DDD5',
-              color: itemsPaid ? '#2A5C35' : '#8A3A20',
-            }}>Part 1: {itemsPaid ? 'Paid ✓' : 'Unpaid'}</span>
-          )}
-        </div>
         <GmailDraftButton
           to={o.customer_email}
           subject={`Studio2J ${invoiceLabel} — ${o.order_number}`}
-          body={isPart1
-            ? `Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nThank you so much for shopping with Studio2J! We have reviewed your order.\n\nPlease find your official quotation attached. This PDF includes your full item cost breakdown and payment instructions. Service fee and international shipping will be invoiced separately once your items are confirmed.\n\nAmount due (Part 1 — items): ${grandTotal.toLocaleString()} ${ccy}\n\nView and download your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}?type=1\n\nNext steps: Please reply to this email with a screenshot of your payment. We will purchase your items once payment is received.\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`
-            : `Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nYour items have been confirmed. Please find your final invoice attached, covering the service fee and international shipping.\n\nAmount due (Part 2 — service fee + shipping): ${grandTotal.toLocaleString()} ${ccy}\n\nView and download your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}?type=2\n\nNext steps: Please reply to this email with a screenshot of your payment. We will ship your order once payment is received.\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`
-          }
+          body={`Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nThank you so much for shopping with Studio2J! We have reviewed your order.\n\nPlease find your invoice attached. This covers item cost, service fee, and international shipping — all in one.\n\nAmount due: ${grandTotal.toLocaleString()} ${ccy}\n\nView and download your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}\n\nNext steps: Please reply to this email with a screenshot of your payment. We will purchase and ship your items once payment is received.\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
           label="Email customer"
         />
         <PrintButton />
@@ -225,28 +175,14 @@ export default async function InvoicePage({
 
               {/* Totals */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
-                {/* Part 1: items subtotal only */}
-                {/* Part 1 / default: items subtotal */}
-                {(isPart1 || !type) && (
-                  <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
-                )}
-                {/* Part 2: items subtotal (paid/unpaid) + fee + shipping */}
-                {(isPart2 || !type) && (
-                  <>
-                    <TotalRowBadge
-                      label="Items subtotal"
-                      value={goods.toLocaleString()}
-                      paid={isPart2 ? itemsPaid : undefined}
-                    />
-                    <TotalRow label="Handling fee (15% or min ₩25,000)" value={fee ? fee.toLocaleString() : '—'} />
-                    <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
-                  </>
-                )}
+                <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
+                <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
+                <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
 
                 {/* Grand total */}
                 <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F' }}>
-                    {isPart1 ? 'Amount due (Part 1)' : isPart2 ? 'Amount due (Part 2)' : 'Grand total'}
+                    Amount due
                   </span>
                   <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: '#1F3A5F', letterSpacing: '-0.01em' }}>
                     {grandTotal.toLocaleString()} {ccy}
