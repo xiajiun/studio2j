@@ -3,6 +3,7 @@
 export const runtime = 'edge'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
@@ -202,6 +203,33 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
 
 const CATEGORIES = [...new Set(BRANDS.map(b => b.category))]
 
+function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; onClose: () => void }) {
+  const shortcode = postUrl.match(/\/p\/([^/?]+)/)?.[1]
+  if (!shortcode) return null
+  return createPortal(
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: '400px', maxWidth: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 500, color: 'white' }}>{name}</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'white', fontSize: '22px', cursor: 'pointer', padding: '4px' }}>×</button>
+        </div>
+        <iframe
+          src={`https://www.instagram.com/p/${shortcode}/embed/`}
+          width="400"
+          height="480"
+          frameBorder="0"
+          scrolling="no"
+          style={{ borderRadius: '12px', display: 'block', width: '100%', border: 'none' }}
+        />
+        <a href={postUrl} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'rgba(255,255,255,0.7)', textAlign: 'center', textDecoration: 'none' }}>
+          Open on Instagram ↗
+        </a>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
 function BrandIcon({ brand }: { brand: typeof BRANDS[0] }) {
   const [ok, setOk] = useState(true)
   const src = brand.image ?? (brand.url ? `https://www.google.com/s2/favicons?domain=${brand.url}&sz=128` : null)
@@ -219,8 +247,11 @@ function BrandIcon({ brand }: { brand: typeof BRANDS[0] }) {
 }
 
 export default function DotDotExpressCataloguePage() {
+  const [activePost, setActivePost] = useState<{ url: string; name: string } | null>(null)
+
   return (
     <>
+      {activePost && <PostModal postUrl={activePost.url} name={activePost.name} onClose={() => setActivePost(null)} />}
       <Nav />
       <main style={{ minHeight: '100vh', background: 'var(--cream)', paddingTop: '120px', paddingBottom: '100px' }}>
         <div className="container">
@@ -289,10 +320,10 @@ export default function DotDotExpressCataloguePage() {
                             </a>
                           )}
                           {b.post && (
-                            <a href={b.post} target="_blank" rel="noreferrer"
-                              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.06)', padding: '2px 8px', borderRadius: '99px' }}>
-                              Catalogue ↗
-                            </a>
+                            <button onClick={() => setActivePost({ url: b.post!, name: b.name })}
+                              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.06)', padding: '2px 8px', borderRadius: '99px', border: 'none', cursor: 'pointer' }}>
+                              View ↗
+                            </button>
                           )}
                         </div>
                       </div>
