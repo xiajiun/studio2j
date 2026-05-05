@@ -49,7 +49,8 @@
       "Bash(sed -i '' 's/{ name: '\\\\''LYRA'\\\\'', country: '\\\\''JP'\\\\''/{ name: '\\\\''LYRA'\\\\'', country: '\\\\''INTL'\\\\''/' app/catalogue/inventario-2026/page.tsx)",
       "Bash(sed -i '' 's/{ name: '\\\\''GLOBE CHEMICAL'\\\\'', country: '\\\\''JP'\\\\''/{ name: '\\\\''GLOBE CHEMICAL'\\\\''/' app/catalogue/inventario-2026/page.tsx)",
       "Bash(sed -i '' 's/{ name: '\\\\''DOMINANT INDUSTRY'\\\\'', country: '\\\\''JP'\\\\''/{ name: '\\\\''DOMINANT INDUSTRY'\\\\''/' app/catalogue/inventario-2026/page.tsx)",
-      "Bash(sed -i '' 's/{ name: '\\\\''TRAVELER.*S COMPANY'\\\\'', korean/{ name: '\\\\''TRAVELER'\\\\''\"'\\\\''\"'\\\\''S COMPANY'\\\\'', country: '\\\\''JP'\\\\'', korean/' app/catalogue/inventario-2026/page.tsx)"
+      "Bash(sed -i '' 's/{ name: '\\\\''TRAVELER.*S COMPANY'\\\\'', korean/{ name: '\\\\''TRAVELER'\\\\''\"'\\\\''\"'\\\\''S COMPANY'\\\\'', country: '\\\\''JP'\\\\'', korean/' app/catalogue/inventario-2026/page.tsx)",
+      "WebSearch"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",
