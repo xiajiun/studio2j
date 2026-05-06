@@ -312,7 +312,7 @@ function BoothMap() {
                       onMouseEnter={e => { if (!isEmpty) { setHovered(booth); setTooltipPos({ x: e.clientX, y: e.clientY }) }}}
                       onMouseMove={e => setTooltipPos({ x: e.clientX, y: e.clientY })}
                       onMouseLeave={() => setHovered(null)}
-                      onClick={() => { if (brand?.post) window.open(brand.post, '_blank') else if (brand?.instagram) window.open(`https://www.instagram.com/${brand.instagram}/`, '_blank') }}
+                      onClick={() => { if (brand?.post) { window.open(brand.post, '_blank') } else if (brand?.instagram) { window.open(`https://www.instagram.com/${brand.instagram}/`, '_blank') } }}
                       style={{
                         width: '44px', height: '28px', borderRadius: '4px', fontSize: '9px',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
