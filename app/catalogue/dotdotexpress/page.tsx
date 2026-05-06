@@ -2,7 +2,7 @@
 
 export const runtime = 'edge'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
@@ -91,6 +91,9 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '잘 자', instagram: 'uwu__zz2', booth: 'D13', post: 'https://www.instagram.com/p/DX6l03NHeUh/', category: 'All brands' },
   { name: '냠냠', instagram: 'yamyam.fancy', booth: 'B14', post: 'https://www.instagram.com/p/DX2-Vr0kjVx/', category: 'All brands' },
   { name: '코코넨네', instagram: 'koconenne', booth: 'E10', post: 'https://www.instagram.com/p/DXx9cbaGbjI/', category: 'All brands' },
+  { name: '허니울 스튜디오', instagram: 'honeywool_studio', booth: 'B05', category: 'All brands' },
+  { name: '수야로로', instagram: 'suyaroro', booth: 'D16', post: 'https://www.instagram.com/p/DXy53BSj5o8/', category: 'All brands' },
+  { name: '스튜디오 후애', instagram: 'huae_art', booth: 'K02', category: 'All brands' },
   { name: 'FLUFFYS', category: 'All brands' },
   { name: 'Gla:ssy', instagram: 'glassy_xyz', booth: 'H17', post: 'https://www.instagram.com/p/DX9FeY8E4Bz/', category: 'All brands' },
   { name: 'MODABI', instagram: 'modabi_sea', booth: 'K07', post: 'https://www.instagram.com/p/DX7AyrPD6bt/', category: 'All brands' },
@@ -237,12 +240,12 @@ const BOOTH_LAYOUT: Record<string, string> = {
   D01:'포랑',D02:'백구삼스튜디오',D03:'클론연구소',D04:'로튼캔들',D05:'그렁그렁단',
   D06:'고운그림',D07:'라연팬시',D08:'도미월드',D09:'김모양군',D10:'임퍼펙트차일드',
   D11:'죠빔이',D12:'쿠만만',D13:'잘 자',D14:'점프점프하트',D15:'소녀교실',
-  D17:'귀여워핑크클럽',D18:'나로메로 캔디',D19:'지구침략',
+  D16:'수야로로',D17:'귀여워핑크클럽',D18:'나로메로 캔디',D19:'지구침략',
   E01:'마고즈',E02:'넛코코',E03:'르미',E04:'고양이방앗간',E05:'루아',
   E06:'프롬투스튜디오',E07:'아쿵문구',E08:'쿠마쿠마클럽',E09:'프리즐프렌즈',
   E10:'코코넨네',E11:'핑루',E12:'단팥',E13:'미나',E14:'미나냥마켓',
   E15:'만장상점',E16:'도르',E17:'뽀레월드',E18:'구미리',E19:'마요씨',E20:'폴랑폴랑',
-  F01:'케짐 빌리지',F03:'미료코',F04:'러버스픽미',F05:'슬로우스터프',
+  F01:'케짐 빌리지',F02:'시네샵',F03:'미료코',F04:'러버스픽미',F05:'슬로우스터프',
   F06:'네버더레스',F07:'덩이나라',F08:'평화조각',F09:'모이또이',F11:'퍼지랜드',
   F12:'검은 새벽-김래곤',F13:'그림자 행성',F14:'럽피클럽',F15:'별사세',
   F16:'랄랑',F17:'칠영칠',F18:'스튜디오 다다다',F19:'빙빙문구',F20:'웨스티즈',
@@ -259,7 +262,7 @@ const BOOTH_LAYOUT: Record<string, string> = {
   I06:'로지스티커',I07:'훈찌마켓',I08:'해피냥데이',I09:'쮸',
   J01:'코튼월드',J02:'요인',J03:'리코마루',J04:'정배',J05:'미히',
   J06:'갱갱',J07:'무디클럽',J08:'은새상점',J09:'스우',
-  K01:'소누',K03:'열새',K04:'제제유니버스',K05:'FLUFFYS',K06:'아델리드로우',
+  K01:'소누',K02:'스튜디오 후애',K03:'열새',K04:'제제유니버스',K05:'FLUFFYS',K06:'아델리드로우',
   K07:'MODABI',K08:'도꾸마리',K09:'크래커드크랙',K10:'라리데이즈',K11:'밋츠유',
   K12:'나츠냐',K13:'미타코어',K14:'룬튜디오',K15:'스위츠샵',K16:'사무국',
 }
@@ -270,7 +273,33 @@ BRANDS.forEach(b => { brandByName[b.name] = b })
 
 function BoothMap() {
   const [hovered, setHovered] = useState<string | null>(null)
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 })
+  const [popupBooth, setPopupBooth] = useState<string | null>(null)
+  const [popupPos, setPopupPos] = useState({ x: 0, y: 0 })
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const popupRef = useRef<HTMLDivElement | null>(null)
+
+  function startHover(booth: string, x: number, y: number) {
+    setHovered(booth)
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => {
+      setPopupBooth(booth)
+      setPopupPos({ x, y })
+    }, 350)
+  }
+
+  function endHover() {
+    setHovered(null)
+    if (timerRef.current) clearTimeout(timerRef.current)
+    // Brief delay so mouse can move into popup
+    setTimeout(() => {
+      if (!popupRef.current?.matches(':hover')) setPopupBooth(null)
+    }, 100)
+  }
+
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current) }, [])
+
+  const popupBrand = popupBooth ? brandByName[BOOTH_LAYOUT[popupBooth] ?? ''] : null
+  const popupShortcode = popupBrand?.post?.match(/\/p\/([^/?]+)/)?.[1]
 
   const sections = [
     { label: 'A', booths: Array.from({length:15},(_,i)=>`A${String(i+1).padStart(2,'0')}`) },
@@ -309,9 +338,8 @@ function BoothMap() {
                   return (
                     <div
                       key={booth}
-                      onMouseEnter={e => { if (!isEmpty) { setHovered(booth); setTooltipPos({ x: e.clientX, y: e.clientY }) }}}
-                      onMouseMove={e => setTooltipPos({ x: e.clientX, y: e.clientY })}
-                      onMouseLeave={() => setHovered(null)}
+                      onMouseEnter={e => { if (!isEmpty) startHover(booth, e.clientX, e.clientY) }}
+                      onMouseLeave={endHover}
                       onClick={() => { if (brand?.post) { window.open(brand.post, '_blank') } else if (brand?.instagram) { window.open(`https://www.instagram.com/${brand.instagram}/`, '_blank') } }}
                       style={{
                         width: '44px', height: '28px', borderRadius: '4px', fontSize: '9px',
@@ -339,30 +367,66 @@ function BoothMap() {
         </div>
       </div>
 
-      {/* Hover tooltip */}
-      {hovered && hoveredBrand && createPortal(
-        <div style={{
-          position: 'fixed', left: tooltipPos.x + 12, top: tooltipPos.y - 8,
-          zIndex: 9999, background: 'var(--dark-brown)', color: 'var(--cream)',
-          borderRadius: '10px', padding: '10px 14px', pointerEvents: 'none',
-          fontFamily: 'var(--font-inter), sans-serif', maxWidth: '200px', boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-        }}>
-          <div style={{ fontSize: '12px', fontWeight: 500, marginBottom: '2px' }}>{hoveredBrand.name}</div>
-          <div style={{ fontSize: '10px', fontWeight: 300, color: 'rgba(245,239,230,0.6)', marginBottom: hoveredBrand.instagram ? '4px' : 0 }}>Booth {hovered}</div>
-          {hoveredBrand.instagram && <div style={{ fontSize: '10px', fontWeight: 300, color: 'rgba(245,239,230,0.7)' }}>@{hoveredBrand.instagram}</div>}
-          {hoveredBrand.post && <div style={{ fontSize: '9px', fontWeight: 400, color: 'var(--tan)', marginTop: '4px' }}>Click to view post →</div>}
-        </div>,
-        document.body
-      )}
-      {hovered && !hoveredBrand && createPortal(
-        <div style={{
-          position: 'fixed', left: tooltipPos.x + 12, top: tooltipPos.y - 8,
-          zIndex: 9999, background: 'var(--dark-brown)', color: 'var(--cream)',
-          borderRadius: '10px', padding: '10px 14px', pointerEvents: 'none',
-          fontFamily: 'var(--font-inter), sans-serif', boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-        }}>
-          <div style={{ fontSize: '12px', fontWeight: 500 }}>{BOOTH_LAYOUT[hovered] ?? hovered}</div>
-          <div style={{ fontSize: '10px', color: 'rgba(245,239,230,0.6)', marginTop: '2px' }}>Booth {hovered} · no post yet</div>
+      {/* Instagram embed popup on hover */}
+      {popupBooth && createPortal(
+        <div
+          ref={popupRef}
+          onMouseLeave={() => setPopupBooth(null)}
+          style={{
+            position: 'fixed',
+            left: Math.min(popupPos.x + 16, window.innerWidth - 360),
+            top: Math.max(Math.min(popupPos.y - 20, window.innerHeight - 530), 10),
+            zIndex: 9999,
+            width: '340px',
+            background: 'white',
+            borderRadius: '16px',
+            boxShadow: '0 16px 48px rgba(0,0,0,0.25)',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Brand info header */}
+          <div style={{ padding: '12px 16px', borderBottom: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--cream)' }}>
+            <div>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)' }}>
+                {popupBrand?.name ?? BOOTH_LAYOUT[popupBooth]}
+              </div>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>
+                Booth {popupBooth}{popupBrand?.instagram && ` · @${popupBrand.instagram}`}
+              </div>
+            </div>
+            {popupBrand?.post && (
+              <a href={popupBrand.post} target="_blank" rel="noreferrer"
+                style={{ marginLeft: 'auto', fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.08)', padding: '4px 10px', borderRadius: '99px', flexShrink: 0 }}>
+                Open ↗
+              </a>
+            )}
+          </div>
+          {/* Instagram embed */}
+          {popupShortcode ? (
+            <iframe
+              key={popupShortcode}
+              src={`https://www.instagram.com/p/${popupShortcode}/embed/`}
+              width="340"
+              height="420"
+              frameBorder="0"
+              scrolling="no"
+              allow="encrypted-media"
+              style={{ display: 'block', border: 'none' }}
+            />
+          ) : (
+            <div style={{ padding: '32px', textAlign: 'center' }}>
+              {popupBrand?.instagram ? (
+                <a href={`https://www.instagram.com/${popupBrand.instagram}/`} target="_blank" rel="noreferrer"
+                  style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: 'var(--dark-blue)', textDecoration: 'none' }}>
+                  View @{popupBrand.instagram} on Instagram ↗
+                </a>
+              ) : (
+                <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: 'var(--tan)' }}>
+                  No post available yet
+                </span>
+              )}
+            </div>
+          )}
         </div>,
         document.body
       )}
