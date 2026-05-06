@@ -235,11 +235,10 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
   )
 }
 
-function BrandCard({ b, onView }: { b: typeof BRANDS[0]; onView: (url: string, name: string) => void }) {
-  const [expanded, setExpanded] = useState(false)
+function BrandCard({ b }: { b: typeof BRANDS[0] }) {
   const shortcode = b.post?.match(/\/p\/([^/?]+)/)?.[1]
   return (
-    <div style={{ background: 'white', borderRadius: '14px', border: `0.5px solid ${expanded ? 'var(--dark-blue)' : 'rgba(122,92,69,0.1)'}`, overflow: 'hidden', transition: 'border-color 0.2s' }}>
+    <div style={{ background: 'white', borderRadius: '14px', border: '0.5px solid rgba(122,92,69,0.1)', overflow: 'hidden' }}>
       {/* Top row */}
       <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <BrandIcon brand={b} />
@@ -248,32 +247,26 @@ function BrandCard({ b, onView }: { b: typeof BRANDS[0]; onView: (url: string, n
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--dark-brown)' }}>{b.name}</span>
             {b.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 7px', borderRadius: '99px', flexShrink: 0 }}>{b.booth}</span>}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '3px' }}>
-            {b.instagram && <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none' }}>@{b.instagram}</a>}
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-          {b.post && (
-            <button onClick={() => setExpanded(e => !e)} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: expanded ? 'var(--cream)' : 'var(--dark-blue)', background: expanded ? 'var(--dark-blue)' : 'rgba(31,58,95,0.06)', padding: '3px 10px', borderRadius: '99px', border: 'none', cursor: 'pointer' }}>
-              {expanded ? 'Close' : 'View ↓'}
-            </button>
+          {b.instagram && (
+            <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer"
+              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none', marginTop: '3px', display: 'block' }}>
+              @{b.instagram}
+            </a>
           )}
-          <span style={{ fontSize: '14px' }}>🇰🇷</span>
         </div>
+        <span style={{ fontSize: '14px', flexShrink: 0 }}>🇰🇷</span>
       </div>
-      {/* Inline Instagram embed */}
-      {expanded && shortcode && (
-        <div style={{ borderTop: '0.5px solid rgba(122,92,69,0.08)' }}>
-          <iframe
-            src={`https://www.instagram.com/p/${shortcode}/embed/`}
-            width="100%"
-            height="480"
-            frameBorder="0"
-            scrolling="no"
-            loading="lazy"
-            style={{ display: 'block', border: 'none' }}
-          />
-        </div>
+      {/* Instagram embed — always shown */}
+      {shortcode && (
+        <iframe
+          src={`https://www.instagram.com/p/${shortcode}/embed/`}
+          width="100%"
+          height="480"
+          frameBorder="0"
+          scrolling="no"
+          loading="lazy"
+          style={{ display: 'block', border: 'none', borderTop: '0.5px solid rgba(122,92,69,0.08)' }}
+        />
       )}
     </div>
   )
@@ -348,7 +341,7 @@ export default function DotDotExpressCataloguePage() {
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '8px' }}>
                   {BRANDS.filter(b => b.category === cat).map(b => (
-                    <BrandCard key={b.name} b={b} onView={(url, name) => setActivePost({ url, name })} />
+                    <BrandCard key={b.name} b={b} />
                   ))}
                 </div>
               </div>
