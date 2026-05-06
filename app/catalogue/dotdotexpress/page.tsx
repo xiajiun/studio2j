@@ -48,7 +48,7 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '쪼꼬지 패밀리', instagram: 'chocozy_family', booth: 'C17', post: 'https://www.instagram.com/p/DX1Hg5XlEYA/', category: 'All brands' },
   { name: '청록', instagram: '_cheongnok', category: 'All brands' },
   { name: '초코메로', instagram: 'chocom3ro', booth: 'B15', post: 'https://www.instagram.com/p/DXzKCNflPEX/', category: 'All brands' },
-  { name: '치리클럽', instagram: 'cheeryiclub', category: 'All brands' },
+  { name: '치리클럽', instagram: 'cheeryiclub', booth: 'A03', category: 'All brands' },
   { name: '칠영칠', instagram: '707.site', booth: 'F17', post: 'https://www.instagram.com/p/DRlpvRokRI6/', category: 'All brands' },
   { name: '케이와이아이', instagram: 'tokeiwaiai', booth: 'H18', post: 'https://www.instagram.com/p/DX9bGp6jyuq/', category: 'All brands' },
   { name: '케짐 빌리지', instagram: 'kezim_com', booth: 'F01', post: 'https://www.instagram.com/p/DX6hz_9FAc9/', category: 'All brands' },
@@ -92,7 +92,6 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '냠냠', instagram: 'yamyam.fancy', booth: 'B14', post: 'https://www.instagram.com/p/DX2-Vr0kjVx/', category: 'All brands' },
   { name: '코코넨네', instagram: 'koconenne', booth: 'E10', post: 'https://www.instagram.com/p/DXx9cbaGbjI/', category: 'All brands' },
   { name: '허니울 스튜디오', instagram: 'honeywool_studio', booth: 'B05', category: 'All brands' },
-  { name: '수야로로', instagram: 'suyaroro', booth: 'D16', post: 'https://www.instagram.com/p/DXy53BSj5o8/', category: 'All brands' },
   { name: '스튜디오 후애', instagram: 'huae_art', booth: 'K02', category: 'All brands' },
   { name: 'FLUFFYS', category: 'All brands' },
   { name: 'Gla:ssy', instagram: 'glassy_xyz', booth: 'H17', post: 'https://www.instagram.com/p/DX9FeY8E4Bz/', category: 'All brands' },
@@ -130,7 +129,7 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '도시오브드림', instagram: 'dociofdreams', booth: 'C05', post: 'https://www.instagram.com/p/DX8ofLkEYEP/', category: 'All brands' },
   { name: '동식물원', instagram: 'dongsikmool_one', booth: 'B06', post: 'https://www.instagram.com/p/DX5yG36EzKu/', category: 'All brands' },
   { name: '라리데이즈', instagram: '0_0_yurari', booth: 'K10', post: 'https://www.instagram.com/p/DX0mxSsEZUl/', category: 'All brands' },
-  { name: '라비스', category: 'All brands' },
+  { name: '라비스', instagram: 'labyss_archive', booth: 'A14', post: 'https://www.instagram.com/p/DX1ZFImE90B/', category: 'All brands' },
   { name: '라연팬시', instagram: 'rayeonfancy', booth: 'D07', post: 'https://www.instagram.com/p/DX3oVRnkfpg/', category: 'All brands' },
   { name: '랄랑', instagram: 'lalangheej', booth: 'F16', post: 'https://www.instagram.com/p/DX1BXivE81a/', category: 'All brands' },
   { name: '러버스픽미', instagram: 'loverspickme.kr', booth: 'F04', post: 'https://www.instagram.com/p/DX88vNSE0D2/', category: 'All brands' },
@@ -143,7 +142,7 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '룹비긴즈', instagram: 'fromlooptobegins', booth: 'C03', post: 'https://www.instagram.com/p/DXytGy3Ec6K/', category: 'All brands' },
   { name: '르미', instagram: 'of_reumi', booth: 'E03', post: 'https://www.instagram.com/p/DX3ubtPEk1P/', category: 'All brands' },
   { name: '리코마루', instagram: 'rico_maruu', booth: 'I17', post: 'https://www.instagram.com/p/DWoe1s0k23x/', category: 'All brands' },
-  { name: '리틀타이니룸', instagram: 'littletinyroom', category: 'All brands' },
+  { name: '리틀타이니룸', instagram: 'littletinyroom', booth: 'B11', category: 'All brands' },
   { name: '마고즈', instagram: 'hajimagomin', booth: 'E01', category: 'All brands' },
   { name: '마고행수', instagram: 'magohaengsoo', booth: 'H12', category: 'All brands' },
   { name: '마법사고양상점', instagram: 'dalp_01', booth: 'C08', post: 'https://www.instagram.com/p/DX66VIRlL-s/', category: 'All brands' },
@@ -178,7 +177,6 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '빙빙문구', instagram: 'bingbing_mungu', booth: 'F19', category: 'All brands' },
   { name: '보레월드', instagram: 'tawac3po', booth: 'E17', post: 'https://www.instagram.com/p/DX3tPWpkTjC/', category: 'All brands' },
   { name: '뽁뽁즈', instagram: 'ppokppokz', post: 'https://www.instagram.com/p/DXWGeTpEw6u/', category: 'All brands' },
-  { name: '싸나다', category: 'All brands' },
   { name: '싸무국', instagram: '3123report_', booth: 'K16', post: 'https://www.instagram.com/p/DX9Jq03D96G/', category: 'All brands' },
   { name: '싸오코', instagram: 'sa0ko0', booth: 'G08', post: 'https://www.instagram.com/p/DX1CY2SiSY1/', category: 'All brands' },
   { name: '서리꽃', instagram: 'seorikkoch', booth: 'A09', post: 'https://www.instagram.com/p/DX0uXW5Et3I/', category: 'All brands' },
@@ -188,7 +186,6 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '소랏', instagram: 'sorat_illust', post: 'https://www.instagram.com/p/DX9ODPuk65H/', category: 'All brands' },
   { name: '소소히히', instagram: '_soso_hehe', booth: 'A10', post: 'https://www.instagram.com/p/DXyyKOFEleN/', category: 'All brands' },
   { name: '소푸', instagram: 'sopu_village', booth: 'C16', post: 'https://www.instagram.com/p/DX0zqmEDrha/', category: 'All brands' },
-  { name: '수아로로', category: 'All brands' },
   { name: '수중', instagram: 's0ojoong', booth: 'A05', post: 'https://www.instagram.com/p/DX1TYVPkutR/', category: 'All brands' },
   { name: '슈가티', instagram: 'sugar_teeaa', booth: 'H19', post: 'https://www.instagram.com/p/DX9fkLGEWRl/', category: 'All brands' },
   { name: '스닙스니페티스닙', instagram: 'leenahoo_drawing', category: 'All brands' },
@@ -240,13 +237,13 @@ const BOOTH_LAYOUT: Record<string, string> = {
   D01:'포랑',D02:'백구삼스튜디오',D03:'클론연구소',D04:'로튼캔들',D05:'그렁그렁단',
   D06:'고운그림',D07:'라연팬시',D08:'도미월드',D09:'김모양군',D10:'임퍼펙트차일드',
   D11:'죠빔이',D12:'쿠만만',D13:'잘 자',D14:'점프점프하트',D15:'소녀교실',
-  D16:'수야로로',D17:'귀여워핑크클럽',D18:'나로메로 캔디',D19:'지구침략',
+  D17:'귀여워핑크클럽',D18:'나로메로 캔디',D19:'지구침략',
   E01:'마고즈',E02:'넛코코',E03:'르미',E04:'고양이방앗간',E05:'루아',
   E06:'프롬투스튜디오',E07:'아쿵문구',E08:'쿠마쿠마클럽',E09:'프리즐프렌즈',
   E10:'코코넨네',E11:'핑루',E12:'단팥',E13:'미나',E14:'미나냥마켓',
   E15:'만장상점',E16:'도르',E17:'뽀레월드',E18:'구미리',E19:'마요씨',E20:'폴랑폴랑',
   F01:'케짐 빌리지',F02:'시네샵',F03:'미료코',F04:'러버스픽미',F05:'슬로우스터프',
-  F06:'네버더레스',F07:'덩이나라',F08:'평화조각',F09:'모이또이',F11:'퍼지랜드',
+  F06:'네버더레스',F07:'덩이나라',F08:'평화조각',F09:'모이또이',F10:'사나다',F11:'퍼지랜드',
   F12:'검은 새벽-김래곤',F13:'그림자 행성',F14:'럽피클럽',F15:'별사세',
   F16:'랄랑',F17:'칠영칠',F18:'스튜디오 다다다',F19:'빙빙문구',F20:'웨스티즈',
   G01:'아춧코코',G02:'어쩔문구',G03:'마이모이',G04:'아코. 아이콩',G05:'반곱실',
@@ -374,10 +371,10 @@ function BoothMap() {
           onMouseLeave={() => setPopupBooth(null)}
           style={{
             position: 'fixed',
-            left: Math.min(popupPos.x + 16, window.innerWidth - 360),
-            top: Math.max(Math.min(popupPos.y - 20, window.innerHeight - 530), 10),
+            left: Math.min(popupPos.x + 16, window.innerWidth - 400),
+            top: Math.max(Math.min(popupPos.y - 20, window.innerHeight - 610), 10),
             zIndex: 9999,
-            width: '340px',
+            width: '380px',
             background: 'white',
             borderRadius: '16px',
             boxShadow: '0 16px 48px rgba(0,0,0,0.25)',
@@ -406,8 +403,8 @@ function BoothMap() {
             <iframe
               key={popupShortcode}
               src={`https://www.instagram.com/p/${popupShortcode}/embed/`}
-              width="340"
-              height="420"
+              width="380"
+              height="520"
               frameBorder="0"
               scrolling="no"
               allow="encrypted-media"
