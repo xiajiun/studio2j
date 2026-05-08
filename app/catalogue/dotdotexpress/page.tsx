@@ -177,6 +177,24 @@ const BRANDS: { name: string; korean?: string; instagram?: string; image?: strin
   { name: '슈가티', instagram: 'sugar_teeaa', booth: 'H19', post: 'https://www.instagram.com/p/DX9fkLGEWRl/', category: 'All brands' },
   { name: '스닙스니페티스닙', instagram: 'leenahoo_drawing', booth: 'A11', post: 'https://www.instagram.com/p/DYCzlUjmNix/', category: 'All brands' },
   { name: '스우', instagram: 'sw_o.ov', booth: 'J09', post: 'https://www.instagram.com/p/DX04RecDwnk/', category: 'All brands' },
+  { name: '썸딩비러브드', instagram: 'something_beloved', booth: 'A15', category: 'All brands' },
+  { name: '서티', instagram: '3eotty', booth: 'B01', post: 'https://www.instagram.com/p/DYBPouzmUOx/', category: 'All brands' },
+  { name: '몽몽스베쮸', instagram: 'mongmong_space', booth: 'B03', post: 'https://www.instagram.com/p/DX_H1lBEv7U/', category: 'All brands' },
+  { name: '나조냐조', instagram: 'nazonyazo', booth: 'C02', post: 'https://www.instagram.com/p/DX9KAj2j_1H/', category: 'All brands' },
+  { name: '모서리 스튜디오', instagram: 'moseori_studio', booth: 'C07', post: 'https://www.instagram.com/p/DXlrwtBE4eN/', category: 'All brands' },
+  { name: '수야로로', instagram: 'suyaroro', booth: 'D16', post: 'https://www.instagram.com/p/DXy53BSj5o8/', category: 'All brands' },
+  { name: '아쿵문구', instagram: 'akoongmoongoo', booth: 'E07', post: 'https://www.instagram.com/p/DX_SiBiEs7Z/', category: 'All brands' },
+  { name: '만장상점', instagram: 'manjang_store', booth: 'E15', post: 'https://www.instagram.com/p/DX1XmQVE_yp/', category: 'All brands' },
+  { name: '뽀레월드', instagram: 'tawac3po', booth: 'E17', post: 'https://www.instagram.com/p/DX3tPWpkTjC/', category: 'All brands' },
+  { name: '시네샵', booth: 'F02', category: 'All brands' },
+  { name: '모이또이', instagram: 'moii_ttoi', booth: 'F09', post: 'https://www.instagram.com/p/DX1dOdsEzSg/', category: 'All brands' },
+  { name: '사나다', instagram: 's2anada', booth: 'F10', post: 'https://www.instagram.com/p/DX3huJ1kWS-/', category: 'All brands' },
+  { name: '사오코', instagram: 'sa0ko0', booth: 'G08', post: 'https://www.instagram.com/p/DX1CY2SiSY1/', category: 'All brands' },
+  { name: '지윰', instagram: 'jee_yoom', booth: 'G15', post: 'https://www.instagram.com/p/DX3yauRifW7/', category: 'All brands' },
+  { name: '해피냥데이', instagram: 'happy_nyang_day', booth: 'I08', post: 'https://www.instagram.com/p/DYA6LmIE8jd/', category: 'All brands' },
+  { name: '쮸', booth: 'I09', category: 'All brands' },
+  { name: '나츠냐', instagram: 'natsu.nyaa', booth: 'K12', post: 'https://www.instagram.com/p/DX9U4KxCSBE/', category: 'All brands' },
+  { name: '스위츠샵', instagram: 'sweeetsshop_', booth: 'K15', post: 'https://www.instagram.com/p/DX00-Uekwbq/', category: 'All brands' },
 ]
 
 const CATEGORIES = [...new Set(BRANDS.map(b => b.category))]
@@ -251,24 +269,6 @@ const BOOTH_LAYOUT: Record<string, string> = {
   K12:'나츠냐',K13:'미타코어',K14:'룬튜디오',K15:'스위츠샵',K16:'사무국',
 }
 
-  { name: '썸딩비러브드', instagram: 'something_beloved', booth: 'A15', category: 'All brands' },
-  { name: '서티', instagram: '3eotty', booth: 'B01', post: 'https://www.instagram.com/p/DYBPouzmUOx/', category: 'All brands' },
-  { name: '몽몽스베쮸', instagram: 'mongmong_space', booth: 'B03', post: 'https://www.instagram.com/p/DX_H1lBEv7U/', category: 'All brands' },
-  { name: '나조냐조', instagram: 'nazonyazo', booth: 'C02', post: 'https://www.instagram.com/p/DX9KAj2j_1H/', category: 'All brands' },
-  { name: '모서리 스튜디오', instagram: 'moseori_studio', booth: 'C07', post: 'https://www.instagram.com/p/DXlrwtBE4eN/', category: 'All brands' },
-  { name: '수야로로', instagram: 'suyaroro', booth: 'D16', post: 'https://www.instagram.com/p/DXy53BSj5o8/', category: 'All brands' },
-  { name: '아쿵문구', instagram: 'akoongmoongoo', booth: 'E07', post: 'https://www.instagram.com/p/DX_SiBiEs7Z/', category: 'All brands' },
-  { name: '만장상점', instagram: 'manjang_store', booth: 'E15', post: 'https://www.instagram.com/p/DX1XmQVE_yp/', category: 'All brands' },
-  { name: '뽀레월드', instagram: 'tawac3po', booth: 'E17', post: 'https://www.instagram.com/p/DX3tPWpkTjC/', category: 'All brands' },
-  { name: '시네샵', booth: 'F02', category: 'All brands' },
-  { name: '모이또이', instagram: 'moii_ttoi', booth: 'F09', post: 'https://www.instagram.com/p/DX1dOdsEzSg/', category: 'All brands' },
-  { name: '사나다', instagram: 's2anada', booth: 'F10', post: 'https://www.instagram.com/p/DX3huJ1kWS-/', category: 'All brands' },
-  { name: '사오코', instagram: 'sa0ko0', booth: 'G08', post: 'https://www.instagram.com/p/DX1CY2SiSY1/', category: 'All brands' },
-  { name: '지윰', instagram: 'jee_yoom', booth: 'G15', post: 'https://www.instagram.com/p/DX3yauRifW7/', category: 'All brands' },
-  { name: '해피냥데이', instagram: 'happy_nyang_day', booth: 'I08', post: 'https://www.instagram.com/p/DYA6LmIE8jd/', category: 'All brands' },
-  { name: '쮸', booth: 'I09', category: 'All brands' },
-  { name: '나츠냐', instagram: 'natsu.nyaa', booth: 'K12', post: 'https://www.instagram.com/p/DX9U4KxCSBE/', category: 'All brands' },
-  { name: '스위츠샵', instagram: 'sweeetsshop_', booth: 'K15', post: 'https://www.instagram.com/p/DX00-Uekwbq/', category: 'All brands' },
 // Build lookup: brand name → brand data
 const brandByName: Record<string, typeof BRANDS[0]> = {}
 BRANDS.forEach(b => { brandByName[b.name] = b })
