@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { PrintButton, AutoPrint } from '@/app/admin/orders/[id]/invoice/PrintButton'
 import type { Order, OrderItem, ShippingAddress } from '@/lib/database.types'
@@ -85,7 +85,7 @@ export default async function CustomerInvoicePage({
             {invoiceLabel}
           </span>
         </span>
-        <PrintButton printUrl={`/invoice/${params.number}?print=1`} />
+        <PrintButton printUrl={`/api/invoice-print/${params.number}`} />
       </div>
 
       <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
