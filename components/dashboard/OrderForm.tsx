@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { FairRow, OrderKind, OrderStatus, OrderItem, ShippingAddress } from '@/lib/database.types'
+
+type CustomerOption = { email: string; name: string | null; shipping_address: ShippingAddress | null }
 
 const inputStyle: React.CSSProperties = {
   width: '100%', padding: '10px 14px', borderRadius: '10px',
@@ -48,9 +50,10 @@ function emptyAddr(a?: ShippingAddress | null): AddrForm {
   }
 }
 
-export function OrderForm({ fairs, orderId, initial }: {
+export function OrderForm({ fairs, orderId, initial, customers }: {
   fairs: FairRow[]
   orderId?: number
+  customers?: CustomerOption[]
   initial?: {
     customer_email: string; customer_name: string; kind: OrderKind
     fair_id: string; title: string; description: string
@@ -234,6 +237,23 @@ export function OrderForm({ fairs, orderId, initial }: {
 
       {/* Customer */}
       <Section label="Customer">
+        {!isEdit && customers && customers.length > 0 && (
+          <CustomerSearch customers={customers} onSelect={c => {
+            set('customer_email', c.email)
+            set('customer_name', c.name ?? '')
+            if (c.shipping_address) {
+              setAddr({
+                name:           c.shipping_address.name           ?? '',
+                address:        c.shipping_address.address        ?? '',
+                city:           c.shipping_address.city           ?? '',
+                country:        c.shipping_address.country        ?? '',
+                postal_code:    c.shipping_address.postal_code    ?? '',
+                phone:          c.shipping_address.phone          ?? '',
+                payment_method: c.shipping_address.payment_method ?? 'wise',
+              })
+            }
+          }} />
+        )}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
           <Field label="Email">
             <input style={inputStyle} type="email" required value={form.customer_email} onChange={e => set('customer_email', e.target.value)} placeholder="maya@example.com" />
@@ -450,6 +470,55 @@ export function OrderForm({ fairs, orderId, initial }: {
         </button>
       </div>
     </form>
+  )
+}
+
+function CustomerSearch({ customers, onSelect }: { customers: CustomerOption[]; onSelect: (c: CustomerOption) => void }) {
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handler(e: MouseEvent) { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const q = query.toLowerCase()
+  const filtered = q
+    ? customers.filter(c => c.email.toLowerCase().includes(q) || (c.name ?? '').toLowerCase().includes(q))
+    : customers
+
+  return (
+    <div ref={ref} style={{ position: 'relative', marginBottom: '16px' }}>
+      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '6px' }}>
+        Fill from past customer
+      </div>
+      <input
+        style={inputStyle}
+        placeholder="Search by name or email…"
+        value={query}
+        onFocus={() => setOpen(true)}
+        onChange={e => { setQuery(e.target.value); setOpen(true) }}
+      />
+      {open && filtered.length > 0 && (
+        <div style={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, background: 'white', border: '0.5px solid rgba(122,92,69,0.2)', borderRadius: '10px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', zIndex: 50, maxHeight: '220px', overflowY: 'auto' }}>
+          {filtered.slice(0, 30).map(c => (
+            <button
+              key={c.email}
+              type="button"
+              onMouseDown={() => { onSelect(c); setQuery(''); setOpen(false) }}
+              style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-inter), sans-serif', borderBottom: '0.5px solid rgba(122,92,69,0.08)' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(122,92,69,0.04)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+            >
+              <div style={{ fontSize: '13px', fontWeight: 400, color: 'var(--dark-brown)' }}>{c.name || c.email}</div>
+              {c.name && <div style={{ fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginTop: '1px' }}>{c.email}</div>}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
