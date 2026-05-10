@@ -44,8 +44,8 @@ export default async function CustomerInvoicePage({
     if (i.total != null && i.total > 0) return sum + i.total
     return sum + (i.price ?? 0) * (i.qty ?? 1) + (i.dom_del ?? 0)
   }, 0)
-
-  const goods  = (o.goods_total && o.goods_total > 0) ? o.goods_total : itemsTotal
+  // Always use live itemsTotal when items are present — goods_total can be stale
+  const goods  = itemsTotal > 0 ? itemsTotal : (o.goods_total ?? 0)
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
   const grandTotal = goods + fee + ship
