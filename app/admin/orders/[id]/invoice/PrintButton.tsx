@@ -1,11 +1,17 @@
 'use client'
 
-export const runtime = 'edge'
+import { useEffect } from 'react'
 
-export function PrintButton() {
+export function PrintButton({ printUrl }: { printUrl?: string }) {
   return (
     <button
-      onClick={() => window.print()}
+      onClick={() => {
+        if (printUrl) {
+          window.open(printUrl, '_blank')
+        } else {
+          window.print()
+        }
+      }}
       style={{
         background: 'var(--dark-blue)',
         color: 'var(--cream)',
@@ -19,7 +25,15 @@ export function PrintButton() {
         letterSpacing: '0.02em',
       }}
     >
-      Print / Save as PDF
+      Save as PDF
     </button>
   )
+}
+
+export function AutoPrint() {
+  useEffect(() => {
+    const t = setTimeout(() => window.print(), 600)
+    return () => clearTimeout(t)
+  }, [])
+  return null
 }
