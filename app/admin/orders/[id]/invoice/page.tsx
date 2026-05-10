@@ -94,7 +94,7 @@ export default async function InvoicePage({
           body={`Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nThank you so much for shopping with Studio2J! We have reviewed your order.\n\nPlease find your invoice attached. This covers item cost, service fee, and international shipping — all in one.\n\nAmount due: ${grandTotal.toLocaleString()} ${ccy}\n\nView and download your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}\n\nNext steps: Please reply to this email with a screenshot of your payment. We will purchase and ship your items once payment is received.\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
           label="Email customer"
         />
-        <PrintButton printUrl={`/admin/orders/${params.id}/invoice?print=1`} />
+        <PrintButton printUrl={`/invoice/${o.order_number}?print=1`} />
         <a href={`/admin/orders/${params.id}`} style={{
           fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
           color: 'var(--brown)', textDecoration: 'none',
