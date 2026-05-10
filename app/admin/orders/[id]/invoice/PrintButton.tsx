@@ -32,8 +32,7 @@ export function PrintButton({ printUrl }: { printUrl?: string }) {
 
 export function AutoPrint() {
   useEffect(() => {
-    const t = setTimeout(() => window.print(), 1200)
-    return () => clearTimeout(t)
+    document.fonts.ready.then(() => window.print())
   }, [])
   return null
 }
