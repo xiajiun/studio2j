@@ -99,85 +99,98 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
 // Explicit grid placement — col/row are 1-indexed CSS grid lines
 type BoothCell = { code: string; col: number; row: number; cs?: number; rs?: number }
 
-// Hall 2: 13 cols × 7 rows
-// col 1=M03, cols 2-7=C/A, col 8=gap, cols 9-13=D/B
-// rows 1-3=C/D, row 4=gap(C→A), row 5=A-top/B-top, row 6=gap(inside A), row 7=A-bot/B-bot
+// Hall 2
+// Columns: M03(38px) | gap(12px) | C/A ×6(38px) | gap(16px) | D/B ×5(38px)
+// Total 14 named cols, col widths vary
+// Rows: C/D (1-3) | gap(4) | A-top(5) | A-bot(6)  — NO gap between A rows
 const HALL2_BOOTHS: BoothCell[] = [
-  // M03 — tall, spans both A rows + gap between them (rows 5-7)
-  { code:'M03', col:1, row:5, rs:3 },
-  // C section
-  { code:'C10', col:2,row:1 }, { code:'C09', col:3,row:1 }, { code:'C08', col:4,row:1 },
-  { code:'C07', col:5,row:1 }, { code:'C06', col:6,row:1 }, { code:'C05', col:7,row:1 },
-  { code:'C11', col:2,row:2 },
-  { code:'C02', col:3,row:2, cs:3, rs:2 },  // spans cols 3-5, rows 2-3
-  { code:'C04', col:7,row:2 },
-  { code:'C01', col:2,row:3 },
-  { code:'C03', col:6,row:3 },
-  // D section (col 10 = gap/corridor)
-  { code:'D05', col:9, row:1 },
-  { code:'D04', col:11,row:1, cs:2 },        // same width as D02
-  { code:'D03', col:13,row:1 },
-  { code:'D02', col:11,row:2, cs:2, rs:2 },  // same width as D04, spans rows 2-3
-  { code:'D01', col:9, row:3 },
-  // A section — top row (row 5), bottom row (row 7)
-  { code:'A12', col:2,row:5 }, { code:'A11', col:3,row:5 }, { code:'A10', col:4,row:5 },
-  { code:'A09', col:5,row:5 }, { code:'A08', col:6,row:5 }, { code:'A07', col:7,row:5 },
-  { code:'A01', col:2,row:7 }, { code:'A02', col:3,row:7 }, { code:'A03', col:4,row:7 },
-  { code:'A04', col:5,row:7 }, { code:'A05', col:6,row:7 }, { code:'A06', col:7,row:7 },
-  // B section — top row (row 5), bottom row (row 7)
-  { code:'B08', col:9, row:5 }, { code:'B07', col:10,row:5 }, { code:'B06', col:11,row:5 },
-  { code:'B01', col:9, row:7 }, { code:'B02', col:10,row:7 }, { code:'B03', col:11,row:7 },
-  { code:'B04', col:12,row:7 }, { code:'B05', col:13,row:7 },
+  // M03 — standalone tall block, separated by gap col from A section
+  { code:'M03', col:1, row:5, rs:2 },
+  // C section (cols 3-8)
+  { code:'C10', col:3,row:1 }, { code:'C09', col:4,row:1 }, { code:'C08', col:5,row:1 },
+  { code:'C07', col:6,row:1 }, { code:'C06', col:7,row:1 }, { code:'C05', col:8,row:1 },
+  { code:'C11', col:3,row:2 },
+  { code:'C02', col:4,row:2, cs:3, rs:2 },  // wide + 2-row tall
+  { code:'C04', col:8,row:2 },
+  { code:'C01', col:3,row:3 },
+  { code:'C03', col:8,row:3 },              // aligned directly below C04
+  // D section — cols 10-14, col 9 = gap
+  { code:'D05', col:10,row:1 },
+  { code:'D04', col:11,row:1, cs:3 },       // 3 wide
+  { code:'D03', col:14,row:1 },
+  { code:'D02', col:11,row:2, cs:3, rs:2 }, // same width as D04, 2-row tall
+  { code:'D01', col:10,row:3 },
+  // A section — cols 3-8, adjacent rows (no gap)
+  { code:'A12', col:3,row:5 }, { code:'A11', col:4,row:5 }, { code:'A10', col:5,row:5 },
+  { code:'A09', col:6,row:5 }, { code:'A08', col:7,row:5 }, { code:'A07', col:8,row:5 },
+  { code:'A01', col:3,row:6 }, { code:'A02', col:4,row:6 }, { code:'A03', col:5,row:6 },
+  { code:'A04', col:6,row:6 }, { code:'A05', col:7,row:6 }, { code:'A06', col:8,row:6 },
+  // B section — cols 10-14
+  { code:'B08', col:10,row:5 }, { code:'B07', col:11,row:5 }, { code:'B06', col:12,row:5, cs:2 }, // B06 = 2 wide
+  { code:'B01', col:10,row:6 }, { code:'B02', col:11,row:6 }, { code:'B03', col:12,row:6 },
+  { code:'B04', col:13,row:6 }, { code:'B05', col:14,row:6 },
 ]
-const HALL2_COLS = 13
-// Variable row heights: 3 C/D rows, gap, A-top, small-gap-inside-A, A-bot
-const HALL2_ROW_HEIGHTS = '26px 26px 26px 18px 26px 10px 26px'
+// col widths: M03 | thin-gap | C/A×6 | gap | D/B×5
+const HALL2_COL_WIDTHS = '38px 12px 38px 38px 38px 38px 38px 38px 16px 38px 38px 38px 38px 38px'
+const HALL2_ROW_HEIGHTS = '26px 26px 26px 16px 26px 26px'
 
-// Hall 1: 15 cols × 11 rows
-// col 1=K-left, cols 2-12=main, cols 13-14=K-right, col 15=L
+// Hall 1
+// Columns:
+//   1=K-left | 2=E01/G01/I01 | 3=E02 | 4=E03 | 5=E05 | 6=E04(tall) | 7=gap | 8=F01(tall) | 9=F02 | 10=F03 | 11=F04 | 12=F05 | 13=F06(tall) | 14=K-right | 15=L
+// Rows:
+//   1=very-top(L09/M04) | 2=top-bar(M02/K06-K09/L08/L07/L06) |
+//   3=E/F-top | 4=E/F-bot | 5=gap | 6=G/H-top | 7=G/H-bot | 8=gap | 9=I/J-top | 10=I/J-bot | 11=gap | 12=bottom-strip
 const HALL1_BOOTHS: BoothCell[] = [
-  // K top-right
-  { code:'K05', col:10,row:1 }, { code:'K06', col:11,row:1 }, { code:'K07', col:12,row:1 },
+  // Very top
+  { code:'L09', col:13,row:1 }, { code:'M04', col:14,row:1, cs:2 },
+  // Top bar row
+  { code:'M02', col:2,row:2, cs:2 }, { code:'K06', col:4,row:2 }, { code:'K07', col:5,row:2 },
+  { code:'L08', col:8,row:2 },
+  { code:'L07', col:10,row:2 }, { code:'L06', col:11,row:2 },
   { code:'K08', col:13,row:2 }, { code:'K09', col:14,row:2 },
-  // L column (right edge)
-  { code:'L09', col:15,row:1 }, { code:'M04', col:15,row:2 }, // M04 = lounge near L09
-  { code:'L08', col:15,row:3 }, { code:'L07', col:15,row:4 }, { code:'L06', col:15,row:5 },
-  { code:'L05', col:15,row:6 }, { code:'L04', col:15,row:7 }, { code:'L03', col:15,row:8 },
-  { code:'L02', col:15,row:9 }, { code:'L01', col:15,row:10 },
-  // E row
-  { code:'E01', col:1,row:2 },
-  { code:'E02', col:3,row:2 }, { code:'E03', col:4,row:2 }, { code:'E04', col:5,row:2 },
-  { code:'E05', col:5,row:3 }, { code:'E06', col:4,row:3 },
-  // F row
-  { code:'F01', col:7,row:3 },
-  { code:'F02', col:8,row:2 }, { code:'F03', col:9,row:2 }, { code:'F04', col:10,row:2 }, { code:'F05', col:11,row:2 },
-  { code:'F06', col:12,row:3 },
-  { code:'F09', col:8,row:4 }, { code:'F08', col:9,row:4 }, { code:'F07', col:10,row:4 },
-  // K left (K04 at G level, K03 between G-I, K02 at I level, K01 at I level)
-  { code:'K04', col:1,row:5 }, { code:'K03', col:1,row:6 }, { code:'K02', col:1,row:7 }, { code:'K01', col:1,row:8 },
-  // G row
-  { code:'G01', col:2,row:5 },
-  { code:'G02', col:3,row:5 }, { code:'G03', col:4,row:5 }, { code:'G04', col:5,row:5 },
-  { code:'G07', col:3,row:6 }, { code:'G06', col:4,row:6 }, { code:'G05', col:5,row:6 },
-  // H row
-  { code:'H01', col:7,row:6 },
-  { code:'H02', col:8,row:5 }, { code:'H03', col:9,row:5 }, { code:'H04', col:10,row:5 }, { code:'H05', col:11,row:5 },
-  { code:'H06', col:12,row:5 },
-  { code:'H09', col:8,row:6 }, { code:'H08', col:9,row:6 }, { code:'H07', col:10,row:6 },
-  // I row
-  { code:'I01', col:2,row:8 },
-  { code:'I02', col:3,row:8 }, { code:'I03', col:4,row:8 }, { code:'I04', col:5,row:8 },
-  { code:'I06', col:3,row:9 }, { code:'I05', col:4,row:9 },
-  { code:'I07', col:2,row:11 }, { code:'I08', col:3,row:11 }, { code:'I09', col:5,row:11 },
-  // J row
-  { code:'J01', col:7,row:9 },
-  { code:'J02', col:8,row:8 }, { code:'J03', col:9,row:8 }, { code:'J04', col:10,row:8 },
-  { code:'J05', col:12,row:9 },
-  { code:'J08', col:8,row:9 }, { code:'J07', col:9,row:9 }, { code:'J06', col:10,row:9 },
-  { code:'J09', col:8,row:11 }, { code:'J10', col:9,row:11 }, { code:'J11', col:12,row:11 },
+  // K left edge
+  { code:'K05', col:1,row:3 }, { code:'K04', col:1,row:4 },
+  { code:'K03', col:1,row:6 },
+  { code:'K02', col:1,row:9 }, { code:'K01', col:1,row:10 },
+  // E/F cluster (rows 3-4)
+  { code:'E01', col:2,row:3, rs:2 },
+  { code:'E02', col:3,row:3 }, { code:'E03', col:4,row:3 },
+  { code:'E04', col:6,row:3, rs:2 },
+  { code:'E06', col:3,row:4 }, { code:'E05', col:4,row:4 },
+  { code:'F01', col:8,row:3, rs:2 },
+  { code:'F02', col:9,row:3 }, { code:'F03', col:10,row:3 }, { code:'F04', col:11,row:3 }, { code:'F05', col:12,row:3 },
+  { code:'F06', col:13,row:3, rs:2 },
+  { code:'F09', col:10,row:4 }, { code:'F08', col:11,row:4 }, { code:'F07', col:12,row:4 },
+  // G/H cluster (rows 6-7)
+  { code:'G01', col:2,row:6, rs:2 },
+  { code:'G02', col:3,row:6 }, { code:'G03', col:4,row:6 },
+  { code:'G04', col:6,row:6, rs:2 },
+  { code:'G07', col:3,row:7 }, { code:'G06', col:4,row:7 }, { code:'G05', col:5,row:7 },
+  { code:'H01', col:8,row:6, rs:2 },
+  { code:'H02', col:9,row:6 }, { code:'H03', col:10,row:6 }, { code:'H04', col:11,row:6 }, { code:'H05', col:12,row:6 },
+  { code:'H06', col:13,row:6, rs:2 },
+  { code:'H09', col:9,row:7 }, { code:'H08', col:10,row:7 }, { code:'H07', col:11,row:7 },
+  // I/J cluster (rows 9-10)
+  { code:'I01', col:2,row:9, rs:2 },
+  { code:'I02', col:3,row:9 }, { code:'I03', col:4,row:9 },
+  { code:'I04', col:6,row:9, rs:2 },
+  { code:'I06', col:3,row:10 }, { code:'I05', col:4,row:10 },
+  { code:'J01', col:8,row:9, rs:2 },
+  { code:'J02', col:9,row:9 }, { code:'J03', col:10,row:9 }, { code:'J04', col:11,row:9 },
+  { code:'J05', col:13,row:9, rs:2 },
+  { code:'J08', col:9,row:10 }, { code:'J07', col:10,row:10 }, { code:'J06', col:11,row:10 },
+  // Bottom strip (row 12)
+  { code:'I07', col:3,row:12 }, { code:'I08', col:4,row:12 }, { code:'I09', col:6,row:12 },
+  { code:'J09', col:9,row:12 }, { code:'J10', col:10,row:12 }, { code:'J11', col:13,row:12 },
+  // L right edge
+  { code:'L05', col:15,row:3, rs:2 },
+  { code:'L04', col:15,row:5 },
+  { code:'L03', col:15,row:6, rs:2 },
+  { code:'L02', col:15,row:9, rs:2 },
+  { code:'L01', col:15,row:11 },
 ]
 const HALL1_COLS = 15
-const HALL1_ROW_HEIGHTS = `repeat(11, ${26}px)`
+const HALL1_ROW_HEIGHTS = '28px 26px 26px 26px 14px 26px 26px 14px 26px 26px 14px 26px'
 
 function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b: CatalogueBrand) => void }) {
   const [hovered, setHovered] = useState<string | null>(null)
@@ -228,11 +241,11 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
 
   const W = 38, H = 26, GAP = 3
 
-  function renderGrid(booths: BoothCell[], cols: number, rowHeights: string) {
+  function renderGrid(booths: BoothCell[], colWidths: string, rowHeights: string) {
     return (
       <div style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(${cols}, ${W}px)`,
+        gridTemplateColumns: colWidths,
         gridTemplateRows: rowHeights,
         gap: `${GAP}px`,
         position: 'relative',
@@ -294,7 +307,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
               Platz Hall 2
             </div>
-            {renderGrid(HALL2_BOOTHS, HALL2_COLS, HALL2_ROW_HEIGHTS)}
+            {renderGrid(HALL2_BOOTHS, HALL2_COL_WIDTHS, HALL2_ROW_HEIGHTS)}
           </div>
 
           {/* Lounge label */}
@@ -307,7 +320,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
               Platz Hall 1
             </div>
-            {renderGrid(HALL1_BOOTHS, HALL1_COLS, HALL1_ROW_HEIGHTS)}
+            {renderGrid(HALL1_BOOTHS, `repeat(${HALL1_COLS}, ${W}px)`, HALL1_ROW_HEIGHTS)}
           </div>
         </div>
       </div>
