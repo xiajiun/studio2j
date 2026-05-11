@@ -356,6 +356,9 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
             </select>
           </Field>
         )}
+        <Field label="Order name (optional — auto-generated if blank)">
+          <input style={inputStyle} value={form.title} onChange={e => set('title', e.target.value)} placeholder={form.kind === 'fair' && form.fair_id ? fairs.find(f => String(f.id) === form.fair_id)?.name ?? 'e.g. DOTDOTDOT haul' : 'e.g. Sosumuth + 3 items'} />
+        </Field>
       </Section>
 
       {/* Items */}
