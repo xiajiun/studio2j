@@ -14,6 +14,7 @@ const ADMIN_LINKS = [
   { href: '/admin/customers',      label: 'Customers' },
   { href: '/admin/fair-reminders', label: 'Fair reminders' },
   { href: '/admin/subscribers',    label: 'Subscribers' },
+  { href: '/admin/catalogue/inventario-2026', label: 'Inventario brands' },
 ]
 
 const ACCOUNT_LINKS = [
