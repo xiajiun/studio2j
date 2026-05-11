@@ -62,7 +62,7 @@ export default async function PublicOrderPage({ params }: { params: { number: st
           const currentIdx = steps.indexOf(o.status as any)
           const isDone    = i < currentIdx
           const isCurrent = i === currentIdx
-          const event = events?.find(e => e.status === s)
+          const event = events?.find((e: OrderEvent) => e.status === s)
           return (
             <div key={s} style={{ display: 'flex', gap: '16px', marginBottom: '4px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '20px', flexShrink: 0 }}>
