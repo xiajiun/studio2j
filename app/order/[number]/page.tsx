@@ -58,40 +58,33 @@ export default async function PublicOrderPage({ params }: { params: { number: st
 
       {/* Timeline */}
       <div style={{ marginBottom: '40px' }}>
-        {steps.map((s, i) => {
-          const currentIdx = steps.indexOf(o.status as any)
-          const isPast    = i < currentIdx
-          const isCurrent = i === currentIdx
-          const event     = events?.find((e: OrderEvent) => e.status === s)
-          const isSkipped = isPast && !event
-          return (
+        {steps
+          .map(s => ({ s, event: events?.find((e: OrderEvent) => e.status === s) }))
+          .filter(({ event }) => !!event)
+          .map(({ s, event }, i, visible) => (
             <div key={s} style={{ display: 'flex', gap: '16px', marginBottom: '4px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '20px', flexShrink: 0 }}>
                 <div style={{
                   width: '16px', height: '16px', borderRadius: '50%',
-                  background: isSkipped ? 'transparent' : isPast ? 'var(--dark-blue)' : isCurrent ? 'var(--tan)' : 'transparent',
-                  border: `1.5px solid ${isPast && !isSkipped ? 'transparent' : isCurrent ? 'transparent' : isSkipped ? 'rgba(122,92,69,0.2)' : 'rgba(122,92,69,0.25)'}`,
-                  marginTop: '2px',
+                  background: 'var(--dark-blue)', marginTop: '2px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  {isPast && !isSkipped && <span style={{ color: 'white', fontSize: '8px' }}>✓</span>}
-                  {isSkipped && <span style={{ color: 'rgba(122,92,69,0.35)', fontSize: '10px', lineHeight: 1 }}>–</span>}
+                  <span style={{ color: 'white', fontSize: '8px' }}>✓</span>
                 </div>
-                {i < steps.length - 1 && (
-                  <div style={{ width: '1px', flex: 1, background: isPast && !isSkipped ? 'var(--dark-blue)' : 'rgba(122,92,69,0.12)', minHeight: '24px' }} />
+                {i < visible.length - 1 && (
+                  <div style={{ width: '1px', flex: 1, background: 'var(--dark-blue)', minHeight: '24px' }} />
                 )}
               </div>
               <div style={{ paddingBottom: '20px' }}>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: isCurrent ? 500 : 300, color: isCurrent ? 'var(--dark-brown)' : isPast && !isSkipped ? 'var(--dark-brown)' : 'var(--tan)', marginBottom: '2px' }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--dark-brown)', marginBottom: '2px' }}>
                   {STATUS_LABELS[s]}
                 </div>
                 {event?.note && <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--brown)' }}>&quot;{event.note}&quot;</div>}
                 {event?.photo_url && <img src={event.photo_url} alt="" style={{ marginTop: '8px', borderRadius: '10px', maxWidth: '240px', width: '100%' }} />}
-                {event && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '4px' }}>{new Date(event.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>}
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '4px' }}>{new Date(event!.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
               </div>
             </div>
-          )
-        })}
+          ))}
       </div>
 
       {o.tracking_number && (
