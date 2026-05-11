@@ -31,7 +31,7 @@ const BOOTH_LAYOUT: Record<string, string> = {
   C05:'MOHS',     C06:'O-CHECK',    C07:'PaTI',           C08:'HANSOL PAPER × URBANBOOKS',
   C09:'SAMWON PAPER WORKSHOP', C10:'SAMWON PAPER', C11:'KOKUYO',
   // Hall 2 — D row
-  D01:'ILOOM', D02:'ILOOM', D03:'NOBIGDEAL', D04:'KIOSK KIOSK WORKSHOP', D05:'WIP',
+  D02:'ILOOM', D03:'NOBIGDEAL', D04:'KIOSK KIOSK WORKSHOP', D05:'WIP',
   // Hall 1 — E row (E03=GOOBER, E04=KOREA PILOT, E05=MICIA+LYRA)
   E01:'DOMINANT INDUSTRY', E02:'GONGYEGA',   E03:'GOOBER',    E04:'KOREA PILOT',
   E05:'MICIA / LYRA',       E06:'BUYHEARTS',
@@ -118,8 +118,7 @@ const HALL2_BOOTHS: BoothCell[] = [
   { code:'D05', col:10,row:1 },
   { code:'D04', col:11,row:1, cs:3 },       // 3 wide
   { code:'D03', col:14,row:1 },
-  { code:'D02', col:11,row:2, cs:3, rs:2 }, // same width as D04, 2-row tall
-  { code:'D01', col:10,row:3 },
+  { code:'D02', col:10,row:2, cs:4, rs:2 }, // merged D01+D02 = ILOOM
   // A section — cols 3-8, adjacent rows (no gap)
   { code:'A12', col:3,row:5 }, { code:'A11', col:4,row:5 }, { code:'A10', col:5,row:5 },
   { code:'A09', col:6,row:5 }, { code:'A08', col:7,row:5 }, { code:'A07', col:8,row:5 },
