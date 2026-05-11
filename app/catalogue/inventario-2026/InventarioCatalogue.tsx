@@ -136,13 +136,13 @@ const HALL2_ROW_HEIGHTS = '26px 26px 26px 16px 26px 26px'
 
 // Hall 1 — 15 cols × 13 rows
 const HALL1_BOOTHS: BoothCell[] = [
-  // Row 1: M04 wide; L09 next to M04 (col 13)
+  // Row 1: M04 wide; L09 above L08 (col 8)
   { code:'M04', col:9,row:1, cs:4 },
-  { code:'L09', col:13,row:1 },
-  // Row 2: M02 · K06 · K07 · L08 above F01 · L07 above F04 · K08 above F05 · K09 above F06 · L06 · L05 (tall, rs=2)
+  { code:'L09', col:8,row:1 },
+  // Row 2: M02 · K06 · K07 · L08 above F01 · L07 · L06 · K08 · K09 · L05 (tall, rs=2)
   { code:'M02', col:2,row:2, cs:2 }, { code:'K06', col:4,row:2 }, { code:'K07', col:5,row:2 },
   { code:'L08', col:8,row:2 },
-  { code:'L07', col:11,row:2 }, { code:'K08', col:12,row:2 }, { code:'K09', col:13,row:2 }, { code:'L06', col:14,row:2 },
+  { code:'L07', col:11,row:2 }, { code:'L06', col:12,row:2 }, { code:'K08', col:13,row:2 }, { code:'K09', col:14,row:2 },
   { code:'L05', col:15,row:2, rs:2 },
   // K left edge
   { code:'K05', col:1,row:3 }, { code:'K04', col:1,row:4 },
