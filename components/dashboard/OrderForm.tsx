@@ -166,9 +166,12 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: p.actual_goods_cost || String(subtotal) }))
   }, [items, form.currency]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [saveError, setSaveError] = useState<string | null>(null)
+
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setSaving(true)
+    setSaveError(null)
     const supabase = createClient()
 
     const parsedItems: OrderItem[] = items
@@ -198,7 +201,13 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       customer_name:       form.customer_name  || null,
       kind:                form.kind,
       fair_id:             form.fair_id        ? parseInt(form.fair_id) : null,
-      title:               form.title || (parsedItems[0]?.name ? `${parsedItems[0].name}${parsedItems.length > 1 ? ` + ${parsedItems.length - 1} more` : ''}` : `Order from ${form.customer_name || form.customer_email}`),
+      title:               form.title || (
+        form.kind === 'fair' && form.fair_id
+          ? (fairs.find(f => String(f.id) === form.fair_id)?.name ?? `Order from ${form.customer_name || form.customer_email}`)
+          : parsedItems[0]?.name
+            ? `${parsedItems[0].name}${parsedItems.length > 1 ? ` + ${parsedItems.length - 1} more` : ''}`
+            : `Order from ${form.customer_name || form.customer_email}`
+      ),
       description:         form.description    || null,
       items:               parsedItems.length  ? parsedItems : null,
       goods_total:         form.goods_total    ? parseFloat(form.goods_total)  : null,
@@ -221,15 +230,23 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       actual_goods_cost:   form.actual_goods_cost   ? parseFloat(form.actual_goods_cost)   : null,
     }
 
-    if (isEdit) {
-      await supabase.from('orders').update(payload).eq('id', orderId)
-    } else {
-      await supabase.from('orders').insert(payload).select('order_number').single()
-    }
+    try {
+      const { error } = isEdit
+        ? await supabase.from('orders').update(payload).eq('id', orderId)
+        : await supabase.from('orders').insert(payload).select('order_number').single()
 
-    setSaving(false)
-    router.push('/admin/orders')
-    router.refresh()
+      if (error) {
+        setSaveError(error.message)
+        return
+      }
+
+      router.push('/admin/orders')
+      router.refresh()
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Unknown error')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -407,12 +424,14 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       {/* Payment received — edit only */}
       {isEdit && (
         <Section label="Payment received">
+          {/* Payment 1 */}
           {(() => {
             const isJo       = form.paid_1_via === 'jo'
             const jinHandles = form.currency === 'KRW'
             const fee        = parseFloat(form.paid_1_transfer_fee) || 0
             return (
-              <div style={{ padding: '16px', background: 'var(--beige)', borderRadius: '12px' }}>
+              <div style={{ padding: '16px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '10px' }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>Payment 1</div>
                 <div style={{ display: 'grid', gridTemplateColumns: isJo && jinHandles ? '1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: '10px' }}>
                   <Field label="Amount received">
                     <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.paid_1_amount} onChange={e => set('paid_1_amount', e.target.value)} />
@@ -430,6 +449,43 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
                     <>
                       <Field label="Jin received from Jo">
                         <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.jin_received_1} onChange={e => setJinReceived(1, e.target.value)} />
+                      </Field>
+                      <Field label="Transfer fee (auto)">
+                        <div style={{ ...inputStyle, background: 'rgba(122,92,69,0.04)', color: fee > 0 ? '#8A3A20' : 'var(--tan)', display: 'flex', alignItems: 'center' }}>
+                          {fee > 0 ? `−${fee.toLocaleString()}` : '—'}
+                        </div>
+                      </Field>
+                    </>
+                  )}
+                </div>
+              </div>
+            )
+          })()}
+          {/* Payment 2 */}
+          {(() => {
+            const isJo       = form.paid_2_via === 'jo'
+            const jinHandles = form.currency === 'KRW'
+            const fee        = parseFloat(form.paid_2_transfer_fee) || 0
+            return (
+              <div style={{ padding: '16px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '10px' }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>Payment 2 (optional)</div>
+                <div style={{ display: 'grid', gridTemplateColumns: isJo && jinHandles ? '1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: '10px' }}>
+                  <Field label="Amount received">
+                    <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.paid_2_amount} onChange={e => set('paid_2_amount', e.target.value)} />
+                  </Field>
+                  <Field label="Date">
+                    <input style={inputStyle} type="date" value={form.paid_2_date} onChange={e => set('paid_2_date', e.target.value)} />
+                  </Field>
+                  <Field label="Received by">
+                    <select style={inputStyle} value={form.paid_2_via} onChange={e => set('paid_2_via', e.target.value)}>
+                      <option value="jin">Jin (Shinhan)</option>
+                      <option value="jo">Jo (Wise)</option>
+                    </select>
+                  </Field>
+                  {isJo && jinHandles && (
+                    <>
+                      <Field label="Jin received from Jo">
+                        <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.jin_received_2} onChange={e => setJinReceived(2, e.target.value)} />
                       </Field>
                       <Field label="Transfer fee (auto)">
                         <div style={{ ...inputStyle, background: 'rgba(122,92,69,0.04)', color: fee > 0 ? '#8A3A20' : 'var(--tan)', display: 'flex', alignItems: 'center' }}>
