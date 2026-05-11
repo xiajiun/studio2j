@@ -43,13 +43,17 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
         <Link href={`/order/${o.order_number}`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>Customer view ↗</Link>
         <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
         <Link href={`/admin/orders/${o.id}/invoice`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>Invoice ↗</Link>
-        <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
-        <ShippedEmailButton
-          customerEmail={o.customer_email}
-          customerName={o.customer_name}
-          orderNumber={o.order_number}
-          trackingNumber={o.tracking_number}
-        />
+        {o.tracking_number && (
+          <>
+            <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+            <ShippedEmailButton
+              customerEmail={o.customer_email}
+              customerName={o.customer_name}
+              orderNumber={o.order_number}
+              trackingNumber={o.tracking_number}
+            />
+          </>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
