@@ -60,27 +60,29 @@ export default async function PublicOrderPage({ params }: { params: { number: st
       <div style={{ marginBottom: '40px' }}>
         {steps.map((s, i) => {
           const currentIdx = steps.indexOf(o.status as any)
-          const isDone    = i < currentIdx
+          const isPast    = i < currentIdx
           const isCurrent = i === currentIdx
-          const event = events?.find((e: OrderEvent) => e.status === s)
+          const event     = events?.find((e: OrderEvent) => e.status === s)
+          const isSkipped = isPast && !event
           return (
             <div key={s} style={{ display: 'flex', gap: '16px', marginBottom: '4px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '20px', flexShrink: 0 }}>
                 <div style={{
                   width: '16px', height: '16px', borderRadius: '50%',
-                  background: isDone ? 'var(--dark-blue)' : isCurrent ? 'var(--tan)' : 'transparent',
-                  border: `1.5px solid ${isDone || isCurrent ? 'transparent' : 'rgba(122,92,69,0.25)'}`,
+                  background: isSkipped ? 'transparent' : isPast ? 'var(--dark-blue)' : isCurrent ? 'var(--tan)' : 'transparent',
+                  border: `1.5px solid ${isPast && !isSkipped ? 'transparent' : isCurrent ? 'transparent' : isSkipped ? 'rgba(122,92,69,0.2)' : 'rgba(122,92,69,0.25)'}`,
                   marginTop: '2px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  {isDone && <span style={{ color: 'white', fontSize: '8px' }}>✓</span>}
+                  {isPast && !isSkipped && <span style={{ color: 'white', fontSize: '8px' }}>✓</span>}
+                  {isSkipped && <span style={{ color: 'rgba(122,92,69,0.35)', fontSize: '10px', lineHeight: 1 }}>–</span>}
                 </div>
                 {i < steps.length - 1 && (
-                  <div style={{ width: '1px', flex: 1, background: isDone ? 'var(--dark-blue)' : 'rgba(122,92,69,0.12)', minHeight: '24px' }} />
+                  <div style={{ width: '1px', flex: 1, background: isPast && !isSkipped ? 'var(--dark-blue)' : 'rgba(122,92,69,0.12)', minHeight: '24px' }} />
                 )}
               </div>
               <div style={{ paddingBottom: '20px' }}>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: isCurrent ? 500 : 300, color: isDone || isCurrent ? 'var(--dark-brown)' : 'var(--tan)', marginBottom: '2px' }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: isCurrent ? 500 : 300, color: isCurrent ? 'var(--dark-brown)' : isPast && !isSkipped ? 'var(--dark-brown)' : 'var(--tan)', marginBottom: '2px' }}>
                   {STATUS_LABELS[s]}
                 </div>
                 {event?.note && <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--brown)' }}>&quot;{event.note}&quot;</div>}

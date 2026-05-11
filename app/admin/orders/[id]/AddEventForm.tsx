@@ -25,17 +25,27 @@ export function AddEventForm({ orderId }: { orderId: number }) {
   const [date,   setDate]   = useState(todayStr())
   const [saving, setSaving] = useState(false)
 
+  const [error, setError] = useState<string | null>(null)
+
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setSaving(true)
-    const supabase = createClient()
-    const eventTs = new Date(date + 'T12:00:00').toISOString()
-    await supabase.from('order_events').insert({ order_id: orderId, status, note: note || null, created_at: eventTs })
-    await supabase.from('orders').update({ status, updated_at: eventTs }).eq('id', orderId)
-    setNote('')
-    setDate(todayStr())
-    setSaving(false)
-    router.refresh()
+    setError(null)
+    try {
+      const supabase = createClient()
+      const eventTs = new Date(date + 'T12:00:00').toISOString()
+      const { error: e1 } = await supabase.from('order_events').insert({ order_id: orderId, status, note: note || null, created_at: eventTs })
+      if (e1) { setError(e1.message); return }
+      const { error: e2 } = await supabase.from('orders').update({ status, updated_at: eventTs }).eq('id', orderId)
+      if (e2) { setError(e2.message); return }
+      setNote('')
+      setDate(todayStr())
+      router.refresh()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -50,6 +60,7 @@ export function AddEventForm({ orderId }: { orderId: number }) {
         <input style={inputStyle} type="date" value={date} onChange={e => setDate(e.target.value)} />
       </div>
       <input style={inputStyle} value={note} onChange={e => setNote(e.target.value)} placeholder='Note, e.g. "Found at booth 47!"' />
+      {error && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#8A3A20', background: '#F5DDD5', padding: '8px 12px', borderRadius: '8px' }}>{error}</div>}
       <button type="submit" disabled={saving} style={{
         background: 'var(--dark-blue)', color: 'var(--cream)',
         fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
