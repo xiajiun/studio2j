@@ -134,60 +134,60 @@ const HALL2_BOOTHS: BoothCell[] = [
 const HALL2_COL_WIDTHS = '38px 12px 38px 38px 38px 38px 38px 38px 16px 38px 38px 38px 38px 38px'
 const HALL2_ROW_HEIGHTS = '26px 26px 26px 16px 26px 26px'
 
-// Hall 1
-// Columns:
-//   1=K-left | 2=E01/G01/I01 | 3=E02 | 4=E03 | 5=E05 | 6=E04(tall) | 7=gap | 8=F01(tall) | 9=F02 | 10=F03 | 11=F04 | 12=F05 | 13=F06(tall) | 14=K-right | 15=L
-// Rows:
-//   1=very-top(L09/M04) | 2=top-bar(M02/K06-K09/L08/L07/L06) |
-//   3=E/F-top | 4=E/F-bot | 5=gap | 6=G/H-top | 7=G/H-bot | 8=gap | 9=I/J-top | 10=I/J-bot | 11=gap | 12=bottom-strip
+// Hall 1 — 15 cols × 12 rows
 const HALL1_BOOTHS: BoothCell[] = [
-  // Very top
-  { code:'L09', col:13,row:1 }, { code:'M04', col:14,row:1, cs:2 },
-  // Top bar row
+  // Very top (row 1): M04 covers F02-F05 width (cols 9-12, cs=4); L09 above L08 (col 15)
+  { code:'M04', col:9,row:1, cs:4 },
+  { code:'L09', col:15,row:1 },
+  // Top bar (row 2): L08 directly below L09; L07 above F04 (col11); L06 (col12)
   { code:'M02', col:2,row:2, cs:2 }, { code:'K06', col:4,row:2 }, { code:'K07', col:5,row:2 },
-  { code:'L08', col:8,row:2 },
-  { code:'L07', col:10,row:2 }, { code:'L06', col:11,row:2 },
+  { code:'L07', col:11,row:2 }, { code:'L06', col:12,row:2 },
   { code:'K08', col:13,row:2 }, { code:'K09', col:14,row:2 },
+  { code:'L08', col:15,row:2 },   // directly below L09
   // K left edge
   { code:'K05', col:1,row:3 }, { code:'K04', col:1,row:4 },
   { code:'K03', col:1,row:6 },
   { code:'K02', col:1,row:9 }, { code:'K01', col:1,row:10 },
   // E/F cluster (rows 3-4)
+  // E04 tight to E03 (col5, no gap); E06/E05 below E02/E03
   { code:'E01', col:2,row:3, rs:2 },
-  { code:'E02', col:3,row:3 }, { code:'E03', col:4,row:3 },
-  { code:'E04', col:6,row:3, rs:2 },
+  { code:'E02', col:3,row:3 }, { code:'E03', col:4,row:3 }, { code:'E04', col:5,row:3, rs:2 },
   { code:'E06', col:3,row:4 }, { code:'E05', col:4,row:4 },
+  // F09 width 2 (cols 9-10); F08 col11; F07 col12
   { code:'F01', col:8,row:3, rs:2 },
   { code:'F02', col:9,row:3 }, { code:'F03', col:10,row:3 }, { code:'F04', col:11,row:3 }, { code:'F05', col:12,row:3 },
   { code:'F06', col:13,row:3, rs:2 },
-  { code:'F09', col:10,row:4 }, { code:'F08', col:11,row:4 }, { code:'F07', col:12,row:4 },
+  { code:'F09', col:9,row:4, cs:2 }, { code:'F08', col:11,row:4 }, { code:'F07', col:12,row:4 },
   // G/H cluster (rows 6-7)
+  // G02 width 2 (cols 3-4) → G03 shifts to col5, G04 tight at col6
   { code:'G01', col:2,row:6, rs:2 },
-  { code:'G02', col:3,row:6 }, { code:'G03', col:4,row:6 },
-  { code:'G04', col:6,row:6, rs:2 },
+  { code:'G02', col:3,row:6, cs:2 }, { code:'G03', col:5,row:6 }, { code:'G04', col:6,row:6, rs:2 },
   { code:'G07', col:3,row:7 }, { code:'G06', col:4,row:7 }, { code:'G05', col:5,row:7 },
+  // H08 width 2 (cols 10-11); H09 col9; H07 col12
   { code:'H01', col:8,row:6, rs:2 },
   { code:'H02', col:9,row:6 }, { code:'H03', col:10,row:6 }, { code:'H04', col:11,row:6 }, { code:'H05', col:12,row:6 },
   { code:'H06', col:13,row:6, rs:2 },
-  { code:'H09', col:9,row:7 }, { code:'H08', col:10,row:7 }, { code:'H07', col:11,row:7 },
+  { code:'H09', col:9,row:7 }, { code:'H08', col:10,row:7, cs:2 }, { code:'H07', col:12,row:7 },
   // I/J cluster (rows 9-10)
+  // I02 width 2 (cols 3-4) → I03 col5; I06 width 2 (cols 3-4) → I05 col5
   { code:'I01', col:2,row:9, rs:2 },
-  { code:'I02', col:3,row:9 }, { code:'I03', col:4,row:9 },
-  { code:'I04', col:6,row:9, rs:2 },
-  { code:'I06', col:3,row:10 }, { code:'I05', col:4,row:10 },
+  { code:'I02', col:3,row:9, cs:2 }, { code:'I03', col:5,row:9 }, { code:'I04', col:6,row:9, rs:2 },
+  { code:'I06', col:3,row:10, cs:2 }, { code:'I05', col:5,row:10 },
   { code:'J01', col:8,row:9, rs:2 },
   { code:'J02', col:9,row:9 }, { code:'J03', col:10,row:9 }, { code:'J04', col:11,row:9 },
   { code:'J05', col:13,row:9, rs:2 },
   { code:'J08', col:9,row:10 }, { code:'J07', col:10,row:10 }, { code:'J06', col:11,row:10 },
   // Bottom strip (row 12)
-  { code:'I07', col:3,row:12 }, { code:'I08', col:4,row:12 }, { code:'I09', col:6,row:12 },
-  { code:'J09', col:9,row:12 }, { code:'J10', col:10,row:12 }, { code:'J11', col:13,row:12 },
-  // L right edge
-  { code:'L05', col:15,row:3, rs:2 },
-  { code:'L04', col:15,row:5 },
-  { code:'L03', col:15,row:6, rs:2 },
-  { code:'L02', col:15,row:9, rs:2 },
-  { code:'L01', col:15,row:11 },
+  // I07 same col as I01 (col2); I08 col3; gap col4; I09 same col as I05 (col5) cs=2
+  { code:'I07', col:2,row:12 }, { code:'I08', col:3,row:12 }, { code:'I09', col:5,row:12, cs:2 },
+  // J09 same col as J01 (col8); J10 cs=3 (cols 9-11); J11 cs=2 (col13-14, below J05 area)
+  { code:'J09', col:8,row:12 }, { code:'J10', col:9,row:12, cs:3 }, { code:'J11', col:13,row:12, cs:2 },
+  // L right edge: L05 single, L04 taller (rs=2), L03 single, L02/L01
+  { code:'L05', col:15,row:3 },
+  { code:'L04', col:15,row:4, rs:2 },   // taller than L05 and L03
+  { code:'L03', col:15,row:6 },
+  { code:'L02', col:15,row:9 },
+  { code:'L01', col:15,row:10 },
 ]
 const HALL1_COLS = 15
 const HALL1_ROW_HEIGHTS = '28px 26px 26px 26px 14px 26px 26px 14px 26px 26px 14px 26px'
