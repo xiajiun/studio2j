@@ -2,7 +2,7 @@ export const runtime = 'edge'
 
 import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { PrintButton, AutoPrint } from '@/app/admin/orders/[id]/invoice/PrintButton'
+import { PrintButton, AutoPrint } from '@/components/dashboard/PrintButton'
 import type { Order, OrderItem, ShippingAddress } from '@/lib/database.types'
 
 const PAYMENT = {
