@@ -96,32 +96,86 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
   )
 }
 
-// 2D grid arrays — null = empty cell, string = booth code
-// Hall 2: C/D section on top, A/B section on bottom
-const HALL2_GRID: (string|null)[][] = [
-  ['C10','C09','C08','C07','C06','C05', null, 'D05', null,'D04','D03', null],
-  ['C11', null, 'C02', null, null,'C04', null,  null, null,'D02', null, null],
-  ['C01', null,  null, null, null,'C03','D01',  null, null, null, null, null],
-  [ null, null,  null, null, null, null, null,  null, null, null, null, null],
-  ['A12','A11','A10','A09','A08','A07', null, 'B08','B07','B06', null, null],
-  ['A01','A02','A03','A04','A05','A06', null, 'B01','B02','B03','B04','B05'],
-]
+// Explicit grid placement — col/row are 1-indexed CSS grid lines
+type BoothCell = { code: string; col: number; row: number; cs?: number; rs?: number }
 
-// Hall 1: E-F top, G-H middle, I-J lower, I07-J11 strip
-// col: K-left(1) | main-left(2-6) | gap(7) | main-right(8-12) | K-right(13-14) | L(15)
-const HALL1_GRID: (string|null)[][] = [
-  [ null,  null,  null,  null,  null,  null,  null,  null,  null, 'K05','K06','K07',  null,'L09','M04'],
-  [ null,  null, 'E02', 'E03', 'E04',  null,  null, 'F02', 'F03', 'F04','F05',  null,'K08','K09',  null],
-  ['E01',  null,  null, 'E06', 'E05',  null, 'F01',  null,  null,  null,  null,'F06',  null, null,'L08'],
-  [ null,  null,  null,  null,  null,  null,  null, 'F09', 'F08', 'F07',  null,  null,  null, null,'L07'],
-  ['K04', 'G01', 'G02', 'G03', 'G04',  null,  null, 'H02', 'H03', 'H04','H05',  null,  null, null,'L06'],
-  ['K03',  null, 'G07', 'G06', 'G05',  null, 'H01',  null,  null,  null,  null,'H06',  null, null,'L05'],
-  ['K02',  null,  null,  null,  null,  null,  null, 'H09', 'H08', 'H07',  null,  null,  null, null,'L04'],
-  ['K01', 'I01', 'I02', 'I03', 'I04',  null,  null, 'J02', 'J03', 'J04',  null,  null,  null, null,'L03'],
-  [ null,  null, 'I06', 'I05',  null,  null, 'J01',  null,  null,  null,  null, 'J05',  null, null,'L02'],
-  [ null,  null,  null,  null,  null,  null,  null, 'J08', 'J07', 'J06',  null,  null,  null, null,'L01'],
-  [ null, 'I07', 'I08',  null, 'I09',  null,  null, 'J09', 'J10',  null, 'J11',  null,  null, null, null],
+// Hall 2: 13 cols × 7 rows
+// col 1=M03, cols 2-7=C/A section, col 8=gap, cols 9-13=D/B section
+// rows 1-3=C/D, row 4=gap, rows 5-6=A/B
+const HALL2_BOOTHS: BoothCell[] = [
+  // M03 tall block left of A section
+  { code:'M03', col:1, row:5, rs:2 },
+  // C section
+  { code:'C10', col:2,row:1 }, { code:'C09', col:3,row:1 }, { code:'C08', col:4,row:1 },
+  { code:'C07', col:5,row:1 }, { code:'C06', col:6,row:1 }, { code:'C05', col:7,row:1 },
+  { code:'C11', col:2,row:2 },
+  { code:'C02', col:3,row:2, cs:3 },   // wide: spans cols 3-5
+  { code:'C04', col:7,row:2 },
+  { code:'C01', col:2,row:3 },
+  { code:'C03', col:6,row:3, cs:2 },   // wide: spans cols 6-7
+  // D section
+  { code:'D05', col:9, row:1 },
+  { code:'D04', col:12,row:1 }, { code:'D03', col:13,row:1 },
+  { code:'D02', col:10,row:2, cs:4 },  // wide: spans cols 10-13
+  { code:'D01', col:9, row:3, cs:2 },  // spans cols 9-10
+  // A section
+  { code:'A12', col:2,row:5 }, { code:'A11', col:3,row:5 }, { code:'A10', col:4,row:5 },
+  { code:'A09', col:5,row:5 }, { code:'A08', col:6,row:5 }, { code:'A07', col:7,row:5 },
+  { code:'A01', col:2,row:6 }, { code:'A02', col:3,row:6 }, { code:'A03', col:4,row:6 },
+  { code:'A04', col:5,row:6 }, { code:'A05', col:6,row:6 }, { code:'A06', col:7,row:6 },
+  // B section
+  { code:'B08', col:9, row:5 }, { code:'B07', col:10,row:5 }, { code:'B06', col:11,row:5 },
+  { code:'B01', col:9, row:6 }, { code:'B02', col:10,row:6 }, { code:'B03', col:11,row:6 },
+  { code:'B04', col:12,row:6 }, { code:'B05', col:13,row:6 },
 ]
+const HALL2_COLS = 13
+const HALL2_ROWS = 6
+
+// Hall 1: 15 cols × 11 rows
+// col 1=K-left, cols 2-12=main, cols 13-14=K-right, col 15=L
+const HALL1_BOOTHS: BoothCell[] = [
+  // K top-right
+  { code:'K05', col:10,row:1 }, { code:'K06', col:11,row:1 }, { code:'K07', col:12,row:1 },
+  { code:'K08', col:13,row:2 }, { code:'K09', col:14,row:2 },
+  // L column (right edge)
+  { code:'L09', col:15,row:1 }, { code:'M04', col:15,row:2 }, // M04 = lounge near L09
+  { code:'L08', col:15,row:3 }, { code:'L07', col:15,row:4 }, { code:'L06', col:15,row:5 },
+  { code:'L05', col:15,row:6 }, { code:'L04', col:15,row:7 }, { code:'L03', col:15,row:8 },
+  { code:'L02', col:15,row:9 }, { code:'L01', col:15,row:10 },
+  // E row
+  { code:'E01', col:1,row:2 },
+  { code:'E02', col:3,row:2 }, { code:'E03', col:4,row:2 }, { code:'E04', col:5,row:2 },
+  { code:'E05', col:5,row:3 }, { code:'E06', col:4,row:3 },
+  // F row
+  { code:'F01', col:7,row:3 },
+  { code:'F02', col:8,row:2 }, { code:'F03', col:9,row:2 }, { code:'F04', col:10,row:2 }, { code:'F05', col:11,row:2 },
+  { code:'F06', col:12,row:3 },
+  { code:'F09', col:8,row:4 }, { code:'F08', col:9,row:4 }, { code:'F07', col:10,row:4 },
+  // K left (K04 at G level, K03 between G-I, K02 at I level, K01 at I level)
+  { code:'K04', col:1,row:5 }, { code:'K03', col:1,row:6 }, { code:'K02', col:1,row:7 }, { code:'K01', col:1,row:8 },
+  // G row
+  { code:'G01', col:2,row:5 },
+  { code:'G02', col:3,row:5 }, { code:'G03', col:4,row:5 }, { code:'G04', col:5,row:5 },
+  { code:'G07', col:3,row:6 }, { code:'G06', col:4,row:6 }, { code:'G05', col:5,row:6 },
+  // H row
+  { code:'H01', col:7,row:6 },
+  { code:'H02', col:8,row:5 }, { code:'H03', col:9,row:5 }, { code:'H04', col:10,row:5 }, { code:'H05', col:11,row:5 },
+  { code:'H06', col:12,row:5 },
+  { code:'H09', col:8,row:6 }, { code:'H08', col:9,row:6 }, { code:'H07', col:10,row:6 },
+  // I row
+  { code:'I01', col:2,row:8 },
+  { code:'I02', col:3,row:8 }, { code:'I03', col:4,row:8 }, { code:'I04', col:5,row:8 },
+  { code:'I06', col:3,row:9 }, { code:'I05', col:4,row:9 },
+  { code:'I07', col:2,row:11 }, { code:'I08', col:3,row:11 }, { code:'I09', col:5,row:11 },
+  // J row
+  { code:'J01', col:7,row:9 },
+  { code:'J02', col:8,row:8 }, { code:'J03', col:9,row:8 }, { code:'J04', col:10,row:8 },
+  { code:'J05', col:12,row:9 },
+  { code:'J08', col:8,row:9 }, { code:'J07', col:9,row:9 }, { code:'J06', col:10,row:9 },
+  { code:'J09', col:8,row:11 }, { code:'J10', col:9,row:11 }, { code:'J11', col:12,row:11 },
+]
+const HALL1_COLS = 15
+const HALL1_ROWS = 11
 
 function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b: CatalogueBrand) => void }) {
   const [hovered, setHovered] = useState<string | null>(null)
@@ -172,16 +226,16 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
 
   const W = 38, H = 26, GAP = 3
 
-  function renderGrid(grid: (string|null)[][], cols: number) {
+  function renderGrid(booths: BoothCell[], cols: number, rows: number) {
     return (
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${cols}, ${W}px)`,
-        gridAutoRows: `${H}px`,
+        gridTemplateRows: `repeat(${rows}, ${H}px)`,
         gap: `${GAP}px`,
+        position: 'relative',
       }}>
-        {grid.flat().map((code, idx) => {
-          if (!code) return <div key={idx} />
+        {booths.map(({ code, col, row, cs = 1, rs = 1 }) => {
           const brand = brandByBooth[code]
           const isHovered = hovered === code
           return (
@@ -190,18 +244,20 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
               onMouseLeave={endHover}
               onClick={() => { if (brand) onSelect(brand) }}
               style={{
-                borderRadius: '3px',
+                gridColumn: `${col} / span ${cs}`,
+                gridRow: `${row} / span ${rs}`,
+                borderRadius: '4px',
                 background: cellBg(code),
                 border: `1.5px solid ${cellBorder(code)}`,
                 cursor: brand ? 'pointer' : 'default',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transform: isHovered ? 'scale(1.2)' : 'scale(1)',
+                transform: isHovered ? 'scale(1.08)' : 'scale(1)',
                 transition: 'transform 0.12s',
                 zIndex: isHovered ? 2 : 1,
                 position: 'relative',
               }}
             >
-              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '7.5px', fontWeight: isHovered ? 700 : 500, color: isHovered ? '#1F3A5F' : 'rgba(75,55,42,0.65)', lineHeight: 1, userSelect: 'none' }}>
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '7.5px', fontWeight: isHovered ? 700 : 500, color: isHovered ? '#1F3A5F' : 'rgba(75,55,42,0.7)', lineHeight: 1, userSelect: 'none', textAlign: 'center', padding: '0 2px' }}>
                 {code}
               </span>
             </div>
@@ -236,7 +292,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
               Platz Hall 2
             </div>
-            {renderGrid(HALL2_GRID, HALL2_GRID[0].length)}
+            {renderGrid(HALL2_BOOTHS, HALL2_COLS, HALL2_ROWS)}
           </div>
 
           {/* Lounge label */}
@@ -249,7 +305,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
               Platz Hall 1
             </div>
-            {renderGrid(HALL1_GRID, HALL1_GRID[0].length)}
+            {renderGrid(HALL1_BOOTHS, HALL1_COLS, HALL1_ROWS)}
           </div>
         </div>
       </div>
