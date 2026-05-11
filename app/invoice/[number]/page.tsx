@@ -91,6 +91,19 @@ export default async function CustomerInvoicePage({
       <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
         <CustomerInvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
       </div>
+      <style>{`
+        @media (max-width: 640px) {
+          #invoice { border-radius: 0 !important; }
+          .inv-header { padding: 24px 20px !important; }
+          .inv-body { padding: 24px 20px !important; }
+          .inv-billed { grid-template-columns: 1fr !important; gap: 20px !important; }
+          .inv-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
+          .inv-table-inner { min-width: 460px; }
+          .inv-totals > div { width: auto !important; min-width: 260px; }
+          .inv-pay-grid { grid-template-columns: 1fr !important; }
+          .inv-track { flex-direction: column !important; align-items: flex-start !important; }
+        }
+      `}</style>
     </>
   )
 }
@@ -106,7 +119,7 @@ type BodyProps = {
 function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, grandTotal, payMethod, payInfo, invoiceLabel, payNote }: BodyProps) {
   return (
     <div id="invoice" style={{ maxWidth: '720px', margin: '0 auto', background: 'white', boxShadow: '0 4px 40px rgba(31,58,95,0.08)', borderRadius: '4px', fontFamily: 'Georgia, serif', color: '#2a1f18' }}>
-      <div style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <div className="inv-header" style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 500, color: 'white', letterSpacing: '-0.02em', marginBottom: '4px' }}>Studio<em style={{ fontStyle: 'italic', color: '#C8A98D' }}>2J</em></div>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,239,230,0.5)' }}>{invoiceLabel}</div>
@@ -116,8 +129,8 @@ function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee,
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'rgba(245,239,230,0.55)', marginTop: '4px' }}>{fmtDate(o.created_at)}</div>
         </div>
       </div>
-      <div style={{ padding: '40px 48px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginBottom: '40px' }}>
+      <div className="inv-body" style={{ padding: '40px 48px' }}>
+        <div className="inv-billed" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginBottom: '40px' }}>
           <div>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Billed to</div>
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', fontWeight: 400, color: '#1F3A5F', marginBottom: '6px' }}>{o.customer_name ?? addr?.name ?? '—'}</div>
@@ -138,25 +151,29 @@ function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee,
           </div>
         </div>
         <div style={{ marginBottom: '32px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '8px 0', borderBottom: '1.5px solid #1F3A5F', marginBottom: '4px' }}>
-            {[...['Item', 'Colour', 'Ccy', 'Qty', 'Unit price'], ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`].map(h => (
-              <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>{h}</div>
-            ))}
-          </div>
-          {items.length > 0 ? items.map((item, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '11px 0', borderBottom: '0.5px solid #ede7de', alignItems: 'start' }}>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18' }}>{i + 1}. {item.name}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.color ?? ''}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.item_ccy ?? ccy}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.qty}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.price ? item.price.toLocaleString() : '—'}</div>
-              {hasDomDel && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45', textAlign: 'right' }}>{item.dom_del ? item.dom_del.toLocaleString() : '—'}</div>}
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18', textAlign: 'right' }}>
-                {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty + (item.dom_del ?? 0)).toLocaleString() : '—'}
+          <div className="inv-table-scroll">
+            <div className="inv-table-inner">
+              <div style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '8px 0', borderBottom: '1.5px solid #1F3A5F', marginBottom: '4px' }}>
+                {[...['Item', 'Colour', 'Ccy', 'Qty', 'Unit price'], ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`].map(h => (
+                  <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>{h}</div>
+                ))}
               </div>
+              {items.length > 0 ? items.map((item, i) => (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '11px 0', borderBottom: '0.5px solid #ede7de', alignItems: 'start' }}>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18' }}>{i + 1}. {item.name}</div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.color ?? ''}</div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.item_ccy ?? ccy}</div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.qty}</div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.price ? item.price.toLocaleString() : '—'}</div>
+                  {hasDomDel && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45', textAlign: 'right' }}>{item.dom_del ? item.dom_del.toLocaleString() : '—'}</div>}
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18', textAlign: 'right' }}>
+                    {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty + (item.dom_del ?? 0)).toLocaleString() : '—'}
+                  </div>
+                </div>
+              )) : <div style={{ padding: '24px 0', textAlign: 'center', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', color: '#C8A98D' }}>No items listed</div>}
             </div>
-          )) : <div style={{ padding: '24px 0', textAlign: 'center', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', color: '#C8A98D' }}>No items listed</div>}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
+          </div>
+          <div className="inv-totals" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
             <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
             <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
             <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />

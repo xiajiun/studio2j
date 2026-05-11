@@ -12,19 +12,28 @@ const inputStyle = {
   fontSize: '13px', fontWeight: 300, outline: 'none',
 }
 
+const ALL_EVENT_STATUSES: OrderStatus[] = [...STATUS_ORDER, 'cancelled']
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10)
+}
+
 export function AddEventForm({ orderId }: { orderId: number }) {
   const router = useRouter()
   const [status, setStatus] = useState<OrderStatus>('paid')
   const [note,   setNote]   = useState('')
+  const [date,   setDate]   = useState(todayStr())
   const [saving, setSaving] = useState(false)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setSaving(true)
     const supabase = createClient()
-    await supabase.from('order_events').insert({ order_id: orderId, status, note: note || null })
-    await supabase.from('orders').update({ status, updated_at: new Date().toISOString() }).eq('id', orderId)
+    const eventTs = new Date(date + 'T12:00:00').toISOString()
+    await supabase.from('order_events').insert({ order_id: orderId, status, note: note || null, created_at: eventTs })
+    await supabase.from('orders').update({ status, updated_at: eventTs }).eq('id', orderId)
     setNote('')
+    setDate(todayStr())
     setSaving(false)
     router.refresh()
   }
@@ -34,9 +43,12 @@ export function AddEventForm({ orderId }: { orderId: number }) {
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '4px' }}>
         Add timeline event
       </div>
-      <select style={inputStyle} value={status} onChange={e => setStatus(e.target.value as OrderStatus)}>
-        {STATUS_ORDER.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
-      </select>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        <select style={inputStyle} value={status} onChange={e => setStatus(e.target.value as OrderStatus)}>
+          {ALL_EVENT_STATUSES.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
+        </select>
+        <input style={inputStyle} type="date" value={date} onChange={e => setDate(e.target.value)} />
+      </div>
       <input style={inputStyle} value={note} onChange={e => setNote(e.target.value)} placeholder='Note, e.g. "Found at booth 47!"' />
       <button type="submit" disabled={saving} style={{
         background: 'var(--dark-blue)', color: 'var(--cream)',
