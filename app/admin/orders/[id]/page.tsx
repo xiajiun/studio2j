@@ -42,18 +42,14 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
         <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
         <Link href={`/order/${o.order_number}`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>Customer view ↗</Link>
         <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
-        <Link href={`/admin/orders/${o.id}/invoice`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>🧾 Invoice ↗</Link>
-        {o.tracking_number && (
-          <>
-            <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
-            <ShippedEmailButton
-              customerEmail={o.customer_email}
-              customerName={o.customer_name}
-              orderNumber={o.order_number}
-              trackingNumber={o.tracking_number}
-            />
-          </>
-        )}
+        <Link href={`/admin/orders/${o.id}/invoice`} target="_blank" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>Invoice ↗</Link>
+        <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+        <ShippedEmailButton
+          customerEmail={o.customer_email}
+          customerName={o.customer_name}
+          orderNumber={o.order_number}
+          trackingNumber={o.tracking_number}
+        />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
@@ -89,6 +85,10 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               paid_2_date:         o.paid_2_date                     ?? '',
               paid_2_via:          o.paid_2_via                      ?? 'jin',
               paid_2_transfer_fee: o.paid_2_transfer_fee?.toString() ?? '',
+              paid_3_amount:       o.paid_3_amount?.toString()       ?? '',
+              paid_3_date:         o.paid_3_date                     ?? '',
+              paid_3_via:          o.paid_3_via                      ?? 'jin',
+              paid_3_transfer_fee: o.paid_3_transfer_fee?.toString() ?? '',
               actual_goods_cost:   o.actual_goods_cost?.toString()   ?? o.goods_total?.toString() ?? '',
             }}
           />

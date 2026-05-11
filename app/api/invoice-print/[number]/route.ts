@@ -36,7 +36,7 @@ export async function GET(_req: Request, { params }: { params: { number: string 
   const fee = o.service_fee ?? 0
   const ship = o.shipping_cost ?? 0
   const grandTotal = goods + fee + ship
-  const totalPaid = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0)
+  const totalPaid = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0) + (o.paid_3_amount ?? 0)
   const balanceDue = grandTotal - totalPaid
   const payMethod = (addr?.payment_method ?? 'wise') as string
   const payInfo = PAYMENT[payMethod] ?? PAYMENT.wise

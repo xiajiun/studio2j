@@ -55,7 +55,8 @@ export default async function InvoicePage({
   const grandTotal = goods + fee + ship
   const paid1  = o.paid_1_amount ?? 0
   const paid2  = o.paid_2_amount ?? 0
-  const totalPaid = paid1 + paid2
+  const paid3  = o.paid_3_amount ?? 0
+  const totalPaid = paid1 + paid2 + paid3
   const balanceDue = grandTotal - totalPaid
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT

@@ -20,11 +20,20 @@ export function ShippedEmailButton({ customerEmail, customerName, orderNumber, t
   customerEmail: string
   customerName: string | null
   orderNumber: string
-  trackingNumber: string
+  trackingNumber?: string | null
 }) {
   const name = customerName ?? 'there'
-  const url  = trackingUrl(trackingNumber)
-  const car  = carrier(trackingNumber)
+  const trackingSection = trackingNumber ? `Tracking Information
+
+Courier: ${carrier(trackingNumber)}
+Tracking Number: ${trackingNumber}
+Track Here: ${trackingUrl(trackingNumber)}
+
+What to expect: International shipping typically takes 7–14 business days. Please keep an eye on your tracking link for the most up-to-date status. Once the package arrives in your country, your local postal service will handle the final delivery.
+
+` : `We will share your tracking number with you as soon as it is available.
+
+`
 
   const body = `Dear ${name},
 
@@ -32,15 +41,7 @@ Great news! We have successfully packed your stationery goodies and they are off
 
 We had so much fun curating these pieces for you. Everything has been inspected and packed with extra care to ensure it arrives safely.
 
-Tracking Information
-
-Courier: ${car}
-Tracking Number: ${trackingNumber}
-Track Here: ${url}
-
-What to expect: International shipping typically takes 7–14 business days. Please keep an eye on your tracking link for the most up-to-date status. Once the package arrives in your country, your local postal service will handle the final delivery.
-
-Share the Joy: We would love to see your haul! When your package arrives, please tag us @studio2j25 in your unboxing stories or posts. Seeing our stationery find a new home makes our day!
+${trackingSection}Share the Joy: We would love to see your haul! When your package arrives, please tag us @studio2j25 in your unboxing stories or posts. Seeing our stationery find a new home makes our day!
 
 Thank you for trusting us with your journaling journey.
 
@@ -49,9 +50,9 @@ Questions? DM us @studio2j25 on Instagram or reply to this email.`
   return (
     <GmailDraftButton
       to={customerEmail}
-      subject={`Your Studio2J order ${orderNumber} is on its way! ✈️`}
+      subject={`Your Studio2J order ${orderNumber} is on its way!`}
       body={body}
-      label="✈️ Shipped email"
+      label="Shipped email"
     />
   )
 }

@@ -92,6 +92,10 @@ export interface Order {
   paid_2_date: string | null
   paid_2_via: 'jin' | 'jo' | null
   paid_2_transfer_fee: number | null
+  paid_3_amount: number | null
+  paid_3_date: string | null
+  paid_3_via: 'jin' | 'jo' | null
+  paid_3_transfer_fee: number | null
   actual_goods_cost: number | null
   created_at: string
   updated_at: string

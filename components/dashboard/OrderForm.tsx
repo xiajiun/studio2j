@@ -64,6 +64,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     shipping_address?: ShippingAddress | null
     paid_1_amount?: string; paid_1_date?: string; paid_1_via?: string; paid_1_transfer_fee?: string
     paid_2_amount?: string; paid_2_date?: string; paid_2_via?: string; paid_2_transfer_fee?: string
+    paid_3_amount?: string; paid_3_date?: string; paid_3_via?: string; paid_3_transfer_fee?: string
     actual_goods_cost?: string
   }
 }) {
@@ -75,6 +76,8 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
   const init1Fee = parseFloat(initial?.paid_1_transfer_fee ?? '') || 0
   const init2Amt = parseFloat(initial?.paid_2_amount ?? '') || 0
   const init2Fee = parseFloat(initial?.paid_2_transfer_fee ?? '') || 0
+  const init3Amt = parseFloat(initial?.paid_3_amount ?? '') || 0
+  const init3Fee = parseFloat(initial?.paid_3_transfer_fee ?? '') || 0
 
   const [form, setForm] = useState({
     customer_email:      initial?.customer_email  ?? '',
@@ -101,6 +104,11 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     paid_2_via:          initial?.paid_2_via      ?? 'jin',
     paid_2_transfer_fee: initial?.paid_2_transfer_fee ?? '',
     jin_received_2:      init2Amt && init2Fee ? String(init2Amt - init2Fee) : '',
+    paid_3_amount:       initial?.paid_3_amount   ?? '',
+    paid_3_date:         initial?.paid_3_date     ?? '',
+    paid_3_via:          initial?.paid_3_via      ?? 'jin',
+    paid_3_transfer_fee: initial?.paid_3_transfer_fee ?? '',
+    jin_received_3:      init3Amt && init3Fee ? String(init3Amt - init3Fee) : '',
     actual_goods_cost:   initial?.actual_goods_cost ?? initial?.goods_total ?? '',
   })
 
@@ -123,7 +131,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
   function set(k: string, v: string)  { setForm(p => ({ ...p, [k]: v })) }
   function setA(k: string, v: string) { setAddr(p => ({ ...p, [k]: v })) }
 
-  function setJinReceived(num: 1 | 2, v: string) {
+  function setJinReceived(num: 1 | 2 | 3, v: string) {
     const amtKey = `paid_${num}_amount` as const
     const feeKey = `paid_${num}_transfer_fee` as const
     const recKey = `jin_received_${num}` as const
@@ -227,6 +235,10 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       paid_2_date:         form.paid_2_date         || null,
       paid_2_via:          form.paid_2_amount       ? (form.paid_2_via as 'jin' | 'jo')    : null,
       paid_2_transfer_fee: form.paid_2_transfer_fee ? parseFloat(form.paid_2_transfer_fee) : null,
+      paid_3_amount:       form.paid_3_amount       ? parseFloat(form.paid_3_amount)       : null,
+      paid_3_date:         form.paid_3_date         || null,
+      paid_3_via:          form.paid_3_amount       ? (form.paid_3_via as 'jin' | 'jo')    : null,
+      paid_3_transfer_fee: form.paid_3_transfer_fee ? parseFloat(form.paid_3_transfer_fee) : null,
       actual_goods_cost:   form.actual_goods_cost   ? parseFloat(form.actual_goods_cost)   : null,
     }
 
@@ -489,6 +501,43 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
                     <>
                       <Field label="Jin received from Jo">
                         <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.jin_received_2} onChange={e => setJinReceived(2, e.target.value)} />
+                      </Field>
+                      <Field label="Transfer fee (auto)">
+                        <div style={{ ...inputStyle, background: 'rgba(122,92,69,0.04)', color: fee > 0 ? '#8A3A20' : 'var(--tan)', display: 'flex', alignItems: 'center' }}>
+                          {fee > 0 ? `−${fee.toLocaleString()}` : '—'}
+                        </div>
+                      </Field>
+                    </>
+                  )}
+                </div>
+              </div>
+            )
+          })()}
+          {/* Payment 3 */}
+          {(() => {
+            const isJo       = form.paid_3_via === 'jo'
+            const jinHandles = form.currency === 'KRW'
+            const fee        = parseFloat(form.paid_3_transfer_fee) || 0
+            return (
+              <div style={{ padding: '16px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '10px' }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>Payment 3 (optional)</div>
+                <div style={{ display: 'grid', gridTemplateColumns: isJo && jinHandles ? '1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: '10px' }}>
+                  <Field label="Amount received">
+                    <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.paid_3_amount} onChange={e => set('paid_3_amount', e.target.value)} />
+                  </Field>
+                  <Field label="Date">
+                    <input style={inputStyle} type="date" value={form.paid_3_date} onChange={e => set('paid_3_date', e.target.value)} />
+                  </Field>
+                  <Field label="Received by">
+                    <select style={inputStyle} value={form.paid_3_via} onChange={e => set('paid_3_via', e.target.value)}>
+                      <option value="jin">Jin (Shinhan)</option>
+                      <option value="jo">Jo (Wise)</option>
+                    </select>
+                  </Field>
+                  {isJo && jinHandles && (
+                    <>
+                      <Field label="Jin received from Jo">
+                        <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={form.jin_received_3} onChange={e => setJinReceived(3, e.target.value)} />
                       </Field>
                       <Field label="Transfer fee (auto)">
                         <div style={{ ...inputStyle, background: 'rgba(122,92,69,0.04)', color: fee > 0 ? '#8A3A20' : 'var(--tan)', display: 'flex', alignItems: 'center' }}>
