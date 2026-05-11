@@ -36,6 +36,8 @@ export async function GET(_req: Request, { params }: { params: { number: string 
   const fee = o.service_fee ?? 0
   const ship = o.shipping_cost ?? 0
   const grandTotal = goods + fee + ship
+  const totalPaid = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0)
+  const balanceDue = grandTotal - totalPaid
   const payMethod = (addr?.payment_method ?? 'wise') as string
   const payInfo = PAYMENT[payMethod] ?? PAYMENT.wise
   const invoiceLabel = (goods > 0 || fee > 0) ? 'Invoice' : 'Quotation'
@@ -158,9 +160,18 @@ body{font-family:Georgia,serif;background:white;color:#2a1f18;-webkit-print-colo
           <span style="font-size:12px;font-weight:300;color:#7A5C45">International shipping</span>
           <span style="font-size:13px;color:#2a1f18">${ship?num(ship):'—'}</span>
         </div>
+        ${totalPaid > 0 ? `
+        <div style="width:300px;border-top:1.5px solid #1F3A5F;margin-top:4px;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:400;color:#7A5C45">Total</span>
+          <span style="font-size:14px;font-weight:400;color:#7A5C45">${num(grandTotal)} ${esc(ccy)}</span>
+        </div>
+        <div style="width:300px;display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:400;color:#2A5C35">Paid</span>
+          <span style="font-size:14px;font-weight:400;color:#2A5C35">−${num(totalPaid)} ${esc(ccy)}</span>
+        </div>` : ''}
         <div style="width:300px;border-top:1.5px solid #1F3A5F;margin-top:4px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline">
-          <span style="font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#1F3A5F">Amount due</span>
-          <span style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#1F3A5F;letter-spacing:-.01em">${num(grandTotal)} ${esc(ccy)}</span>
+          <span style="font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:${balanceDue<=0?'#2A5C35':'#1F3A5F'}">${balanceDue<=0?'Paid in full ✓':totalPaid>0?'Balance due':'Amount due'}</span>
+          <span style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:${balanceDue<=0?'#2A5C35':'#1F3A5F'};letter-spacing:-.01em">${balanceDue>0?`${num(balanceDue)} ${esc(ccy)}`:''}</span>
         </div>
       </div>
     </div>

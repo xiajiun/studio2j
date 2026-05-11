@@ -53,18 +53,26 @@ export default async function InvoicePage({
   const fee    = o.service_fee   ?? 0
   const ship   = o.shipping_cost ?? 0
   const grandTotal = goods + fee + ship
+  const paid1  = o.paid_1_amount ?? 0
+  const paid2  = o.paid_2_amount ?? 0
+  const totalPaid = paid1 + paid2
+  const balanceDue = grandTotal - totalPaid
 
   const payMethod = (addr?.payment_method ?? 'wise') as keyof typeof PAYMENT
   const payInfo   = PAYMENT[payMethod] ?? PAYMENT.wise
 
   const invoiceLabel = (goods > 0 || fee > 0) ? 'Invoice' : 'Quotation'
-  const payNote = 'Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.'
+  const payNote = totalPaid > 0
+    ? balanceDue > 0
+      ? `Thank you for your part payment of ${totalPaid.toLocaleString()} ${ccy}. Please complete the remaining balance of ${balanceDue.toLocaleString()} ${ccy} within 24 hours.`
+      : `Payment received in full. Thank you!`
+    : 'Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.'
 
   if (isPrint) {
     return (
       <>
         <AutoPrint />
-        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
         <style>{`
           @page { size: A4; margin: 12mm; }
           body { margin: 0; background: white; }
@@ -91,7 +99,7 @@ export default async function InvoicePage({
         <GmailDraftButton
           to={o.customer_email}
           subject={`Studio2J ${invoiceLabel} — ${o.order_number}`}
-          body={`Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nThank you so much for shopping with Studio2J! We have reviewed your order.\n\nPlease find your invoice attached. This covers item cost, service fee, and international shipping — all in one.\n\nAmount due: ${grandTotal.toLocaleString()} ${ccy}\n\nView and download your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}\n\nNext steps: Please reply to this email with a screenshot of your payment. We will purchase and ship your items once payment is received.\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
+          body={`Dear ${o.customer_name ?? addr?.name ?? 'there'},\n\nThank you so much for shopping with Studio2J! We have reviewed your order.\n\nPlease find your invoice attached. This covers item cost, service fee, and international shipping — all in one.\n\nOrder total: ${grandTotal.toLocaleString()} ${ccy}${totalPaid > 0 ? `\nAmount paid: ${totalPaid.toLocaleString()} ${ccy}\nBalance due: ${balanceDue.toLocaleString()} ${ccy}` : `\nAmount due: ${grandTotal.toLocaleString()} ${ccy}`}\n\nView your invoice:\nhttps://studio2j.pages.dev/invoice/${o.order_number}\n\n${balanceDue > 0 ? 'Next steps: Please reply to this email with a screenshot of your payment. We will purchase and ship your items once payment is received.' : 'Your payment has been received in full. We will proceed with your order shortly.'}\n\nYou can also track your order anytime:\nhttps://studio2j.pages.dev/order/${o.order_number}\n\nQuestions? DM us @studio2j25 on Instagram or reply to this email.`}
           label="Email customer"
         />
         <PrintButton printUrl={`/api/invoice-print/${o.order_number}`} />
@@ -104,7 +112,7 @@ export default async function InvoicePage({
 
       {/* Invoice body */}
       <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
-        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
       </div>
     </>
   )
@@ -114,11 +122,12 @@ type InvoiceBodyProps = {
   o: Order; fair: { name: string; date: string } | null
   items: OrderItem[]; addr: ShippingAddress | null; ccy: string; hasDomDel: boolean
   goods: number; fee: number; ship: number; grandTotal: number
+  totalPaid: number; balanceDue: number
   payMethod: keyof typeof PAYMENT; payInfo: typeof PAYMENT[keyof typeof PAYMENT]
   invoiceLabel: string; payNote: string
 }
 
-function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, grandTotal, payMethod, payInfo, invoiceLabel, payNote }: InvoiceBodyProps) {
+function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, grandTotal, totalPaid, balanceDue, payMethod, payInfo, invoiceLabel, payNote }: InvoiceBodyProps) {
   return (
     <div id="invoice" style={{ maxWidth: '720px', margin: '0 auto', background: 'white', boxShadow: '0 4px 40px rgba(31,58,95,0.08)', borderRadius: '4px', fontFamily: 'Georgia, serif', color: '#2a1f18' }}>
       <div style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -185,9 +194,25 @@ function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, g
             <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
             <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
             <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
+            {totalPaid > 0 && (
+              <>
+                <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#7A5C45' }}>Total</span>
+                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 400, color: '#7A5C45' }}>{grandTotal.toLocaleString()} {ccy}</span>
+                </div>
+                <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#2A5C35' }}>Paid</span>
+                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 400, color: '#2A5C35' }}>−{totalPaid.toLocaleString()} {ccy}</span>
+                </div>
+              </>
+            )}
             <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F' }}>Amount due</span>
-              <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: '#1F3A5F', letterSpacing: '-0.01em' }}>{grandTotal.toLocaleString()} {ccy}</span>
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: balanceDue <= 0 ? '#2A5C35' : '#1F3A5F' }}>
+                {balanceDue <= 0 ? 'Paid in full ✓' : totalPaid > 0 ? 'Balance due' : 'Amount due'}
+              </span>
+              <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: balanceDue <= 0 ? '#2A5C35' : '#1F3A5F', letterSpacing: '-0.01em' }}>
+                {balanceDue > 0 ? `${balanceDue.toLocaleString()} ${ccy}` : ''}
+              </span>
             </div>
           </div>
         </div>
