@@ -100,36 +100,38 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
 type BoothCell = { code: string; col: number; row: number; cs?: number; rs?: number }
 
 // Hall 2: 13 cols × 7 rows
-// col 1=M03, cols 2-7=C/A section, col 8=gap, cols 9-13=D/B section
-// rows 1-3=C/D, row 4=gap, rows 5-6=A/B
+// col 1=M03, cols 2-7=C/A, col 8=gap, cols 9-13=D/B
+// rows 1-3=C/D, row 4=gap(C→A), row 5=A-top/B-top, row 6=gap(inside A), row 7=A-bot/B-bot
 const HALL2_BOOTHS: BoothCell[] = [
-  // M03 tall block left of A section
-  { code:'M03', col:1, row:5, rs:2 },
+  // M03 — tall, spans both A rows + gap between them (rows 5-7)
+  { code:'M03', col:1, row:5, rs:3 },
   // C section
   { code:'C10', col:2,row:1 }, { code:'C09', col:3,row:1 }, { code:'C08', col:4,row:1 },
   { code:'C07', col:5,row:1 }, { code:'C06', col:6,row:1 }, { code:'C05', col:7,row:1 },
   { code:'C11', col:2,row:2 },
-  { code:'C02', col:3,row:2, cs:3 },   // wide: spans cols 3-5
+  { code:'C02', col:3,row:2, cs:3, rs:2 },  // spans cols 3-5, rows 2-3
   { code:'C04', col:7,row:2 },
   { code:'C01', col:2,row:3 },
-  { code:'C03', col:6,row:3, cs:2 },   // wide: spans cols 6-7
-  // D section
+  { code:'C03', col:6,row:3 },
+  // D section (col 10 = gap/corridor)
   { code:'D05', col:9, row:1 },
-  { code:'D04', col:12,row:1 }, { code:'D03', col:13,row:1 },
-  { code:'D02', col:10,row:2, cs:4 },  // wide: spans cols 10-13
-  { code:'D01', col:9, row:3, cs:2 },  // spans cols 9-10
-  // A section
+  { code:'D04', col:11,row:1, cs:2 },        // same width as D02
+  { code:'D03', col:13,row:1 },
+  { code:'D02', col:11,row:2, cs:2, rs:2 },  // same width as D04, spans rows 2-3
+  { code:'D01', col:9, row:3 },
+  // A section — top row (row 5), bottom row (row 7)
   { code:'A12', col:2,row:5 }, { code:'A11', col:3,row:5 }, { code:'A10', col:4,row:5 },
   { code:'A09', col:5,row:5 }, { code:'A08', col:6,row:5 }, { code:'A07', col:7,row:5 },
-  { code:'A01', col:2,row:6 }, { code:'A02', col:3,row:6 }, { code:'A03', col:4,row:6 },
-  { code:'A04', col:5,row:6 }, { code:'A05', col:6,row:6 }, { code:'A06', col:7,row:6 },
-  // B section
+  { code:'A01', col:2,row:7 }, { code:'A02', col:3,row:7 }, { code:'A03', col:4,row:7 },
+  { code:'A04', col:5,row:7 }, { code:'A05', col:6,row:7 }, { code:'A06', col:7,row:7 },
+  // B section — top row (row 5), bottom row (row 7)
   { code:'B08', col:9, row:5 }, { code:'B07', col:10,row:5 }, { code:'B06', col:11,row:5 },
-  { code:'B01', col:9, row:6 }, { code:'B02', col:10,row:6 }, { code:'B03', col:11,row:6 },
-  { code:'B04', col:12,row:6 }, { code:'B05', col:13,row:6 },
+  { code:'B01', col:9, row:7 }, { code:'B02', col:10,row:7 }, { code:'B03', col:11,row:7 },
+  { code:'B04', col:12,row:7 }, { code:'B05', col:13,row:7 },
 ]
 const HALL2_COLS = 13
-const HALL2_ROWS = 6
+// Variable row heights: 3 C/D rows, gap, A-top, small-gap-inside-A, A-bot
+const HALL2_ROW_HEIGHTS = '26px 26px 26px 18px 26px 10px 26px'
 
 // Hall 1: 15 cols × 11 rows
 // col 1=K-left, cols 2-12=main, cols 13-14=K-right, col 15=L
@@ -175,7 +177,7 @@ const HALL1_BOOTHS: BoothCell[] = [
   { code:'J09', col:8,row:11 }, { code:'J10', col:9,row:11 }, { code:'J11', col:12,row:11 },
 ]
 const HALL1_COLS = 15
-const HALL1_ROWS = 11
+const HALL1_ROW_HEIGHTS = `repeat(11, ${26}px)`
 
 function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b: CatalogueBrand) => void }) {
   const [hovered, setHovered] = useState<string | null>(null)
@@ -226,12 +228,12 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
 
   const W = 38, H = 26, GAP = 3
 
-  function renderGrid(booths: BoothCell[], cols: number, rows: number) {
+  function renderGrid(booths: BoothCell[], cols: number, rowHeights: string) {
     return (
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${cols}, ${W}px)`,
-        gridTemplateRows: `repeat(${rows}, ${H}px)`,
+        gridTemplateRows: rowHeights,
         gap: `${GAP}px`,
         position: 'relative',
       }}>
@@ -292,7 +294,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
               Platz Hall 2
             </div>
-            {renderGrid(HALL2_BOOTHS, HALL2_COLS, HALL2_ROWS)}
+            {renderGrid(HALL2_BOOTHS, HALL2_COLS, HALL2_ROW_HEIGHTS)}
           </div>
 
           {/* Lounge label */}
@@ -305,7 +307,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
               Platz Hall 1
             </div>
-            {renderGrid(HALL1_BOOTHS, HALL1_COLS, HALL1_ROWS)}
+            {renderGrid(HALL1_BOOTHS, HALL1_COLS, HALL1_ROW_HEIGHTS)}
           </div>
         </div>
       </div>
