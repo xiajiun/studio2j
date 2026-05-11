@@ -17,47 +17,50 @@ export type CatalogueBrand = {
   sort_order: number
 }
 
-// ── Official booth layout from map PDF ──
+// ── Official booth layout from PDF ──
 const BOOTH_LAYOUT: Record<string, string> = {
   // Hall 2 — A row
-  A01:'DOOSUNG PAPER', A02:'mt × rolledpaint', A03:'FABER-CASTELL', A04:'KAKIMORI',
-  A05:'BLACKHEART', A06:'POV', A07:'THE HANGEUL', A08:"CARAN D'ACHE",
-  A09:'SAILOR', A10:'SHIELDCOLORS', A11:'COPIC', A12:'PAPER TAILOR',
+  A01:'DOOSUNG PAPER',   A02:'mt × rolledpaint', A03:'FABER-CASTELL',  A04:'KAKIMORI',
+  A05:'BLACKHEART',       A06:'POV',               A07:'THE HANGEUL',   A08:"CARAN D'ACHE",
+  A09:'SAILOR',           A10:'SHIELDCOLORS',      A11:'COPIC',          A12:'PAPER TAILOR',
   // Hall 2 — B row
   B01:'POV × HELLO KITTY', B02:'LIMPA LIMPA', B03:'FRUITFRIES', B04:'THENCE',
-  B05:'MEET ME', B06:'IWAKO', B07:'Seoul Design Foundation', B08:'PENCO®',
+  B05:'MEET ME',            B06:'IWAKO',       B07:'SEOUL DESIGN FOUNDATION', B08:'PENCO®',
   // Hall 2 — C row
   C01:'LOGITECH', C02:'WEARINGEUL', C03:'HWF.RISOCLUB', C04:'GONGJANG',
-  C05:'MOHS', C06:'O-CHECK', C07:'PaTI', C08:'HANSOL PAPER × URBANBOOKS',
+  C05:'MOHS',     C06:'O-CHECK',    C07:'PaTI',           C08:'HANSOL PAPER × URBANBOOKS',
   C09:'SAMWON PAPER WORKSHOP', C10:'SAMWON PAPER', C11:'KOKUYO',
   // Hall 2 — D row
   D01:'ILOOM', D02:'ILOOM', D03:'NOBIGDEAL', D04:'KIOSK KIOSK WORKSHOP', D05:'WIP',
-  // Hall 1 — E row
-  E01:'DOMINANT INDUSTRY', E02:'GONGYEGA', E03:'TIETOA', E04:'GOOBER',
-  E05:'MICIA', E06:'BUYHEARTS',
+  // Hall 1 — E row (E03=GOOBER, E04=KOREA PILOT, E05=MICIA+LYRA)
+  E01:'DOMINANT INDUSTRY', E02:'GONGYEGA',   E03:'GOOBER',    E04:'KOREA PILOT',
+  E05:'MICIA / LYRA',       E06:'BUYHEARTS',
   // Hall 1 — F row
-  F01:'LIFE&PIECES', F02:'MAGAZINE C', F03:'IROHA', F04:'LYRA',
-  F05:'KITTY BUNNY PONY', F06:'ZEBRA', F07:'FLAGG', F08:'SOME MOOD DESIGN', F09:'BOKI',
+  F01:'LIFE&PIECES', F02:'MAGAZINE C', F03:'IROHA',           F04:'TIETOA',
+  F05:'KITTY BUNNY PONY', F06:'ZEBRA',  F07:'FLAGG', F08:'SOME MOOD DESIGN', F09:'BOKI',
   // Hall 1 — G row
   G01:'NELNA', G02:'BE ON D', G03:'SUKIDOKI', G04:'OH, LOLLY DAY!',
   G05:'WHENIWASYOUNG', G06:'AHMUGAE_C', G07:'SANBY',
-  // Hall 1 — H row
+  // Hall 1 — H row (H06 = HITOTOKI / PENTEL / RAYMAY KEPT / WOODHI)
   H01:'KAWI', H02:'0.1', H03:'YOUR-MIND', H04:'onemorebag',
-  H05:'MINIMONI', H06:'PENTEL', H07:'PRESENT PRESENT', H08:'SAILORS', H09:'KIOSK KIOSK',
+  H05:'MINIMONI', H06:'HITOTOKI / PENTEL / RAYMAY KEPT / WOODHI',
+  H07:'PRESENT PRESENT', H08:'SAILORS', H09:'KIOSK KIOSK',
   // Hall 1 — I row
-  I01:'TROLLS PAPER', I02:'YANGJISA', I03:'SOSOMOONGOO', I04:'OIMU',
-  I05:'PAPER PLATE', I06:'MOTEMOTE', I07:'GEULWOL', I08:'LITTLE TEMPO DESIGN', I09:'ICONIC',
+  I01:'TROLLS PAPER', I02:'YANGJISA',  I03:'SOSOMOONGOO', I04:'OIMU',
+  I05:'PAPER PLATE',  I06:'MOTEMOTE', I07:'GEULWOL',      I08:'LITTLE TEMPO DESIGN', I09:'ICONIC',
   // Hall 1 — J row
-  J01:'UNI', J02:'RHODIA', J03:'PRELUDE STUDIO', J04:'MOLESKINE',
-  J05:'HOWkidsFUL', J06:'FRANZ', J07:'JACQUES HERBIN', J08:'PLUS',
-  J09:'NO NOT NEVER', J10:'PULPUL', J11:'PAPERIAN',
-  // Kiosk (K) — scattered along edge
+  J01:'UNI',           J02:'COMPOSITION STUDIO', J03:'PRELUDE STUDIO', J04:'MOLESKINE',
+  J05:'HOWkidsFUL',    J06:'FRANZ',              J07:'RHODIA / JACQUES HERBIN',
+  J08:'PLUS',          J09:'NO NOT NEVER',        J10:'PULPUL',         J11:'PAPERIAN',
+  // Kiosk — K row
   K01:"MARK'S", K02:'OUIE', K03:'MINDOBITTO', K04:'HWARANG',
   K05:'DONKY CONTÉ', K06:'ANTERIQUE', K07:'SUI GOUACHE', K08:'MEWMEWBEAM', K09:'NOH YONG-WON',
-  // Right edge — L row
-  L01:'GLOBE CHEMICAL', L02:'RIFLE PAPER CO.', L03:'CLIPEN', L04:'GEEHEY',
-  L05:'SANRO', L06:'SUATELIER', L07:'CIRCUS BOY BAND', L08:"TRAVELER'S COMPANY",
-  L09:"TRAVELER'S COMPANY WORKSHOP",
+  // Right edge — L row (L02 shared: RIFLE PAPER CO. / THE COMPLETIST / CRAFT DESIGN TECHNOLOGY)
+  L01:'GLOBE CHEMICAL', L02:'RIFLE PAPER CO. / THE COMPLETIST / CRAFT DESIGN TECHNOLOGY',
+  L03:'CLIPEN',         L04:'GEEHEY',      L05:'SANRO',         L06:'SUATELIER',
+  L07:'CIRCUS BOY BAND', L08:"TRAVELER'S COMPANY", L09:"TRAVELER'S COMPANY WORKSHOP",
+  // Lounge / Common
+  M01:'NAVER LOUNGE', M02:'REMASTERED', M03:"Layer's Together", M04:'LOUNGE',
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -93,6 +96,33 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
   )
 }
 
+// 2D grid arrays — null = empty cell, string = booth code
+// Hall 2: C/D section on top, A/B section on bottom
+const HALL2_GRID: (string|null)[][] = [
+  ['C10','C09','C08','C07','C06','C05', null, 'D05', null,'D04','D03', null],
+  ['C11', null, 'C02', null, null,'C04', null,  null, null,'D02', null, null],
+  ['C01', null,  null, null, null,'C03','D01',  null, null, null, null, null],
+  [ null, null,  null, null, null, null, null,  null, null, null, null, null],
+  ['A12','A11','A10','A09','A08','A07', null, 'B08','B07','B06', null, null],
+  ['A01','A02','A03','A04','A05','A06', null, 'B01','B02','B03','B04','B05'],
+]
+
+// Hall 1: E-F top, G-H middle, I-J lower, I07-J11 strip
+// col: K-left(1) | main-left(2-6) | gap(7) | main-right(8-12) | K-right(13-14) | L(15)
+const HALL1_GRID: (string|null)[][] = [
+  [ null,  null,  null,  null,  null,  null,  null,  null,  null, 'K05','K06','K07',  null,'L09','M04'],
+  [ null,  null, 'E02', 'E03', 'E04',  null,  null, 'F02', 'F03', 'F04','F05',  null,'K08','K09',  null],
+  ['E01',  null,  null, 'E06', 'E05',  null, 'F01',  null,  null,  null,  null,'F06',  null, null,'L08'],
+  [ null,  null,  null,  null,  null,  null,  null, 'F09', 'F08', 'F07',  null,  null,  null, null,'L07'],
+  ['K04', 'G01', 'G02', 'G03', 'G04',  null,  null, 'H02', 'H03', 'H04','H05',  null,  null, null,'L06'],
+  ['K03',  null, 'G07', 'G06', 'G05',  null, 'H01',  null,  null,  null,  null,'H06',  null, null,'L05'],
+  ['K02',  null,  null,  null,  null,  null,  null, 'H09', 'H08', 'H07',  null,  null,  null, null,'L04'],
+  ['K01', 'I01', 'I02', 'I03', 'I04',  null,  null, 'J02', 'J03', 'J04',  null,  null,  null, null,'L03'],
+  [ null,  null, 'I06', 'I05',  null,  null, 'J01',  null,  null,  null,  null, 'J05',  null, null,'L02'],
+  [ null,  null,  null,  null,  null,  null,  null, 'J08', 'J07', 'J06',  null,  null,  null, null,'L01'],
+  [ null, 'I07', 'I08',  null, 'I09',  null,  null, 'J09', 'J10',  null, 'J11',  null,  null, null, null],
+]
+
 function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b: CatalogueBrand) => void }) {
   const [hovered, setHovered] = useState<string | null>(null)
   const [popup, setPopup] = useState<string | null>(null)
@@ -102,13 +132,22 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current) }, [])
 
-  const brandByName: Record<string, CatalogueBrand> = {}
-  brands.forEach(b => { brandByName[b.name] = b })
+  // Build lookup: first brand whose name matches wins (handles shared booths)
+  const brandByBooth: Record<string, CatalogueBrand> = {}
+  const brandById: Record<number, CatalogueBrand> = {}
+  brands.forEach(b => {
+    brandById[b.id] = b
+    if (b.booth && !brandByBooth[b.booth]) brandByBooth[b.booth] = b
+  })
 
-  function startHover(booth: string, x: number, y: number) {
+  function startHover(booth: string, el: HTMLElement) {
     setHovered(booth)
     if (timerRef.current) clearTimeout(timerRef.current)
-    timerRef.current = setTimeout(() => { setPopup(booth); setPopupPos({ x, y }) }, 300)
+    timerRef.current = setTimeout(() => {
+      const r = el.getBoundingClientRect()
+      setPopup(booth)
+      setPopupPos({ x: r.left + r.width / 2, y: r.top })
+    }, 300)
   }
   function endHover() {
     setHovered(null)
@@ -116,76 +155,60 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
     setTimeout(() => { if (!popupRef.current?.matches(':hover')) setPopup(null) }, 100)
   }
 
-  const popupBrand = popup ? brandByName[BOOTH_LAYOUT[popup] ?? ''] : null
+  const popupBrand = popup ? brandByBooth[popup] : null
   const popupShortcode = popupBrand?.post?.match(/\/p\/([^/?]+)/)?.[1]
 
-  function boothColor(booth: string) {
-    const name = BOOTH_LAYOUT[booth]
-    if (!name) return 'rgba(122,92,69,0.06)'
-    const brand = brandByName[name]
+  function cellBg(booth: string) {
+    const brand = brandByBooth[booth]
     const cat = brand?.category ?? ''
-    return CATEGORY_COLORS[cat] ? CATEGORY_COLORS[cat] + '55' : 'rgba(122,92,69,0.1)'
+    return CATEGORY_COLORS[cat] ? CATEGORY_COLORS[cat] + '66' : 'rgba(122,92,69,0.08)'
   }
-
-  function boothBorder(booth: string) {
+  function cellBorder(booth: string) {
     if (hovered === booth) return '#1F3A5F'
-    const name = BOOTH_LAYOUT[booth]
-    if (!name) return 'rgba(122,92,69,0.12)'
-    const brand = brandByName[name]
+    const brand = brandByBooth[booth]
     const cat = brand?.category ?? ''
-    return CATEGORY_COLORS[cat] ? CATEGORY_COLORS[cat] : 'rgba(122,92,69,0.2)'
+    return CATEGORY_COLORS[cat] ?? 'rgba(122,92,69,0.2)'
   }
 
-  const hall2Sections = [
-    { label: 'A', booths: Array.from({length:12},(_,i)=>`A${String(i+1).padStart(2,'0')}`) },
-    { label: 'B', booths: Array.from({length: 8},(_,i)=>`B${String(i+1).padStart(2,'0')}`) },
-    { label: 'C', booths: Array.from({length:11},(_,i)=>`C${String(i+1).padStart(2,'0')}`) },
-    { label: 'D', booths: Array.from({length: 5},(_,i)=>`D${String(i+1).padStart(2,'0')}`) },
-  ]
-  const hall1Sections = [
-    { label: 'E', booths: Array.from({length: 6},(_,i)=>`E${String(i+1).padStart(2,'0')}`) },
-    { label: 'F', booths: Array.from({length: 9},(_,i)=>`F${String(i+1).padStart(2,'0')}`) },
-    { label: 'G', booths: Array.from({length: 7},(_,i)=>`G${String(i+1).padStart(2,'0')}`) },
-    { label: 'H', booths: Array.from({length: 9},(_,i)=>`H${String(i+1).padStart(2,'0')}`) },
-    { label: 'I', booths: Array.from({length: 9},(_,i)=>`I${String(i+1).padStart(2,'0')}`) },
-    { label: 'J', booths: Array.from({length:11},(_,i)=>`J${String(i+1).padStart(2,'0')}`) },
-    { label: 'K (Kiosk)', booths: Array.from({length: 9},(_,i)=>`K${String(i+1).padStart(2,'0')}`) },
-    { label: 'L', booths: Array.from({length: 9},(_,i)=>`L${String(i+1).padStart(2,'0')}`) },
-  ]
+  const W = 38, H = 26, GAP = 3
 
-  function renderSection(sections: typeof hall1Sections) {
-    return sections.map(({ label, booths }) => (
-      <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
-        <div style={{ width: '28px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, color: 'var(--tan)', flexShrink: 0 }}>{label}</div>
-        <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
-          {booths.map(booth => {
-            const name = BOOTH_LAYOUT[booth]
-            const hasBrand = !!name && !!brandByName[name]
-            return (
-              <div key={booth}
-                onMouseEnter={e => { const r = (e.target as HTMLElement).getBoundingClientRect(); startHover(booth, r.left + r.width / 2, r.top) }}
-                onMouseLeave={endHover}
-                onClick={() => { if (hasBrand) onSelect(brandByName[name!]) }}
-                style={{
-                  width: '36px', height: '28px', borderRadius: '4px',
-                  background: boothColor(booth),
-                  border: `1.5px solid ${boothBorder(booth)}`,
-                  cursor: hasBrand ? 'pointer' : 'default',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  transition: 'all 0.15s',
-                  transform: hovered === booth ? 'scale(1.15)' : 'scale(1)',
-                }}
-                title={name ?? ''}
-              >
-                <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '8px', fontWeight: 500, color: hovered === booth ? '#1F3A5F' : 'rgba(75,55,42,0.6)', lineHeight: 1, textAlign: 'center' }}>
-                  {booth}
-                </span>
-              </div>
-            )
-          })}
-        </div>
+  function renderGrid(grid: (string|null)[][], cols: number) {
+    return (
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${cols}, ${W}px)`,
+        gridAutoRows: `${H}px`,
+        gap: `${GAP}px`,
+      }}>
+        {grid.flat().map((code, idx) => {
+          if (!code) return <div key={idx} />
+          const brand = brandByBooth[code]
+          const isHovered = hovered === code
+          return (
+            <div key={code}
+              onMouseEnter={e => startHover(code, e.currentTarget)}
+              onMouseLeave={endHover}
+              onClick={() => { if (brand) onSelect(brand) }}
+              style={{
+                borderRadius: '3px',
+                background: cellBg(code),
+                border: `1.5px solid ${cellBorder(code)}`,
+                cursor: brand ? 'pointer' : 'default',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transform: isHovered ? 'scale(1.2)' : 'scale(1)',
+                transition: 'transform 0.12s',
+                zIndex: isHovered ? 2 : 1,
+                position: 'relative',
+              }}
+            >
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '7.5px', fontWeight: isHovered ? 700 : 500, color: isHovered ? '#1F3A5F' : 'rgba(75,55,42,0.65)', lineHeight: 1, userSelect: 'none' }}>
+                {code}
+              </span>
+            </div>
+          )
+        })}
       </div>
-    ))
+    )
   }
 
   return (
@@ -194,7 +217,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
         Booth map — hover to preview · click to scroll to brand
       </div>
 
-      {/* Category legend */}
+      {/* Legend */}
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
         {Object.entries(CATEGORY_COLORS).map(([cat, color]) => (
           <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -204,41 +227,46 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
         ))}
       </div>
 
-      {/* Two halls side by side */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', background: 'white', borderRadius: '16px', padding: '24px', border: '0.5px solid rgba(122,92,69,0.1)', overflowX: 'auto' }}>
-        <div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1.5px solid #1F3A5F' }}>
-            Platz Hall 2
+      {/* Map */}
+      <div style={{ background: 'white', borderRadius: '16px', padding: '24px 20px', border: '0.5px solid rgba(122,92,69,0.1)', overflowX: 'auto' }}>
+        <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', minWidth: 'max-content' }}>
+
+          {/* Hall 2 */}
+          <div>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
+              Platz Hall 2
+            </div>
+            {renderGrid(HALL2_GRID, HALL2_GRID[0].length)}
           </div>
-          {renderSection(hall2Sections)}
-        </div>
-        <div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1.5px solid #1F3A5F' }}>
-            Platz Hall 1
+
+          {/* Lounge label */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', fontFamily: 'var(--font-fraunces), serif', fontSize: '13px', fontStyle: 'italic', color: 'var(--tan)', textAlign: 'center', minWidth: '60px' }}>
+            Lounge
           </div>
-          {renderSection(hall1Sections)}
+
+          {/* Hall 1 */}
+          <div>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '10px', textAlign: 'center' }}>
+              Platz Hall 1
+            </div>
+            {renderGrid(HALL1_GRID, HALL1_GRID[0].length)}
+          </div>
         </div>
       </div>
 
-      {/* Hover popup */}
+      {/* Popup */}
       {popup && popupBrand && createPortal(
-        <div
-          ref={popupRef}
-          onMouseLeave={() => setPopup(null)}
+        <div ref={popupRef} onMouseLeave={() => setPopup(null)}
           style={{
             position: 'fixed',
             left: Math.min(popupPos.x - 190, window.innerWidth - 400),
-            top: popupPos.y - 10,
+            top: Math.max(popupPos.y - 10, 10),
             transform: 'translateY(-100%)',
-            zIndex: 8888,
-            width: '380px',
-            background: 'white',
-            borderRadius: '12px',
+            zIndex: 8888, width: '380px',
+            background: 'white', borderRadius: '12px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-            border: '0.5px solid rgba(122,92,69,0.15)',
-            overflow: 'hidden',
-          }}
-        >
+            border: '0.5px solid rgba(122,92,69,0.15)', overflow: 'hidden',
+          }}>
           <div style={{ padding: '14px 16px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
@@ -257,16 +285,10 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
               )}
             </div>
           </div>
-          {popupShortcode && (
-            <iframe src={`https://www.instagram.com/p/${popupShortcode}/embed/`}
-              width="380" height="400" frameBorder="0" scrolling="no" allow="encrypted-media"
-              style={{ display: 'block', width: '100%', border: 'none' }} />
-          )}
-          {!popupShortcode && (
-            <div style={{ padding: '16px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--tan)', textAlign: 'center' }}>
-              No post added yet
-            </div>
-          )}
+          {popupShortcode
+            ? <iframe src={`https://www.instagram.com/p/${popupShortcode}/embed/`} width="380" height="400" frameBorder="0" scrolling="no" allow="encrypted-media" style={{ display: 'block', width: '100%', border: 'none' }} />
+            : <div style={{ padding: '16px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--tan)', textAlign: 'center' }}>No post added yet</div>
+          }
         </div>,
         document.body
       )}
