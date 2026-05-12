@@ -19,6 +19,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Studio2J — Korean and Japanese shops, delivered',
   description: 'Proxy buying and fair haul service from Seoul and Tokyo. Founded 2025.',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
