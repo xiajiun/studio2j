@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     shortcut: '/studio2j_logo_nobg.png',
     apple: '/studio2j_logo_nobg.png',
   },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
