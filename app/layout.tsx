@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   title: 'Studio2J — Korean and Japanese shops, delivered',
   description: 'Proxy buying and fair haul service from Seoul and Tokyo. Founded 2025.',
   icons: {
-    icon: '/icon.png',
-    shortcut: '/icon.png',
-    apple: '/icon.png',
+    icon: '/studio2j_logo_nobg.png',
+    shortcut: '/studio2j_logo_nobg.png',
+    apple: '/studio2j_logo_nobg.png',
   },
 }
 
