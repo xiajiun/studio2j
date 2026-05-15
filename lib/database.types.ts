@@ -97,6 +97,7 @@ export interface Order {
   paid_3_via: 'jin' | 'jo' | null
   paid_3_transfer_fee: number | null
   actual_goods_cost: number | null
+  actual_shipping_cost: number | null
   created_at: string
   updated_at: string
 }

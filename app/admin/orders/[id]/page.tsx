@@ -93,7 +93,8 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               paid_3_date:         o.paid_3_date                     ?? '',
               paid_3_via:          o.paid_3_via                      ?? 'jin',
               paid_3_transfer_fee: o.paid_3_transfer_fee?.toString() ?? '',
-              actual_goods_cost:   o.actual_goods_cost?.toString()   ?? o.goods_total?.toString() ?? '',
+              actual_goods_cost:    o.actual_goods_cost?.toString()    ?? o.goods_total?.toString() ?? '',
+              actual_shipping_cost: o.actual_shipping_cost?.toString() ?? '',
             }}
           />
         </div>

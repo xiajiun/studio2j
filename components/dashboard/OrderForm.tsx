@@ -66,6 +66,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     paid_2_amount?: string; paid_2_date?: string; paid_2_via?: string; paid_2_transfer_fee?: string
     paid_3_amount?: string; paid_3_date?: string; paid_3_via?: string; paid_3_transfer_fee?: string
     actual_goods_cost?: string
+    actual_shipping_cost?: string
   }
 }) {
   const router  = useRouter()
@@ -109,7 +110,8 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     paid_3_via:          initial?.paid_3_via      ?? 'jin',
     paid_3_transfer_fee: initial?.paid_3_transfer_fee ?? '',
     jin_received_3:      init3Amt && init3Fee ? String(init3Amt - init3Fee) : '',
-    actual_goods_cost:   initial?.actual_goods_cost ?? initial?.goods_total ?? '',
+    actual_goods_cost:    initial?.actual_goods_cost ?? initial?.goods_total ?? '',
+    actual_shipping_cost: initial?.actual_shipping_cost ?? '',
   })
 
   const [addr, setAddr] = useState<AddrForm>(emptyAddr(initial?.shipping_address))
@@ -239,7 +241,8 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       paid_3_date:         form.paid_3_date         || null,
       paid_3_via:          form.paid_3_amount       ? (form.paid_3_via as 'jin' | 'jo')    : null,
       paid_3_transfer_fee: form.paid_3_transfer_fee ? parseFloat(form.paid_3_transfer_fee) : null,
-      actual_goods_cost:   form.actual_goods_cost   ? parseFloat(form.actual_goods_cost)   : null,
+      actual_goods_cost:    form.actual_goods_cost    ? parseFloat(form.actual_goods_cost)    : null,
+      actual_shipping_cost: form.actual_shipping_cost ? parseFloat(form.actual_shipping_cost) : null,
     }
 
     try {
@@ -554,6 +557,12 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <input style={{ ...inputStyle, maxWidth: '200px' }} type="text" inputMode="decimal" placeholder="0" value={form.actual_goods_cost} onChange={e => set('actual_goods_cost', e.target.value)} />
               <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)' }}>defaults to goods subtotal</span>
+            </div>
+          </Field>
+          <Field label="Actual shipping cost">
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <input style={{ ...inputStyle, maxWidth: '200px' }} type="text" inputMode="decimal" placeholder="0" value={form.actual_shipping_cost} onChange={e => set('actual_shipping_cost', e.target.value)} />
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)' }}>what you paid — invoice may be higher</span>
             </div>
           </Field>
         </Section>
