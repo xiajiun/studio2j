@@ -67,6 +67,30 @@ export default async function FinancePage() {
 
   const orders = (data ?? []) as Order[]
 
+  // Business expenses
+  const { data: expData } = await supabase
+    .from('business_shopping')
+    .select('estimated_cost, currency, purchase_date, name, category')
+    .not('estimated_cost', 'is', null)
+    .order('purchase_date', { ascending: false })
+
+  type ExpRow = { estimated_cost: number; currency: string; purchase_date: string | null; name: string; category: string | null }
+  const expenses = (expData ?? []) as ExpRow[]
+
+  // Group expenses by month+currency
+  const expMonthMap = new Map<string, { total: number; currency: string; label: string }>()
+  for (const e of expenses) {
+    const refDate = e.purchase_date ?? ''
+    if (!refDate) continue
+    const month = refDate.slice(0, 7)
+    const key = `${month}__${e.currency}`
+    if (!expMonthMap.has(key)) expMonthMap.set(key, { total: 0, currency: e.currency, label: fmtMonth(month + '-01') })
+    expMonthMap.get(key)!.total += e.estimated_cost
+  }
+  const expByMonth = Array.from(expMonthMap.entries())
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([key, v]) => ({ month: key.split('__')[0], ...v }))
+
   // Per-order rows with computed values
   const orderRows = orders.map(o => {
     const received        = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0)
@@ -322,6 +346,83 @@ export default async function FinancePage() {
             </table>
           </div>
         </div>
+      </div>
+
+      {/* Business expenses */}
+      <div style={{ marginTop: '48px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)' }}>
+            Business expenses
+          </div>
+          <a href="/admin/shopping" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--dark-blue)', textDecoration: 'none' }}>
+            Manage ↗
+          </a>
+        </div>
+        <div style={{ background: 'white', borderRadius: '12px', border: '0.5px solid rgba(122,92,69,0.1)', overflow: 'hidden' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                {['Month', 'Currency', 'Spent'].map((h, i) => (
+                  <th key={h} style={{ ...th, textAlign: i === 0 ? 'left' : 'right' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {expByMonth.map((e, i) => {
+                // Find revenue net for same month+currency from monthMap
+                const monthKey = `${e.month}__${e.currency}`
+                const rev = monthMap.get(monthKey)
+                return (
+                  <tr key={i}>
+                    <td style={tdLeft}>{e.label}</td>
+                    <td style={td}>{e.currency}</td>
+                    <td style={{ ...td, color: '#8A3A20' }}>−{e.total.toLocaleString()}</td>
+                  </tr>
+                )
+              })}
+              {expByMonth.length === 0 && (
+                <tr><td colSpan={3} style={{ ...td, textAlign: 'center', color: 'var(--tan)', fontStyle: 'italic', fontFamily: 'var(--font-fraunces), serif' }}>No expenses recorded yet</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Net after expenses per month */}
+        {expByMonth.length > 0 && (
+          <div style={{ marginTop: '16px' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '12px' }}>
+              Net after expenses (monthly)
+            </div>
+            <div style={{ background: 'white', borderRadius: '12px', border: '0.5px solid rgba(122,92,69,0.1)', overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    {['Month', 'Ccy', 'Revenue net', 'Expenses', 'After expenses'].map((h, i) => (
+                      <th key={h} style={{ ...th, textAlign: i === 0 ? 'left' : 'right' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {expByMonth.map((e, i) => {
+                    const monthKey = `${e.month}__${e.currency}`
+                    const rev = monthMap.get(monthKey)
+                    const revNet = rev?.net ?? 0
+                    const afterExp = revNet - e.total
+                    return (
+                      <tr key={i}>
+                        <td style={tdLeft}>{e.label}</td>
+                        <td style={td}>{e.currency}</td>
+                        <td style={{ ...td, color: 'var(--dark-blue)' }}>{revNet > 0 ? revNet.toLocaleString() : '—'}</td>
+                        <td style={{ ...td, color: '#8A3A20' }}>−{e.total.toLocaleString()}</td>
+                        <td style={{ ...td, fontWeight: 500, color: afterExp >= 0 ? '#2A5C35' : '#8A3A20' }}>{afterExp.toLocaleString()}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

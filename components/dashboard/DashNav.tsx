@@ -15,7 +15,7 @@ const ADMIN_LINKS = [
   { href: '/admin/fair-reminders', label: 'Fair reminders' },
   { href: '/admin/subscribers',    label: 'Subscribers' },
   { href: '/admin/catalogue', label: 'Catalogue' },
-  { href: '/admin/shopping',  label: 'Shopping list' },
+  { href: '/admin/shopping',  label: 'Expenses' },
 ]
 
 const ACCOUNT_LINKS = [
