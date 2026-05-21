@@ -56,9 +56,7 @@ export default async function AdminOrders({ searchParams }: { searchParams: { fi
           {(orders as Order[]).map(o => (
             <div key={o.id} style={{ background: 'white', border: '0.5px solid rgba(122,92,69,0.12)', borderRadius: '16px', marginBottom: '8px', overflow: 'hidden' }}>
               <OrderCard order={o} adminView inList />
-              {o.items && o.items.length > 0 && (
-                <ItemArrivalRow orderId={o.id} items={o.items} />
-              )}
+              <ItemArrivalRow orderId={o.id} items={o.items ?? []} />
             </div>
           ))}
         </div>

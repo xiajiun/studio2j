@@ -20,14 +20,17 @@ export function ItemArrivalRow({ orderId, items }: { orderId: number; items: Ord
     router.refresh()
   }
 
-  if (!items.length) return null
+  if (!items.length) return (
+    <div style={{ padding: '6px 24px 12px', borderTop: '0.5px solid rgba(122,92,69,0.06)' }}>
+      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>No items</span>
+    </div>
+  )
 
   return (
     <div style={{
       padding: '6px 24px 14px',
       display: 'flex', gap: '6px', flexWrap: 'wrap',
-      borderBottom: '0.5px solid rgba(122,92,69,0.08)',
-      marginTop: '-4px',
+      borderTop: '0.5px solid rgba(122,92,69,0.06)',
     }}>
       {items.map((item, i) => {
         const arrived = !!item.arrived
