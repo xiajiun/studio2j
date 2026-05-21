@@ -4,11 +4,10 @@ import type { Order } from '@/lib/database.types'
 
 const KIND_LABEL = { proxy: 'Proxy buy', fair: 'Fair haul', personal: 'Personal request' }
 
-export function OrderCard({ order, compact = false, adminView = false, inList = false }: {
+export function OrderCard({ order, compact = false, adminView = false }: {
   order: Order
   compact?: boolean
   adminView?: boolean
-  inList?: boolean
 }) {
   const href = adminView ? `/admin/orders/${order.id}` : `/account/orders/${order.order_number}`
 
@@ -16,9 +15,9 @@ export function OrderCard({ order, compact = false, adminView = false, inList = 
     <Link href={href} style={{ textDecoration: 'none' }}>
       <div style={{
         background: compact ? 'transparent' : 'white',
-        border: inList ? 'none' : compact ? 'none' : '0.5px solid rgba(122,92,69,0.12)',
+        border: compact ? 'none' : '0.5px solid rgba(122,92,69,0.12)',
         borderBottom: compact ? '0.5px solid rgba(122,92,69,0.08)' : undefined,
-        borderRadius: inList ? 0 : compact ? 0 : '16px',
+        borderRadius: compact ? 0 : '16px',
         padding: compact ? '14px 0' : '20px 24px',
         display: 'grid',
         gridTemplateColumns: '1fr auto',

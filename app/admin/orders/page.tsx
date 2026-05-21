@@ -2,7 +2,6 @@ export const runtime = 'edge'
 
 import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { OrderCard } from '@/components/dashboard/OrderCard'
-import { ItemArrivalRow } from '@/components/dashboard/ItemArrivalRow'
 import Link from 'next/link'
 import type { Order, OrderStatus } from '@/lib/database.types'
 
@@ -52,13 +51,8 @@ export default async function AdminOrders({ searchParams }: { searchParams: { fi
       </div>
 
       {orders && orders.length > 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-          {(orders as Order[]).map(o => (
-            <div key={o.id} style={{ background: 'white', border: '0.5px solid rgba(122,92,69,0.12)', borderRadius: '16px', marginBottom: '8px', overflow: 'hidden' }}>
-              <OrderCard order={o} adminView inList />
-              <ItemArrivalRow orderId={o.id} items={o.items ?? []} />
-            </div>
-          ))}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {(orders as Order[]).map(o => <OrderCard key={o.id} order={o} adminView />)}
         </div>
       ) : (
         <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)', textAlign: 'center', padding: '60px 0' }}>
