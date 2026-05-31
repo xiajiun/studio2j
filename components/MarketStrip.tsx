@@ -6,7 +6,7 @@ import { useLang } from '@/components/LangProvider'
 
 export default function MarketStrip({ markets }: { markets: TwentyMarket[] }) {
   const { t } = useLang()
-  const clean = markets.filter(m => !m.marketTitle.includes('테스트'))
+  const clean = markets.filter(m => !m.market_name.includes('테스트'))
   if (clean.length === 0) return null
 
   // Duplicate for seamless loop
@@ -42,7 +42,7 @@ export default function MarketStrip({ markets }: { markets: TwentyMarket[] }) {
         <div style={track('left')}>
           {[...row1, ...row1].map((m, i) => (
             <Link key={i} href="/markets" style={{ textDecoration: 'none', flexShrink: 0, display: 'block', borderRadius: '6px', overflow: 'hidden' }}>
-              <img src={`https://cdn.twenty.style/${m.marketCover}`} alt={m.marketTitle} style={imgStyle} />
+              <img src={m.market_cover} alt={m.market_name} style={imgStyle} />
             </Link>
           ))}
         </div>
@@ -53,7 +53,7 @@ export default function MarketStrip({ markets }: { markets: TwentyMarket[] }) {
         <div style={track('right')}>
           {[...row2, ...row2].map((m, i) => (
             <Link key={i} href="/markets" style={{ textDecoration: 'none', flexShrink: 0, display: 'block', borderRadius: '6px', overflow: 'hidden' }}>
-              <img src={`https://cdn.twenty.style/${m.marketCover}`} alt={m.marketTitle} style={imgStyle} />
+              <img src={m.market_cover} alt={m.market_name} style={imgStyle} />
             </Link>
           ))}
         </div>

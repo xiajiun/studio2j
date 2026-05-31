@@ -46,10 +46,13 @@ export default async function Home() {
   // Fetch Twenty Style online markets (cached 1 hour)
   let twentyMarkets: TwentyMarket[] = []
   try {
-    const res = await fetch('https://api.twenty.style/common/v2/opened-market', {
+    const res = await fetch('https://twenty.style/api/common/v2/market?category=open&limit=100', {
       next: { revalidate: 3600 },
     })
-    if (res.ok) twentyMarkets = await res.json()
+    if (res.ok) {
+      const data = await res.json()
+      twentyMarkets = Array.isArray(data) ? data : (data.items ?? [])
+    }
   } catch {}
 
   const today = new Date()
@@ -64,7 +67,7 @@ export default async function Home() {
       <Hero
         markets={twentyMarkets}
         fairCount={fairs.length}
-        marketCount={twentyMarkets.filter(m => !m.marketTitle.includes('테스트')).length}
+        marketCount={twentyMarkets.filter(m => !m.market_name.includes('테스트')).length}
         nextFair={nextFair}
       />
       <Services />

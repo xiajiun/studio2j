@@ -12,8 +12,8 @@ function fmtRange(st: number, ed: number) {
 
 function MarketCard({ m }: { m: TwentyMarket }) {
   const [imgOk, setImgOk] = useState(true)
-  const url    = `https://twenty.style/m/${m.sellerPublicId}/${m.marketPublicId}`
-  const imgSrc = `https://cdn.twenty.style/${m.marketCover}`
+  const url    = `https://twenty.style/m/${m.seller_public_id}/${m.market_public_id}`
+  const imgSrc = m.market_cover
 
   return (
     <a
@@ -28,7 +28,7 @@ function MarketCard({ m }: { m: TwentyMarket }) {
         {imgOk ? (
           <img
             src={imgSrc}
-            alt={m.marketTitle}
+            alt={m.market_name}
             onError={() => setImgOk(false)}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
@@ -42,13 +42,13 @@ function MarketCard({ m }: { m: TwentyMarket }) {
       {/* Info */}
       <div style={{ padding: '16px 18px', flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '15px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.01em', lineHeight: 1.3 }}>
-          {m.marketTitle}
+          {m.market_name}
         </div>
         <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>
-          {m.sellerInfoName}
+          {m.seller_name}
         </div>
         <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginTop: '2px' }}>
-          {fmtRange(m.marketST, m.marketED)}
+          {fmtRange(parseInt(m.market_started_at), parseInt(m.market_ended_at))}
         </div>
         <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
           <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)' }}>
@@ -63,7 +63,7 @@ function MarketCard({ m }: { m: TwentyMarket }) {
 export default function TwentyMarketsSection({ markets: rawMarkets, standalone = false, maxItems }: { markets: TwentyMarket[]; standalone?: boolean; maxItems?: number }) {
   const { t } = useLang()
   const m = t.markets
-  const markets = rawMarkets.filter(x => !x.marketTitle.includes('테스트'))
+  const markets = rawMarkets.filter(x => !x.market_name.includes('테스트'))
 
   if (markets.length === 0) return (
     <section style={{ background: 'var(--beige)', padding: standalone ? '160px 0' : '100px 0', textAlign: 'center' }}>
@@ -93,7 +93,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
 
         {/* Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-          {(maxItems ? markets.slice(0, maxItems) : markets).map(x => <MarketCard key={x.marketUID} m={x} />)}
+          {(maxItems ? markets.slice(0, maxItems) : markets).map(x => <MarketCard key={x.market_id} m={x} />)}
         </div>
 
         {/* Footer note */}

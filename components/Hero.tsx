@@ -52,7 +52,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
 
         {/* Market image carousel — 2 rows scrolling opposite directions */}
         {markets.length > 0 && (() => {
-          const clean = markets.filter(m => !m.marketTitle.includes('테스트'))
+          const clean = markets.filter(m => !m.market_name.includes('테스트'))
           const row1: TwentyMarket[] = []
           const row2: TwentyMarket[] = []
           while (row1.length < 16) row1.push(...clean)
@@ -67,7 +67,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
                 <div style={{ display: 'flex', gap: '3px', animation: 'carouselLeft 25s linear infinite', willChange: 'transform' }}>
                   {[...row1, ...row1].map((m, i) => (
                     <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
-                      <img src={`https://cdn.twenty.style/${m.marketCover}`} alt="" style={img} />
+                      <img src={m.market_cover} alt="" style={img} />
                     </a>
                   ))}
                 </div>
@@ -77,7 +77,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
                 <div style={{ display: 'flex', gap: '3px', animation: 'carouselRight 25s linear infinite', willChange: 'transform' }}>
                   {[...row2, ...row2].map((m, i) => (
                     <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
-                      <img src={`https://cdn.twenty.style/${m.marketCover}`} alt="" style={img} />
+                      <img src={m.market_cover} alt="" style={img} />
                     </a>
                   ))}
                 </div>

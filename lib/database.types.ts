@@ -113,15 +113,15 @@ export interface OrderEvent {
 }
 
 export interface TwentyMarket {
-  marketUID: string
-  marketTitle: string
-  marketCover: string
-  marketST: number   // ms timestamp
-  marketED: number   // ms timestamp
-  marketPublicId: number
-  sellerPublicId: string
-  sellerInfoName: string
-  sellerCategory: string
+  market_id: string
+  market_name: string
+  market_cover: string  // full URL
+  market_started_at: string  // ms timestamp as string
+  market_ended_at: string    // ms timestamp as string
+  market_public_id: string
+  seller_public_id: string
+  seller_name: string
+  seller_categories: string[]
 }
 
 export interface Subscriber {
