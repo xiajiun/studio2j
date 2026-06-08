@@ -10,6 +10,7 @@ export type CatalogueBrand = {
   korean_name: string | null
   instagram: string | null
   post: string | null
+  posts: string[] | null
   category: string | null
   country: string | null
   booth: string | null
@@ -216,7 +217,8 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
   }
 
   const popupBrand = popup ? brandByBooth[popup] : null
-  const popupShortcode = popupBrand?.post?.match(/\/p\/([^/?]+)/)?.[1]
+  const popupFirstPost = popupBrand ? (popupBrand.posts?.[0] ?? popupBrand.post) : null
+  const popupShortcode = popupFirstPost?.match(/\/p\/([^/?]+)/)?.[1]
 
   function cellBg(booth: string) {
     const brand = brandByBooth[booth]
@@ -371,7 +373,9 @@ function BrandIcon({ brand }: { brand: CatalogueBrand }) {
 }
 
 function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: CatalogueBrand) => void }) {
-  const shortcode = brand.post?.match(/\/p\/([^/?]+)/)?.[1]
+  const allPosts = brand.posts?.length ? brand.posts : brand.post ? [brand.post] : []
+  const shortcodes = allPosts.map(p => p.match(/\/p\/([^/?]+)/)?.[1]).filter(Boolean) as string[]
+  const hasMultiple = shortcodes.length > 1
   const flag = brand.country === 'JP' ? '🇯🇵' : brand.country === 'INTL' ? '🌍' : '🇰🇷'
   return (
     <div id={`brand-${brand.id}`} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', flexDirection: 'column' }}>
@@ -382,6 +386,7 @@ function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: Catal
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', lineHeight: 1.3 }}>{brand.name}</span>
             <span style={{ fontSize: '11px' }}>{flag}</span>
             {brand.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{brand.booth}</span>}
+            {hasMultiple && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--tan)', background: 'rgba(122,92,69,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{shortcodes.length} posts</span>}
           </div>
           {brand.korean_name && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginBottom: '2px' }}>{brand.korean_name}</div>}
           {brand.instagram && (
@@ -391,17 +396,22 @@ function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: Catal
             </a>
           )}
         </div>
-        {brand.post && (
+        {shortcodes.length > 0 && (
           <button type="button" onClick={() => onView(brand)}
             style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}>
             View ↗
           </button>
         )}
       </div>
-      {shortcode && (
-        <iframe src={`https://www.instagram.com/p/${shortcode}/embed/`} loading="lazy"
-          frameBorder="0" scrolling="no" allow="encrypted-media"
-          style={{ display: 'block', width: '100%', height: '480px', border: 'none' }} />
+      {shortcodes.length > 0 && (
+        <div style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' as any, scrollbarWidth: 'none' as any }}>
+          {shortcodes.map((sc, i) => (
+            <iframe key={i}
+              src={`https://www.instagram.com/p/${sc}/embed/`} loading="lazy"
+              frameBorder="0" scrolling="no" allow="encrypted-media"
+              style={{ display: 'block', flexShrink: 0, width: hasMultiple ? 'calc(100% - 20px)' : '100%', minWidth: hasMultiple ? 'calc(100% - 20px)' : '100%', height: '480px', border: 'none', scrollSnapAlign: 'start' }} />
+          ))}
+        </div>
       )}
     </div>
   )
@@ -477,7 +487,7 @@ export function InventarioCatalogue({ brands, totalCount }: { brands: CatalogueB
         </div>
       )}
 
-      {mounted && modal?.post && <PostModal postUrl={modal.post} name={modal.name} onClose={() => setModal(null)} />}
+      {mounted && modal && (modal.posts?.[0] ?? modal.post) && <PostModal postUrl={(modal.posts?.[0] ?? modal.post)!} name={modal.name} onClose={() => setModal(null)} />}
     </>
   )
 }
