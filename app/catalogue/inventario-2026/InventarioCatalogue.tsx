@@ -217,8 +217,8 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
   }
 
   const popupBrand = popup ? brandByBooth[popup] : null
-  const popupFirstPost = popupBrand ? (popupBrand.posts?.[0] ?? popupBrand.post) : null
-  const popupShortcode = popupFirstPost?.match(/\/p\/([^/?]+)/)?.[1]
+  const popupAllPosts = popupBrand ? (popupBrand.posts?.length ? popupBrand.posts : popupBrand.post ? [popupBrand.post] : []) : []
+  const popupShortcodes = popupAllPosts.map(p => p.match(/\/p\/([^/?]+)/)?.[1]).filter(Boolean) as string[]
 
   function cellBg(booth: string) {
     const brand = brandByBooth[booth]
@@ -349,8 +349,15 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
               )}
             </div>
           </div>
-          {popupShortcode
-            ? <iframe src={`https://www.instagram.com/p/${popupShortcode}/embed/`} width="380" height="400" frameBorder="0" scrolling="no" allow="encrypted-media" style={{ display: 'block', width: '100%', border: 'none' }} />
+          {popupShortcodes.length > 0
+            ? <div style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' as any, scrollbarWidth: 'none' as any }}>
+                {popupShortcodes.map((sc, i) => (
+                  <iframe key={i}
+                    src={`https://www.instagram.com/p/${sc}/embed/`}
+                    frameBorder="0" scrolling="no" allow="encrypted-media"
+                    style={{ display: 'block', flexShrink: 0, width: popupShortcodes.length > 1 ? 'calc(100% - 20px)' : '100%', minWidth: popupShortcodes.length > 1 ? 'calc(100% - 20px)' : '100%', height: '400px', border: 'none', scrollSnapAlign: 'start' }} />
+                ))}
+              </div>
             : <div style={{ padding: '16px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '13px', color: 'var(--tan)', textAlign: 'center' }}>No post added yet</div>
           }
         </div>,
