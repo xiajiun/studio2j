@@ -193,12 +193,14 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current) }, [])
 
-  // Build lookup: first brand whose name matches wins (handles shared booths)
-  const brandByBooth: Record<string, CatalogueBrand> = {}
+  const brandsByBooth: Record<string, CatalogueBrand[]> = {}
   const brandById: Record<number, CatalogueBrand> = {}
   brands.forEach(b => {
     brandById[b.id] = b
-    if (b.booth && !brandByBooth[b.booth]) brandByBooth[b.booth] = b
+    if (b.booth) {
+      if (!brandsByBooth[b.booth]) brandsByBooth[b.booth] = []
+      brandsByBooth[b.booth].push(b)
+    }
   })
 
   function startHover(booth: string, el: HTMLElement) {
@@ -216,18 +218,21 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
     setTimeout(() => { if (!popupRef.current?.matches(':hover')) setPopup(null) }, 100)
   }
 
-  const popupBrand = popup ? brandByBooth[popup] : null
-  const popupAllPosts = popupBrand ? (popupBrand.posts?.length ? popupBrand.posts : popupBrand.post ? [popupBrand.post] : []) : []
-  const popupShortcodes = popupAllPosts.map(p => p.match(/\/p\/([^/?]+)/)?.[1]).filter(Boolean) as string[]
+  const popupBrands = popup ? (brandsByBooth[popup] ?? []) : []
+  const popupShortcodes = popupBrands.flatMap(b =>
+    (b.posts?.length ? b.posts : b.post ? [b.post] : [])
+      .map(p => p.match(/\/p\/([^/?]+)/)?.[1])
+      .filter(Boolean) as string[]
+  )
 
   function cellBg(booth: string) {
-    const brand = brandByBooth[booth]
+    const brand = brandsByBooth[booth]?.[0]
     const cat = brand?.category ?? ''
     return CATEGORY_COLORS[cat] ? CATEGORY_COLORS[cat] + '66' : 'rgba(122,92,69,0.08)'
   }
   function cellBorder(booth: string) {
     if (hovered === booth) return '#1F3A5F'
-    const brand = brandByBooth[booth]
+    const brand = brandsByBooth[booth]?.[0]
     const cat = brand?.category ?? ''
     return CATEGORY_COLORS[cat] ?? 'rgba(122,92,69,0.2)'
   }
@@ -244,20 +249,20 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
         position: 'relative',
       }}>
         {booths.map(({ code, col, row, cs = 1, rs = 1 }) => {
-          const brand = brandByBooth[code]
+          const boothBrands = brandsByBooth[code] ?? []
           const isHovered = hovered === code
           return (
             <div key={code}
               onMouseEnter={e => startHover(code, e.currentTarget)}
               onMouseLeave={endHover}
-              onClick={() => { if (brand) onSelect(brand) }}
+              onClick={() => { if (boothBrands[0]) onSelect(boothBrands[0]) }}
               style={{
                 gridColumn: `${col} / span ${cs}`,
                 gridRow: `${row} / span ${rs}`,
                 borderRadius: '4px',
                 background: cellBg(code),
                 border: `1.5px solid ${cellBorder(code)}`,
-                cursor: brand ? 'pointer' : 'default',
+                cursor: boothBrands.length ? 'pointer' : 'default',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transform: isHovered ? 'scale(1.08)' : 'scale(1)',
                 transition: 'transform 0.12s',
@@ -319,7 +324,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
       </div>
 
       {/* Popup */}
-      {popup && popupBrand && createPortal(
+      {popup && popupBrands.length > 0 && createPortal(
         <div ref={popupRef} onMouseLeave={() => setPopup(null)}
           style={{
             position: 'fixed',
@@ -331,24 +336,25 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             border: '0.5px solid rgba(122,92,69,0.15)', overflow: 'hidden',
           }}>
-          <div style={{ padding: '14px 16px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', marginBottom: '2px' }}>
-                  {popupBrand.name}
-                  {' '}
-                  <span style={{ fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{popup}</span>
+          {popupBrands.map((b, i) => (
+            <div key={b.id} style={{ padding: '10px 16px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', marginBottom: '2px' }}>
+                    {b.name}
+                    {i === 0 && <span style={{ fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 6px', borderRadius: '99px', marginLeft: '6px' }}>{popup}</span>}
+                  </div>
+                  {b.korean_name && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>{b.korean_name}</div>}
+                  {b.instagram && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--dark-blue)', marginTop: '2px' }}>@{b.instagram}</div>}
                 </div>
-                {popupBrand.korean_name && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>{popupBrand.korean_name}</div>}
-                {popupBrand.instagram && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--dark-blue)', marginTop: '2px' }}>@{popupBrand.instagram}</div>}
+                {b.category && (
+                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--brown)', background: (CATEGORY_COLORS[b.category] ?? 'rgba(122,92,69,0.15)') + '55', padding: '2px 8px', borderRadius: '99px', flexShrink: 0, marginLeft: '8px' }}>
+                    {b.category}
+                  </span>
+                )}
               </div>
-              {popupBrand.category && (
-                <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--brown)', background: (CATEGORY_COLORS[popupBrand.category] ?? 'rgba(122,92,69,0.15)') + '55', padding: '2px 8px', borderRadius: '99px', flexShrink: 0, marginLeft: '8px' }}>
-                  {popupBrand.category}
-                </span>
-              )}
             </div>
-          </div>
+          ))}
           {popupShortcodes.length > 0
             ? <div style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' as any, scrollbarWidth: 'none' as any }}>
                 {popupShortcodes.map((sc, i) => (
