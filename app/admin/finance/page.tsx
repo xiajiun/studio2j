@@ -24,6 +24,7 @@ type GroupRow = {
   transfer_fee:      number
   goods_cost:        number
   service_fee:       number
+  goods_markup:      number
   shipping_markup:   number
   net:               number
   currency:          string
@@ -34,20 +35,22 @@ function addToGroup(map: Map<string, GroupRow>, key: string, o: Order) {
   const ccy = o.currency ?? 'KRW'
   const groupKey = `${key}__${ccy}`
   if (!map.has(groupKey)) {
-    map.set(groupKey, { received: 0, transfer_fee: 0, goods_cost: 0, service_fee: 0, shipping_markup: 0, net: 0, currency: ccy, order_count: 0 })
+    map.set(groupKey, { received: 0, transfer_fee: 0, goods_cost: 0, service_fee: 0, goods_markup: 0, shipping_markup: 0, net: 0, currency: ccy, order_count: 0 })
   }
   const g = map.get(groupKey)!
   const received         = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0)
   const transfer_fee     = (o.paid_1_transfer_fee ?? 0) + (o.paid_2_transfer_fee ?? 0)
   const goods_cost       = o.actual_goods_cost ?? o.goods_total ?? 0
   const service_fee      = o.service_fee ?? 0
+  const goods_markup     = o.actual_goods_cost != null ? (o.goods_total ?? 0) - o.actual_goods_cost : 0
   const shipping_markup  = o.actual_shipping_cost != null ? (o.shipping_cost ?? 0) - o.actual_shipping_cost : 0
   g.received        += received
   g.transfer_fee    += transfer_fee
   g.goods_cost      += goods_cost
   g.service_fee     += service_fee
+  g.goods_markup    += goods_markup
   g.shipping_markup += shipping_markup
-  g.net             += service_fee + shipping_markup - transfer_fee
+  g.net             += service_fee + goods_markup + shipping_markup - transfer_fee
   if (received > 0 || service_fee > 0) g.order_count++
 }
 
@@ -97,9 +100,10 @@ export default async function FinancePage() {
     const transfer_fee    = (o.paid_1_transfer_fee ?? 0) + (o.paid_2_transfer_fee ?? 0)
     const goods_cost      = o.actual_goods_cost ?? o.goods_total ?? 0
     const service_fee     = o.service_fee ?? 0
+    const goods_markup    = o.actual_goods_cost != null ? (o.goods_total ?? 0) - o.actual_goods_cost : null
     const shipping_markup = o.actual_shipping_cost != null ? (o.shipping_cost ?? 0) - o.actual_shipping_cost : null
-    const net             = service_fee + (shipping_markup ?? 0) - transfer_fee
-    return { ...o, received, transfer_fee, goods_cost, service_fee, shipping_markup, net }
+    const net             = service_fee + (goods_markup ?? 0) + (shipping_markup ?? 0) - transfer_fee
+    return { ...o, received, transfer_fee, goods_cost, service_fee, goods_markup, shipping_markup, net }
   })
 
   // Monthly grouping — use the most recent paid date, fall back to created_at
@@ -178,7 +182,7 @@ export default async function FinancePage() {
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px' }}>
             {handler(g.currency)} · {g.currency}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px', marginBottom: '8px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '12px', marginBottom: '8px' }}>
             <div style={card}>
               <div style={label}>Received from customers</div>
               <div style={bigNum}>{g.received.toLocaleString()}</div>
@@ -200,6 +204,11 @@ export default async function FinancePage() {
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '2px' }}>{g.currency}</div>
             </div>
             <div style={card}>
+              <div style={label}>Goods markup</div>
+              <div style={{ ...bigNum, color: g.goods_markup > 0 ? '#2A5C35' : 'var(--dark-brown)' }}>{g.goods_markup > 0 ? `+${g.goods_markup.toLocaleString()}` : '—'}</div>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '2px' }}>{g.currency} · charged − actual</div>
+            </div>
+            <div style={card}>
               <div style={label}>Shipping markup</div>
               <div style={{ ...bigNum, color: g.shipping_markup > 0 ? '#2A5C35' : 'var(--dark-brown)' }}>{g.shipping_markup > 0 ? `+${g.shipping_markup.toLocaleString()}` : '—'}</div>
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '2px' }}>{g.currency} · charged − actual</div>
@@ -207,7 +216,7 @@ export default async function FinancePage() {
             <div style={{ ...card, background: 'var(--dark-blue)', border: 'none' }}>
               <div style={{ ...label, color: 'rgba(245,239,230,0.5)' }}>Net earnings</div>
               <div style={{ ...bigNum, color: 'var(--cream)' }}>{g.net.toLocaleString()}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'rgba(245,239,230,0.5)', marginTop: '2px' }}>{g.currency} · fee + ship. markup − transfer</div>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'rgba(245,239,230,0.5)', marginTop: '2px' }}>{g.currency} · fee + markups − transfer</div>
             </div>
           </div>
         </div>
@@ -222,7 +231,7 @@ export default async function FinancePage() {
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
             <thead>
               <tr>
-                {['Order', 'Customer', 'Handler', 'Ccy', 'Goods cost', 'Service fee', 'Ship. markup', 'Received', 'Via', 'Transfer fee', 'Net', 'Status'].map((h, i) => (
+                {['Order', 'Customer', 'Handler', 'Ccy', 'Goods cost', 'Service fee', 'Goods markup', 'Ship. markup', 'Received', 'Via', 'Transfer fee', 'Net', 'Status'].map((h, i) => (
                   <th key={h} style={{ ...th, textAlign: i <= 2 ? 'left' : 'right' }}>{h}</th>
                 ))}
               </tr>
@@ -244,6 +253,9 @@ export default async function FinancePage() {
                   <td style={td}>{o.currency}</td>
                   <td style={td}>{o.goods_cost ? o.goods_cost.toLocaleString() : '—'}</td>
                   <td style={td}>{o.service_fee ? o.service_fee.toLocaleString() : '—'}</td>
+                  <td style={{ ...td, color: o.goods_markup != null && o.goods_markup > 0 ? '#2A5C35' : 'var(--tan)' }}>
+                    {o.goods_markup != null ? (o.goods_markup > 0 ? `+${o.goods_markup.toLocaleString()}` : o.goods_markup.toLocaleString()) : '—'}
+                  </td>
                   <td style={{ ...td, color: o.shipping_markup != null && o.shipping_markup > 0 ? '#2A5C35' : 'var(--tan)' }}>
                     {o.shipping_markup != null ? (o.shipping_markup > 0 ? `+${o.shipping_markup.toLocaleString()}` : o.shipping_markup.toLocaleString()) : '—'}
                   </td>
