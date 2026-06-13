@@ -51,8 +51,9 @@ export default async function InvoicePage({
   // Always use live itemsTotal when items are present — goods_total can be stale
   const goods  = itemsTotal > 0 ? itemsTotal : (o.goods_total ?? 0)
   const fee    = o.service_fee   ?? 0
+  const runner = o.runner_fee    ?? 0
   const ship   = o.shipping_cost ?? 0
-  const grandTotal = goods + fee + ship
+  const grandTotal = goods + fee + runner + ship
   const paid1  = o.paid_1_amount ?? 0
   const paid2  = o.paid_2_amount ?? 0
   const paid3  = o.paid_3_amount ?? 0
@@ -73,7 +74,7 @@ export default async function InvoicePage({
     return (
       <>
         <AutoPrint />
-        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
         <style>{`
           @page { size: A4; margin: 12mm; }
           body { margin: 0; background: white; }
@@ -113,7 +114,7 @@ export default async function InvoicePage({
 
       {/* Invoice body */}
       <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
-        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
       </div>
     </>
   )
@@ -122,13 +123,13 @@ export default async function InvoicePage({
 type InvoiceBodyProps = {
   o: Order; fair: { name: string; date: string } | null
   items: OrderItem[]; addr: ShippingAddress | null; ccy: string; hasDomDel: boolean
-  goods: number; fee: number; ship: number; grandTotal: number
+  goods: number; fee: number; runner: number; ship: number; grandTotal: number
   totalPaid: number; balanceDue: number
   payMethod: keyof typeof PAYMENT; payInfo: typeof PAYMENT[keyof typeof PAYMENT]
   invoiceLabel: string; payNote: string
 }
 
-function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, grandTotal, totalPaid, balanceDue, payMethod, payInfo, invoiceLabel, payNote }: InvoiceBodyProps) {
+function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, runner, ship, grandTotal, totalPaid, balanceDue, payMethod, payInfo, invoiceLabel, payNote }: InvoiceBodyProps) {
   return (
     <div id="invoice" style={{ maxWidth: '720px', margin: '0 auto', background: 'white', boxShadow: '0 4px 40px rgba(31,58,95,0.08)', borderRadius: '4px', fontFamily: 'Georgia, serif', color: '#2a1f18' }}>
       <div style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -194,6 +195,7 @@ function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, g
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
             <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
             <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
+            {runner > 0 && <TotalRow label="Runner fee" value={runner.toLocaleString()} />}
             <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
             {totalPaid > 0 && (
               <>

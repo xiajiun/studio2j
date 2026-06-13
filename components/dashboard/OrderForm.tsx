@@ -67,6 +67,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     paid_3_amount?: string; paid_3_date?: string; paid_3_via?: string; paid_3_transfer_fee?: string
     actual_goods_cost?: string
     actual_shipping_cost?: string
+    runner_fee?: string
   }
 }) {
   const router  = useRouter()
@@ -112,6 +113,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     jin_received_3:      init3Amt && init3Fee ? String(init3Amt - init3Fee) : '',
     actual_goods_cost:    initial?.actual_goods_cost ?? initial?.goods_total ?? '',
     actual_shipping_cost: initial?.actual_shipping_cost ?? '',
+    runner_fee:           initial?.runner_fee ?? '',
   })
 
   const [addr, setAddr] = useState<AddrForm>(emptyAddr(initial?.shipping_address))
@@ -271,6 +273,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       paid_3_transfer_fee: form.paid_3_transfer_fee ? parseFloat(form.paid_3_transfer_fee) : null,
       actual_goods_cost:    form.actual_goods_cost    ? parseFloat(form.actual_goods_cost)    : null,
       actual_shipping_cost: form.actual_shipping_cost ? parseFloat(form.actual_shipping_cost) : null,
+      runner_fee:           form.runner_fee           ? parseFloat(form.runner_fee)           : null,
     }
 
     try {
@@ -459,12 +462,15 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
 
       {/* Totals */}
       <Section label="Totals — auto-calculated from items, editable">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
           <Field label="Goods subtotal">
             <input style={inputStyle} type="text" inputMode="decimal" value={form.goods_total} onChange={e => set('goods_total', e.target.value)} placeholder="0" />
           </Field>
           <Field label="Handling fee">
             <input style={inputStyle} type="text" inputMode="decimal" value={form.service_fee} onChange={e => set('service_fee', e.target.value)} placeholder="0" />
+          </Field>
+          <Field label="Runner fee">
+            <input style={inputStyle} type="text" inputMode="decimal" value={form.runner_fee} onChange={e => set('runner_fee', e.target.value)} placeholder="0 (fair / in-store only)" />
           </Field>
           <Field label="Intl shipping">
             <input style={inputStyle} type="text" inputMode="decimal" value={form.shipping_cost} onChange={e => set('shipping_cost', e.target.value)} placeholder="0" />

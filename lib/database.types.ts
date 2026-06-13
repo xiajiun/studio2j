@@ -99,6 +99,7 @@ export interface Order {
   paid_3_transfer_fee: number | null
   actual_goods_cost: number | null
   actual_shipping_cost: number | null
+  runner_fee: number | null
   created_at: string
   updated_at: string
 }

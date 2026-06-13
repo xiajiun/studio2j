@@ -48,8 +48,9 @@ export default async function CustomerInvoicePage({
   // Always use live itemsTotal when items are present — goods_total can be stale
   const goods  = itemsTotal > 0 ? itemsTotal : (o.goods_total ?? 0)
   const fee    = o.service_fee   ?? 0
+  const runner = o.runner_fee    ?? 0
   const ship   = o.shipping_cost ?? 0
-  const grandTotal = goods + fee + ship
+  const grandTotal = goods + fee + runner + ship
   const totalPaid  = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0) + (o.paid_3_amount ?? 0)
   const balanceDue = grandTotal - totalPaid
 
@@ -69,7 +70,7 @@ export default async function CustomerInvoicePage({
       <>
         <AutoPrint />
         <div style={{ background: 'white', padding: '24px' }}>
-          <CustomerInvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+          <CustomerInvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
         </div>
         <style>{`@page { size: A4; margin: 12mm; } body { margin: 0; background: white; }`}</style>
       </>
@@ -95,7 +96,7 @@ export default async function CustomerInvoicePage({
       </div>
 
       <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
-        <CustomerInvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+        <CustomerInvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
       </div>
       <style>{`
         @media (max-width: 640px) {
@@ -117,13 +118,13 @@ export default async function CustomerInvoicePage({
 type BodyProps = {
   o: Order; fair: { name: string; date: string } | null
   items: OrderItem[]; addr: ShippingAddress | null; ccy: string; hasDomDel: boolean
-  goods: number; fee: number; ship: number; grandTotal: number
+  goods: number; fee: number; runner: number; ship: number; grandTotal: number
   totalPaid: number; balanceDue: number
   payMethod: keyof typeof PAYMENT; payInfo: typeof PAYMENT[keyof typeof PAYMENT]
   invoiceLabel: string; payNote: string
 }
 
-function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, ship, grandTotal, totalPaid, balanceDue, payMethod, payInfo, invoiceLabel, payNote }: BodyProps) {
+function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, runner, ship, grandTotal, totalPaid, balanceDue, payMethod, payInfo, invoiceLabel, payNote }: BodyProps) {
   return (
     <div id="invoice" style={{ maxWidth: '720px', margin: '0 auto', background: 'white', boxShadow: '0 4px 40px rgba(31,58,95,0.08)', borderRadius: '4px', fontFamily: 'Georgia, serif', color: '#2a1f18' }}>
       <div className="inv-header" style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -183,6 +184,7 @@ function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee,
           <div className="inv-totals" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
             <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
             <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
+            {runner > 0 && <TotalRow label="Runner fee" value={runner.toLocaleString()} />}
             <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
             {totalPaid > 0 && (
               <>
