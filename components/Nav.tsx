@@ -27,7 +27,6 @@ export default function Nav() {
     { href: '/#tracker',  label: t.nav.fairs },
     { href: '/markets',   label: t.nav.markets },
     { href: '/brands',    label: t.nav.brands },
-    { href: '/#how',      label: t.nav.howItWorks },
     { href: '/#faq',      label: t.nav.faq },
   ]
 

@@ -6,7 +6,7 @@ import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import Marquee from '@/components/Marquee'
 import FairTracker from '@/components/FairTracker'
-import HowItWorks from '@/components/HowItWorks'
+
 import OrderCTA from '@/components/OrderCTA'
 import FAQ from '@/components/FAQ'
 import Footer from '@/components/Footer'
@@ -74,7 +74,7 @@ export default async function Home() {
       <Marquee />
       <TwentyMarketsSection markets={twentyMarkets} maxItems={4} />
       <FairTracker fairs={fairs} />
-      <HowItWorks />
+
       <OrderCTA />
       <FAQ />
       <Footer />

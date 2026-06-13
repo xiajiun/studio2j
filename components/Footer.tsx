@@ -51,7 +51,7 @@ export default function Footer() {
             { href: '/#tracker',  label: f.linkTracker },
             { href: '/markets',   label: f.linkMarkets },
             { href: '/brands',    label: f.linkBrands },
-            { href: '/#how',      label: f.linkHow },
+
             { href: '/about',     label: f.linkAbout },
             { href: '/#faq',      label: f.linkFaq },
             { href: '/policy',    label: 'Policies' },

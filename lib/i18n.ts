@@ -4,7 +4,7 @@ const en = {
   nav: {
     home: 'Home', markets: 'Markets',
     brands: 'Brands', services: 'Services', fairs: 'Fairs',
-    howItWorks: 'How it works', faq: 'FAQ', placeOrder: 'Place an order',
+    faq: 'FAQ', placeOrder: 'Place an order',
   },
   hero: {
     eyebrow: 'Proxy buying · Seoul and Tokyo · Est. 2025',
@@ -105,7 +105,7 @@ const en = {
     copyright: 'From Seoul and Tokyo, with care',
     tagline: 'Seoul and Tokyo to the world',
     linkMarkets: 'Markets', linkBrands: 'Brand directory', linkTracker: 'Fair tracker',
-    linkHow: 'How it works', linkAbout: 'About us', linkFaq: 'FAQ',
+    linkAbout: 'About us', linkFaq: 'FAQ',
   },
   brands: {
     eyebrow: 'Brand directory',
@@ -162,7 +162,7 @@ const ja: typeof en = {
   nav: {
     home: 'ホーム', markets: 'マーケット',
     brands: 'ブランド', services: 'サービス', fairs: 'フェア',
-    howItWorks: 'ご利用の流れ', faq: 'よくある質問', placeOrder: '注文する',
+    faq: 'よくある質問', placeOrder: '注文する',
   },
   hero: {
     eyebrow: '代理購入・ソウル・2025年設立',
@@ -263,7 +263,7 @@ const ja: typeof en = {
     copyright: 'ソウルより、心を込めて',
     tagline: 'ソウルから世界へ',
     linkMarkets: 'マーケット', linkBrands: 'ブランド一覧', linkTracker: 'フェア一覧',
-    linkHow: 'ご利用の流れ', linkAbout: '私たちについて', linkFaq: 'よくある質問',
+    linkAbout: '私たちについて', linkFaq: 'よくある質問',
   },
   brands: {
     eyebrow: 'ブランド一覧',
@@ -320,7 +320,7 @@ const zhTW: typeof en = {
   nav: {
     home: '首頁', markets: '市集',
     brands: '品牌', services: '服務', fairs: '展覽',
-    howItWorks: '服務流程', faq: '常見問題', placeOrder: '立即下單',
+    faq: '常見問題', placeOrder: '立即下單',
   },
   hero: {
     eyebrow: '代購・首爾 & 東京・2025年創立',
@@ -421,7 +421,7 @@ const zhTW: typeof en = {
     copyright: '從首爾與東京，帶著心意',
     tagline: '從首爾與東京，送達全世界',
     linkMarkets: '市集', linkBrands: '品牌目錄', linkTracker: '展覽追蹤器',
-    linkHow: '服務流程', linkAbout: '關於我們', linkFaq: '常見問題',
+    linkAbout: '關於我們', linkFaq: '常見問題',
   },
   brands: {
     eyebrow: '品牌目錄',
