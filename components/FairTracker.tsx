@@ -75,7 +75,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   ]
 
   return (
-    <section id="tracker" style={{ padding: '140px 0', background: 'var(--dark-brown)' }} className="tracker-section">
+    <section id="tracker" style={{ padding: '140px 0', background: '#FBF6DC' }} className="tracker-section">
       <div className="container">
         {/* Head */}
         <div style={{
@@ -91,13 +91,13 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontStyle: 'italic',
               fontWeight: 300,
               fontSize: '18px',
-              color: 'var(--tan)',
+              color: 'var(--brown)',
               marginBottom: '20px',
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
             }}>
-              <span style={{ width: '40px', height: '0.5px', background: 'rgba(168,203,224,0.4)', display: 'inline-block' }} />
+              <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
               <span className="live-dot" />{tr.eyebrow}
             </div>
             <h2 style={{
@@ -106,9 +106,9 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontSize: 'clamp(42px, 4.5vw, 64px)',
               lineHeight: '1.04',
               letterSpacing: '-0.03em',
-              color: 'var(--cream)',
+              color: 'var(--dark-brown)',
             }}>
-              {tr.title1}<em style={{ fontStyle: 'italic', color: 'var(--tan)', fontWeight: 300 }}>{tr.titleEm}</em>{tr.title2}
+              {tr.title1}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{tr.titleEm}</em>{tr.title2}
             </h2>
           </div>
           {/* Stats */}
@@ -128,14 +128,14 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
                   fontFamily: 'var(--font-fraunces), serif',
                   fontWeight: 300,
                   fontSize: '48px',
-                  color: 'var(--tan)',
+                  color: 'var(--dark-blue)',
                   lineHeight: '1',
                   letterSpacing: '-0.03em',
                 }}>{num}</div>
                 <div style={{
                   fontFamily: 'var(--font-inter), sans-serif',
                   fontSize: '11px',
-                  color: 'rgba(248,248,246,0.4)',
+                  color: 'var(--tan)',
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   marginTop: '10px',
@@ -150,7 +150,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           fontSize: '15px',
           fontWeight: 300,
           lineHeight: '1.75',
-          color: 'rgba(248,248,246,0.6)',
+          color: 'var(--brown)',
           maxWidth: '680px',
           marginBottom: '40px',
         }}>
@@ -165,14 +165,14 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           alignItems: 'center',
           marginBottom: '32px',
           padding: '16px 0',
-          borderTop: '0.5px solid rgba(248,248,246,0.08)',
-          borderBottom: '0.5px solid rgba(248,248,246,0.08)',
+          borderTop: '0.5px solid rgba(107,163,200,0.15)',
+          borderBottom: '0.5px solid rgba(107,163,200,0.15)',
         }}>
           <span style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontStyle: 'italic',
             fontSize: '14px',
-            color: 'rgba(248,248,246,0.4)',
+            color: 'var(--tan)',
             marginRight: '12px',
           }}>{tr.filterLabel}</span>
           <input
@@ -186,9 +186,9 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               maxWidth: '280px',
               padding: '9px 18px',
               borderRadius: '99px',
-              border: '0.5px solid rgba(248,248,246,0.12)',
-              background: 'rgba(248,248,246,0.06)',
-              color: 'var(--cream)',
+              border: '0.5px solid rgba(107,163,200,0.2)',
+              background: 'rgba(255,255,255,0.7)',
+              color: 'var(--dark-brown)',
               fontFamily: 'var(--font-inter), sans-serif',
               fontSize: '13px',
               fontWeight: 300,
@@ -215,7 +215,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontFamily: 'var(--font-fraunces), serif',
               fontStyle: 'italic',
               fontSize: '18px',
-              color: 'rgba(248,248,246,0.4)',
+              color: 'var(--tan)',
             }}>{tr.noFairs}</div>
           ) : groups.map(({ month, fairs }) => (
             <div key={month}>
@@ -230,10 +230,10 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
                   fontStyle: 'italic',
                   fontWeight: 300,
                   fontSize: '20px',
-                  color: 'rgba(248,248,246,0.45)',
+                  color: 'var(--brown)',
                   letterSpacing: '0.01em',
                 }}>{month}</span>
-                <span style={{ flex: 1, height: '0.5px', background: 'rgba(248,248,246,0.08)' }} />
+                <span style={{ flex: 1, height: '0.5px', background: 'rgba(107,163,200,0.2)' }} />
               </div>
               {fairs.map(f => (
                 <FairCard key={f.id} fair={f} today={today} saved={saved} onSave={toggleSave} />
@@ -308,7 +308,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
 
   return (
     <div className={`fair-card-item${f.featured ? ' fair-featured' : ''}`} style={{
-      background: 'var(--cream)',
+      background: 'white',
       border: f.featured ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
       boxShadow: f.featured ? '0 4px 16px rgba(31,58,95,0.04)' : 'none',
       borderRadius: '18px',
@@ -552,8 +552,7 @@ function EmailAlerts() {
 
   return (
     <div style={{
-      background: 'rgba(248,248,246,0.05)',
-      border: '0.5px solid rgba(248,248,246,0.08)',
+      background: 'var(--dark-brown)',
       color: 'var(--cream)',
       borderRadius: '20px',
       padding: '40px 48px',

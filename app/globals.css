@@ -99,18 +99,6 @@ nav.scrolled {
 .dl-open   { background: #E8F4FA; color: #2A5070; border: 0.5px solid rgba(159,198,229,0.5); }
 .dl-closed { background: var(--beige); color: var(--tan); border: 0.5px solid rgba(207,227,242,0.4); }
 
-/* Tracker section on dark bg: invert pill colors */
-.tracker-section .pill {
-  color: rgba(248,248,246,0.6) !important;
-  border-color: rgba(248,248,246,0.12) !important;
-}
-.tracker-section .pill:hover { border-color: rgba(248,248,246,0.4) !important; }
-.tracker-section .pill.active {
-  background: rgba(248,248,246,0.9) !important;
-  color: var(--dark-brown) !important;
-  border-color: rgba(248,248,246,0.9) !important;
-}
-
 /* Pill filter buttons */
 .pill {
   font-family: var(--font-inter), sans-serif;
@@ -197,10 +185,10 @@ nav.scrolled {
   transition: all 0.25s ease;
   background: transparent;
 }
-.btn-secondary-hero:hover { background: var(--beige); }
+.btn-secondary-hero:hover { background: rgba(255,255,255,0.55); }
 .hero-fc-card:hover {
-  background: rgba(248,248,246,0.07) !important;
-  border-color: rgba(248,248,246,0.2) !important;
+  background: rgba(255,255,255,0.88) !important;
+  border-color: rgba(107,163,200,0.25) !important;
 }
 
 /* Services */
