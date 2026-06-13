@@ -95,7 +95,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     status:              (initial?.status         ?? 'awaiting_payment') as OrderStatus,
     tracking_number:     initial?.tracking_number ?? '',
     notes:               initial?.notes           ?? '',
-    customer_notes:      initial?.customer_notes  ?? '',
+    customer_notes:      initial?.customer_notes  ?? 'Thank you for shopping with us!',
     paid_1_amount:       initial?.paid_1_amount   ?? '',
     paid_1_date:         initial?.paid_1_date     ?? '',
     paid_1_via:          initial?.paid_1_via      ?? 'jin',
@@ -111,7 +111,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     paid_3_via:          initial?.paid_3_via      ?? 'jin',
     paid_3_transfer_fee: initial?.paid_3_transfer_fee ?? '',
     jin_received_3:      init3Amt && init3Fee ? String(init3Amt - init3Fee) : '',
-    actual_goods_cost:    initial?.actual_goods_cost ?? initial?.goods_total ?? '',
+    actual_goods_cost:    initial?.actual_goods_cost ?? '',
     actual_shipping_cost: initial?.actual_shipping_cost ?? '',
     runner_fee:           initial?.runner_fee ?? '',
   })
@@ -177,6 +177,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
   function removeItem(idx: number) { setItems(prev => prev.filter((_, i) => i !== idx)) }
 
   const [fxRate, setFxRate] = useState('9.5') // JPY → KRW
+  const manualActualCostRef = useRef(!!initial?.actual_goods_cost)
 
   useEffect(() => {
     fetch('https://api.frankfurter.app/latest?from=JPY&to=KRW')
@@ -202,7 +203,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     const unit    = form.currency === 'JPY' ? 100 : 1000
     const rounded = Math.ceil(rawFee / unit) * unit
     const fee     = Math.max(minFee, rounded)
-    setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: p.actual_goods_cost || String(subtotal) }))
+    setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: manualActualCostRef.current ? p.actual_goods_cost : String(subtotal) }))
   }, [items, form.currency, fxRate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [saveError, setSaveError] = useState<string | null>(null)
@@ -610,7 +611,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
           })()}
           <Field label="Actual goods cost">
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input style={{ ...inputStyle, maxWidth: '200px' }} type="text" inputMode="decimal" placeholder="0" value={form.actual_goods_cost} onChange={e => set('actual_goods_cost', e.target.value)} />
+              <input style={{ ...inputStyle, maxWidth: '200px' }} type="text" inputMode="decimal" placeholder="0" value={form.actual_goods_cost} onChange={e => { manualActualCostRef.current = true; set('actual_goods_cost', e.target.value) }} />
               <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)' }}>defaults to goods subtotal</span>
             </div>
           </Field>

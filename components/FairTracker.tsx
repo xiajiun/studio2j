@@ -414,8 +414,8 @@ function FairCard({ fair: f, today, saved, onSave }: {
               {f.url.includes('instagram') ? 'Instagram ↗' : 'Website ↗'}
             </a>
           )}
-          {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot')) && (
-            <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : '/catalogue/inventario-2026')} onClick={e => e.stopPropagation()}
+          {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot') || f.name.toLowerCase().includes('seoul illustration fair')) && (
+            <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : f.name.toLowerCase().includes('seoul illustration fair') ? '/catalogue/sif-v21' : '#')} onClick={e => e.stopPropagation()}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.1)', padding: '4px 10px', borderRadius: '99px' }}>
               See catalogue ↗
             </a>

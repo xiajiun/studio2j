@@ -49,6 +49,7 @@ Seoul + Tokyo personal shopping service, founded 2025. Jin is in Korea, Jo is in
 | `/` | Public | Homepage |
 | `/brands` | Public | Brand directory with logos |
 | `/markets` | Public | Live Twenty Style Korean illustrator markets |
+| `/catalogue/sif-v21` | Public | Seoul Illustration Fair V.21 brand catalogue |
 | `/catalogue/inventario-2026` | Public | INVENTARIO 2026 brand catalogue |
 | `/catalogue/dotdotexpress` | Public | DOTDOTDOT v.7 brand catalogue with interactive booth map |
 | `/order/new` | Public | Customer order form (translated EN/JA/ZH-TW) |
@@ -187,25 +188,33 @@ NEXT_PUBLIC_ADMIN_EMAIL=studio2j25@gmail.com
 
 ## Catalogue pages
 
+**Rule: always create a new `/catalogue/<slug>/` page for each new fair. Never reuse an existing catalogue page.**
+
+### `/catalogue/sif-v21`
+- Seoul Illustration Fair V.21
+- Brand grid with search + category filter (no booth map yet)
+- Brands stored in `catalogue_brands` table with `catalogue_id = 'sif-v21'`
+- Admin: `/admin/catalogue/sif-v21`
+- Categories: Illustration, Print & Zine, Art Goods, Stationery, Textile, Craft, Other
+
 ### `/catalogue/inventario-2026`
-- 88 brands from INVENTARIO 2026 (April 23–26, COEX Seoul)
-- Organized by 7 categories from the official PDF
-- Each brand: name, Korean name, Instagram link, country flag, favicon logo
-- Brand data hardcoded in `app/catalogue/inventario-2026/page.tsx`
+- INVENTARIO 2026 (June 10–14, COEX THE PLATZ HALL, Seoul)
+- Interactive booth map + brand grid with Instagram post strips
+- Brands stored in `catalogue_brands` table with `catalogue_id = 'inventario-2026'`
+- Admin: `/admin/catalogue/inventario-2026`
 
 ### `/catalogue/dotdotexpress`
 - DOTDOTDOT v.7 — 166 brands synced from official booth layout PDF
-- Interactive booth map (A01–K16): hover shows Instagram embed popup (380px, 520px iframe)
-- Each brand card shows inline Instagram embed (lazy loaded)
-- `BOOTH_LAYOUT` is the source of truth — brands not in map are removed
-- Brand data in `app/catalogue/dotdotexpress/page.tsx`
-- SQL needed: `ALTER TABLE fairs ADD COLUMN IF NOT EXISTS catalogue_url text;`
+- Interactive booth map (A01–K16): hover shows Instagram embed popup
+- Brand data hardcoded in `app/catalogue/dotdotexpress/page.tsx`
 
 ---
 
 ## Fair catalogue links
 
 Fairs now have a `catalogue_url` field. FairTracker auto-shows "See catalogue ↗" for:
-- Any fair with `catalogue_url` set in DB
+- Any fair with `catalogue_url` set in DB (takes priority)
+- Any fair with "seoul illustration fair" in the name → `/catalogue/sif-v21`
 - Any fair with "inventario" in the name → `/catalogue/inventario-2026`
 - Any fair with "dotdot" in the name → `/catalogue/dotdotexpress`
+- For new fairs: set `catalogue_url` in the fairs table, or add a name match in `FairTracker.tsx`

@@ -13,7 +13,7 @@ export const FAIRS: Fair[] = [
   { id: 10, name: 'Illustrative Berlin',       city: 'Berlin',      country: 'Germany',   region: 'Europe',        date: '2026-09-18', deadline: '2026-06-30', types: ['illustration','art'],        featured: false, going: false },
   { id: 11, name: 'NY Art Book Fair',          city: 'New York',    country: 'USA',       region: 'North America', date: '2026-10-17', deadline: '2026-07-01', types: ['zine','art'],                featured: false, going: false },
   { id: 12, name: 'Grafik Fiera',              city: 'Milan',       country: 'Italy',     region: 'Europe',        date: '2026-10-03', deadline: '2026-07-20', types: ['illustration','art'],        featured: false, going: false },
-  { id: 13, name: 'Seoul Illustration Fair',   city: 'Seoul',       country: 'Korea',     region: 'Asia',          date: '2026-11-20', deadline: '2026-08-31', types: ['illustration'],              featured: true,  going: true,  notes: 'Our biggest haul event of the year' },
+  { id: 13, name: 'Seoul Illustration Fair V.21', city: 'Seoul',     country: 'Korea',     region: 'Asia',          date: '2026-11-20', deadline: '2026-08-31', types: ['illustration'],              featured: true,  going: true,  notes: 'Our biggest haul event of the year' },
   { id: 14, name: 'Paper & Pen Tokyo',         city: 'Tokyo',       country: 'Japan',     region: 'Asia',          date: '2026-11-05', deadline: '2026-09-01', types: ['stationery'],               featured: false, going: true },
 ]
 

@@ -5,6 +5,13 @@ import Link from 'next/link'
 
 const CATALOGUES = [
   {
+    id: 'sif-v21',
+    name: 'Seoul Illustration Fair V.21',
+    description: '2026 · Seoul',
+    href: '/admin/catalogue/sif-v21',
+    public: '/catalogue/sif-v21',
+  },
+  {
     id: 'inventario-2026',
     name: 'INVENTARIO 2026',
     description: 'June 10–14, 2026 · COEX THE PLATZ HALL, Seoul',
