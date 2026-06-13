@@ -26,19 +26,6 @@ export default function PolicyPage() {
             </p>
           </div>
 
-          {/* Jump links */}
-          <nav style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '64px' }}>
-            {[
-              { href: '#privacy',  label: 'Privacy Policy' },
-              { href: '#terms',    label: 'Terms of Service' },
-              { href: '#refunds',  label: 'Refund Policy' },
-            ].map(({ href, label }) => (
-              <a key={href} href={href} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--dark-brown)', textDecoration: 'none', padding: '8px 18px', borderRadius: '99px', border: '0.5px solid rgba(122,92,69,0.2)', background: 'white' }}>
-                {label}
-              </a>
-            ))}
-          </nav>
-
           {/* Privacy Policy */}
           <Section id="privacy" title="Privacy Policy">
             <P>Studio2J ("we", "us") operates the personal shopping service at studio2j.pages.dev. This policy explains what personal data we collect and how we use it.</P>
