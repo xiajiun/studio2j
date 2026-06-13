@@ -174,15 +174,25 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
   }
   function removeItem(idx: number) { setItems(prev => prev.filter((_, i) => i !== idx)) }
 
+  const [fxRate, setFxRate] = useState('9.5') // JPY → KRW
+
+  useEffect(() => {
+    fetch('https://api.frankfurter.app/latest?from=JPY&to=KRW')
+      .then(r => r.json())
+      .then(d => { if (d.rates?.KRW) setFxRate(String(Math.round(d.rates.KRW * 100) / 100)) })
+      .catch(() => {})
+  }, [])
+
   // Auto-calculate goods_total and service_fee from items
   useEffect(() => {
+    const rate = parseFloat(fxRate) || 1
     const subtotal = items.reduce((sum, item) => {
-      const manual = parseFloat(item.total) || 0
-      if (manual > 0) return sum + manual
-      const price   = parseFloat(item.price)   || 0
-      const qty     = parseInt(item.qty)        || 0
-      const dom_del = parseFloat(item.dom_del)  || 0
-      return sum + price * qty + dom_del
+      const raw = parseFloat(item.total) || ((parseFloat(item.price) || 0) * (parseInt(item.qty) || 0) + (parseFloat(item.dom_del) || 0))
+      if (!raw) return sum
+      if (item.item_ccy === form.currency) return sum + raw
+      if (form.currency === 'KRW' && item.item_ccy === 'JPY') return sum + Math.round(raw * rate)
+      if (form.currency === 'JPY' && item.item_ccy === 'KRW') return sum + Math.round(raw / rate)
+      return sum + raw
     }, 0)
     if (subtotal === 0) return
     const minFee  = form.currency === 'JPY' ? 2500 : 25000
@@ -191,7 +201,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     const rounded = Math.ceil(rawFee / unit) * unit
     const fee     = Math.max(minFee, rounded)
     setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: p.actual_goods_cost || String(subtotal) }))
-  }, [items, form.currency]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [items, form.currency, fxRate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [saveError, setSaveError] = useState<string | null>(null)
 
@@ -429,6 +439,19 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
         <button type="button" onClick={addItem} style={{ marginTop: '8px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'var(--brown)', background: 'none', border: '0.5px solid rgba(122,92,69,0.2)', borderRadius: '99px', padding: '7px 16px', cursor: 'pointer' }}>
           + Add item
         </button>
+        {items.some(i => i.item_ccy !== form.currency) && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', padding: '8px 12px', background: 'rgba(31,58,95,0.05)', borderRadius: '8px', border: '0.5px solid rgba(31,58,95,0.1)' }}>
+            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'var(--dark-blue)', whiteSpace: 'nowrap' }}>1 JPY =</span>
+            <input
+              style={{ ...inputStyle, width: '80px', padding: '6px 10px', fontSize: '12px' }}
+              type="text" inputMode="decimal"
+              value={fxRate}
+              onChange={e => setFxRate(e.target.value)}
+            />
+            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'var(--dark-blue)', whiteSpace: 'nowrap' }}>{form.currency}</span>
+            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>· auto-fetched, editable</span>
+          </div>
+        )}
         <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginTop: '8px' }}>
           Dom.del = domestic delivery fee (included in total)
         </p>
