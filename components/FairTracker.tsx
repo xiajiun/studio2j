@@ -165,8 +165,8 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           alignItems: 'center',
           marginBottom: '32px',
           padding: '16px 0',
-          borderTop: '0.5px solid rgba(122,92,69,0.1)',
-          borderBottom: '0.5px solid rgba(122,92,69,0.1)',
+          borderTop: '0.5px solid rgba(107,163,200,0.15)',
+          borderBottom: '0.5px solid rgba(107,163,200,0.15)',
         }}>
           <span style={{
             fontFamily: 'var(--font-fraunces), serif',
@@ -186,7 +186,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               maxWidth: '280px',
               padding: '9px 18px',
               borderRadius: '99px',
-              border: '0.5px solid rgba(122,92,69,0.2)',
+              border: '0.5px solid rgba(107,163,200,0.2)',
               background: 'var(--cream)',
               color: 'var(--dark-brown)',
               fontFamily: 'var(--font-inter), sans-serif',
@@ -233,7 +233,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
                   color: 'var(--brown)',
                   letterSpacing: '0.01em',
                 }}>{month}</span>
-                <span style={{ flex: 1, height: '0.5px', background: 'rgba(122,92,69,0.15)' }} />
+                <span style={{ flex: 1, height: '0.5px', background: 'rgba(107,163,200,0.2)' }} />
               </div>
               {fairs.map(f => (
                 <FairCard key={f.id} fair={f} today={today} saved={saved} onSave={toggleSave} />
@@ -309,7 +309,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
   return (
     <div className={`fair-card-item${f.featured ? ' fair-featured' : ''}`} style={{
       background: 'var(--cream)',
-      border: f.featured ? '0.5px solid rgba(31,58,95,0.25)' : '0.5px solid rgba(122,92,69,0.15)',
+      border: f.featured ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
       boxShadow: f.featured ? '0 4px 16px rgba(31,58,95,0.04)' : 'none',
       borderRadius: '18px',
       overflow: 'hidden',
@@ -319,7 +319,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
     }}>
       <div style={{ display: 'flex', alignItems: 'stretch' }}>
         {f.image_url && (
-          <div style={{ width: '140px', flexShrink: 0, background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          <div style={{ width: '140px', flexShrink: 0, background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
             <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
           </div>
         )}
@@ -361,7 +361,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
                   textTransform: 'uppercase',
                   padding: '4px 10px',
                   borderRadius: '99px',
-                  background: 'var(--beige)',
+                  background: 'rgba(107,163,200,0.1)',
                   color: 'var(--brown)',
                 }}>Featured</span>
               : null
@@ -378,9 +378,9 @@ function FairCard({ fair: f, today, saved, onSave }: {
           marginBottom: '14px',
         }}>
           <span>{f.city}</span>
-          <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+          <span style={{ color: 'rgba(168,203,224,0.5)' }}>·</span>
           <span>{f.country}</span>
-          <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+          <span style={{ color: 'rgba(168,203,224,0.5)' }}>·</span>
           <span>{f.region}</span>
         </div>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -392,7 +392,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
               padding: '4px 11px',
               borderRadius: '99px',
               letterSpacing: '0.02em',
-              background: 'var(--beige)',
+              background: 'rgba(107,163,200,0.08)',
               color: 'var(--brown)',
             }}>{t}</span>
           ))}
@@ -410,13 +410,13 @@ function FairCard({ fair: f, today, saved, onSave }: {
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px' }}>
           {f.url && (
             <a href={f.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.06)', padding: '4px 10px', borderRadius: '99px' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.08)', padding: '4px 10px', borderRadius: '99px' }}>
               {f.url.includes('instagram') ? 'Instagram ↗' : 'Website ↗'}
             </a>
           )}
           {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot') || f.name.toLowerCase().includes('seoul illustration fair')) && (
             <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : f.name.toLowerCase().includes('seoul illustration fair') ? '/catalogue/sif-v21' : '#')} onClick={e => e.stopPropagation()}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.1)', padding: '4px 10px', borderRadius: '99px' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.1)', padding: '4px 10px', borderRadius: '99px' }}>
               See catalogue ↗
             </a>
           )}
@@ -457,8 +457,8 @@ function FairCard({ fair: f, today, saved, onSave }: {
             fontWeight: 400,
             padding: '5px 12px',
             borderRadius: '7px',
-            border: isSaved ? '0.5px solid rgba(31,58,95,0.25)' : '0.5px solid rgba(122,92,69,0.2)',
-            background: isSaved ? 'var(--beige)' : 'transparent',
+            border: isSaved ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
+            background: isSaved ? 'rgba(107,163,200,0.1)' : 'transparent',
             color: isSaved ? 'var(--dark-blue)' : 'var(--brown)',
             cursor: 'pointer',
             transition: 'all 0.2s',
@@ -472,7 +472,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
         <form
           onSubmit={submitEmail}
           onClick={e => e.stopPropagation()}
-          style={{ gridColumn: '1 / -1', borderTop: '0.5px solid rgba(122,92,69,0.1)', paddingTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}
+          style={{ gridColumn: '1 / -1', borderTop: '0.5px solid rgba(107,163,200,0.15)', paddingTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}
         >
           <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', flexShrink: 0 }}>
             Get a reminder email:
@@ -486,7 +486,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
             onChange={e => setEmailVal(e.target.value)}
             style={{
               flex: 1, minWidth: '180px', padding: '8px 16px', borderRadius: '99px',
-              border: '0.5px solid rgba(122,92,69,0.25)', background: 'white',
+              border: '0.5px solid rgba(107,163,200,0.25)', background: 'var(--cream)',
               fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
               color: 'var(--dark-brown)', outline: 'none',
             }}
@@ -516,7 +516,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
         }
         .fc-save-btn:hover {
           border-color: var(--brown) !important;
-          background: var(--beige) !important;
+          background: rgba(107,163,200,0.1) !important;
         }
         @media (max-width: 1000px) {
           .fair-card-item { grid-template-columns: 1fr !important; gap: 16px !important; }
@@ -552,7 +552,7 @@ function EmailAlerts() {
 
   return (
     <div style={{
-      background: 'var(--dark-blue)',
+      background: 'var(--dark-brown)',
       color: 'var(--cream)',
       borderRadius: '20px',
       padding: '40px 48px',

@@ -7,7 +7,7 @@ export default function OrderCTA() {
   const o = t.order
 
   return (
-    <section id="order" className="order-section" style={{ background: 'var(--dark-blue)', padding: '140px 0' }}>
+    <section id="order" className="order-section" style={{ background: 'var(--dark-brown)', padding: '140px 0' }}>
       <div className="container">
         <div className="order-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '72px', alignItems: 'center' }}>
           <div>

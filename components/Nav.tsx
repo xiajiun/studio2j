@@ -71,7 +71,7 @@ export default function Nav() {
                   color: lang === code ? 'var(--dark-brown)' : 'var(--tan)',
                   background: 'none', border: 'none', cursor: 'pointer',
                   padding: '4px 6px',
-                  borderRight: i < LANGS.length - 1 ? '0.5px solid rgba(122,92,69,0.2)' : 'none',
+                  borderRight: i < LANGS.length - 1 ? '0.5px solid rgba(107,163,200,0.2)' : 'none',
                   transition: 'color 0.15s',
                   letterSpacing: '0.02em',
                 }}
@@ -81,7 +81,7 @@ export default function Nav() {
             ))}
           </div>
 
-          <a href="/order/new" className="nav-cta-btn" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, letterSpacing: '0.04em', padding: '10px 22px', borderRadius: '99px', textDecoration: 'none', transition: 'all 0.2s ease', whiteSpace: 'nowrap' }}>
+          <a href="/order/new" className="nav-cta-btn" style={{ background: '#F3E3A1', color: 'var(--dark-brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, letterSpacing: '0.04em', padding: '10px 22px', borderRadius: '99px', textDecoration: 'none', transition: 'all 0.2s ease', whiteSpace: 'nowrap' }}>
             {t.nav.placeOrder}
           </a>
         </div>
@@ -92,7 +92,7 @@ export default function Nav() {
         <div className="nav-mobile-menu" style={{
           position: 'fixed', top: '60px', left: 0, right: 0, zIndex: 998,
           background: 'rgba(245,239,230,0.98)', backdropFilter: 'blur(12px)',
-          borderBottom: '0.5px solid rgba(122,92,69,0.12)',
+          borderBottom: '0.5px solid rgba(107,163,200,0.1)',
           padding: '12px 24px 20px',
           display: 'flex', flexDirection: 'column', gap: '2px',
         }}>
@@ -100,13 +100,13 @@ export default function Nav() {
             <a key={href} href={href} onClick={() => setMobileOpen(false)} style={{
               fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300,
               color: 'var(--brown)', textDecoration: 'none',
-              padding: '10px 0', borderBottom: '0.5px solid rgba(122,92,69,0.06)',
+              padding: '10px 0', borderBottom: '0.5px solid rgba(107,163,200,0.08)',
             }}>{label}</a>
           ))}
           <a href="/order/new" onClick={() => setMobileOpen(false)} style={{
             display: 'inline-block', marginTop: '12px',
             fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
-            background: 'var(--dark-blue)', color: 'var(--cream)',
+            background: '#F3E3A1', color: 'var(--dark-brown)',
             padding: '12px 24px', borderRadius: '99px', textDecoration: 'none', textAlign: 'center',
           }}>{t.nav.placeOrder}</a>
         </div>

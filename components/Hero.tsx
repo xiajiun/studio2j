@@ -48,7 +48,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
       </div>
 
       {/* Right */}
-      <div className="hero-right" style={{ background: 'var(--dark-blue)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
+      <div className="hero-right" style={{ background: 'var(--dark-brown)', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
 
         {/* Market image carousel — 2 rows scrolling opposite directions */}
         {markets.length > 0 && (() => {
@@ -82,12 +82,12 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
                   ))}
                 </div>
               </div>
-              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, var(--dark-blue))', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
+              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, var(--dark-brown))', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
             </div>
           )
         })()}
 
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(200,169,141,0.08), transparent 50%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(74,138,181,0.06), transparent 50%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', maxWidth: '440px', alignSelf: 'center' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--tan)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'var(--tan)', display: 'inline-block' }} />
@@ -112,8 +112,8 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
   chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean; shopLabel?: string
 }) {
   const chipStyle = chipVariant === 'urgent'
-    ? { background: 'rgba(200,169,141,0.18)', color: '#E6C9AE', border: '0.5px solid rgba(200,169,141,0.3)' }
-    : { background: 'rgba(74,106,138,0.18)', color: '#9FB7D4', border: '0.5px solid rgba(74,106,138,0.3)' }
+    ? { background: 'rgba(243,227,161,0.18)', color: '#D4C06A', border: '0.5px solid rgba(243,227,161,0.3)' }
+    : { background: 'rgba(74,138,181,0.18)', color: '#9FB7D4', border: '0.5px solid rgba(74,138,181,0.3)' }
 
   return (
     <div
@@ -131,7 +131,7 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
             <a
               href={shopUrl}
               {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
-              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#C8A98D', textDecoration: 'none', border: '0.5px solid rgba(200,169,141,0.35)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
+              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--tan)', textDecoration: 'none', border: '0.5px solid rgba(168,203,224,0.35)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
             >
               {shopLabel
                 ? `${shopLabel} ↗`

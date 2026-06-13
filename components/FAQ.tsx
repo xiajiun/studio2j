@@ -50,12 +50,12 @@ export default function FAQ() {
         <div id="order-form-modal" style={{ maxWidth: '820px', margin: '0 auto' }}>
           {CATEGORIES.map(cat => (
             <div key={cat.title} style={{ marginBottom: '56px' }}>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 400, fontSize: '20px', color: 'var(--dark-blue)', marginBottom: '20px', paddingBottom: '12px', borderBottom: '0.5px solid rgba(122,92,69,0.15)' }}>{cat.title}</div>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 400, fontSize: '20px', color: 'var(--dark-blue)', marginBottom: '20px', paddingBottom: '12px', borderBottom: '0.5px solid rgba(107,163,200,0.15)' }}>{cat.title}</div>
               {cat.items.map((item, idx) => {
                 const key = `${cat.title}-${idx}`
                 const isOpen = !!open[key]
                 return (
-                  <div key={key} className={`faq-item${isOpen ? ' open' : ''}`} onClick={() => toggle(key)} style={{ borderBottom: '0.5px solid rgba(122,92,69,0.12)', padding: '22px 0', cursor: 'pointer', transition: 'all 0.2s' }}>
+                  <div key={key} className={`faq-item${isOpen ? ' open' : ''}`} onClick={() => toggle(key)} style={{ borderBottom: '0.5px solid rgba(107,163,200,0.15)', padding: '22px 0', cursor: 'pointer', transition: 'all 0.2s' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
                       <span style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 400, fontSize: '17px', color: 'var(--dark-brown)', letterSpacing: '-0.01em', flex: 1 }}>{item.q}</span>
                       <span className="faq-icon" style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 300, color: 'var(--brown)', flexShrink: 0 }}>+</span>

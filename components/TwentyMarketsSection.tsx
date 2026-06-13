@@ -20,11 +20,11 @@ function MarketCard({ m }: { m: TwentyMarket }) {
       href={url}
       target="_blank"
       rel="noreferrer"
-      style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', background: 'var(--cream)', borderRadius: '16px', overflow: 'hidden', border: '0.5px solid rgba(122,92,69,0.1)', transition: 'transform 0.2s, box-shadow 0.2s' }}
+      style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', background: 'var(--cream)', borderRadius: '16px', overflow: 'hidden', border: '0.5px solid rgba(107,163,200,0.15)', transition: 'transform 0.2s, box-shadow 0.2s' }}
       className="twenty-market-card"
     >
       {/* Cover image */}
-      <div style={{ width: '100%', aspectRatio: '1', background: 'var(--beige)', overflow: 'hidden' }}>
+      <div style={{ width: '100%', aspectRatio: '1', background: 'var(--cream)', overflow: 'hidden' }}>
         {imgOk ? (
           <img
             src={imgSrc}
@@ -66,13 +66,13 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
   const markets = rawMarkets.filter(x => !x.market_name.includes('테스트'))
 
   if (markets.length === 0) return (
-    <section style={{ background: 'var(--beige)', padding: standalone ? '160px 0' : '100px 0', textAlign: 'center' }}>
+    <section style={{ background: 'var(--cream)', padding: standalone ? '160px 0' : '100px 0', textAlign: 'center' }}>
       <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>{m.empty}</p>
     </section>
   )
 
   return (
-    <section id="twenty-markets" style={{ background: 'var(--beige)', padding: standalone ? '120px 0 100px' : '100px 0' }}>
+    <section id="twenty-markets" style={{ background: 'var(--cream)', padding: standalone ? '120px 0 100px' : '100px 0' }}>
       <div className="container">
         {/* Header */}
         <div style={{ marginBottom: '48px' }}>
@@ -85,7 +85,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
               {m.title}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{m.titleEm}</em>
             </h2>
             <a href="/markets"
-              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(122,92,69,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(107,163,200,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
               {m.seeAll}
             </a>
           </div>
