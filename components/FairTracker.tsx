@@ -75,7 +75,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   ]
 
   return (
-    <section id="tracker" style={{ padding: '140px 0' }} className="tracker-section">
+    <section id="tracker" style={{ padding: '140px 0', background: 'var(--dark-brown)' }} className="tracker-section">
       <div className="container">
         {/* Head */}
         <div style={{
@@ -91,13 +91,13 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontStyle: 'italic',
               fontWeight: 300,
               fontSize: '18px',
-              color: 'var(--brown)',
+              color: 'var(--tan)',
               marginBottom: '20px',
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
             }}>
-              <span style={{ width: '40px', height: '0.5px', background: 'var(--tan)', display: 'inline-block' }} />
+              <span style={{ width: '40px', height: '0.5px', background: 'rgba(168,203,224,0.4)', display: 'inline-block' }} />
               <span className="live-dot" />{tr.eyebrow}
             </div>
             <h2 style={{
@@ -106,9 +106,9 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontSize: 'clamp(42px, 4.5vw, 64px)',
               lineHeight: '1.04',
               letterSpacing: '-0.03em',
-              color: 'var(--dark-brown)',
+              color: 'var(--cream)',
             }}>
-              {tr.title1}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{tr.titleEm}</em>{tr.title2}
+              {tr.title1}<em style={{ fontStyle: 'italic', color: 'var(--tan)', fontWeight: 300 }}>{tr.titleEm}</em>{tr.title2}
             </h2>
           </div>
           {/* Stats */}
@@ -128,14 +128,14 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
                   fontFamily: 'var(--font-fraunces), serif',
                   fontWeight: 300,
                   fontSize: '48px',
-                  color: 'var(--dark-blue)',
+                  color: 'var(--tan)',
                   lineHeight: '1',
                   letterSpacing: '-0.03em',
                 }}>{num}</div>
                 <div style={{
                   fontFamily: 'var(--font-inter), sans-serif',
                   fontSize: '11px',
-                  color: 'var(--tan)',
+                  color: 'rgba(248,248,246,0.4)',
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   marginTop: '10px',
@@ -150,7 +150,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           fontSize: '15px',
           fontWeight: 300,
           lineHeight: '1.75',
-          color: 'var(--brown)',
+          color: 'rgba(248,248,246,0.6)',
           maxWidth: '680px',
           marginBottom: '40px',
         }}>
@@ -165,14 +165,14 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           alignItems: 'center',
           marginBottom: '32px',
           padding: '16px 0',
-          borderTop: '0.5px solid rgba(107,163,200,0.15)',
-          borderBottom: '0.5px solid rgba(107,163,200,0.15)',
+          borderTop: '0.5px solid rgba(248,248,246,0.08)',
+          borderBottom: '0.5px solid rgba(248,248,246,0.08)',
         }}>
           <span style={{
             fontFamily: 'var(--font-fraunces), serif',
             fontStyle: 'italic',
             fontSize: '14px',
-            color: 'var(--tan)',
+            color: 'rgba(248,248,246,0.4)',
             marginRight: '12px',
           }}>{tr.filterLabel}</span>
           <input
@@ -186,9 +186,9 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               maxWidth: '280px',
               padding: '9px 18px',
               borderRadius: '99px',
-              border: '0.5px solid rgba(107,163,200,0.2)',
-              background: 'var(--cream)',
-              color: 'var(--dark-brown)',
+              border: '0.5px solid rgba(248,248,246,0.12)',
+              background: 'rgba(248,248,246,0.06)',
+              color: 'var(--cream)',
               fontFamily: 'var(--font-inter), sans-serif',
               fontSize: '13px',
               fontWeight: 300,
@@ -215,7 +215,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
               fontFamily: 'var(--font-fraunces), serif',
               fontStyle: 'italic',
               fontSize: '18px',
-              color: 'var(--tan)',
+              color: 'rgba(248,248,246,0.4)',
             }}>{tr.noFairs}</div>
           ) : groups.map(({ month, fairs }) => (
             <div key={month}>
@@ -230,10 +230,10 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
                   fontStyle: 'italic',
                   fontWeight: 300,
                   fontSize: '20px',
-                  color: 'var(--brown)',
+                  color: 'rgba(248,248,246,0.45)',
                   letterSpacing: '0.01em',
                 }}>{month}</span>
-                <span style={{ flex: 1, height: '0.5px', background: 'rgba(107,163,200,0.2)' }} />
+                <span style={{ flex: 1, height: '0.5px', background: 'rgba(248,248,246,0.08)' }} />
               </div>
               {fairs.map(f => (
                 <FairCard key={f.id} fair={f} today={today} saved={saved} onSave={toggleSave} />
@@ -552,7 +552,8 @@ function EmailAlerts() {
 
   return (
     <div style={{
-      background: 'var(--dark-brown)',
+      background: 'rgba(248,248,246,0.05)',
+      border: '0.5px solid rgba(248,248,246,0.08)',
       color: 'var(--cream)',
       borderRadius: '20px',
       padding: '40px 48px',
