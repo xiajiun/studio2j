@@ -54,6 +54,7 @@ export default function Footer() {
             { href: '/#how',      label: f.linkHow },
             { href: '/about',     label: f.linkAbout },
             { href: '/#faq',      label: f.linkFaq },
+            { href: '/policy',    label: 'Policies' },
           ]} />
 
           <div>

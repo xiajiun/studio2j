@@ -52,6 +52,7 @@ Seoul + Tokyo personal shopping service, founded 2025. Jin is in Korea, Jo is in
 | `/catalogue/sif-v21` | Public | Seoul Illustration Fair V.21 brand catalogue |
 | `/catalogue/inventario-2026` | Public | INVENTARIO 2026 brand catalogue |
 | `/catalogue/dotdotexpress` | Public | DOTDOTDOT v.7 brand catalogue with interactive booth map |
+| `/policy` | Public | Privacy Policy, Terms of Service, Refund Policy |
 | `/order/new` | Public | Customer order form (translated EN/JA/ZH-TW) |
 | `/order/[number]` | Public | Order tracking (no login, tracking number links to carrier) |
 | `/invoice/[number]` | Public | Customer-facing invoice (print/PDF, single invoice) |
