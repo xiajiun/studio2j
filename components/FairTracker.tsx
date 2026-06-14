@@ -75,7 +75,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   ]
 
   return (
-    <section id="tracker" style={{ padding: '140px 0', background: '#FBF6DC' }} className="tracker-section">
+    <section id="tracker" style={{ padding: '140px 0', background: '#FEFAF0' }} className="tracker-section">
       <div className="container">
         {/* Head */}
         <div style={{

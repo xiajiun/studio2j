@@ -12,7 +12,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
   const { t } = useLang()
 
   return (
-    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', paddingTop: '90px', overflow: 'hidden', background: '#FBF6DC' }}>
+    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
       {/* Left */}
       <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 48px 80px 80px', position: 'relative' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
@@ -82,7 +82,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
                   ))}
                 </div>
               </div>
-              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, #FBF6DC)', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
+              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, #FEFAF0)', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
             </div>
           )
         })()}
