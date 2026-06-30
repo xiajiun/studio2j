@@ -34,6 +34,7 @@ export default async function Home() {
   if (fairs.length === 0) {
     fairs = FAIRS.map(f => ({
       ...f,
+      kind:          null,
       url:           null,
       image_url:     null,
       catalogue_url: null,
