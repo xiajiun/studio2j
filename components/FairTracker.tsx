@@ -301,6 +301,19 @@ function FairCard({ fair: f, today, saved, onSave }: {
             color: 'var(--dark-brown)',
             letterSpacing: '-0.01em',
           }}>{f.name}</span>
+          {f.kind === 'popup' && (
+            <span style={{
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '9px',
+              fontWeight: 500,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              padding: '4px 10px',
+              borderRadius: '99px',
+              background: 'rgba(243,227,161,0.5)',
+              color: '#7A6010',
+            }}>Popup</span>
+          )}
           {f.going
             ? <span style={{
                 fontFamily: 'var(--font-inter), sans-serif',
