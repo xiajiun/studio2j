@@ -9,7 +9,7 @@ const en = {
   hero: {
     eyebrow: 'Proxy buying · Seoul and Tokyo · Est. 2025',
     line1: 'Korean and', line2: 'Japanese shops,', lineEm: 'delivered.',
-    body: "Send us a link from any Korean or Japanese shop that won't ship to you — we'll buy it and ship it worldwide. Browse our live market tracker and live fair & popup tracker to see what's open right now.",
+    body: "We physically show up — at illustration fairs, stationery events, and pop-up shops across Korea and Japan. We also proxy buy from any Korean or Japanese shop that won't ship to you. Browse our live trackers, pick what you want, and send us your wishlist.",
     cta1: 'Live market tracker →', cta2: 'Live fair & popup tracker →',
     trustFairs: 'Fairs tracked', trustMarkets: 'Markets live now',
     stackLabel: 'What we handle, every day',
@@ -31,7 +31,7 @@ const en = {
     s3Body: "Hunting a specific artist, out-of-stock item, or niche Korean brand? DM us the details and we'll source it in Seoul or Tokyo — even if it means visiting the shop in person.",
     s3Best: 'Best for', s3Val: 'bespoke sourcing',
     feeLabel: 'Service fee',
-    feeText: 'Minimum ₩25,000 / ¥2,500 per order, or 15% of total goods value — whichever is higher. For fair and popup hauls, a runner fee is added per venue we physically attend on your behalf. If your order covers multiple fairs or pop-up shops, each venue counts as one runner fee — e.g., one fair + one popup = two venue fees. Everything — item cost, service fee, runner fee (if any), and shipping — is confirmed in one invoice before we purchase.',
+    feeText: 'Minimum ₩25,000 / ¥2,500 per order, or 15% of total goods value — whichever is higher. For fair and popup hauls, a runner fee (transport & errand fee) is added per venue we physically attend on your behalf. If your order covers multiple fairs or pop-up shops, each venue counts as one runner fee — e.g., one fair + one popup = two venue fees. Everything — item cost, service fee, runner fee (if any), and shipping — is confirmed in one invoice before we purchase.',
   },
   tracker: {
     eyebrow: 'Why you can trust us',
@@ -167,7 +167,7 @@ const ja: typeof en = {
   hero: {
     eyebrow: '代理購入・ソウル・2025年設立',
     line1: '韓国の', line2: 'ショップを、', lineEm: 'お届けします。',
-    body: '日本から直接購入できない韓国のショップへのリンクを送ってください。ソウルで代わりに購入し、世界中にお届けします。ライブマーケットトラッカーとライブフェア＆ポップアップトラッカーで今すぐ確認できます。',
+    body: '韓国のイラスト・文具フェアやポップアップショップに実際に参加しています。海外発送を行っていない韓国のショップへの代理購入も対応しています。ライブトラッカーで気になるフェアや商品を探して、締め切り前にウィッシュリストをお送りください。',
     cta1: 'ライブマーケット →', cta2: 'ライブフェア＆ポップアップ →',
     trustFairs: '追跡中のフェア', trustMarkets: '開催中のマーケット',
     stackLabel: '毎日対応している業務',
@@ -325,7 +325,7 @@ const zhTW: typeof en = {
   hero: {
     eyebrow: '代購・首爾 & 東京・2025年創立',
     line1: '韓國・日本', line2: '商品，', lineEm: '直送到府。',
-    body: '傳送任何不送海外的韓日商店連結，我們代為購買並送達全球。立即查看我們的即時市集追蹤器和即時展覽 & 快閃追蹤器，了解現在有什麼開放中。',
+    body: '我們親赴韓國與日本的插畫展覽、文具活動及快閃店現場採購，同時也代購任何不送海外的韓日商店商品。查看我們的即時追蹤器，找到您想要的，截止前傳送願望清單。',
     cta1: '即時市集 →', cta2: '即時展覽 & 快閃 →',
     trustFairs: '追蹤展覽', trustMarkets: '即時開放市集',
     stackLabel: '我們每天處理的訂單',

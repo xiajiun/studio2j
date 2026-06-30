@@ -94,7 +94,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
 
         {/* See all button */}
         <div style={{ marginTop: '32px', textAlign: 'center' }}>
-          <a href="/markets" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(107,163,200,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-block' }}>
+          <a href="/markets" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--cream)', textDecoration: 'none', background: 'var(--dark-blue)', padding: '11px 28px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-block', border: 'none' }}>
             {m.seeAll}
           </a>
         </div>

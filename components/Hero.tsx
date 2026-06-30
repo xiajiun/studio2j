@@ -103,6 +103,11 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
             {t.hero.stackLabel}
           </div>
 
+          {nextFair?.image_url && (
+            <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '14px', height: '130px' }}>
+              <img src={nextFair.image_url} alt={nextFair.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+          )}
           <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
           {nextFair ? (
             <HeroCard name={nextFair.name} loc={`${nextFair.kind === 'popup' ? 'Popup' : 'Fair'} haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.15s" shopUrl={fairCatalogueUrl(nextFair)} shopLabel={fairCatalogueUrl(nextFair) ? 'See catalogue' : undefined} />
