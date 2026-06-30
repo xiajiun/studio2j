@@ -50,12 +50,6 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
     return true
   }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
-  const totalFairs = FAIRS.length
-  const deadlinesSoon = FAIRS.filter(f => {
-    const diff = (new Date(f.deadline).getTime() - today.getTime()) / 86400000
-    return diff >= 0 && diff <= 30
-  }).length
-
   // Group by month
   const groups: { month: string; fairs: FairRow[] }[] = []
   filtered.forEach(f => {
@@ -109,37 +103,6 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
             }}>
               {tr.title1}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{tr.titleEm}</em>{tr.title2}
             </h2>
-          </div>
-          {/* Stats */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '32px',
-            paddingBottom: '8px',
-          }} className="tracker-stats">
-            {[
-              { num: totalFairs, label: tr.statFairs },
-              { num: deadlinesSoon, label: tr.statSoon },
-            ].map(({ num, label }) => (
-              <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{
-                  fontFamily: 'var(--font-fraunces), serif',
-                  fontWeight: 300,
-                  fontSize: '48px',
-                  color: 'var(--dark-blue)',
-                  lineHeight: '1',
-                  letterSpacing: '-0.03em',
-                }}>{num}</div>
-                <div style={{
-                  fontFamily: 'var(--font-inter), sans-serif',
-                  fontSize: '11px',
-                  color: 'var(--tan)',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  marginTop: '10px',
-                }}>{label}</div>
-              </div>
-            ))}
           </div>
         </div>
 

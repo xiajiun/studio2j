@@ -84,10 +84,6 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
             <h2 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(36px, 4vw, 56px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)', margin: 0 }}>
               {m.title}<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{m.titleEm}</em>
             </h2>
-            <a href="/markets"
-              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(107,163,200,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
-              {m.seeAll}
-            </a>
           </div>
         </div>
 
@@ -96,10 +92,12 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
           {(maxItems ? markets.slice(0, maxItems) : markets).map(x => <MarketCard key={x.market_id} m={x} />)}
         </div>
 
-        {/* Footer note */}
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginTop: '32px', textAlign: 'center' }}>
-          {m.footerText} <a href="/order/new" style={{ color: 'var(--dark-blue)', textDecoration: 'none', fontWeight: 400 }}>{m.footerLink}</a>
-        </p>
+        {/* See all button */}
+        <div style={{ marginTop: '32px', textAlign: 'center' }}>
+          <a href="/markets" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(107,163,200,0.25)', padding: '10px 20px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-block' }}>
+            {m.seeAll}
+          </a>
+        </div>
       </div>
 
       <style jsx>{`

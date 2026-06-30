@@ -67,7 +67,7 @@ export default function PolicyPage() {
             <H3>Pricing and fees</H3>
             <ul style={ulStyle}>
               <li><strong>Service fee:</strong> 15% of the total goods value, with a minimum of ₩25,000 (KRW orders) or ¥2,500 (JPY orders), rounded up to the nearest ₩1,000 / ¥100.</li>
-              <li><strong>Runner / transportation fee:</strong> Applies to fair haul orders and in-store personal requests where we travel specifically to purchase on your behalf. The fee is confirmed per order before payment and is split across all customers attending the same fair where applicable. It is charged in addition to the service fee.</li>
+              <li><strong>Runner fee:</strong> Applies to in-person attendance at fairs and pop-up shops. One runner fee is charged per venue we attend on your behalf. If your order covers multiple venues — e.g., one fair and one popup — that counts as two runner fees. Charged in addition to the service fee and confirmed before payment.</li>
               <li><strong>International shipping:</strong> Quoted and confirmed per order based on weight and destination.</li>
             </ul>
 
