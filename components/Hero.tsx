@@ -104,7 +104,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           </div>
 
           <CardWithSideImage imageUrl="https://twenty.style/favicon.ico" imageFit="contain" imageBg="white">
-            <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" noMargin />
+            <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" shopLabel="View market" noMargin />
           </CardWithSideImage>
           {nextFair ? (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
@@ -166,7 +166,7 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
             <a
               href={shopUrl}
               {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
-              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(74,138,181,0.25)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
+              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(74,138,181,0.25)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}
             >
               {shopLabel
                 ? `${shopLabel} ↗︎`

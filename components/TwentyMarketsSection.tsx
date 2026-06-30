@@ -52,7 +52,7 @@ function MarketCard({ m }: { m: TwentyMarket }) {
         </div>
         <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
           <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)' }}>
-            Shop now ↗︎
+            View market ↗︎
           </span>
         </div>
       </div>

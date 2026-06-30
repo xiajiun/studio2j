@@ -410,30 +410,53 @@ function FairCard({ fair: f, today, saved, onSave }: {
             letterSpacing: '0.05em',
           }}>2026</div>
         </div>
-        <span className={`dl-chip ${dl.cls}`} style={{
-          fontFamily: 'var(--font-inter), sans-serif',
-          fontSize: '11px',
-          fontWeight: 500,
-          padding: '5px 12px',
-          borderRadius: '7px',
-          letterSpacing: '0.02em',
-        }}>{dl.label}</span>
-        <button
-          className={`fc-save-btn${isSaved ? ' saved' : ''}`}
-          onClick={handleSaveClick}
-          style={{
-            fontFamily: 'var(--font-inter), sans-serif',
-            fontSize: '11px',
-            fontWeight: 400,
-            padding: '5px 12px',
-            borderRadius: '7px',
-            border: isSaved ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
-            background: isSaved ? 'rgba(107,163,200,0.1)' : 'transparent',
-            color: isSaved ? 'var(--dark-blue)' : 'var(--brown)',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-          }}
-        >{isSaved ? 'Saved ✓' : 'Save'}</button>
+        {f.deadline ? (
+          <>
+            <span className={`dl-chip ${dl.cls}`} style={{
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '11px',
+              fontWeight: 500,
+              padding: '5px 12px',
+              borderRadius: '7px',
+              letterSpacing: '0.02em',
+            }}>{dl.label}</span>
+            <button
+              className={`fc-save-btn${isSaved ? ' saved' : ''}`}
+              onClick={handleSaveClick}
+              style={{
+                fontFamily: 'var(--font-inter), sans-serif',
+                fontSize: '11px',
+                fontWeight: 400,
+                padding: '5px 12px',
+                borderRadius: '7px',
+                border: isSaved ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
+                background: isSaved ? 'rgba(107,163,200,0.1)' : 'transparent',
+                color: isSaved ? 'var(--dark-blue)' : 'var(--brown)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >{isSaved ? 'Saved ✓' : 'Save'}</button>
+          </>
+        ) : (
+          <a
+            href="https://www.instagram.com/studio2j25/"
+            target="_blank"
+            rel="noreferrer"
+            onClick={e => e.stopPropagation()}
+            style={{
+              fontFamily: 'var(--font-inter), sans-serif',
+              fontSize: '11px',
+              fontWeight: 500,
+              padding: '6px 12px',
+              borderRadius: '7px',
+              border: '0.5px solid rgba(107,163,200,0.25)',
+              background: 'rgba(107,163,200,0.07)',
+              color: 'var(--dark-blue)',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >Request to attend →</a>
+        )}
       </div>
       </div> {/* end flex row */}
 
