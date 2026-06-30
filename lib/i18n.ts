@@ -22,7 +22,7 @@ const en = {
     title1: 'Everything Korea', title2: 'and Japan,', titleEm: 'shipped.',
     intro: "Proxy buying is our core service — any Korean or Japanese shop that won't ship to you, we buy on your behalf. We also attend fairs in person and take bespoke personal requests.",
     s1Title: 'Proxy', s1Em: 'buying',
-    s1Body: "Any Korean or Japanese website that won't ship to you — Twenty, Rakuten, brand shops, even limited-edition drops. Send us the link, we'll handle the rest. Our core service.",
+    s1Body: "Any Korean or Japanese website that won't ship to you — Twenty, Mercari, brand shops, even limited-edition drops. Send us the link, we'll handle the rest. Our core service.",
     s1Best: 'Best for', s1Val: 'region-locked shops',
     s2Title: 'Fair & popup haul', s2Em: 'orders',
     s2Body: 'We physically show up — at illustration fairs, stationery events, and pop-up shops across Korea and Japan. Browse our live tracker, pick a fair or popup we\'re attending, and send us your wishlist before the order deadline. This is not a link-based service; it\'s us, on the ground, shopping for you.',

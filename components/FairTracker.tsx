@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { formatDate } from '@/lib/fairs'
 import type { FairRow } from '@/lib/database.types'
 import { useLang } from '@/components/LangProvider'
@@ -230,6 +230,13 @@ function FairCard({ fair: f, today, saved, onSave }: {
   const [mode, setMode] = useState<'idle' | 'input' | 'saving' | 'done'>('idle')
   const [emailVal, setEmailVal] = useState('')
   const [err, setErr] = useState('')
+  const formRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (mode === 'input' && formRef.current) {
+      setTimeout(() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 150)
+    }
+  }, [mode])
 
   async function handleSaveClick(e: React.MouseEvent) {
     e.stopPropagation()
@@ -273,231 +280,97 @@ function FairCard({ fair: f, today, saved, onSave }: {
       border: f.featured ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
       boxShadow: f.featured ? '0 4px 16px rgba(31,58,95,0.04)' : 'none',
       borderRadius: '18px',
-      overflow: 'hidden',
       cursor: 'pointer',
       transition: 'all 0.25s ease',
       marginBottom: '10px',
+      overflow: 'hidden',
     }}>
       <div style={{ display: 'flex', alignItems: 'stretch' }}>
         {f.image_url && (
-          <div style={{ width: '140px', flexShrink: 0, background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          <div style={{ width: '140px', flexShrink: 0, background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: '18px 0 0 18px' }}>
             <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
           </div>
         )}
-        <div style={{
-          flex: 1,
-          padding: '24px 28px',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto',
-          gap: '24px',
-          alignItems: 'start',
-        }}>
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
-          <span style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 400,
-            fontSize: '20px',
-            color: 'var(--dark-brown)',
-            letterSpacing: '-0.01em',
-          }}>{f.name}</span>
-          <span style={{
-            fontFamily: 'var(--font-inter), sans-serif',
-            fontSize: '9px',
-            fontWeight: 500,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            padding: '4px 10px',
-            borderRadius: '99px',
-            background: f.kind === 'popup' ? 'rgba(243,227,161,0.5)' : 'rgba(107,163,200,0.08)',
-            color: f.kind === 'popup' ? '#7A6010' : 'var(--brown)',
-          }}>{f.kind === 'popup' ? 'Popup' : 'Fair'}</span>
-          {f.going
-            ? <span style={{
-                fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: '9px',
-                fontWeight: 500,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                padding: '4px 10px',
-                borderRadius: '99px',
-                background: 'var(--dark-blue)',
-                color: 'var(--cream)',
-              }}>We&apos;re attending</span>
-            : f.featured
-              ? <span style={{
-                  fontFamily: 'var(--font-inter), sans-serif',
-                  fontSize: '9px',
-                  fontWeight: 500,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  padding: '4px 10px',
-                  borderRadius: '99px',
-                  background: 'rgba(107,163,200,0.1)',
-                  color: 'var(--brown)',
-                }}>Featured</span>
-              : null
-          }
-        </div>
-        <div style={{
-          fontFamily: 'var(--font-inter), sans-serif',
-          fontSize: '13px',
-          fontWeight: 300,
-          color: 'var(--tan)',
-          display: 'flex',
-          gap: '10px',
-          flexWrap: 'wrap',
-          marginBottom: '14px',
-        }}>
-          <span>{f.city}</span>
-          <span style={{ color: 'rgba(168,203,224,0.5)' }}>·</span>
-          <span>{f.country}</span>
-        </div>
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-          {f.types.map(t => (
-            <span key={t} style={{
-              fontFamily: 'var(--font-inter), sans-serif',
-              fontSize: '10px',
-              fontWeight: 400,
-              padding: '4px 11px',
-              borderRadius: '99px',
-              letterSpacing: '0.02em',
-              background: 'rgba(107,163,200,0.08)',
-              color: 'var(--brown)',
-            }}>{t}</span>
-          ))}
-        </div>
-        {f.notes && (
-          <div style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontStyle: 'italic',
-            fontWeight: 300,
-            fontSize: '13px',
-            color: 'var(--tan)',
-            marginTop: '10px',
-          }}>&quot;{f.notes}&quot;</div>
-        )}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px' }}>
-          {f.url && (
-            <a href={f.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.08)', padding: '4px 10px', borderRadius: '99px' }}>
-              {f.url.includes('instagram') ? 'Instagram ↗︎' : 'Website ↗︎'}
-            </a>
-          )}
-          {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot') || f.name.toLowerCase().includes('seoul illustration fair')) && (
-            <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : f.name.toLowerCase().includes('seoul illustration fair') ? '/catalogue/sif-v21' : '#')} onClick={e => e.stopPropagation()}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.1)', padding: '4px 10px', borderRadius: '99px' }}>
-              See catalogue ↗︎
-            </a>
-          )}
+        <div style={{ flex: 1, padding: '24px 28px', display: 'grid', gridTemplateColumns: '1fr auto', gap: '24px', alignItems: 'start' }}>
+          <div>
+            {/* Name */}
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 400, fontSize: '20px', color: 'var(--dark-brown)', letterSpacing: '-0.01em', marginBottom: '6px' }}>{f.name}</div>
+            {/* Badges */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '10px' }}>
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', background: f.kind === 'popup' ? 'rgba(243,227,161,0.5)' : 'rgba(107,163,200,0.08)', color: f.kind === 'popup' ? '#7A6010' : 'var(--brown)' }}>{f.kind === 'popup' ? 'Popup' : 'Fair'}</span>
+              {f.going && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', background: 'var(--dark-blue)', color: 'var(--cream)' }}>We&apos;re attending</span>}
+              {!f.going && f.featured && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', background: 'rgba(107,163,200,0.1)', color: 'var(--brown)' }}>Featured</span>}
+            </div>
+            {/* Location */}
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '14px' }}>
+              <span>{f.city}</span>
+              <span style={{ color: 'rgba(168,203,224,0.5)' }}>·</span>
+              <span>{f.country}</span>
+            </div>
+            {/* Types */}
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {f.types.map(t => <span key={t} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '4px 11px', borderRadius: '99px', letterSpacing: '0.02em', background: 'rgba(107,163,200,0.08)', color: 'var(--brown)' }}>{t}</span>)}
+            </div>
+            {f.notes && <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '13px', color: 'var(--tan)', marginTop: '10px' }}>&quot;{f.notes}&quot;</div>}
+            {/* Action links */}
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px' }}>
+              {f.url && (
+                <a href={f.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.08)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+                  {f.url.includes('instagram') ? 'Instagram ↗︎' : 'Website ↗︎'}
+                </a>
+              )}
+              {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot') || f.name.toLowerCase().includes('seoul illustration fair')) && (
+                <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : '/catalogue/sif-v21')} onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.1)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+                  See catalogue ↗︎
+                </a>
+              )}
+              {!f.going && (
+                <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(107,163,200,0.07)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', border: '0.5px solid rgba(107,163,200,0.2)' }}>
+                  Request to attend →
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Right column: date + (if going) deadline chip + save */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px', flexShrink: 0 }}>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 400, fontSize: '18px', color: 'var(--dark-brown)', letterSpacing: '-0.01em' }}>{formatDate(f.date)}</div>
+              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', marginTop: '2px', letterSpacing: '0.05em' }}>2026</div>
+            </div>
+            {f.going && dl.cls !== 'dl-open' && (
+              <span className={`dl-chip ${dl.cls}`} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, padding: '5px 12px', borderRadius: '7px', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>{dl.label}</span>
+            )}
+            {f.going && (
+              <button className={`fc-save-btn${isSaved ? ' saved' : ''}`} onClick={handleSaveClick} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, padding: '5px 12px', borderRadius: '7px', border: isSaved ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)', background: isSaved ? 'rgba(107,163,200,0.1)' : 'transparent', color: isSaved ? 'var(--dark-blue)' : 'var(--brown)', cursor: 'pointer', transition: 'all 0.2s' }}>{isSaved ? 'Saved ✓' : 'Save'}</button>
+            )}
+          </div>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px', flexShrink: 0 }}>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{
-            fontFamily: 'var(--font-fraunces), serif',
-            fontWeight: 400,
-            fontSize: '18px',
-            color: 'var(--dark-brown)',
-            letterSpacing: '-0.01em',
-          }}>{formatDate(f.date)}</div>
-          <div style={{
-            fontFamily: 'var(--font-inter), sans-serif',
-            fontSize: '11px',
-            color: 'var(--tan)',
-            marginTop: '2px',
-            letterSpacing: '0.05em',
-          }}>2026</div>
-        </div>
-        {f.going ? (
-          <>
-            <span className={`dl-chip ${dl.cls}`} style={{
-              fontFamily: 'var(--font-inter), sans-serif',
-              fontSize: '11px',
-              fontWeight: 500,
-              padding: '5px 12px',
-              borderRadius: '7px',
-              letterSpacing: '0.02em',
-            }}>{dl.label}</span>
-            <button
-              className={`fc-save-btn${isSaved ? ' saved' : ''}`}
-              onClick={handleSaveClick}
-              style={{
-                fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: '11px',
-                fontWeight: 400,
-                padding: '5px 12px',
-                borderRadius: '7px',
-                border: isSaved ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
-                background: isSaved ? 'rgba(107,163,200,0.1)' : 'transparent',
-                color: isSaved ? 'var(--dark-blue)' : 'var(--brown)',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
-            >{isSaved ? 'Saved ✓' : 'Save'}</button>
-          </>
-        ) : (
-          <a
-            href="https://www.instagram.com/studio2j25/"
-            target="_blank"
-            rel="noreferrer"
-            onClick={e => e.stopPropagation()}
-            style={{
-              fontFamily: 'var(--font-inter), sans-serif',
-              fontSize: '11px',
-              fontWeight: 500,
-              padding: '6px 12px',
-              borderRadius: '7px',
-              border: '0.5px solid rgba(107,163,200,0.25)',
-              background: 'rgba(107,163,200,0.07)',
-              color: 'var(--dark-blue)',
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-            }}
-          >Request to attend →</a>
-        )}
-      </div>
-      </div> {/* end flex row */}
-
-      {/* Inline email input */}
+      {/* Inline email input — rendered outside the grid so it's not clipped */}
       {(mode === 'input' || mode === 'saving') && (
-        <form
-          onSubmit={submitEmail}
-          onClick={e => e.stopPropagation()}
-          style={{ gridColumn: '1 / -1', borderTop: '0.5px solid rgba(107,163,200,0.15)', paddingTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}
-        >
-          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', flexShrink: 0 }}>
-            Get a reminder email:
-          </span>
-          <input
-            type="email"
-            required
-            autoFocus
-            placeholder="your@email.com"
-            value={emailVal}
-            onChange={e => setEmailVal(e.target.value)}
-            style={{
-              flex: 1, minWidth: '180px', padding: '8px 16px', borderRadius: '99px',
-              border: '0.5px solid rgba(107,163,200,0.25)', background: 'var(--cream)',
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
-              color: 'var(--dark-brown)', outline: 'none',
-            }}
-          />
-          <button type="submit" disabled={mode === 'saving'} style={{
-            background: 'var(--dark-blue)', color: 'var(--cream)', border: 'none',
-            padding: '8px 18px', borderRadius: '99px', cursor: mode === 'saving' ? 'wait' : 'pointer',
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500,
-            opacity: mode === 'saving' ? 0.7 : 1,
-          }}>
-            {mode === 'saving' ? '…' : 'Notify me →'}
-          </button>
-          <button type="button" onClick={e => { e.stopPropagation(); setMode('idle') }} style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)',
-          }}>Cancel</button>
-          {err && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: '#8A3A20', width: '100%' }}>{err}</span>}
-        </form>
+        <div ref={formRef} style={{ borderTop: '0.5px solid rgba(107,163,200,0.15)', padding: '16px 28px 20px' }}>
+          <form onSubmit={submitEmail} onClick={e => e.stopPropagation()} style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', flexShrink: 0, width: '100%' }}>
+              Get a reminder email for {f.name}:
+            </span>
+            <input
+              type="email"
+              required
+              autoFocus
+              placeholder="your@email.com"
+              value={emailVal}
+              onChange={e => setEmailVal(e.target.value)}
+              style={{ flex: 1, minWidth: '160px', padding: '8px 16px', borderRadius: '99px', border: '0.5px solid rgba(107,163,200,0.25)', background: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--dark-brown)', outline: 'none' }}
+            />
+            <button type="submit" disabled={mode === 'saving'} style={{ background: 'var(--dark-blue)', color: 'var(--cream)', border: 'none', padding: '8px 18px', borderRadius: '99px', cursor: mode === 'saving' ? 'wait' : 'pointer', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, opacity: mode === 'saving' ? 0.7 : 1 }}>
+              {mode === 'saving' ? '…' : 'Notify me →'}
+            </button>
+            <button type="button" onClick={e => { e.stopPropagation(); setMode('idle') }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)' }}>Cancel</button>
+            {err && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: '#8A3A20', width: '100%' }}>{err}</span>}
+          </form>
+        </div>
       )}
       </div>
 

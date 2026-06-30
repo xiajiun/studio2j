@@ -103,7 +103,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
             {t.hero.stackLabel}
           </div>
 
-          <CardWithSideImage imageUrl="https://twenty.style/favicon.ico" imageFit="contain" imageBg="white">
+          <CardWithSideImage imageUrl="https://play-lh.googleusercontent.com/b7e9gZ6r_9B2m2BEVWDf3aGzCztI5i-Ye13Sd_xoQ78yiH2nGY6nHUpcHfd7JJhLD-C9WEpjYa8TlJ3wj_uZJw=w240-h480-rw" imageFit="cover" imageBg="white">
             <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" shopLabel="View market" noMargin />
           </CardWithSideImage>
           {nextFair ? (
