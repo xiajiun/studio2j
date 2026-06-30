@@ -410,7 +410,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
             letterSpacing: '0.05em',
           }}>2026</div>
         </div>
-        {f.deadline ? (
+        {f.going ? (
           <>
             <span className={`dl-chip ${dl.cls}`} style={{
               fontFamily: 'var(--font-inter), sans-serif',
