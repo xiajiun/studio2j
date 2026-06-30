@@ -20,84 +20,82 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
 }) {
   const { t } = useLang()
 
+  const img: React.CSSProperties = { width: '90px', height: '90px', objectFit: 'cover', flexShrink: 0, display: 'block' }
+
   return (
     <section id="top" className="hero-section" style={{ minHeight: '100vh', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
-      <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', maxWidth: '1400px', margin: '0 auto', minHeight: 'calc(100vh - 90px)' }}>
-      {/* Left */}
-      <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 24px 80px 60px', position: 'relative' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
-          <span style={{ width: '32px', height: '1px', background: 'var(--brown)', display: 'inline-block' }} />
-          {t.hero.eyebrow}
+      <div className="hero-grid">
+
+        {/* 1 — Headline: desktop col-1 row-1 | mobile order-2 */}
+        <div className="hg-headline">
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
+            <span style={{ width: '32px', height: '1px', background: 'var(--brown)', display: 'inline-block' }} />
+            {t.hero.eyebrow}
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(54px, 6.5vw, 92px)', lineHeight: '0.98', letterSpacing: '-0.03em', color: 'var(--dark-brown)', marginBottom: 0, animation: 'fadeUp 0.8s ease 0.1s both' }}>
+            {t.hero.line1}<br />{t.hero.line2}<br />
+            <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{t.hero.lineEm}</em>
+          </h1>
         </div>
 
-        <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(54px, 6.5vw, 92px)', lineHeight: '0.98', letterSpacing: '-0.03em', color: 'var(--dark-brown)', marginBottom: '32px', animation: 'fadeUp 0.8s ease 0.1s both' }}>
-          {t.hero.line1}<br />{t.hero.line2}<br />
-          <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)', fontWeight: 300 }}>{t.hero.lineEm}</em>
-        </h1>
-
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: '1.8', color: 'var(--brown)', maxWidth: '440px', marginBottom: '44px', animation: 'fadeUp 0.8s ease 0.2s both' }}>
-          {t.hero.body}
-        </p>
-
-        <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', animation: 'fadeUp 0.8s ease 0.3s both' }}>
-          <a href="/markets" className="btn-primary-hero">{t.hero.cta1}</a>
-          <a href="/#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
-        </div>
-
-        <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
-          {[
-            { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: t.hero.trustFairs },
-            { num: <><span className="live-dot" style={{ display: 'inline-block', marginRight: '4px' }} />{marketCount ?? 0}</>, label: t.hero.trustMarkets },
-          ].map(({ num, label }) => (
-            <div key={label}>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-blue)', lineHeight: '1', letterSpacing: '-0.02em' }}>{num}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right */}
-      <div className="hero-right" style={{ background: 'transparent', position: 'relative', overflow: 'hidden', animation: 'fadeIn 1.2s ease 0.2s both', display: 'flex', flexDirection: 'column' }}>
-
-        {/* Market image carousel — 2 rows scrolling opposite directions */}
-        {markets.length > 0 && (() => {
-          const clean = markets.filter(m => !m.market_name.includes('테스트'))
-          const row1: TwentyMarket[] = []
-          const row2: TwentyMarket[] = []
-          while (row1.length < 16) row1.push(...clean)
-          while (row2.length < 16) row2.push(...[...clean].reverse())
-
-          const img: React.CSSProperties = { width: '90px', height: '90px', objectFit: 'cover', flexShrink: 0, display: 'block' }
-
-          return (
-            <div style={{ width: '100%', flexShrink: 0, overflow: 'hidden' }}>
-              {/* Row 1 — scrolls left */}
-              <div style={{ overflow: 'hidden', marginBottom: '3px' }}>
-                <div style={{ display: 'flex', gap: '3px', animation: 'carouselLeft 25s linear infinite', willChange: 'transform' }}>
-                  {[...row1, ...row1].map((m, i) => (
-                    <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
-                      <img src={m.market_cover} alt="" style={img} />
-                    </a>
-                  ))}
+        {/* 2 — Carousel: desktop col-2 row-1 | mobile order-1 */}
+        <div className="hg-carousel" style={{ animation: 'fadeIn 1.2s ease 0.2s both' }}>
+          {markets.length > 0 && (() => {
+            const clean = markets.filter(m => !m.market_name.includes('테스트'))
+            const row1: TwentyMarket[] = []
+            const row2: TwentyMarket[] = []
+            while (row1.length < 16) row1.push(...clean)
+            while (row2.length < 16) row2.push(...[...clean].reverse())
+            return (
+              <div style={{ width: '100%' }}>
+                <div style={{ overflow: 'hidden', marginBottom: '3px' }}>
+                  <div style={{ display: 'flex', gap: '3px', animation: 'carouselLeft 25s linear infinite', willChange: 'transform' }}>
+                    {[...row1, ...row1].map((m, i) => (
+                      <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
+                        <img src={m.market_cover} alt="" style={img} />
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              {/* Row 2 — scrolls right */}
-              <div style={{ overflow: 'hidden' }}>
-                <div style={{ display: 'flex', gap: '3px', animation: 'carouselRight 25s linear infinite', willChange: 'transform' }}>
-                  {[...row2, ...row2].map((m, i) => (
-                    <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
-                      <img src={m.market_cover} alt="" style={img} />
-                    </a>
-                  ))}
+                <div style={{ overflow: 'hidden' }}>
+                  <div style={{ display: 'flex', gap: '3px', animation: 'carouselRight 25s linear infinite', willChange: 'transform' }}>
+                    {[...row2, ...row2].map((m, i) => (
+                      <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
+                        <img src={m.market_cover} alt="" style={img} />
+                      </a>
+                    ))}
+                  </div>
                 </div>
+                <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, #FEFAF0)', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
               </div>
-              <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, #FEFAF0)', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
-            </div>
-          )
-        })()}
+            )
+          })()}
+        </div>
 
-        <div style={{ position: 'relative', zIndex: 2, padding: '32px 40px 48px 24px', width: '100%', alignSelf: 'center' }}>
+        {/* 3 — Content (body / CTAs / stats): desktop col-1 row-2 | mobile order-4 */}
+        <div className="hg-content">
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: '1.8', color: 'var(--brown)', maxWidth: '440px', marginBottom: '44px', animation: 'fadeUp 0.8s ease 0.2s both' }}>
+            {t.hero.body}
+          </p>
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', animation: 'fadeUp 0.8s ease 0.3s both' }}>
+            <a href="/markets" className="btn-primary-hero">{t.hero.cta1}</a>
+            <a href="/#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
+          </div>
+          <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
+            {[
+              { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: t.hero.trustFairs },
+              { num: <><span className="live-dot" style={{ display: 'inline-block', marginRight: '4px' }} />{marketCount ?? 0}</>, label: t.hero.trustMarkets },
+            ].map(({ num, label }) => (
+              <div key={label}>
+                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-blue)', lineHeight: '1', letterSpacing: '-0.02em' }}>{num}</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 4 — Cards: desktop col-2 row-2 | mobile order-3 */}
+        <div className="hg-cards">
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--brown)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'rgba(107,163,200,0.4)', display: 'inline-block' }} />
             {t.hero.stackLabel}
@@ -106,6 +104,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           <CardWithSideImage imageUrl="https://play-lh.googleusercontent.com/b7e9gZ6r_9B2m2BEVWDf3aGzCztI5i-Ye13Sd_xoQ78yiH2nGY6nHUpcHfd7JJhLD-C9WEpjYa8TlJ3wj_uZJw=w240-h480-rw" imageFit="cover" imageBg="white">
             <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" shopLabel="View market" noMargin />
           </CardWithSideImage>
+
           {nextFair ? (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
               {nextFair.image_url && (
@@ -120,11 +119,12 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           ) : (
             <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.15s" />
           )}
+
           <CardWithSideImage imageUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/The_loft_corp_logo.svg/1280px-The_loft_corp_logo.svg.png" imageFit="contain" imageBg="white">
             <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.3s" noMargin />
           </CardWithSideImage>
         </div>
-      </div>
+
       </div>
     </section>
   )
