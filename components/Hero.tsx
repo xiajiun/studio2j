@@ -75,28 +75,6 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           })()}
         </div>
 
-        {/* 3 — Content (body / CTAs / stats): desktop col-1 row-2 | mobile order-4 */}
-        <div className="hg-content">
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: '1.8', color: 'var(--brown)', maxWidth: '440px', marginBottom: '44px', animation: 'fadeUp 0.8s ease 0.2s both' }}>
-            {t.hero.body}
-          </p>
-          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', animation: 'fadeUp 0.8s ease 0.3s both' }}>
-            <a href="/markets" className="btn-primary-hero">{t.hero.cta1}</a>
-            <a href="/#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
-          </div>
-          <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
-            {[
-              { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: t.hero.trustFairs },
-              { num: <><span className="live-dot" style={{ display: 'inline-block', marginRight: '4px' }} />{marketCount ?? 0}</>, label: t.hero.trustMarkets },
-            ].map(({ num, label }) => (
-              <div key={label}>
-                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-blue)', lineHeight: '1', letterSpacing: '-0.02em' }}>{num}</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* 4 — Cards: desktop bottom of right col | mobile order-3 */}
         <div className="hg-cards">
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--brown)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -129,6 +107,28 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
         </div>
 
         </div> {/* end hg-right */}
+
+        {/* 3 — Content (body / CTAs / stats): desktop col-1 row-2 | mobile order-4 */}
+        <div className="hg-content">
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: '1.8', color: 'var(--brown)', maxWidth: '440px', marginBottom: '44px', animation: 'fadeUp 0.8s ease 0.2s both' }}>
+            {t.hero.body}
+          </p>
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', animation: 'fadeUp 0.8s ease 0.3s both' }}>
+            <a href="/markets" className="btn-primary-hero">{t.hero.cta1}</a>
+            <a href="/#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
+          </div>
+          <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
+            {[
+              { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: t.hero.trustFairs },
+              { num: <><span className="live-dot" style={{ display: 'inline-block', marginRight: '4px' }} />{marketCount ?? 0}</>, label: t.hero.trustMarkets },
+            ].map(({ num, label }) => (
+              <div key={label}>
+                <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-blue)', lineHeight: '1', letterSpacing: '-0.02em' }}>{num}</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
       </div>
     </section>
