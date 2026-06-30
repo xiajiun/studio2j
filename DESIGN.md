@@ -126,6 +126,46 @@ Marquee animation duration: `40s linear infinite`.
 
 ---
 
+## Section background scheme
+
+Alternates between warm ivory and cool off-white; dark sections act as visual breaks.
+
+| Section             | Background          | Note                         |
+|---------------------|---------------------|------------------------------|
+| Hero                | `#FEFAF0`           | Warm ivory                   |
+| Marquee             | `var(--dark-brown)` | Dark break                   |
+| Services            | `#FEFAF0`           | Warm ivory (matches Hero)    |
+| TwentyMarketsSection| `var(--cream)`      | Cool off-white (differentiates)|
+| FairTracker         | `#FEFAF0`           | Warm ivory again             |
+| OrderCTA            | `var(--dark-brown)` | Dark break                   |
+| FAQ                 | `var(--cream)`      | Cool off-white               |
+| Footer              | `var(--dark-brown)` | Dark                         |
+
+---
+
+## Button patterns (inline-style components)
+
+### "Request to attend" pill (FairTracker — non-going fairs)
+```tsx
+style={{
+  background: 'rgba(243,227,161,0.5)',   // butter yellow tint
+  color: '#7A6010',                        // dark gold text
+  border: '0.5px solid rgba(243,227,161,0.7)',
+  padding: '4px 10px',
+  borderRadius: '99px',
+  fontSize: '11px',
+  fontWeight: 500,
+  whiteSpace: 'nowrap',
+}}
+```
+
+### Popup badge (FairTracker — kind === 'popup')
+```tsx
+background: 'rgba(243,227,161,0.5)', color: '#7A6010'  // same butter yellow
+```
+
+---
+
 ## Tailwind config additions
 
 ```ts
@@ -136,13 +176,14 @@ theme: {
       inter:    ['var(--font-inter)', 'sans-serif'],
     },
     colors: {
-      cream:      '#F5EFE6',
-      brown:      '#7A5C45',
-      'dark-blue':'#1F3A5F',
-      beige:      '#E8DFD1',
-      tan:        '#C8A98D',
-      'muted-blue':'#4A6A8A',
-      'dark-brown':'#4B372A',
+      cream:       '#F8F8F6',
+      brown:       '#6BA3C8',
+      'dark-blue': '#4A8AB5',
+      beige:       '#E8F4FA',
+      tan:         '#A8CBE0',
+      'muted-blue':'#3D7AA6',
+      'dark-brown':'#2D3748',
+      'soft-tan':  '#EEF6FB',
     },
   },
 }

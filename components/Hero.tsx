@@ -21,7 +21,8 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
   const { t } = useLang()
 
   return (
-    <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
+    <section id="top" className="hero-section" style={{ minHeight: '100vh', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', maxWidth: '1400px', margin: '0 auto', minHeight: 'calc(100vh - 90px)' }}>
       {/* Left */}
       <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 24px 80px 60px', position: 'relative' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
@@ -109,7 +110,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           {nextFair ? (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
               {nextFair.image_url && (
-                <div style={{ width: '90px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden' }}>
+                <div style={{ width: '130px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden' }}>
                   <img src={nextFair.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 </div>
               )}
@@ -124,6 +125,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
             <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.3s" noMargin />
           </CardWithSideImage>
         </div>
+      </div>
       </div>
     </section>
   )

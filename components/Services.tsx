@@ -7,7 +7,7 @@ export default function Services() {
   const s = t.services
 
   return (
-    <section id="services" className="services-section" style={{ padding: '140px 0', background: 'var(--cream)' }}>
+    <section id="services" className="services-section" style={{ padding: '140px 0', background: '#FEFAF0' }}>
       <div className="container">
         <div className="service-head" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'end', marginBottom: '80px' }}>
           <div>

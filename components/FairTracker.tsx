@@ -325,7 +325,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
                 </a>
               )}
               {!f.going && (
-                <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(107,163,200,0.07)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', border: '0.5px solid rgba(107,163,200,0.2)' }}>
+                <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#7A6010', textDecoration: 'none', background: 'rgba(243,227,161,0.5)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', border: '0.5px solid rgba(243,227,161,0.7)' }}>
                   Request to attend →
                 </a>
               )}
