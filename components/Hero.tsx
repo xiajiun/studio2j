@@ -103,11 +103,13 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
             {t.hero.stackLabel}
           </div>
 
-          <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
+          <CardWithSideImage imageUrl="https://twenty.style/favicon.ico" imageFit="contain" imageBg="white">
+            <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" noMargin />
+          </CardWithSideImage>
           {nextFair ? (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
               {nextFair.image_url && (
-                <div style={{ width: '72px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden' }}>
+                <div style={{ width: '110px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden' }}>
                   <img src={nextFair.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 </div>
               )}
@@ -118,10 +120,25 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           ) : (
             <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.15s" />
           )}
-          <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.3s" />
+          <CardWithSideImage imageUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/The_loft_corp_logo.svg/1280px-The_loft_corp_logo.svg.png" imageFit="contain" imageBg="white">
+            <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.3s" noMargin />
+          </CardWithSideImage>
         </div>
       </div>
     </section>
+  )
+}
+
+function CardWithSideImage({ imageUrl, imageFit = 'cover', imageBg = 'var(--cream)', children }: {
+  imageUrl: string; imageFit?: 'cover' | 'contain'; imageBg?: string; children: React.ReactNode
+}) {
+  return (
+    <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
+      <div style={{ width: '80px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', background: imageBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: imageFit === 'contain' ? '10px' : '0' }}>
+        <img src={imageUrl} alt="" style={{ width: '100%', objectFit: imageFit, display: 'block' }} />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
+    </div>
   )
 }
 
@@ -152,10 +169,10 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
               style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(74,138,181,0.25)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
             >
               {shopLabel
-                ? `${shopLabel} ↗`
+                ? `${shopLabel} ↗︎`
                 : shopExternal
-                  ? shopUrl.includes('instagram') ? 'Instagram ↗' : 'Website ↗'
-                  : 'Shop now ↗'}
+                  ? shopUrl.includes('instagram') ? 'Instagram ↗︎' : 'Website ↗︎'
+                  : 'Shop now ↗︎'}
             </a>
           )}
         </div>

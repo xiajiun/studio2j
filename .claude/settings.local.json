@@ -50,12 +50,37 @@
       "Bash(sed -i '' 's/{ name: '\\\\''GLOBE CHEMICAL'\\\\'', country: '\\\\''JP'\\\\''/{ name: '\\\\''GLOBE CHEMICAL'\\\\''/' app/catalogue/inventario-2026/page.tsx)",
       "Bash(sed -i '' 's/{ name: '\\\\''DOMINANT INDUSTRY'\\\\'', country: '\\\\''JP'\\\\''/{ name: '\\\\''DOMINANT INDUSTRY'\\\\''/' app/catalogue/inventario-2026/page.tsx)",
       "Bash(sed -i '' 's/{ name: '\\\\''TRAVELER.*S COMPANY'\\\\'', korean/{ name: '\\\\''TRAVELER'\\\\''\"'\\\\''\"'\\\\''S COMPANY'\\\\'', country: '\\\\''JP'\\\\'', korean/' app/catalogue/inventario-2026/page.tsx)",
-      "WebSearch"
+      "WebSearch",
+      "Read(//Users/xiajiun/Downloads/**)",
+      "Bash(/tmp/imgenv/bin/python3)",
+      "Read(//Users/xiajiun/Desktop/**)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/xiajiun/Downloads/studio2j-cc/public/IMG_0027.PNG\")",
+      "Bash(git rm *)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/xiajiun/Downloads/studio2j-cc/public/studio2j_logo_nobg.png\")",
+      "Bash(curl -s \"https://api.twenty.style/common/v2/opened-market\")",
+      "Bash(curl -si \"https://api.twenty.style/common/v1/opened-market\")",
+      "Bash(curl -si \"https://api.twenty.style/market\")",
+      "Bash(curl -si \"https://twenty.style\")",
+      "Bash(curl -s \"https://api.twenty.style/\")",
+      "Bash(curl -s \"https://api.twenty.style/common/v2/opened-market\" -H \"Accept: application/json\" -H \"Origin: https://twenty.style\" -H \"Referer: https://twenty.style/\" -v)",
+      "Bash(curl -s \"https://api.twenty.style/common/v3/opened-market\")",
+      "Bash(curl -s \"https://api.twenty.style/seller/v1/market/list\")",
+      "Bash(curl -s https://twenty.style/_next/static/chunks/__TRACKED_VAR__)",
+      "Bash(curl -s \"https://twenty.style/_next/static/chunks/00l9qb64fxx0l.js\")",
+      "Bash(curl -s \"https://twenty.style/_next/static/chunks/turbopack-0o1p0lxnl.6wt.js\")",
+      "Bash(curl -s -i \"https://api.twenty.style/common/v2/opened-market\")",
+      "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}\\\\n' https://api.twenty.style/__TRACKED_VAR__)",
+      "Bash(curl -s \"https://twenty.style\")",
+      "Bash(curl -s \"https://twenty.style/_next/static/chunks/0zlmtgoegkrqf.js\")",
+      "Bash(curl -s \"https://twenty.style/_next/static/chunks/0q0g0l37tb3kb.js\")",
+      "Bash(curl -s \"https://twenty.style/api/common/v2/market?category=open&limit=20\")",
+      "Bash(git -C /Users/xiajiun/Downloads/studio2j-cc diff app/globals.css)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",
       "/Users/xiajiun/Downloads/studio2j-cc",
-      "/Users/xiajiun/Downloads/studio2j-cc/app/invoice"
+      "/Users/xiajiun/Downloads/studio2j-cc/app/invoice",
+      "/private/tmp"
     ]
   }
 }

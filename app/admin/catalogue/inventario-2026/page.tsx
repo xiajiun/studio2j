@@ -25,7 +25,7 @@ export default async function AdminInventarioPage() {
         </div>
         <Link href="/catalogue/inventario-2026" target="_blank"
           style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(31,58,95,0.2)', padding: '8px 18px', borderRadius: '99px' }}>
-          View catalogue ↗
+          View catalogue ↗︎
         </Link>
       </div>
       <BrandManager brands={(brands ?? []) as CatalogueBrand[]} />

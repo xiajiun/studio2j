@@ -379,7 +379,7 @@ export default async function FinancePage() {
             Business expenses
           </div>
           <a href="/admin/shopping" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--dark-blue)', textDecoration: 'none' }}>
-            Manage ↗
+            Manage ↗︎
           </a>
         </div>
         <div style={{ background: 'white', borderRadius: '12px', border: '0.5px solid rgba(122,92,69,0.1)', overflow: 'hidden' }}>

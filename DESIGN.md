@@ -4,24 +4,30 @@
 
 ```css
 :root {
-  --cream:      #F5EFE6;   /* main background */
-  --brown:      #7A5C45;   /* body text, muted elements */
-  --dark-blue:  #1F3A5F;   /* accent, CTAs, italics */
-  --beige:      #E8DFD1;   /* cards, surfaces, nav bg */
-  --tan:        #C8A98D;   /* captions, labels, hairlines */
-  --muted-blue: #4A6A8A;   /* hover states for dark-blue */
-  --dark-brown: #4B372A;   /* headings, footer bg */
-  --soft-tan:   #D8CFC0;   /* subtle dividers */
+  --cream:      #F8F8F6;   /* cool off-white background */
+  --brown:      #6BA3C8;   /* medium sky blue — secondary text, borders */
+  --dark-blue:  #4A8AB5;   /* deep sky blue — "2J" italic, links, accent text */
+  --beige:      #E8F4FA;   /* pastel sky tint — card surfaces */
+  --tan:        #A8CBE0;   /* soft sky — labels, captions */
+  --muted-blue: #3D7AA6;   /* deeper sky — hover states */
+  --dark-brown: #2D3748;   /* dark slate — headings, body text, footer, buttons */
+  --soft-tan:   #EEF6FB;   /* faintest sky — dividers */
 }
 ```
 
-### Deadline chips (earth-tone palette, not standard red/green)
+### Accent palette (badges, highlights)
+- Pastel pink:   `#EFB7BE` / tint `#FCE8EA` — urgent / alert
+- Butter yellow: `#F3E3A1` / tint `#FBF6DC` — soon / CTA on dark bg
+- Mint green:    `#BFDCCF` — live dot, success
+- Sky blue:      `#9FC6E5` — open / primary accent
+
+### Deadline chips
 
 ```css
-.dl-urgent { background: #F5DDD5; color: #8A3A20; border: 0.5px solid rgba(138,58,32,0.2); }
-.dl-soon   { background: #F0E0C8; color: #7A5020; border: 0.5px solid rgba(122,80,32,0.2); }
-.dl-open   { background: #D8E5EE; color: #1F3A5F; border: 0.5px solid rgba(31,58,95,0.2); }
-.dl-closed { background: var(--beige); color: var(--tan); border: 0.5px solid rgba(200,169,141,0.2); }
+.dl-urgent { background: #FCE8EA; color: #8B3A42; border: 0.5px solid rgba(239,183,190,0.5); }
+.dl-soon   { background: #FBF6DC; color: #7A6010; border: 0.5px solid rgba(243,227,161,0.7); }
+.dl-open   { background: #E8F4FA; color: #2A5070; border: 0.5px solid rgba(159,198,229,0.5); }
+.dl-closed { background: var(--beige); color: var(--tan); border: 0.5px solid rgba(207,227,242,0.4); }
 ```
 
 ---

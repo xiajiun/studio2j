@@ -41,7 +41,7 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
           style={{ borderRadius: '12px', display: 'block', width: '100%', border: 'none' }} />
         <a href={postUrl} target="_blank" rel="noreferrer"
           style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: 'rgba(255,255,255,0.7)', textAlign: 'center', textDecoration: 'none' }}>
-          Open on Instagram ↗
+          Open on Instagram ↗︎
         </a>
       </div>
     </div>,
@@ -105,13 +105,13 @@ function BrandCard({ brand }: { brand: CatalogueBrand }) {
             {brand.instagram && (
               <a href={brand.instagram} target="_blank" rel="noreferrer"
                 style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.06)', padding: '3px 10px', borderRadius: '99px' }}>
-                Instagram ↗
+                Instagram ↗︎
               </a>
             )}
             {brand.url && (
               <a href={brand.url} target="_blank" rel="noreferrer"
                 style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.06)', padding: '3px 10px', borderRadius: '99px' }}>
-                Website ↗
+                Website ↗︎
               </a>
             )}
           </div>

@@ -71,8 +71,8 @@ export default async function Home() {
         marketCount={twentyMarkets.filter(m => !m.market_name.includes('테스트')).length}
         nextFair={nextFair}
       />
-      <Services />
       <Marquee />
+      <Services />
       <TwentyMarketsSection markets={twentyMarkets} maxItems={4} />
       <FairTracker fairs={fairs} />
 

@@ -183,7 +183,7 @@ function BrandCard({ brand: b, featured }: { brand: typeof BRANDS[0]; featured?:
             {b.name}
           </div>
           <a href={`https://${b.url}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', textDecoration: 'none', letterSpacing: '0.02em' }}>
-            {b.url} ↗
+            {b.url} ↗︎
           </a>
         </div>
         <span style={{ fontSize: '20px', flexShrink: 0 }}>{flag}</span>

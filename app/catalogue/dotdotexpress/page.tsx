@@ -218,7 +218,7 @@ function PostModal({ postUrl, name, onClose }: { postUrl: string; name: string; 
           style={{ borderRadius: '12px', display: 'block', width: '100%', border: 'none' }}
         />
         <a href={postUrl} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'rgba(255,255,255,0.7)', textAlign: 'center', textDecoration: 'none' }}>
-          Open on Instagram ↗
+          Open on Instagram ↗︎
         </a>
       </div>
     </div>,
@@ -399,7 +399,7 @@ function BoothMap() {
             {popupBrand?.post && (
               <a href={popupBrand.post} target="_blank" rel="noreferrer"
                 style={{ marginLeft: 'auto', fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.08)', padding: '4px 10px', borderRadius: '99px', flexShrink: 0 }}>
-                Open ↗
+                Open ↗︎
               </a>
             )}
           </div>
@@ -420,7 +420,7 @@ function BoothMap() {
               {popupBrand?.instagram ? (
                 <a href={`https://www.instagram.com/${popupBrand.instagram}/`} target="_blank" rel="noreferrer"
                   style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: 'var(--dark-blue)', textDecoration: 'none' }}>
-                  View @{popupBrand.instagram} on Instagram ↗
+                  View @{popupBrand.instagram} on Instagram ↗︎
                 </a>
               ) : (
                 <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: 'var(--tan)' }}>
@@ -527,7 +527,7 @@ export default function DotDotExpressCataloguePage() {
                 Order from this fair →
               </a>
               <a href="https://www.instagram.com/dot.dot.dot.express/" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>
-                @dot.dot.dot.express ↗
+                @dot.dot.dot.express ↗︎
               </a>
             </div>
           </div>

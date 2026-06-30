@@ -97,7 +97,7 @@ export default async function PublicOrderPage({ params }: { params: { number: st
             style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', color: 'var(--dark-blue)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
             {o.tracking_number}
-            <span style={{ fontSize: '12px', opacity: 0.6 }}>↗</span>
+            <span style={{ fontSize: '12px', opacity: 0.6 }}>↗︎</span>
           </a>
         </div>
       )}

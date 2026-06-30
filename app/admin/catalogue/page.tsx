@@ -69,7 +69,7 @@ export default async function AdminCataloguePage() {
                 </span>
               )}
               <Link href={cat.public} target="_blank" style={{ border: '0.5px solid rgba(122,92,69,0.2)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, padding: '8px 18px', borderRadius: '99px', textDecoration: 'none' }}>
-                View ↗
+                View ↗︎
               </Link>
             </div>
           </div>

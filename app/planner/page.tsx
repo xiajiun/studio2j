@@ -119,7 +119,7 @@ export default function PlannerPage() {
                     Order this planner →
                   </Link>
                   <a href={pick.url} target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.2)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, padding: '11px 22px', borderRadius: '99px', textDecoration: 'none' }}>
-                    Browse on site ↗
+                    Browse on site ↗︎
                   </a>
                 </div>
               </div>
