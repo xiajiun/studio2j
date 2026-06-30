@@ -97,7 +97,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
         })()}
 
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(243,227,161,0.2), transparent 50%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', maxWidth: '440px', alignSelf: 'center' }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', alignSelf: 'center' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--brown)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'rgba(107,163,200,0.4)', display: 'inline-block' }} />
             {t.hero.stackLabel}
