@@ -19,7 +19,7 @@ const en = {
   },
   services: {
     eyebrow: 'Our services',
-    title1: 'Everything Korea', title2: 'and Japan,', titleEm: 'shipped.',
+    title1: 'Everything Korea', title2: 'and Japan, ', titleEm: 'shipped.',
     intro: "Proxy buying is our core service — any Korean or Japanese shop that won't ship to you, we buy on your behalf. We also attend fairs in person and take bespoke personal requests.",
     s1Title: 'Proxy', s1Em: 'buying',
     s1Body: "Any Korean or Japanese website that won't ship to you — Twenty, Mercari, brand shops, even limited-edition drops. Send us the link, we'll handle the rest. Our core service.",
@@ -35,7 +35,7 @@ const en = {
   },
   tracker: {
     eyebrow: 'Why you can trust us',
-    title1: "We're", titleEm: 'physically there', title2: ', every month.',
+    title1: "We're ", titleEm: 'physically there', title2: ', every month.',
     body: 'This is our live calendar of illustration and stationery fairs and pop-up shops in Korea and Japan. The ones marked "we\'re attending" are events we\'ll be at in person — the clearest proof that we\'re not just another online proxy shop.',
     statFairs: 'Fairs tracked', statCountries: 'Countries', statSoon: 'Deadlines soon',
     filterLabel: 'Filter', searchPlaceholder: 'Search fairs or cities…',
@@ -70,7 +70,7 @@ const en = {
   },
   faq: {
     eyebrow: 'Frequently asked',
-    title1: 'Everything you', title2: 'might', titleEm: 'wonder.',
+    title1: 'Everything you', title2: 'might ', titleEm: 'wonder.',
     cat1: 'Ordering', cat2: 'Shipping & delivery', cat3: 'Returns & refunds', cat4: 'Privacy',
     q1: 'How do I place an order?',
     a1: 'Fill in our online order form, or DM us on Instagram @studio2j25 with the fair name, artist, or website link you\'re interested in. We\'ll confirm availability and send a quotation within 24 hours. Nothing is purchased until you approve and pay.',

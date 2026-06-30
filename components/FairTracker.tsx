@@ -315,12 +315,12 @@ function FairCard({ fair: f, today, saved, onSave }: {
             {/* Action links */}
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px' }}>
               {f.url && (
-                <a href={f.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.08)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+                <a href={f.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', background: 'transparent', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', border: '0.5px solid rgba(107,163,200,0.25)' }}>
                   {f.url.includes('instagram') ? 'Instagram ↗︎' : 'Website ↗︎'}
                 </a>
               )}
               {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot') || f.name.toLowerCase().includes('seoul illustration fair')) && (
-                <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : '/catalogue/sif-v21')} onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(74,138,181,0.1)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+                <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : '/catalogue/sif-v21')} onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--cream)', textDecoration: 'none', background: 'var(--dark-blue)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
                   See catalogue ↗︎
                 </a>
               )}
