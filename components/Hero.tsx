@@ -136,7 +136,7 @@ function CardWithSideImage({ imageUrl, imageFit = 'cover', imageBg = 'var(--crea
 }) {
   return (
     <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
-      <div style={{ width: '90px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', background: imageBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: imageFit === 'contain' ? '10px' : '0' }}>
+      <div style={{ width: '130px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', background: imageBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: imageFit === 'contain' ? '10px' : '0' }}>
         <img src={imageUrl} alt="" style={{ width: '100%', objectFit: imageFit, display: 'block' }} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
