@@ -372,7 +372,6 @@ function FairCard({ fair: f, today, saved, onSave }: {
           </form>
         </div>
       )}
-      </div>
 
       <style jsx>{`
         .fair-card-item:hover {
