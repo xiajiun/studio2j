@@ -38,7 +38,10 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           </h1>
         </div>
 
-        {/* 2 — Carousel: desktop col-2 row-1 | mobile order-1 */}
+        {/* Right column wrapper — desktop spans both rows | mobile display:contents so children can be ordered */}
+        <div className="hg-right">
+
+        {/* 2 — Carousel: desktop top of right col | mobile order-1 */}
         <div className="hg-carousel" style={{ animation: 'fadeIn 1.2s ease 0.2s both' }}>
           {markets.length > 0 && (() => {
             const clean = markets.filter(m => !m.market_name.includes('테스트'))
@@ -94,7 +97,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           </div>
         </div>
 
-        {/* 4 — Cards: desktop col-2 row-2 | mobile order-3 */}
+        {/* 4 — Cards: desktop bottom of right col | mobile order-3 */}
         <div className="hg-cards">
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--brown)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'rgba(107,163,200,0.4)', display: 'inline-block' }} />
@@ -124,6 +127,8 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
             <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.3s" noMargin />
           </CardWithSideImage>
         </div>
+
+        </div> {/* end hg-right */}
 
       </div>
     </section>

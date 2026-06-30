@@ -312,29 +312,34 @@ nav.scrolled {
 .hero-grid {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
+  grid-template-areas: "headline right" "content right";
+  grid-template-rows: auto 1fr;
   max-width: 1400px;
   margin: 0 auto;
   min-height: calc(100vh - 90px);
 }
 .hg-headline {
+  grid-area: headline;
   padding: 60px 24px 32px 60px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
-.hg-carousel { overflow: hidden; }
-.hg-content  { padding: 8px 24px 80px 60px; }
-.hg-cards    { padding: 24px 40px 48px 24px; }
+.hg-right    { grid-area: right; display: flex; flex-direction: column; overflow: hidden; }
+.hg-carousel { flex-shrink: 0; }
+.hg-cards    { padding: 24px 40px 48px 24px; flex: 1; }
+.hg-content  { grid-area: content; padding: 8px 24px 80px 60px; }
 
 @media (max-width: 1000px) {
   .container { padding: 0 24px; }
   .how-grid { grid-template-columns: 1fr !important; border-radius: 16px; }
 
   /* Hero — reorder into single column */
-  .hero-grid { display: flex !important; flex-direction: column !important; min-height: auto !important; }
+  .hero-grid   { display: flex !important; flex-direction: column !important; min-height: auto !important; }
+  .hg-right    { display: contents !important; } /* unwrap so children can be ordered */
   .hg-carousel { order: 1; overflow: hidden; }
   .hg-headline { order: 2; padding: 32px 24px 0 !important; justify-content: flex-start !important; }
-  .hg-cards    { order: 3; padding: 24px 24px 8px !important; }
+  .hg-cards    { order: 3; padding: 24px 24px 8px !important; flex: none !important; }
   .hg-content  { order: 4; padding: 0 24px 60px !important; }
 
   /* Services */
