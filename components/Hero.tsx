@@ -105,7 +105,16 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
 
           <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
           {nextFair ? (
-            <HeroCard name={nextFair.name} loc={`${nextFair.kind === 'popup' ? 'Popup' : 'Fair'} haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.15s" shopUrl={fairCatalogueUrl(nextFair)} shopLabel={fairCatalogueUrl(nextFair) ? 'See catalogue' : undefined} imageUrl={nextFair.image_url ?? undefined} />
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
+              {nextFair.image_url && (
+                <div style={{ width: '72px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden' }}>
+                  <img src={nextFair.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                </div>
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <HeroCard name={nextFair.name} loc={`${nextFair.kind === 'popup' ? 'Popup' : 'Fair'} haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.15s" shopUrl={fairCatalogueUrl(nextFair)} shopLabel={fairCatalogueUrl(nextFair) ? 'See catalogue' : undefined} noMargin />
+              </div>
+            </div>
           ) : (
             <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.15s" />
           )}
@@ -116,9 +125,9 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
   )
 }
 
-function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false, shopLabel, imageUrl }: {
+function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false, shopLabel, noMargin }: {
   name: string; loc: string; tags: string[]; chipVariant: 'urgent' | 'open'
-  chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean; shopLabel?: string; imageUrl?: string
+  chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean; shopLabel?: string; noMargin?: boolean
 }) {
   const chipStyle = chipVariant === 'urgent'
     ? { background: '#FCE8EA', color: '#8B3A42', border: '0.5px solid rgba(239,183,190,0.5)' }
@@ -127,43 +136,34 @@ function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, sho
   return (
     <div
       className="hero-fc-card"
-      style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(107,163,200,0.15)', borderRadius: '14px', overflow: 'hidden', marginBottom: '10px', transition: 'all 0.3s ease', animation: `slideRight 0.6s ease ${delay} both` }}
+      style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(107,163,200,0.15)', borderRadius: '14px', padding: '20px 22px', marginBottom: noMargin ? 0 : '10px', transition: 'all 0.3s ease', animation: `slideRight 0.6s ease ${delay} both` }}
     >
-      <div style={{ display: 'flex', alignItems: 'stretch' }}>
-        <div style={{ flex: 1, padding: '20px 22px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '5px', letterSpacing: '-0.01em' }}>{name}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(45,55,72,0.45)', letterSpacing: '0.02em' }}>{loc}</div>
-              <div style={{ display: 'flex', gap: '5px', marginTop: '10px', flexWrap: 'wrap' }}>
-                {tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '3px 9px', borderRadius: '99px', letterSpacing: '0.02em', background: 'rgba(107,163,200,0.1)', color: 'var(--brown)' }}>{t}</span>)}
-              </div>
-              {shopUrl && (
-                <a
-                  href={shopUrl}
-                  {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
-                  style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(74,138,181,0.25)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
-                >
-                  {shopLabel
-                    ? `${shopLabel} ↗`
-                    : shopExternal
-                      ? shopUrl.includes('instagram') ? 'Instagram ↗' : 'Website ↗'
-                      : 'Shop now ↗'}
-                </a>
-              )}
-            </div>
-            {chipLabel && (
-              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '4px', ...chipStyle }}>
-                {chipVariant === 'open' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#BFDCCF', animation: 'livePulse 2s ease-in-out infinite', flexShrink: 0, display: 'inline-block' }} />}
-                {chipLabel}
-              </span>
-            )}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '5px', letterSpacing: '-0.01em' }}>{name}</div>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(45,55,72,0.45)', letterSpacing: '0.02em' }}>{loc}</div>
+          <div style={{ display: 'flex', gap: '5px', marginTop: '10px', flexWrap: 'wrap' }}>
+            {tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '3px 9px', borderRadius: '99px', letterSpacing: '0.02em', background: 'rgba(107,163,200,0.1)', color: 'var(--brown)' }}>{t}</span>)}
           </div>
+          {shopUrl && (
+            <a
+              href={shopUrl}
+              {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
+              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(74,138,181,0.25)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em' }}
+            >
+              {shopLabel
+                ? `${shopLabel} ↗`
+                : shopExternal
+                  ? shopUrl.includes('instagram') ? 'Instagram ↗' : 'Website ↗'
+                  : 'Shop now ↗'}
+            </a>
+          )}
         </div>
-        {imageUrl && (
-          <div style={{ width: '100px', flexShrink: 0, overflow: 'hidden' }}>
-            <img src={imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-          </div>
+        {chipLabel && (
+          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '4px', ...chipStyle }}>
+            {chipVariant === 'open' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#BFDCCF', animation: 'livePulse 2s ease-in-out infinite', flexShrink: 0, display: 'inline-block' }} />}
+            {chipLabel}
+          </span>
         )}
       </div>
     </div>
