@@ -190,6 +190,10 @@ nav.scrolled {
   background: rgba(255,255,255,0.88) !important;
   border-color: rgba(107,163,200,0.25) !important;
 }
+.cat-brand-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(31,58,95,0.07) !important;
+}
 
 /* Services */
 .svc-card:hover {

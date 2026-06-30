@@ -89,12 +89,6 @@ export default async function CatalogueSlugPage({ params }: { params: { slug: st
           )}
         </div>
       </main>
-      <style jsx global>{`
-        .cat-brand-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(31,58,95,0.07) !important;
-        }
-      `}</style>
       <Footer />
     </>
   )
