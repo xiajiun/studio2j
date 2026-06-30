@@ -287,7 +287,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
     }}>
       <div style={{ display: 'flex', alignItems: 'stretch' }}>
         {f.image_url && (
-          <div style={{ width: '140px', flexShrink: 0, background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: '18px 0 0 18px' }}>
+          <div style={{ width: '140px', flexShrink: 0, background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: '18px 0 0 18px' }}>
             <img src={f.image_url} alt={f.name} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
           </div>
         )}

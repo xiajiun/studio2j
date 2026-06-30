@@ -2,7 +2,7 @@ export const runtime = 'edge'
 
 import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { AddFairButton, SeedFairsButton } from '@/components/dashboard/FairForm'
-import { DeleteFairButton } from './FairActions'
+import { DeleteFairButton, CatalogueButton } from './FairActions'
 import { EditFairButton } from '@/components/dashboard/FairForm'
 import type { FairRow } from '@/lib/database.types'
 
@@ -47,7 +47,8 @@ export default async function AdminFairs() {
                     {f.notes && <><span>·</span><span style={{ fontStyle: 'italic' }}>{f.notes}</span></>}
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <CatalogueButton id={f.id} name={f.name} catalogueUrl={f.catalogue_url} />
                   <EditFairButton fair={f} />
                   <DeleteFairButton id={f.id} />
                 </div>

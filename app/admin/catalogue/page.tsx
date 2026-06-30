@@ -30,8 +30,25 @@ const CATALOGUES = [
 export default async function AdminCataloguePage() {
   const supabase = createClient()
 
+  // Fetch fairs that have a catalogue_url set (but not already in CATALOGUES)
+  const { data: fairsWithCatalogue } = await supabase
+    .from('fairs')
+    .select('id, name, date, city, catalogue_url')
+    .not('catalogue_url', 'is', null)
+    .order('date', { ascending: true })
+
+  const existingIds = new Set(CATALOGUES.map(c => c.id))
+  const fairCatalogues = (fairsWithCatalogue ?? [])
+    .map((f: { id: number; name: string; date: string; city: string; catalogue_url: string }) => {
+      const slug = f.catalogue_url.replace('/catalogue/', '')
+      return { id: slug, name: f.name, description: `${f.city} · ${new Date(f.date).getFullYear()}`, href: `/admin/catalogue/${slug}`, public: f.catalogue_url }
+    })
+    .filter((c: { id: string }) => !existingIds.has(c.id))
+
+  const allCatalogues = [...CATALOGUES, ...fairCatalogues]
+
   const counts: Record<string, number> = {}
-  for (const cat of CATALOGUES.filter(c => c.href)) {
+  for (const cat of allCatalogues.filter(c => c.href)) {
     const { count } = await supabase
       .from('catalogue_brands')
       .select('id', { count: 'exact', head: true })
@@ -45,7 +62,7 @@ export default async function AdminCataloguePage() {
         Catalogue
       </h1>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
-        {CATALOGUES.map(cat => (
+        {allCatalogues.map(cat => (
           <div key={cat.id} style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '0.5px solid rgba(122,92,69,0.12)' }}>
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '20px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '6px' }}>
               {cat.name}

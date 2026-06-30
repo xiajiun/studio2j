@@ -4,6 +4,38 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+function nameToSlug(n: string) {
+  return n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+export function CatalogueButton({ id, name, catalogueUrl }: { id: number; name: string; catalogueUrl: string | null }) {
+  const router = useRouter()
+  const [busy, setBusy] = useState(false)
+
+  if (catalogueUrl) {
+    const slug = catalogueUrl.replace('/catalogue/', '')
+    return (
+      <a href={`/admin/catalogue/${slug}`} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#7A6010', textDecoration: 'none', background: 'rgba(243,227,161,0.4)', border: '0.5px solid rgba(243,227,161,0.7)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+        Catalogue ↗︎
+      </a>
+    )
+  }
+
+  async function generate() {
+    setBusy(true)
+    const slug = nameToSlug(name)
+    const supabase = createClient()
+    await supabase.from('fairs').update({ catalogue_url: `/catalogue/${slug}` }).eq('id', id)
+    router.push(`/admin/catalogue/${slug}`)
+  }
+
+  return (
+    <button onClick={generate} disabled={busy} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--brown)', background: 'transparent', border: '0.5px solid rgba(107,163,200,0.25)', padding: '4px 10px', borderRadius: '99px', cursor: busy ? 'wait' : 'pointer', whiteSpace: 'nowrap', opacity: busy ? 0.6 : 1 }}>
+      {busy ? 'Creating…' : '+ Catalogue'}
+    </button>
+  )
+}
+
 export function DeleteFairButton({ id }: { id: number }) {
   const router = useRouter()
   async function del() {
