@@ -10,7 +10,7 @@ const ADMIN_LINKS = [
   { href: '/admin/todos',          label: 'To-do' },
   { href: '/admin/orders',         label: 'Orders' },
   { href: '/admin/finance',        label: 'Finance' },
-  { href: '/admin/fairs',          label: 'Fairs' },
+  { href: '/admin/fairs',          label: 'Fairs & Popups' },
   { href: '/admin/customers',      label: 'Customers' },
   { href: '/admin/fair-reminders', label: 'Fair reminders' },
   { href: '/admin/subscribers',    label: 'Subscribers' },

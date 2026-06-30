@@ -51,7 +51,6 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
   const totalFairs = FAIRS.length
-  const countries = new Set(FAIRS.map(f => f.country)).size
   const deadlinesSoon = FAIRS.filter(f => {
     const diff = (new Date(f.deadline).getTime() - today.getTime()) / 86400000
     return diff >= 0 && diff <= 30
@@ -114,13 +113,12 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           {/* Stats */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '32px',
             paddingBottom: '8px',
           }} className="tracker-stats">
             {[
               { num: totalFairs, label: tr.statFairs },
-              { num: countries, label: tr.statCountries },
               { num: deadlinesSoon, label: tr.statSoon },
             ].map(({ num, label }) => (
               <div key={label} style={{ textAlign: 'center' }}>

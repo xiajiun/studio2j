@@ -14,7 +14,7 @@ export default async function AdminFairs() {
   return (
     <div>
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', letterSpacing: '-0.03em', marginBottom: '24px' }}>
-        Fairs
+        Fairs & Popups
       </h1>
 
       <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap', alignItems: 'center' }}>
