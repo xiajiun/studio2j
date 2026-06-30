@@ -23,7 +23,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
   return (
     <section id="top" className="hero-section" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1.1fr 1fr', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
       {/* Left */}
-      <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 48px 80px 80px', position: 'relative' }}>
+      <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 24px 80px 60px', position: 'relative' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
           <span style={{ width: '32px', height: '1px', background: 'var(--brown)', display: 'inline-block' }} />
           {t.hero.eyebrow}
@@ -97,7 +97,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
         })()}
 
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(243,227,161,0.2), transparent 50%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '32px 48px 48px', width: '100%', alignSelf: 'center' }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '32px 40px 48px 24px', width: '100%', alignSelf: 'center' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--brown)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ width: '24px', height: '1px', background: 'rgba(107,163,200,0.4)', display: 'inline-block' }} />
             {t.hero.stackLabel}
