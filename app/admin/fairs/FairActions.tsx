@@ -13,9 +13,8 @@ export function CatalogueButton({ id, name, catalogueUrl }: { id: number; name: 
   const [busy, setBusy] = useState(false)
 
   if (catalogueUrl) {
-    const slug = catalogueUrl.replace('/catalogue/', '')
     return (
-      <a href={`/admin/catalogue/${slug}`} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#7A6010', textDecoration: 'none', background: 'rgba(243,227,161,0.4)', border: '0.5px solid rgba(243,227,161,0.7)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
+      <a href={catalogueUrl} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#7A6010', textDecoration: 'none', background: 'rgba(243,227,161,0.4)', border: '0.5px solid rgba(243,227,161,0.7)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
         Catalogue ↗︎
       </a>
     )

@@ -10,6 +10,7 @@ const CATALOGUES = [
     description: '2026 · Seoul',
     href: '/admin/catalogue/sif-v21',
     public: '/catalogue/sif-v21',
+    date: '2026-10-01',
   },
   {
     id: 'inventario-2026',
@@ -17,6 +18,7 @@ const CATALOGUES = [
     description: 'June 10–14, 2026 · COEX THE PLATZ HALL, Seoul',
     href: '/admin/catalogue/inventario-2026',
     public: '/catalogue/inventario-2026',
+    date: '2026-06-10',
   },
   {
     id: 'dotdotexpress',
@@ -24,6 +26,7 @@ const CATALOGUES = [
     description: 'Booth layout · 184 brands',
     href: null,
     public: '/catalogue/dotdotexpress',
+    date: '',
   },
 ]
 
@@ -41,11 +44,17 @@ export default async function AdminCataloguePage() {
   const fairCatalogues = (fairsWithCatalogue ?? [])
     .map((f: { id: number; name: string; date: string; city: string; catalogue_url: string }) => {
       const slug = f.catalogue_url.replace('/catalogue/', '')
-      return { id: slug, name: f.name, description: `${f.city} · ${new Date(f.date).getFullYear()}`, href: `/admin/catalogue/${slug}`, public: f.catalogue_url }
+      return { id: slug, name: f.name, description: `${f.city} · ${new Date(f.date).getFullYear()}`, href: `/admin/catalogue/${slug}`, public: f.catalogue_url, date: f.date }
     })
     .filter((c: { id: string }) => !existingIds.has(c.id))
 
   const allCatalogues = [...CATALOGUES, ...fairCatalogues]
+    .sort((a, b) => {
+      if (!a.date && !b.date) return 0
+      if (!a.date) return 1
+      if (!b.date) return -1
+      return b.date.localeCompare(a.date)
+    })
 
   const counts: Record<string, number> = {}
   for (const cat of allCatalogues.filter(c => c.href)) {
