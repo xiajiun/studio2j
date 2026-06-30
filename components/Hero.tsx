@@ -22,7 +22,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
 
   return (
     <section id="top" className="hero-section" style={{ minHeight: '100vh', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', maxWidth: '1400px', margin: '0 auto', minHeight: 'calc(100vh - 90px)' }}>
+      <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', maxWidth: '1400px', margin: '0 auto', minHeight: 'calc(100vh - 90px)' }}>
       {/* Left */}
       <div className="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 24px 80px 60px', position: 'relative' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>

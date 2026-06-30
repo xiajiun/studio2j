@@ -313,9 +313,9 @@ nav.scrolled {
   .how-grid { grid-template-columns: 1fr !important; border-radius: 16px; }
 
   /* Hero */
-  .hero-section { grid-template-columns: 1fr !important; }
+  .hero-grid { grid-template-columns: 1fr !important; }
   .hero-left { padding: 40px 24px 80px !important; }
-  .hero-right { min-height: 420px; }
+  .hero-right { display: none !important; }
 
   /* Services */
   .service-head { grid-template-columns: 1fr !important; gap: 32px !important; }
