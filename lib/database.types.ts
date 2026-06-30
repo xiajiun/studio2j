@@ -44,6 +44,7 @@ export interface FairRow {
   date: string
   deadline: string
   types: string[]
+  kind: 'fair' | 'popup' | null
   featured: boolean
   going: boolean
   url: string | null

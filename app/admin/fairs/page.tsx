@@ -34,6 +34,7 @@ export default async function AdminFairs() {
                 <div>
                   <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', color: 'var(--dark-brown)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {f.name}
+                    <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '99px', background: f.kind === 'popup' ? 'rgba(243,227,161,0.5)' : 'rgba(107,163,200,0.12)', color: f.kind === 'popup' ? '#7A6010' : 'var(--dark-blue)' }}>{f.kind === 'popup' ? 'Popup' : 'Fair'}</span>
                     {f.going && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '99px', background: 'var(--dark-blue)', color: 'var(--cream)' }}>Going</span>}
                     {f.featured && !f.going && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '99px', background: 'var(--beige)', color: 'var(--brown)' }}>Featured</span>}
                   </div>

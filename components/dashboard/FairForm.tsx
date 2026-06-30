@@ -18,6 +18,7 @@ const inputStyle: React.CSSProperties = {
 type FormState = {
   name: string; city: string; country: string; region: string
   date: string; deadline: string; types: string[]
+  kind: 'fair' | 'popup'
   featured: boolean; going: boolean; url: string; image_url: string; catalogue_url: string; notes: string
 }
 
@@ -30,6 +31,7 @@ function blankForm(f?: FairRow): FormState {
     date:      f?.date      ?? '',
     deadline:  f?.deadline  ?? '',
     types:     f?.types     ?? [],
+    kind:      f?.kind === 'popup' ? 'popup' : 'fair',
     featured:  f?.featured  ?? false,
     going:     f?.going     ?? false,
     url:           f?.url           ?? '',
@@ -58,7 +60,7 @@ function FairFormInner({ fair, onClose }: { fair?: FairRow; onClose: () => void 
     const payload = {
       name: form.name, city: form.city, country: form.country,
       region: form.region, date: form.date, deadline: form.deadline,
-      types: form.types, featured: form.featured, going: form.going,
+      types: form.types, kind: form.kind, featured: form.featured, going: form.going,
       url:           form.url           || null,
       image_url:     form.image_url     || null,
       catalogue_url: form.catalogue_url || null,
@@ -77,8 +79,22 @@ function FairFormInner({ fair, onClose }: { fair?: FairRow; onClose: () => void 
   return (
     <form onSubmit={submit} style={{ background: 'white', border: '0.5px solid rgba(122,92,69,0.12)', borderRadius: '18px', padding: '24px', marginBottom: '20px' }}>
       <h3 style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', color: 'var(--dark-brown)', marginBottom: '16px', fontWeight: 400 }}>
-        {isEdit ? `Edit — ${fair.name}` : 'Add fair'}
+        {isEdit ? `Edit — ${fair.name}` : 'Add fair or popup'}
       </h3>
+
+      <Field label="Type" style={{ marginBottom: '10px' }}>
+        <div style={{ display: 'flex', gap: '6px' }}>
+          {(['fair', 'popup'] as const).map(k => (
+            <button key={k} type="button" onClick={() => set('kind', k)} style={{
+              fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: form.kind === k ? 500 : 300,
+              padding: '6px 18px', borderRadius: '99px', cursor: 'pointer', textTransform: 'capitalize',
+              background: form.kind === k ? 'var(--dark-brown)' : 'transparent',
+              color: form.kind === k ? 'var(--cream)' : 'var(--brown)',
+              border: `0.5px solid ${form.kind === k ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
+            }}>{k}</button>
+          ))}
+        </div>
+      </Field>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
         <Field label="Name"><input style={inputStyle} value={form.name} onChange={e => set('name', e.target.value)} required /></Field>

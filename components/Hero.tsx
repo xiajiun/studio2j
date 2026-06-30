@@ -3,6 +3,15 @@
 import { useLang } from '@/components/LangProvider'
 import type { FairRow, TwentyMarket } from '@/lib/database.types'
 
+function fairCatalogueUrl(fair: FairRow): string | undefined {
+  if (fair.catalogue_url) return fair.catalogue_url
+  const n = fair.name.toLowerCase()
+  if (n.includes('inventario')) return '/catalogue/inventario-2026'
+  if (n.includes('seoul illustration fair')) return '/catalogue/sif-v21'
+  if (n.includes('dotdot')) return '/catalogue/dotdotexpress'
+  return undefined
+}
+
 export default function Hero({ fairCount, marketCount, nextFair, markets = [] }: {
   fairCount?: number
   marketCount?: number
@@ -96,7 +105,7 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
 
           <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" />
           {nextFair ? (
-            <HeroCard name={nextFair.name} loc={`Fair haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.15s" shopUrl="/catalogue/sif-v21" shopLabel="See catalogue" />
+            <HeroCard name={nextFair.name} loc={`${nextFair.kind === 'popup' ? 'Popup' : 'Fair'} haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.15s" shopUrl={fairCatalogueUrl(nextFair)} shopLabel={fairCatalogueUrl(nextFair) ? 'See catalogue' : undefined} />
           ) : (
             <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.15s" />
           )}
