@@ -31,7 +31,7 @@ const en = {
     s3Body: "Hunting a specific artist, out-of-stock item, or niche Korean brand? DM us the details and we'll source it in Seoul or Tokyo — even if it means visiting the shop in person.",
     s3Best: 'Best for', s3Val: 'bespoke sourcing',
     feeLabel: 'Service fee',
-    feeText: 'Minimum ₩25,000 / ¥2,500 per order, or 15% of total goods value — whichever is higher. For fair and popup hauls, a runner fee (transport & errand fee) is added per venue we physically attend on your behalf. If your order covers multiple fairs or pop-up shops, each venue counts as one runner fee — e.g., one fair + one popup = two venue fees. Everything — item cost, service fee, runner fee (if any), and shipping — is confirmed in one invoice before we purchase.',
+    feeText: 'Minimum ₩25,000 / ¥2,500 per order, or 15% of total goods value — whichever is higher. For fair and popup hauls, a runner fee (transport & errand fee) is added per venue we physically attend on your behalf. Everything — item cost, service fee, runner fee (if any), and shipping — is confirmed in one invoice before we purchase.',
   },
   tracker: {
     eyebrow: 'Why you can trust us',
@@ -189,7 +189,7 @@ const ja: typeof en = {
     s3Body: '特定のアーティスト・入手困難な商品・ニッチな韓国ブランドをお探しですか？詳細をDMで教えていただければ、ソウルで仕入れます。',
     s3Best: 'おすすめ', s3Val: '特別なご要望',
     feeLabel: 'サービス料',
-    feeText: '1注文につき最低₩25,000、または商品合計金額の15%のうち高い方。フェアやポップアップへの直接参加には、会場ごとに代行料が加算されます。複数の会場を訪問する場合、1会場ごとに1代行料が発生します。すべての費用——商品代・サービス料・代行料（該当する場合）・送料——は購入前に1枚の請求書で確認します。',
+    feeText: '1注文につき最低₩25,000、または商品合計金額の15%のうち高い方。フェアやポップアップへの直接参加には、会場ごとに代行料が加算されます。すべての費用——商品代・サービス料・代行料（該当する場合）・送料——は購入前に1枚の請求書で確認します。',
   },
   tracker: {
     eyebrow: '信頼できる理由',
@@ -347,7 +347,7 @@ const zhTW: typeof en = {
     s3Body: '在尋找特定藝術家、缺貨商品或小眾韓國品牌嗎？請傳訊給我們詳情，我們將在首爾或東京為您採購，必要時親自前往店面。',
     s3Best: '適合', s3Val: '客製化採購',
     feeLabel: '服務費',
-    feeText: '每筆訂單最低₩25,000 / ¥2,500，或商品總價的15%，以較高者為準。展覽及快閃活動的現場採購，每個場地加收一筆代購費。若訂單涵蓋多個場地，每個場地計一筆費用（例如一場展覽加一場快閃 = 兩筆場地費）。所有費用——商品費、服務費、代購費（如適用）及運費——合併為一張發票，購買前確認。',
+    feeText: '每筆訂單最低₩25,000 / ¥2,500，或商品總價的15%，以較高者為準。展覽及快閃活動的現場採購，每個場地加收一筆代購費。所有費用——商品費、服務費、代購費（如適用）及運費——合併為一張發票，購買前確認。',
   },
   tracker: {
     eyebrow: '為何值得信賴',
