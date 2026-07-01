@@ -6,6 +6,7 @@ import Link from 'next/link'
 const CATALOGUES = [
   {
     id: 'sif-v21',
+    aliases: ['seoul-illustration-fair-v-21'],
     name: 'Seoul Illustration Fair V.21',
     description: '2026 · Seoul',
     href: '/admin/catalogue/sif-v21',
@@ -14,6 +15,7 @@ const CATALOGUES = [
   },
   {
     id: 'inventario-2026',
+    aliases: ['inventario-2026'],
     name: 'INVENTARIO 2026',
     description: 'June 10–14, 2026 · COEX THE PLATZ HALL, Seoul',
     href: '/admin/catalogue/inventario-2026',
@@ -22,6 +24,7 @@ const CATALOGUES = [
   },
   {
     id: 'dotdotexpress',
+    aliases: ['dotdotdot-v-7'],
     name: 'DOTDOTDOT v.7',
     description: 'Booth layout · 184 brands',
     href: null,
@@ -40,13 +43,17 @@ export default async function AdminCataloguePage() {
     .not('catalogue_url', 'is', null)
     .order('date', { ascending: true })
 
-  const existingIds = new Set(CATALOGUES.map(c => c.id))
+  const EXCLUDE_SLUGS = new Set(['okiki-popup'])
+  const existingIds = new Set([
+    ...CATALOGUES.map(c => c.id),
+    ...CATALOGUES.flatMap(c => c.aliases ?? []),
+  ])
   const fairCatalogues = (fairsWithCatalogue ?? [])
     .map((f: { id: number; name: string; date: string; city: string; catalogue_url: string }) => {
       const slug = f.catalogue_url.replace('/catalogue/', '')
       return { id: slug, name: f.name, description: `${f.city} · ${new Date(f.date).getFullYear()}`, href: `/admin/catalogue/${slug}`, public: f.catalogue_url, date: f.date }
     })
-    .filter((c: { id: string }) => !existingIds.has(c.id))
+    .filter((c: { id: string }) => !existingIds.has(c.id) && !EXCLUDE_SLUGS.has(c.id))
 
   const allCatalogues = [...CATALOGUES, ...fairCatalogues]
     .sort((a, b) => {
