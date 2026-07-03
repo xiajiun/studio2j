@@ -36,17 +36,16 @@ type GroupRow = {
 // otherwise fall back to order-level actual_goods_cost field.
 function resolveActualGoodsCost(o: Order): number | null {
   const items = (o.items ?? []) as Array<{ actual_cost?: number; total?: number; price?: number; qty?: number; dom_del?: number; item_ccy?: string }>
-  const hasPerItem = items.some(i => i.actual_cost != null)
-  if (hasPerItem) {
-    const ccy = o.currency ?? 'KRW'
-    const allSameCcy = items.every(i => !i.item_ccy || i.item_ccy === ccy)
-    if (allSameCcy) {
-      return items.reduce((sum, i) => {
-        const fallback = i.total ?? ((i.price ?? 0) * (i.qty ?? 0) + (i.dom_del ?? 0))
-        return sum + (i.actual_cost ?? fallback)
-      }, 0)
-    }
+  if (items.length === 0) return o.actual_goods_cost
+  const ccy = o.currency ?? 'KRW'
+  const allSameCcy = items.every(i => !i.item_ccy || i.item_ccy === ccy)
+  if (allSameCcy) {
+    return items.reduce((sum, i) => {
+      const fallback = i.total ?? ((i.price ?? 0) * (i.qty ?? 0) + (i.dom_del ?? 0))
+      return sum + (i.actual_cost ?? fallback)
+    }, 0)
   }
+  // Mixed-currency: fall back to order-level field (FX rate not available here)
   return o.actual_goods_cost
 }
 
