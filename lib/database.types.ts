@@ -21,6 +21,7 @@ export interface OrderItem {
   price: number
   dom_del?: number
   total?: number
+  actual_cost?: number
   arrived?: boolean
 }
 

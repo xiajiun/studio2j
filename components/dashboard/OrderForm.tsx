@@ -27,10 +27,10 @@ const ALL_STATUSES: { value: OrderStatus; label: string }[] = [
   { value: 'cancelled',          label: 'Cancelled' },
 ]
 
-type ItemRow = { name: string; color: string; item_ccy: string; qty: string; price: string; dom_del: string; total: string; arrived: boolean }
+type ItemRow = { name: string; color: string; item_ccy: string; qty: string; price: string; dom_del: string; total: string; actual_cost: string; arrived: boolean }
 
 function emptyItem(): ItemRow {
-  return { name: '', color: '', item_ccy: 'KRW', qty: '1', price: '', dom_del: '', total: '', arrived: false }
+  return { name: '', color: '', item_ccy: 'KRW', qty: '1', price: '', dom_del: '', total: '', actual_cost: '', arrived: false }
 }
 
 type AddrForm = {
@@ -126,9 +126,10 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
           item_ccy: i.item_ccy ?? 'KRW',
           qty:      String(i.qty),
           price:    String(i.price),
-          dom_del:  i.dom_del != null ? String(i.dom_del) : '',
-          total:    i.total   != null ? String(i.total)   : '',
-          arrived:  i.arrived ?? false,
+          dom_del:     i.dom_del     != null ? String(i.dom_del)     : '',
+          total:       i.total       != null ? String(i.total)       : '',
+          actual_cost: i.actual_cost != null ? String(i.actual_cost) : '',
+          arrived:     i.arrived ?? false,
         }))
       : [emptyItem()]
   )
@@ -169,6 +170,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
         qty: parseInt(r.qty) || 1, price: parseFloat(r.price) || 0,
         dom_del: r.dom_del ? parseFloat(r.dom_del) : undefined,
         total: r.total ? parseFloat(r.total) : undefined,
+        actual_cost: r.actual_cost ? parseFloat(r.actual_cost) : undefined,
         arrived: r.arrived,
       }))
       await supabase.from('orders').update({ items: payload }).eq('id', orderId)
@@ -203,7 +205,16 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     const unit    = form.currency === 'JPY' ? 100 : 1000
     const rounded = Math.ceil(rawFee / unit) * unit
     const fee     = Math.max(minFee, rounded)
-    setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: manualActualCostRef.current ? p.actual_goods_cost : String(subtotal) }))
+    const actualSum = items.reduce((sum, item) => {
+      const v = parseFloat(item.actual_cost)
+      if (!v) return sum
+      if (item.item_ccy === form.currency) return sum + v
+      if (form.currency === 'KRW' && item.item_ccy === 'JPY') return sum + Math.round(v * rate)
+      if (form.currency === 'JPY' && item.item_ccy === 'KRW') return sum + Math.round(v / rate)
+      return sum + v
+    }, 0)
+    const hasPerItemActual = items.some(i => !!i.actual_cost)
+    setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: hasPerItemActual ? String(actualSum) : manualActualCostRef.current ? p.actual_goods_cost : String(subtotal) }))
   }, [items, form.currency, fxRate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [saveError, setSaveError] = useState<string | null>(null)
@@ -222,9 +233,10 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
         item_ccy: (i.item_ccy as 'KRW' | 'JPY'),
         qty:      parseInt(i.qty)    || 1,
         price:    parseFloat(i.price) || 0,
-        dom_del:  parseFloat(i.dom_del) || undefined,
-        total:    parseFloat(i.total)   || undefined,
-        arrived:  i.arrived || undefined,
+        dom_del:     parseFloat(i.dom_del)     || undefined,
+        total:       parseFloat(i.total)       || undefined,
+        actual_cost: parseFloat(i.actual_cost) || undefined,
+        arrived:     i.arrived || undefined,
       }))
 
     const shippingAddress: ShippingAddress = {
@@ -411,13 +423,13 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       {/* Items */}
       <Section label="Items">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px 90px 70px auto', gap: '6px', padding: '0 4px' }}>
-            {['Item name', 'Color/size', 'Ccy', 'Qty', 'Unit price', 'Dom.del', 'Total', 'Arrived', ''].map(h => (
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px 90px 80px 70px auto', gap: '6px', padding: '0 4px' }}>
+            {['Item name', 'Color/size', 'Ccy', 'Qty', 'Unit price', 'Dom.del', 'Total', 'Actual cost', 'Arrived', ''].map(h => (
               <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--tan)' }}>{h}</div>
             ))}
           </div>
           {items.map((item, idx) => (
-            <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px 90px 70px auto', gap: '6px', alignItems: 'center', background: item.arrived ? 'rgba(42,92,53,0.05)' : 'var(--beige)', padding: '10px', borderRadius: '10px', transition: 'background 0.2s' }}>
+            <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 60px 80px 70px 90px 80px 70px auto', gap: '6px', alignItems: 'center', background: item.arrived ? 'rgba(42,92,53,0.05)' : 'var(--beige)', padding: '10px', borderRadius: '10px', transition: 'background 0.2s' }}>
               <input style={inputStyle} placeholder="Artist / item name" value={item.name} onChange={e => setItem(idx, 'name', e.target.value)} />
               <input style={inputStyle} placeholder="A5, pink…" value={item.color} onChange={e => setItem(idx, 'color', e.target.value)} />
               <select style={inputStyle} value={item.item_ccy} onChange={e => setItem(idx, 'item_ccy', e.target.value)}>
@@ -428,6 +440,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
               <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={item.price} onChange={e => setItem(idx, 'price', e.target.value)} />
               <input style={inputStyle} type="text" inputMode="decimal" placeholder="0" value={item.dom_del} onChange={e => setItem(idx, 'dom_del', e.target.value)} />
               <input style={{ ...inputStyle, background: item.total ? 'white' : 'rgba(122,92,69,0.04)', fontWeight: item.total ? 500 : 300 }} type="text" inputMode="decimal" placeholder="auto" value={item.total} onChange={e => setItem(idx, 'total', e.target.value)} />
+              <input style={{ ...inputStyle, background: item.actual_cost ? 'rgba(42,92,53,0.06)' : 'rgba(122,92,69,0.04)', fontWeight: item.actual_cost ? 500 : 300, color: item.actual_cost ? '#2A5C35' : undefined }} type="text" inputMode="decimal" placeholder="—" value={item.actual_cost} onChange={e => setItem(idx, 'actual_cost', e.target.value)} />
               <button type="button" onClick={() => toggleArrived(idx)} style={{
                 fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: item.arrived ? 600 : 300,
                 padding: '6px 8px', borderRadius: '8px', border: 'none', cursor: 'pointer',
