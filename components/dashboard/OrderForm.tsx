@@ -205,6 +205,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
     const unit    = form.currency === 'JPY' ? 100 : 1000
     const rounded = Math.ceil(rawFee / unit) * unit
     const fee     = Math.max(minFee, rounded)
+    const hasPerItemActual = items.some(i => !!i.actual_cost)
     const actualSum = items.reduce((sum, item) => {
       const raw = parseFloat(item.total) || ((parseFloat(item.price) || 0) * (parseInt(item.qty) || 0) + (parseFloat(item.dom_del) || 0))
       const v = parseFloat(item.actual_cost) || raw
@@ -214,7 +215,14 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
       if (form.currency === 'JPY' && item.item_ccy === 'KRW') return sum + Math.round(v / rate)
       return sum + v
     }, 0)
-    setForm(p => ({ ...p, goods_total: String(subtotal), service_fee: String(fee), actual_goods_cost: String(actualSum) }))
+    setForm(p => ({
+      ...p,
+      goods_total: String(subtotal),
+      service_fee: String(fee),
+      actual_goods_cost: hasPerItemActual
+        ? String(actualSum)
+        : manualActualCostRef.current ? p.actual_goods_cost : String(subtotal),
+    }))
   }, [items, form.currency, fxRate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [saveError, setSaveError] = useState<string | null>(null)
