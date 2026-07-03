@@ -32,6 +32,24 @@ type GroupRow = {
   order_count:       number
 }
 
+// Use per-item actual_cost sum when available (same-currency items only),
+// otherwise fall back to order-level actual_goods_cost field.
+function resolveActualGoodsCost(o: Order): number | null {
+  const items = (o.items ?? []) as Array<{ actual_cost?: number; total?: number; price?: number; qty?: number; dom_del?: number; item_ccy?: string }>
+  const hasPerItem = items.some(i => i.actual_cost != null)
+  if (hasPerItem) {
+    const ccy = o.currency ?? 'KRW'
+    const allSameCcy = items.every(i => !i.item_ccy || i.item_ccy === ccy)
+    if (allSameCcy) {
+      return items.reduce((sum, i) => {
+        const fallback = i.total ?? ((i.price ?? 0) * (i.qty ?? 0) + (i.dom_del ?? 0))
+        return sum + (i.actual_cost ?? fallback)
+      }, 0)
+    }
+  }
+  return o.actual_goods_cost
+}
+
 function addToGroup(map: Map<string, GroupRow>, key: string, o: Order) {
   const ccy = o.currency ?? 'KRW'
   const groupKey = `${key}__${ccy}`
@@ -41,9 +59,10 @@ function addToGroup(map: Map<string, GroupRow>, key: string, o: Order) {
   const g = map.get(groupKey)!
   const received         = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0)
   const transfer_fee     = (o.paid_1_transfer_fee ?? 0) + (o.paid_2_transfer_fee ?? 0)
-  const goods_cost       = o.actual_goods_cost ?? o.goods_total ?? 0
+  const actual_goods     = resolveActualGoodsCost(o)
+  const goods_cost       = actual_goods ?? o.goods_total ?? 0
   const service_fee      = o.service_fee ?? 0
-  const goods_markup     = o.actual_goods_cost != null ? (o.goods_total ?? 0) - o.actual_goods_cost : 0
+  const goods_markup     = actual_goods != null ? (o.goods_total ?? 0) - actual_goods : 0
   const runner_fee       = o.runner_fee ?? 0
   const shipping_markup  = o.actual_shipping_cost != null ? (o.shipping_cost ?? 0) - o.actual_shipping_cost : 0
   g.received        += received
@@ -101,9 +120,10 @@ export default async function FinancePage() {
   const orderRows = orders.map(o => {
     const received        = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0)
     const transfer_fee    = (o.paid_1_transfer_fee ?? 0) + (o.paid_2_transfer_fee ?? 0)
-    const goods_cost      = o.actual_goods_cost ?? o.goods_total ?? 0
+    const actual_goods    = resolveActualGoodsCost(o)
+    const goods_cost      = actual_goods ?? o.goods_total ?? 0
     const service_fee     = o.service_fee ?? 0
-    const goods_markup    = o.actual_goods_cost != null ? (o.goods_total ?? 0) - o.actual_goods_cost : null
+    const goods_markup    = actual_goods != null ? (o.goods_total ?? 0) - actual_goods : null
     const runner_fee      = o.runner_fee ?? 0
     const shipping_markup = o.actual_shipping_cost != null ? (o.shipping_cost ?? 0) - o.actual_shipping_cost : null
     const net             = service_fee + (goods_markup ?? 0) + runner_fee + (shipping_markup ?? 0) - transfer_fee
