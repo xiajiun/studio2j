@@ -7,7 +7,6 @@ import type { CatalogueBrand } from '@/app/catalogue/inventario-2026/InventarioC
 
 export type { CatalogueBrand }
 
-// Each section: id, total booths, type
 const SECTIONS = [
   { id: 'A', max: 24, type: 'artist' },
   { id: 'B', max: 40, type: 'artist' },
@@ -38,28 +37,36 @@ const SEC_META: Record<string, { max: number; type: SecType }> = Object.fromEntr
   SECTIONS.map(s => [s.id, { max: s.max, type: s.type as SecType }])
 )
 
-function cellBg(type: SecType, hovered: boolean) {
-  if (hovered) return type === 'sponsor' ? '#8B7555' : '#1F3A5F'
-  if (type === 'sponsor') return '#D4C4A8'
-  if (type === 'institution') return '#C8B8A0'
-  return 'rgba(31,58,95,0.09)'
+// ── Layout constants ──────────────────────────────────────────────
+const CW = 26   // main cell width
+const CH = 20   // main cell height
+const GAP = 2   // gap between cells
+// G–R sections: 54 booths → 27 per half → ceil(27/2) = 14 rows per half
+const MAX_HALF = 14
+// Height of one zone (upper or lower) = 14 rows × (CH+GAP), accounting for no trailing gap
+const HALF_H = MAX_HALF * (CH + GAP)  // 308px
+const AISLE = 36  // central corridor height
+
+// V section uses narrower cells so the row width ≈ G–U section width
+const VCW = 15  // V cell width  (54 × 17 ≈ 916px ≈ G–U span of ~905px)
+
+// ── Cell colours ─────────────────────────────────────────────────
+function cellBg(type: SecType, hovered: boolean): string {
+  if (hovered) return type === 'artist' ? '#2B5F8E' : '#8B7555'
+  if (type === 'artist')      return '#C8DFF0'
+  if (type === 'institution') return '#EAD5B0'
+  return '#E8D0A8'  // sponsor
 }
-function cellBorder(type: SecType, hovered: boolean) {
-  if (hovered) return type === 'sponsor' ? '#8B7555' : '#1F3A5F'
-  if (type === 'sponsor') return 'rgba(139,117,85,0.4)'
-  if (type === 'institution') return 'rgba(122,92,69,0.3)'
-  return 'rgba(31,58,95,0.18)'
+function cellBorder(type: SecType, hovered: boolean): string {
+  if (hovered) return type === 'artist' ? '#1F3A5F' : '#6B5535'
+  if (type === 'artist')      return '#7EB5D6'
+  return '#C4A870'
 }
 
-// Cell size
-const CW = 22, CH = 15, GAP = 2
-// The largest sections (G–R) have ceil(54/2)=27 booths per half → ceil(27/2)=14 rows per half
-const MAX_HALF_ROWS = 14
-const HALF_ZONE = MAX_HALF_ROWS * (CH + GAP) // height of each zone in px
-
+// ── BoothMap ──────────────────────────────────────────────────────
 function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b: CatalogueBrand) => void }) {
   const [hovered, setHovered] = useState<string | null>(null)
-  const [popup, setPopup] = useState<string | null>(null)
+  const [popup,   setPopup]   = useState<string | null>(null)
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 })
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const popupRef = useRef<HTMLDivElement | null>(null)
@@ -83,29 +90,38 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
     setTimeout(() => { if (!popupRef.current?.matches(':hover')) setPopup(null) }, 100)
   }
 
-  function renderCell(booth: string, type: SecType) {
+  function renderCell(booth: string, type: SecType, vCell = false) {
     const brand = byBooth[booth]
     const isEmpty = !brand
     const isHov = hovered === booth
+    const w = vCell ? VCW : CW
     return (
       <div
         key={booth}
         onMouseEnter={e => { if (!isEmpty) startHover(booth, e.currentTarget) }}
         onMouseLeave={endHover}
         onClick={() => { if (brand) onSelect(brand) }}
+        title={brand ? `${booth} — ${brand.name}` : booth}
         style={{
-          width: CW, height: CH, borderRadius: '2px',
-          background: isEmpty ? 'rgba(0,0,0,0.025)' : cellBg(type, isHov),
-          border: isEmpty ? '0.5px solid rgba(0,0,0,0.05)' : `0.5px solid ${cellBorder(type, isHov)}`,
+          width: w, height: CH,
+          background: isEmpty ? 'rgba(0,0,0,0.04)' : cellBg(type, isHov),
+          border: `1px solid ${isEmpty ? 'rgba(0,0,0,0.08)' : cellBorder(type, isHov)}`,
+          borderRadius: 1,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: isEmpty ? 'default' : 'pointer',
-          transform: isHov ? 'scale(1.25)' : 'scale(1)',
+          transform: isHov ? 'scale(1.35)' : 'scale(1)',
           transition: 'background 0.1s, transform 0.1s',
           position: 'relative', zIndex: isHov ? 3 : 1, flexShrink: 0,
         }}
       >
         {!isEmpty && (
-          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '5.5px', fontWeight: isHov ? 700 : 500, color: isHov ? 'white' : 'rgba(75,55,42,0.75)', userSelect: 'none', lineHeight: 1 }}>
+          <span style={{
+            fontFamily: 'var(--font-inter), sans-serif',
+            fontSize: vCell ? '5px' : '6px',
+            fontWeight: isHov ? 700 : 500,
+            color: isHov ? 'white' : type === 'artist' ? '#1F4E79' : '#6B4A2A',
+            userSelect: 'none', lineHeight: 1, whiteSpace: 'nowrap',
+          }}>
             {booth}
           </span>
         )}
@@ -113,7 +129,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
     )
   }
 
-  // Render a 2-col grid of booth cells
+  // Render a 2-column booth grid
   function renderGrid(booths: string[], type: SecType) {
     return (
       <div style={{ display: 'grid', gridTemplateColumns: `repeat(2, ${CW}px)`, gap: GAP }}>
@@ -122,121 +138,183 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
     )
   }
 
-  // Build booth list for a section
-  function boothsOf(secId: string, max: number) {
+  // Generate booth codes for a section in order: A01, A02, …
+  function boothsOf(secId: string, max: number): string[] {
     return Array.from({ length: max }, (_, i) => `${secId}${String(i + 1).padStart(2, '0')}`)
   }
 
-  // Render one section column (label + upper half bottom-aligned + aisle gap + lower half top-aligned)
-  function SectionCol({ id, max, type, labelColor }: { id: string; max: number; type: SecType; labelColor?: string }) {
+  // Render one section column:
+  //   • upper half = higher-numbered booths, descending (high at top → aisle)
+  //   • lower half = lower-numbered booths, descending (high at top → bottom)
+  //   • padding pushes every section's grid to align at the aisle line
+  function renderSection(id: string, max: number, type: SecType) {
     const all = boothsOf(id, max)
-    const mid = Math.ceil(all.length / 2)
-    const upper = all.slice(0, mid)
-    const lower = all.slice(mid)
+    const mid = Math.floor(all.length / 2)
+
+    // Upper zone: second half of all booths (higher numbers), reversed so highest is first
+    const upperBooths = [...all.slice(mid)].reverse()
+    // Lower zone: first half (lower numbers), reversed so highest in that half is first
+    const lowerBooths = [...all.slice(0, mid)].reverse()
+
+    const upperRows = Math.ceil(upperBooths.length / 2)
+    const lowerRows = Math.ceil(lowerBooths.length / 2)
+
+    // Padding to push the upper grid to the bottom of its zone (aisle-aligned),
+    // and pad the bottom of the lower zone so all columns share the same total height.
+    // Grid height for n rows = n*(CH+GAP) - GAP (no trailing gap)
+    // Zone height = HALF_H = MAX_HALF*(CH+GAP)
+    // Pad = HALF_H - gridHeight = (MAX_HALF - n)*(CH+GAP) + GAP
+    const upperPadTop    = Math.max(0, (MAX_HALF - upperRows) * (CH + GAP) + GAP)
+    const lowerPadBottom = Math.max(0, (MAX_HALF - lowerRows) * (CH + GAP) + GAP)
+
+    const labelColor = type === 'artist' ? '#2B5F8E' : '#8B7555'
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-        <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '8px', fontWeight: 700, color: labelColor ?? 'var(--tan)', marginBottom: 4, textAlign: 'center', letterSpacing: '0.04em' }}>
+      <div
+        key={id}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}
+      >
+        {/* Section letter */}
+        <div style={{
+          fontFamily: 'var(--font-inter), sans-serif', fontSize: '7px', fontWeight: 700,
+          color: labelColor, marginBottom: 3, letterSpacing: '0.04em',
+        }}>
           {id}
         </div>
-        {/* Upper half — bottom-aligned so all aisles line up */}
-        <div style={{ height: HALF_ZONE, display: 'flex', alignItems: 'flex-end' }}>
-          {renderGrid(upper, type)}
+
+        {/* Upper half — padded at top so its bottom aligns with the aisle */}
+        <div style={{ paddingTop: upperPadTop }}>
+          {renderGrid(upperBooths, type)}
         </div>
-        {/* Aisle */}
-        <div style={{ height: 18 }} />
-        {/* Lower half — top-aligned */}
-        <div style={{ height: HALF_ZONE, display: 'flex', alignItems: 'flex-start' }}>
-          {renderGrid(lower, type)}
+
+        {/* Central aisle / corridor */}
+        <div style={{ height: AISLE }} />
+
+        {/* Lower half — grid at top, padded at bottom for uniform column height */}
+        <div style={{ paddingBottom: lowerPadBottom }}>
+          {renderGrid(lowerBooths, type)}
         </div>
       </div>
     )
   }
 
+  // V section — single row, smaller cells
+  const vAll = boothsOf('V', 54)
+
+  // CAFE block width: spans roughly A + gap + B-C sections
+  // Align so V section starts approximately above G
+  // A(54) + flex5 + spacer10 + flex5 + B-F(5*54+4*5=290) + flex5 + spacer8 + flex5 = 382
+  // CAFE = 382 - 6 (gap-before-V) = 376
+  const SEC_W = 2 * CW + GAP  // 54px per section column
+  const CAFE_W = SEC_W + 5 + 10 + 5 + 5 * SEC_W + 4 * 5 + 5 + 8 - 6  // = 376px
+
   const popupBrand = popup ? byBooth[popup] : null
 
   return (
     <div style={{ marginBottom: '48px' }}>
-      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px' }}>
-        Booth map — hover to preview · click to scroll to artist
+      <div style={{
+        fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500,
+        letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '14px',
+      }}>
+        Booth map — hover to preview · click to jump to artist
       </div>
 
       {/* Legend */}
-      <div style={{ display: 'flex', gap: '14px', marginBottom: '16px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px', flexWrap: 'wrap' }}>
         {([
-          { label: 'Artist', bg: 'rgba(31,58,95,0.09)', border: 'rgba(31,58,95,0.18)' },
-          { label: 'Institution', bg: '#C8B8A0', border: 'rgba(122,92,69,0.3)' },
-          { label: 'Sponsor', bg: '#D4C4A8', border: 'rgba(139,117,85,0.4)' },
+          { label: 'Artist',      bg: '#C8DFF0', border: '#7EB5D6' },
+          { label: 'Institution', bg: '#EAD5B0', border: '#C4A870' },
+          { label: 'Sponsor',     bg: '#E8D0A8', border: '#C4A870' },
         ] as const).map(({ label, bg, border }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <div style={{ width: 10, height: 10, borderRadius: 2, background: bg, border: `0.5px solid ${border}` }} />
+            <div style={{ width: 10, height: 10, borderRadius: 1, background: bg, border: `1px solid ${border}` }} />
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--brown)' }}>{label}</span>
           </div>
         ))}
       </div>
 
-      <div style={{ background: 'white', borderRadius: '16px', padding: '20px', border: '0.5px solid rgba(122,92,69,0.1)', overflowX: 'auto' }}>
-        <div style={{ minWidth: 'max-content', display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {/* Floor plan card */}
+      <div style={{
+        background: 'white', borderRadius: '12px', padding: '18px 20px',
+        border: '1px solid rgba(122,92,69,0.12)', overflowX: 'auto',
+      }}>
+        <div style={{ minWidth: 'max-content' }}>
 
-          {/* ── TOP ROW: CAFE label + V sponsor strip ── */}
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: 10, marginBottom: 8 }}>
+          {/* ── TOP ROW: CAFE block + V sponsor strip ── */}
+          <div style={{ display: 'flex', alignItems: 'stretch', marginBottom: 8 }}>
+
             {/* CAFE block */}
             <div style={{
-              width: 2 * (CW + GAP) + 10,
-              background: '#F0E8DC', border: '0.5px solid rgba(139,117,85,0.2)', borderRadius: 4,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'var(--font-inter), sans-serif', fontSize: '7px', fontWeight: 600,
-              color: '#8B7555', letterSpacing: '0.1em', textTransform: 'uppercase', flexShrink: 0,
+              width: CAFE_W, flexShrink: 0,
+              background: '#F5EDDF', border: '1px solid #D8C9A8', borderRadius: 3,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'var(--font-inter), sans-serif', color: '#8B7555', padding: '6px 0',
             }}>
-              CAFE
+              <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.1em' }}>카페</div>
+              <div style={{ fontSize: '7px', marginTop: 1, letterSpacing: '0.06em' }}>CAFE</div>
             </div>
-            {/* V section */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '7.5px', fontWeight: 600, color: '#8B7555', letterSpacing: '0.08em' }}>
+
+            <div style={{ width: 6, flexShrink: 0 }} />
+
+            {/* V section — single row of 54 narrower cells */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              <div style={{
+                fontFamily: 'var(--font-inter), sans-serif', fontSize: '7px', fontWeight: 600,
+                color: '#8B7555', letterSpacing: '0.06em', marginBottom: 4,
+              }}>
                 V — Sponsor / Special
               </div>
               <div style={{ display: 'flex', gap: GAP }}>
-                {boothsOf('V', 54).map(b => renderCell(b, 'sponsor'))}
+                {/* Higher-numbered V booths first (left), then lower on right – or just sequential */}
+                {vAll.map(b => renderCell(b, 'sponsor', true))}
               </div>
             </div>
+
           </div>
 
-          <div style={{ height: 1, background: 'rgba(122,92,69,0.08)', marginBottom: 8 }} />
+          {/* thin rule */}
+          <div style={{ height: 1, background: 'rgba(122,92,69,0.1)', marginBottom: 6 }} />
 
           {/* ── MAIN FLOOR ── */}
           <div style={{ display: 'flex', gap: 5, alignItems: 'flex-start' }}>
 
-            {/* A — narrow left column */}
-            <SectionCol id="A" max={24} type="artist" />
+            {/* A */}
+            {renderSection('A', 24, 'artist')}
 
+            {/* Group separator */}
             <div style={{ width: 10, flexShrink: 0 }} />
 
-            {/* B–F: 40-booth sections */}
-            {(['B','C','D','E','F'] as const).map(id => (
-              <SectionCol key={id} id={id} max={40} type="artist" />
-            ))}
+            {/* B – F (40-booth sections) */}
+            {(['B','C','D','E','F'] as const).map(id => renderSection(id, 40, 'artist'))}
 
-            <div style={{ width: 6, flexShrink: 0 }} />
+            {/* Group separator */}
+            <div style={{ width: 8, flexShrink: 0 }} />
 
-            {/* G–R: 53–54-booth sections (main floor) */}
-            {(['G','H','I','J','K','L','M','N','O','P','Q','R'] as const).map(id => (
-              <SectionCol key={id} id={id} max={SEC_META[id].max} type="artist" />
-            ))}
+            {/* G – R (main floor, 53–54 booths) */}
+            {(['G','H','I','J','K','L','M','N','O','P','Q','R'] as const).map(id =>
+              renderSection(id, SEC_META[id].max, 'artist')
+            )}
 
+            {/* Group separator */}
             <div style={{ width: 10, flexShrink: 0 }} />
 
-            {/* S — institutions */}
-            <SectionCol id="S" max={35} type="institution" labelColor="var(--brown)" />
+            {/* S — institutional booths */}
+            {renderSection('S', 35, 'institution')}
 
-            <div style={{ width: 6, flexShrink: 0 }} />
+            {/* Group separator */}
+            <div style={{ width: 5, flexShrink: 0 }} />
 
-            {/* T, U — right side */}
-            <SectionCol id="T" max={36} type="artist" />
-            <SectionCol id="U" max={35} type="artist" />
+            {/* T, U */}
+            {renderSection('T', 36, 'artist')}
+            {renderSection('U', 35, 'artist')}
+
           </div>
 
-          {/* ── GATE LABELS ── */}
-          <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: 10, paddingTop: 8, borderTop: '0.5px solid rgba(122,92,69,0.08)' }}>
+          {/* ── GATE labels ── */}
+          <div style={{
+            display: 'flex', justifyContent: 'space-around',
+            marginTop: 8, paddingTop: 6, borderTop: '1px solid rgba(122,92,69,0.08)',
+          }}>
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '8px', fontWeight: 600, color: 'var(--tan)', letterSpacing: '0.12em' }}>
               출입구 GATE
             </span>
@@ -248,8 +326,8 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
         </div>
       </div>
 
-      {/* ── HOVER POPUP ── */}
-      {popup && popupBrand && createPortal(
+      {/* ── Hover popup ── */}
+      {popup && popupBrand && typeof window !== 'undefined' && createPortal(
         <div
           ref={popupRef}
           onMouseLeave={() => setPopup(null)}
@@ -268,6 +346,11 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', marginBottom: 4, lineHeight: 1.3 }}>
             {popupBrand.name}
           </div>
+          {popupBrand.korean_name && (
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginBottom: 4 }}>
+              {popupBrand.korean_name}
+            </div>
+          )}
           <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.07)', display: 'inline-block', padding: '1px 7px', borderRadius: '99px' }}>
             {popup}
           </span>
@@ -283,6 +366,7 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
   )
 }
 
+// ── Artist icon (favicon with letter fallback) ────────────────────
 function ArtistIcon({ brand }: { brand: CatalogueBrand }) {
   const [ok, setOk] = useState(true)
   const src = brand.url ? `https://www.google.com/s2/favicons?domain=${brand.url}&sz=128` : null
@@ -295,6 +379,7 @@ function ArtistIcon({ brand }: { brand: CatalogueBrand }) {
   )
 }
 
+// ── Brand card ────────────────────────────────────────────────────
 function BrandCard({ brand }: { brand: CatalogueBrand }) {
   const allPosts = brand.posts?.length ? brand.posts : brand.post ? [brand.post] : []
   const shortcodes = allPosts.map(p => p.match(/\/p\/([^/?]+)/)?.[1]).filter(Boolean) as string[]
@@ -312,7 +397,7 @@ function BrandCard({ brand }: { brand: CatalogueBrand }) {
               <span style={{
                 fontFamily: 'var(--font-inter), sans-serif', fontSize: 10, fontWeight: 500,
                 color: sec?.type === 'sponsor' ? '#8B7555' : sec?.type === 'institution' ? 'var(--brown)' : 'var(--dark-blue)',
-                background: sec?.type === 'sponsor' ? '#D4C4A8' : sec?.type === 'institution' ? '#C8B8A0' : 'rgba(31,58,95,0.08)',
+                background: sec?.type === 'sponsor' ? '#E8D0A8' : sec?.type === 'institution' ? '#EAD5B0' : '#C8DFF0',
                 padding: '1px 6px', borderRadius: 99,
               }}>
                 {brand.booth}
@@ -342,6 +427,7 @@ function BrandCard({ brand }: { brand: CatalogueBrand }) {
   )
 }
 
+// ── Tab style helper ──────────────────────────────────────────────
 const tabStyle = (active: boolean): React.CSSProperties => ({
   fontFamily: 'var(--font-inter), sans-serif', fontSize: 12, fontWeight: active ? 500 : 300,
   padding: '8px 18px', borderRadius: 99, cursor: 'pointer',
@@ -350,6 +436,7 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
   border: `0.5px solid ${active ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
 })
 
+// ── Main export ───────────────────────────────────────────────────
 export function SIFCatalogue({ brands, totalCount }: { brands: CatalogueBrand[]; totalCount: number }) {
   const [activeSection, setActiveSection] = useState('All')
   const [search, setSearch] = useState('')
@@ -401,7 +488,7 @@ export function SIFCatalogue({ brands, totalCount }: { brands: CatalogueBrand[];
         </div>
       </div>
 
-      {/* Booth map */}
+      {/* Booth map (client-only) */}
       {mounted && <BoothMap brands={brands} onSelect={scrollToArtist} />}
 
       {/* Search */}
@@ -413,7 +500,7 @@ export function SIFCatalogue({ brands, totalCount }: { brands: CatalogueBrand[];
         />
       </div>
 
-      {/* Section filter */}
+      {/* Section filter tabs */}
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
         {sections.map(sec => (
           <button key={sec} type="button" style={tabStyle(activeSection === sec)} onClick={() => setActiveSection(sec)}>
