@@ -1,13 +1,21 @@
 export const runtime = 'edge'
 
+import { redirect } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import { GenericCatalogue } from './GenericCatalogue'
 import type { CatalogueBrand } from '@/app/catalogue/inventario-2026/InventarioCatalogue'
 
+// Canonical slug aliases — redirect old slugs to their canonical URLs
+const SLUG_REDIRECTS: Record<string, string> = {
+  'seoul-illustration-fair-v-21': '/catalogue/sif-v21',
+}
+
 export default async function CatalogueSlugPage({ params }: { params: { slug: string } }) {
   const { slug } = params
+
+  if (SLUG_REDIRECTS[slug]) redirect(SLUG_REDIRECTS[slug])
   const supabase = createServiceClient()
 
   const [{ data: fair }, { data: brands, count }] = await Promise.all([
