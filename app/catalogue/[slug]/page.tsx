@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { redirect } from 'next/navigation'
+import { redirect, notFound } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
@@ -10,10 +10,14 @@ import type { CatalogueBrand } from '@/app/catalogue/inventario-2026/InventarioC
 // Canonical slug aliases — redirect old slugs to their canonical URLs
 const SLUG_REDIRECTS: Record<string, string> = {}
 
+// Slugs that have been retired — serve 404
+const REMOVED_SLUGS = new Set(['sif-v21'])
+
 export default async function CatalogueSlugPage({ params }: { params: { slug: string } }) {
   const { slug } = params
 
   if (SLUG_REDIRECTS[slug]) redirect(SLUG_REDIRECTS[slug])
+  if (REMOVED_SLUGS.has(slug)) notFound()
   const supabase = createServiceClient()
 
   const [{ data: fair }, { data: brands, count }] = await Promise.all([
