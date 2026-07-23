@@ -319,8 +319,8 @@ function FairCard({ fair: f, today, saved, onSave }: {
                   {f.url.includes('instagram') ? 'Instagram ↗︎' : 'Website ↗︎'}
                 </a>
               )}
-              {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot') || f.name.toLowerCase().includes('seoul illustration fair')) && (
-                <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' :f.name.toLowerCase().includes('inventario') ? '/catalogue/inventario-2026' : '/catalogue/sif-v21')} onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#7A6010', textDecoration: 'none', background: 'rgba(243,227,161,0.5)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', border: '0.5px solid rgba(243,227,161,0.7)' }}>
+              {(f.catalogue_url || f.name.toLowerCase().includes('inventario') || f.name.toLowerCase().includes('dotdot')) && (
+                <a href={f.catalogue_url ?? (f.name.toLowerCase().includes('dotdot') ? '/catalogue/dotdotexpress' : '/catalogue/inventario-2026')} onClick={e => e.stopPropagation()} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#7A6010', textDecoration: 'none', background: 'rgba(243,227,161,0.5)', padding: '4px 10px', borderRadius: '99px', whiteSpace: 'nowrap', border: '0.5px solid rgba(243,227,161,0.7)' }}>
                   See catalogue ↗︎
                 </a>
               )}

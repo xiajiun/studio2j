@@ -5,15 +5,6 @@ import Link from 'next/link'
 
 const CATALOGUES = [
   {
-    id: 'sif-v21',
-    aliases: ['seoul-illustration-fair-v-21'],
-    name: 'Seoul Illustration Fair V.21',
-    description: '2026 · Seoul',
-    href: '/admin/catalogue/sif-v21',
-    public: '/catalogue/sif-v21',
-    date: '2026-10-01',
-  },
-  {
     id: 'inventario-2026',
     aliases: ['inventario-2026'],
     name: 'INVENTARIO 2026',

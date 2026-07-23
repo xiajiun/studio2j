@@ -8,9 +8,7 @@ import { GenericCatalogue } from './GenericCatalogue'
 import type { CatalogueBrand } from '@/app/catalogue/inventario-2026/InventarioCatalogue'
 
 // Canonical slug aliases — redirect old slugs to their canonical URLs
-const SLUG_REDIRECTS: Record<string, string> = {
-  'seoul-illustration-fair-v-21': '/catalogue/sif-v21',
-}
+const SLUG_REDIRECTS: Record<string, string> = {}
 
 export default async function CatalogueSlugPage({ params }: { params: { slug: string } }) {
   const { slug } = params

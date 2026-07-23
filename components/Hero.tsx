@@ -7,7 +7,6 @@ function fairCatalogueUrl(fair: FairRow): string | undefined {
   if (fair.catalogue_url) return fair.catalogue_url
   const n = fair.name.toLowerCase()
   if (n.includes('inventario')) return '/catalogue/inventario-2026'
-  if (n.includes('seoul illustration fair')) return '/catalogue/sif-v21'
   if (n.includes('dotdot')) return '/catalogue/dotdotexpress'
   return undefined
 }

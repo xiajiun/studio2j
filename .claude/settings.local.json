@@ -74,7 +74,16 @@
       "Bash(curl -s \"https://twenty.style/_next/static/chunks/0zlmtgoegkrqf.js\")",
       "Bash(curl -s \"https://twenty.style/_next/static/chunks/0q0g0l37tb3kb.js\")",
       "Bash(curl -s \"https://twenty.style/api/common/v2/market?category=open&limit=20\")",
-      "Bash(git -C /Users/xiajiun/Downloads/studio2j-cc diff app/globals.css)"
+      "Bash(git -C /Users/xiajiun/Downloads/studio2j-cc diff app/globals.css)",
+      "WebFetch(domain:ocreo.kr)",
+      "Bash(npx next *)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s 'https://hclclmdfcswdrdpqtyyl.supabase.co/rest/v1/catalogue_brands?catalogue_id=eq.sif-v21&select=count' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEwNzUzMCwiZXhwIjoyMDkyNjgzNTMwfQ.dULYqxeZt0uAc0p9YJrjhnbmVUGa42dqlzU8SdyzCn4' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEwNzUzMCwiZXhwIjoyMDkyNjgzNTMwfQ.dULYqxeZt0uAc0p9YJrjhnbmVUGa42dqlzU8SdyzCn4' -H 'Prefer: count=exact' -o /dev/null -w 'sif-v21 count header: %{response_code}\\\\n' -I)",
+      "Bash(curl -s 'https://hclclmdfcswdrdpqtyyl.supabase.co/rest/v1/catalogue_brands?catalogue_id=eq.sif-v21&select=id&limit=1' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEwNzUzMCwiZXhwIjoyMDkyNjgzNTMwfQ.dULYqxeZt0uAc0p9YJrjhnbmVUGa42dqlzU8SdyzCn4' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEwNzUzMCwiZXhwIjoyMDkyNjgzNTMwfQ.dULYqxeZt0uAc0p9YJrjhnbmVUGa42dqlzU8SdyzCn4' -H 'Prefer: count=exact' -I)",
+      "Bash(curl -s -X PATCH https://hclclmdfcswdrdpqtyyl.supabase.co/rest/v1/fairs?id=eq.5 -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEwNzUzMCwiZXhwIjoyMDkyNjgzNTMwfQ.dULYqxeZt0uAc0p9YJrjhnbmVUGa42dqlzU8SdyzCn4' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjbGNsbWRmY3N3ZHJkcHF0eXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEwNzUzMCwiZXhwIjoyMDkyNjgzNTMwfQ.dULYqxeZt0uAc0p9YJrjhnbmVUGa42dqlzU8SdyzCn4' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"catalogue_url\": \"/catalogue/sif-v21\"}')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Updated fair:', d[0]['name'], '->', d[0]['catalogue_url']\\)\")",
+      "Bash(git -C /Users/xiajiun/Downloads/studio2j-cc status --short)",
+      "Bash(git -C /Users/xiajiun/Downloads/studio2j-cc diff app/catalogue/sif-v21/SIFCatalogue.tsx)"
     ],
     "additionalDirectories": [
       "/Users/xiajiun/Downloads/studio2j-cc/app/order",
