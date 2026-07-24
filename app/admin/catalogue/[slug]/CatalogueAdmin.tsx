@@ -234,8 +234,10 @@ export function CatalogueAdmin({ brands: init, catalogueId }: { brands: Catalogu
                     {brand.korean_name && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginLeft: '8px' }}>{brand.korean_name}</span>}
                   </div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>{brand.category || '—'}</div>
-                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: brand.instagram ? 'var(--dark-blue)' : 'var(--tan)' }}>
-                    {brand.instagram ? `@${brand.instagram}` : '—'}
+                  <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300 }}>
+                    {brand.instagram
+                      ? <a href={`https://instagram.com/${brand.instagram}`} target="_blank" rel="noreferrer" style={{ color: 'var(--dark-blue)', textDecoration: 'none' }}>@{brand.instagram}</a>
+                      : <span style={{ color: 'var(--tan)' }}>—</span>}
                   </div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: postCount > 0 ? '#2A5C35' : 'var(--tan)' }}>
                     {postCount > 0 ? `✓ ${postCount} post${postCount > 1 ? 's' : ''}` : 'no post'}{brand.booth ? ` · ${brand.booth}` : ''}
