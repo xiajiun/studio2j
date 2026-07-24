@@ -241,6 +241,7 @@ export function CatalogueAdmin({ brands: init, catalogueId }: { brands: Catalogu
                   </div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: postCount > 0 ? '#2A5C35' : 'var(--tan)' }}>
                     {postCount > 0 ? `✓ ${postCount} post${postCount > 1 ? 's' : ''}` : 'no post'}{brand.booth ? ` · ${brand.booth}` : ''}
+                    {(brand as any).saves > 0 && <span style={{ marginLeft: '8px', color: '#E85C6A' }}>♥ {(brand as any).saves}</span>}
                   </div>
                   <div style={{ display: 'flex', gap: '6px' }}>
                     <button type="button" onClick={() => setEditId(brand.id)}

@@ -40,7 +40,12 @@ function BrandIcon({ brand }: { brand: CatalogueBrand }) {
   )
 }
 
-function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: CatalogueBrand) => void }) {
+function BrandCard({ brand, onView, saved, onToggleSave }: {
+  brand: CatalogueBrand
+  onView: (b: CatalogueBrand) => void
+  saved: boolean
+  onToggleSave: (b: CatalogueBrand) => void
+}) {
   const allPosts = brand.posts?.length ? brand.posts : brand.post ? [brand.post] : []
   const shortcodes = allPosts.map(p => p.match(/\/p\/([^/?]+)/)?.[1]).filter(Boolean) as string[]
   const hasMultiple = shortcodes.length > 1
@@ -65,12 +70,22 @@ function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: Catal
             </a>
           )}
         </div>
-        {shortcodes.length > 0 && (
-          <button type="button" onClick={() => onView(brand)}
-            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}>
-            View ↗︎
+        <div style={{ display: 'flex', gap: '6px', flexShrink: 0, alignItems: 'center' }}>
+          <button
+            type="button"
+            onClick={() => onToggleSave(brand)}
+            title={saved ? '찜 취소' : '찜하기'}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: '2px', color: saved ? '#E85C6A' : 'rgba(122,92,69,0.25)', transition: 'color 0.15s, transform 0.15s', transform: saved ? 'scale(1.15)' : 'scale(1)' }}
+          >
+            {saved ? '♥' : '♡'}
           </button>
-        )}
+          {shortcodes.length > 0 && (
+            <button type="button" onClick={() => onView(brand)}
+              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              View ↗︎
+            </button>
+          )}
+        </div>
       </div>
       {shortcodes.length > 0 && (
         <div style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' as any, scrollbarWidth: 'none' as any }}>
@@ -94,26 +109,73 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
   border: `0.5px solid ${active ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
 })
 
+const heartTabStyle = (active: boolean): React.CSSProperties => ({
+  fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: active ? 500 : 300,
+  padding: '8px 18px', borderRadius: '99px', cursor: 'pointer',
+  background: active ? '#E85C6A' : 'transparent',
+  color: active ? 'white' : '#E85C6A',
+  border: `0.5px solid ${active ? '#E85C6A' : 'rgba(232,92,106,0.35)'}`,
+})
+
+function useSaved(catalogueId: string) {
+  const key = `s2j-saved-${catalogueId}`
+  const [savedIds, setSavedIds] = useState<Set<number>>(new Set())
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(key)
+      if (raw) setSavedIds(new Set(JSON.parse(raw)))
+    } catch {}
+  }, [key])
+
+  function toggle(brand: CatalogueBrand) {
+    setSavedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(brand.id)) {
+        next.delete(brand.id)
+      } else {
+        next.add(brand.id)
+        // fire-and-forget increment
+        fetch('/api/save-brand', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brand_id: brand.id }),
+        }).catch(() => {})
+      }
+      try { localStorage.setItem(key, JSON.stringify([...next])) } catch {}
+      return next
+    })
+  }
+
+  return { savedIds, toggle }
+}
+
 export function GenericCatalogue({
   brands,
   totalCount,
   fairName,
   subtitle,
+  catalogueId,
 }: {
   brands: CatalogueBrand[]
   totalCount: number
   fairName: string
   subtitle?: string
+  catalogueId: string
 }) {
   const [activeCategory, setActiveCategory] = useState('All')
+  const [showSaved, setShowSaved] = useState(false)
   const [search, setSearch] = useState('')
   const [modal, setModal] = useState<CatalogueBrand | null>(null)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
+  const { savedIds, toggle } = useSaved(catalogueId)
+
   const categories = ['All', ...Array.from(new Set(brands.map(b => b.category).filter(Boolean) as string[]))]
 
   const filtered = brands.filter(b => {
+    if (showSaved && !savedIds.has(b.id)) return false
     const q = search.toLowerCase()
     const matchSearch = !q || b.name.toLowerCase().includes(q) || (b.korean_name?.toLowerCase().includes(q) ?? false) || (b.booth?.toLowerCase().includes(q) ?? false)
     const matchCat = activeCategory === 'All' || b.category === activeCategory
@@ -143,7 +205,7 @@ export function GenericCatalogue({
         </div>
       </div>
 
-      {/* Search + Category filter */}
+      {/* Search + filters */}
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '32px', alignItems: 'center' }}>
         <input
           value={search} onChange={e => setSearch(e.target.value)}
@@ -151,8 +213,13 @@ export function GenericCatalogue({
           style={{ padding: '8px 18px', borderRadius: '99px', border: '0.5px solid rgba(122,92,69,0.2)', background: 'transparent', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--dark-brown)', outline: 'none', minWidth: '180px' }}
         />
         {categories.length > 1 && categories.map(cat => (
-          <button key={cat} type="button" style={tabStyle(activeCategory === cat)} onClick={() => setActiveCategory(cat)}>{cat}</button>
+          <button key={cat} type="button" style={tabStyle(activeCategory === cat && !showSaved)} onClick={() => { setActiveCategory(cat); setShowSaved(false) }}>{cat}</button>
         ))}
+        {mounted && savedIds.size > 0 && (
+          <button type="button" style={heartTabStyle(showSaved)} onClick={() => setShowSaved(v => !v)}>
+            ♥ 찜 {savedIds.size}
+          </button>
+        )}
       </div>
 
       {/* Brand grid */}
@@ -160,15 +227,21 @@ export function GenericCatalogue({
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', color: 'var(--tan)', textAlign: 'center', padding: '80px 0' }}>
           No brands yet — add them in the admin panel.
         </div>
+      ) : filtered.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '80px 0', fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>
+          {showSaved ? 'No saved brands yet — tap ♡ on any brand.' : 'No brands found'}
+        </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '12px' }}>
-          {filtered.map(brand => <BrandCard key={brand.id} brand={brand} onView={setModal} />)}
-        </div>
-      )}
-
-      {filtered.length === 0 && brands.length > 0 && (
-        <div style={{ textAlign: 'center', padding: '80px 0', fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>
-          No brands found
+          {filtered.map(brand => (
+            <BrandCard
+              key={brand.id}
+              brand={brand}
+              onView={setModal}
+              saved={mounted && savedIds.has(brand.id)}
+              onToggleSave={toggle}
+            />
+          ))}
         </div>
       )}
 

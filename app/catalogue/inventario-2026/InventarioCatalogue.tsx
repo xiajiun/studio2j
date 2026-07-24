@@ -16,6 +16,7 @@ export type CatalogueBrand = {
   booth: string | null
   url: string | null
   sort_order: number
+  saves?: number
 }
 
 // ── Official booth layout from PDF ──

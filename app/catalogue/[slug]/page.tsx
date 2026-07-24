@@ -42,6 +42,7 @@ export default async function CatalogueSlugPage({ params }: { params: { slug: st
             totalCount={count ?? list.length}
             fairName={fairName}
             subtitle={subtitle}
+            catalogueId={slug}
           />
         </div>
       </main>
