@@ -34,43 +34,36 @@ export async function GET(_req: Request, { params }: { params: { number: string 
   }, 0)
   const goods = itemsTotal > 0 ? itemsTotal : (o.goods_total ?? 0)
   const fee = o.service_fee ?? 0
-  const runner = o.runner_fee ?? 0
   const ship = o.shipping_cost ?? 0
-  const grandTotal = goods + fee + runner + ship
+  const grandTotal = goods + fee + ship
   const totalPaid = (o.paid_1_amount ?? 0) + (o.paid_2_amount ?? 0) + (o.paid_3_amount ?? 0)
   const balanceDue = grandTotal - totalPaid
-  const paid = balanceDue <= 0 && totalPaid > 0
   const payMethod = (addr?.payment_method ?? 'wise') as string
   const payInfo = PAYMENT[payMethod] ?? PAYMENT.wise
   const invoiceLabel = (goods > 0 || fee > 0) ? 'Invoice' : 'Quotation'
-  const payNote = totalPaid > 0
-    ? balanceDue > 0
-      ? `Thank you for your part payment of ${num(totalPaid)} ${ccy}. Please complete the remaining balance of ${num(balanceDue)} ${ccy} within 24 hours.`
-      : 'Payment received in full. Thank you!'
-    : 'Please complete the payment. This invoice covers item cost, service fee, and international shipping.'
 
   const colTpl = hasDomDel
-    ? 'grid-template-columns:3fr 1fr 1fr 48px 84px 64px 84px'
-    : 'grid-template-columns:3fr 1fr 1fr 48px 84px 84px'
+    ? 'grid-template-columns:3fr 1fr 1fr 60px 90px 70px 90px'
+    : 'grid-template-columns:3fr 1fr 1fr 60px 90px 90px'
 
-  const headers = ['Item', 'Colour', 'Ccy', 'Qty', 'Unit price', ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`]
-  const headerRow = headers.map((h, i) => {
+  const headers = ['Item','Colour','Ccy','Qty','Unit price', ...(hasDomDel?['Dom.del']:[]), `Total (${ccy})`]
+  const headerRow = headers.map((h,i) => {
     const right = i >= 3
-    return `<div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#18293F;text-align:${right ? 'right' : 'left'}">${esc(h)}</div>`
+    return `<div style="font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#7A5C45;text-align:${right?'right':'left'}">${esc(h)}</div>`
   }).join('')
 
   const itemRows = items.map((item, i) => {
     const total = item.total
       ? num(item.total)
       : (item.price && item.qty ? num(item.price * item.qty + (item.dom_del ?? 0)) : '—')
-    return `<div style="display:grid;${colTpl};gap:8px;padding:13px 0;border-bottom:1px solid #F3F4F6;align-items:start">
-      <div style="font-size:13px;font-weight:400;color:#111827">${i + 1}. ${esc(item.name)}</div>
-      <div style="font-size:12px;color:#9CA3AF">${esc(item.color ?? '')}</div>
-      <div style="font-size:12px;color:#9CA3AF">${esc(item.item_ccy ?? ccy)}</div>
-      <div style="font-size:13px;color:#374151;text-align:right">${item.qty}</div>
-      <div style="font-size:13px;color:#374151;text-align:right">${item.price ? num(item.price) : '—'}</div>
-      ${hasDomDel ? `<div style="font-size:12px;color:#9CA3AF;text-align:right">${item.dom_del ? num(item.dom_del) : '—'}</div>` : ''}
-      <div style="font-size:13px;font-weight:500;color:#111827;text-align:right">${total}</div>
+    return `<div style="display:grid;${colTpl};gap:8px;padding:11px 0;border-bottom:.5px solid #ede7de;align-items:start">
+      <div style="font-size:13px;font-weight:400;color:#2a1f18">${i+1}. ${esc(item.name)}</div>
+      <div style="font-size:12px;color:#7A5C45">${esc(item.color??'')}</div>
+      <div style="font-size:12px;color:#7A5C45">${esc(item.item_ccy??ccy)}</div>
+      <div style="font-size:13px;color:#2a1f18;text-align:right">${item.qty}</div>
+      <div style="font-size:13px;color:#2a1f18;text-align:right">${item.price?num(item.price):'—'}</div>
+      ${hasDomDel?`<div style="font-size:12px;color:#7A5C45;text-align:right">${item.dom_del?num(item.dom_del):'—'}</div>`:''}
+      <div style="font-size:13px;font-weight:400;color:#2a1f18;text-align:right">${total}</div>
     </div>`
   }).join('')
 
@@ -82,70 +75,26 @@ export async function GET(_req: Request, { params }: { params: { number: string 
     addr?.country,
   ].filter(Boolean).map(l => esc(l!)).join('<br>')
 
-  const orderDetailRows = [
-    ['Type', o.kind === 'proxy' ? 'Proxy buy' : o.kind === 'fair' ? 'Fair haul' : 'Personal request'],
-    ['Currency', ccy],
-    ['Payment', payInfo.label],
-  ].map(([k, v]) => `<tr>
-    <td style="font-size:12px;font-weight:500;color:#9CA3AF;padding-bottom:6px;padding-right:16px;vertical-align:top;white-space:nowrap">${esc(k)}</td>
-    <td style="font-size:13px;font-weight:400;color:#374151;padding-bottom:6px">${esc(v)}</td>
-  </tr>`).join('')
-
-  const totalRows = `
-    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:6px">
-      <span style="font-size:12px;font-weight:400;color:#6B7280">Items subtotal</span>
-      <span style="font-size:13px;font-weight:400;color:#374151;white-space:nowrap">${num(goods)} ${esc(ccy)}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:6px">
-      <span style="font-size:12px;font-weight:400;color:#6B7280">Handling fee</span>
-      <span style="font-size:13px;font-weight:400;color:#374151;white-space:nowrap">${fee ? `${num(fee)} ${esc(ccy)}` : '—'}</span>
-    </div>
-    ${runner > 0 ? `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:6px">
-      <span style="font-size:12px;font-weight:400;color:#6B7280">Runner / Transportation fee</span>
-      <span style="font-size:13px;font-weight:400;color:#374151;white-space:nowrap">${num(runner)} ${esc(ccy)}</span>
-    </div>` : ''}
-    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:6px">
-      <span style="font-size:12px;font-weight:400;color:#6B7280">International shipping</span>
-      <span style="font-size:13px;font-weight:400;color:#374151;white-space:nowrap">${ship ? `${num(ship)} ${esc(ccy)}` : '—'}</span>
-    </div>
-    ${totalPaid > 0 ? `
-    <div style="border-top:1px solid #E5E7EB;margin-top:4px;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
-      <span style="font-size:12px;color:#9CA3AF">Total</span>
-      <span style="font-size:14px;color:#6B7280">${num(grandTotal)} ${esc(ccy)}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
-      <span style="font-size:12px;color:#059669">Paid</span>
-      <span style="font-size:14px;color:#059669">&#x2212;${num(totalPaid)} ${esc(ccy)}</span>
-    </div>` : ''}
-    <div style="border-top:1px solid #E5E7EB;margin-top:4px;padding-top:14px;display:flex;justify-content:space-between;align-items:baseline">
-      <span style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:${paid ? '#059669' : '#18293F'}">${paid ? 'Paid in full &#10003;' : totalPaid > 0 ? 'Balance due' : 'Amount due'}</span>
-      ${!paid ? `<span style="font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:400;color:#C8A98D;letter-spacing:-.01em">${num(balanceDue)} ${esc(ccy)}</span>` : `<span style="font-family:'Fraunces',Georgia,serif;font-size:20px;font-weight:400;color:#059669">${num(grandTotal)} ${esc(ccy)}</span>`}
-    </div>
-  `
-
-  const wiseBlock = `<div style="background:${payMethod === 'wise' ? 'white' : '#F9FAFB'};border-radius:6px;padding:16px 18px;border:1px solid ${payMethod === 'wise' ? '#E5E7EB' : '#F3F4F6'}">
-    <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:10px">Wise (international)</div>
-    <a href="https://wise.com/pay/me/keweih6" style="font-size:13px;color:white;font-weight:500;display:inline-block;text-decoration:none;background:#18293F;padding:7px 16px;border-radius:6px">Pay via Wise &#8594;</a>
-    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #F3F4F6;font-size:11px;color:#9CA3AF">Reference: <strong style="font-weight:600;color:#374151">${esc(o.order_number)}</strong></div>
-  </div>`
-
-  const bankBlock = payMethod !== 'wise' ? (() => {
-    const bankLines = payInfo.lines.map((l, i) => `<div style="font-size:13px;font-weight:${i === 0 ? 500 : 400};color:${i === 0 ? '#111827' : '#6B7280'};margin-bottom:3px">${esc(l)}</div>`).join('')
-    return `<div style="background:white;border-radius:6px;padding:16px 18px;border:1px solid #E5E7EB">
-      <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:10px">${esc(payInfo.label)}</div>
-      ${bankLines}
-      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #F3F4F6;font-size:11px;color:#9CA3AF">Reference: <strong style="font-weight:600;color:#374151">${esc(o.order_number)}</strong></div>
+  const payBlocks = (() => {
+    const wise = `<div style="background:${payMethod==='wise'?'white':'rgba(255,255,255,0.6)'};border-radius:4px;padding:16px 20px;border:${payMethod==='wise'?'1px solid #C8A98D':'1px solid rgba(200,169,141,0.3)'}">
+      <div style="font-size:11px;font-weight:500;color:#4B372A;margin-bottom:10px">Wise (international)</div>
+      <a href="https://wise.com/pay/me/keweih6" style="font-size:13px;color:#1F3A5F;font-weight:500;display:inline-block;text-decoration:none;background:#E8F0F8;padding:6px 14px;border-radius:6px">Pay via Wise</a>
+      <div style="margin-top:10px;padding-top:10px;border-top:.5px solid rgba(122,92,69,.15);font-size:11px;font-weight:300;color:#7A5C45">Reference: <strong style="font-weight:500;color:#4B372A">${esc(o.order_number)}</strong></div>
     </div>`
-  })() : ''
-
-  const payGrid = payMethod === 'wise'
-    ? `<div style="max-width:320px">${wiseBlock}</div>`
-    : `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">${wiseBlock}${bankBlock}</div>`
+    if (payMethod === 'wise') return wise
+    const bankLines = payInfo.lines.map((l,i) => `<div style="font-size:13px;font-weight:${i===0?400:300};color:${i===0?'#4B372A':'#7A5C45'};margin-bottom:3px">${esc(l)}</div>`).join('')
+    const bank = `<div style="background:white;border-radius:4px;padding:16px 20px;border:1px solid #C8A98D">
+      <div style="font-size:11px;font-weight:500;color:#4B372A;margin-bottom:10px">${esc(payInfo.label)}</div>
+      ${bankLines}
+      <div style="margin-top:10px;padding-top:10px;border-top:.5px solid rgba(122,92,69,.15);font-size:11px;font-weight:300;color:#7A5C45">Reference: <strong style="font-weight:500;color:#4B372A">${esc(o.order_number)}</strong></div>
+    </div>`
+    return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">${wise}${bank}</div>`
+  })()
 
   const noteHtml = o.customer_notes
-    ? `<div style="margin-bottom:24px;padding:14px 18px;background:#FFFBEB;border-radius:6px;border-left:3px solid #F59E0B">
-        <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#92400E;margin-bottom:6px">Note</div>
-        <p style="font-size:13px;font-weight:400;color:#78350F;line-height:1.7;margin:0">${esc(o.customer_notes)}</p>
+    ? `<div style="margin-top:24px;padding:20px 24px;border-left:2px solid #C8A98D">
+        <div style="font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#C8A98D;margin-bottom:8px">Note</div>
+        <p style="font-size:13px;font-weight:300;color:#7A5C45;line-height:1.7;margin:0">${esc(o.customer_notes)}</p>
       </div>` : ''
 
   const html = `<!DOCTYPE html>
@@ -153,88 +102,108 @@ export async function GET(_req: Request, { params }: { params: { number: string 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Studio2J ${esc(invoiceLabel)} &#8212; ${esc(o.order_number)}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Studio2J ${esc(invoiceLabel)} — ${esc(o.order_number)}</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',Arial,sans-serif;background:#F4F6F8;color:#111827;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-@page{size:A4;margin:8mm}
+body{font-family:Georgia,serif;background:white;color:#2a1f18;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@page{size:A4;margin:12mm}
 </style>
 </head>
 <body>
-<div style="max-width:740px;margin:0 auto;padding:20px 12px">
-<div style="background:white;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08),0 8px 32px rgba(0,0,0,0.05);overflow:hidden">
+<div style="max-width:720px;margin:0 auto;background:white">
 
-  <!-- Navy header -->
-  <div style="background:#18293F;padding:32px 48px;display:flex;justify-content:space-between;align-items:flex-start">
+  <!-- Header -->
+  <div style="background:#1F3A5F;padding:36px 48px;display:flex;justify-content:space-between;align-items:flex-end">
     <div>
-      <div style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:500;color:white;letter-spacing:-.02em;line-height:1;margin-bottom:6px">Studio<em style="font-style:italic;color:#C8A98D">2J</em></div>
-      <div style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.4);letter-spacing:.06em">Seoul &amp; Tokyo personal shopping</div>
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:500;color:white;letter-spacing:-.02em;margin-bottom:4px">Studio<em style="font-style:italic;color:#C8A98D">2J</em></div>
+      <div style="font-family:Arial,sans-serif;font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,239,230,.5)">${esc(invoiceLabel)}</div>
     </div>
     <div style="text-align:right">
-      <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.4);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px">${esc(invoiceLabel)}</div>
-      <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:300;color:#C8A98D;letter-spacing:-.01em;margin-bottom:4px">${esc(o.order_number)}</div>
-      <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.45)">${fmt(o.created_at)}</div>
-      ${paid ? '<div style="margin-top:10px;display:inline-block;background:#22543D;color:#9AE6B4;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px">Paid in full</div>' : ''}
+      <div style="font-family:Georgia,serif;font-size:22px;font-weight:300;color:#C8A98D;letter-spacing:-.01em">${esc(o.order_number)}</div>
+      <div style="font-family:Arial,sans-serif;font-size:12px;font-weight:300;color:rgba(245,239,230,.55);margin-top:4px">${fmt(o.created_at)}</div>
     </div>
   </div>
 
-  <!-- Body -->
-  <div style="padding:36px 48px">
+  <div style="padding:40px 48px;font-family:Arial,sans-serif">
 
     <!-- Billed to / Order details -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:36px;padding-bottom:32px;border-bottom:1px solid #F3F4F6">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:40px">
       <div>
-        <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:12px">Billed to</div>
-        <div style="font-size:16px;font-weight:500;color:#111827;margin-bottom:6px">${esc(o.customer_name ?? addr?.name ?? '—')}</div>
-        <div style="font-size:13px;font-weight:400;color:#6B7280;line-height:1.8">${addrLines}</div>
+        <div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#C8A98D;margin-bottom:12px">Billed to</div>
+        <div style="font-family:Georgia,serif;font-size:18px;font-weight:400;color:#1F3A5F;margin-bottom:6px">${esc(o.customer_name ?? addr?.name ?? '—')}</div>
+        <div style="font-size:13px;font-weight:300;color:#7A5C45;line-height:1.7">${addrLines}</div>
       </div>
-      <div>
-        <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:12px">Order details</div>
-        <table style="border-collapse:collapse;width:100%"><tbody>${orderDetailRows}</tbody></table>
+      <div style="text-align:right">
+        <div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#C8A98D;margin-bottom:12px">Order details</div>
+        <div style="font-size:13px;font-weight:300;color:#7A5C45;line-height:2">
+          <span style="color:#4B372A;font-weight:500">Type</span> ${o.kind==='proxy'?'Proxy buy':o.kind==='fair'?'Fair haul':'Personal request'}<br>
+          <span style="color:#4B372A;font-weight:500">Currency</span> ${esc(ccy)}<br>
+          <span style="color:#4B372A;font-weight:500">Payment</span> ${esc(payInfo.label)}
+        </div>
       </div>
     </div>
 
     <!-- Items -->
     <div style="margin-bottom:32px">
-      <div style="display:grid;${colTpl};gap:8px;padding:8px 0;border-bottom:2px solid #18293F">${headerRow}</div>
-      ${itemRows || '<div style="padding:32px 0;text-align:center;font-family:\'Fraunces\',Georgia,serif;font-style:italic;font-size:14px;color:#9CA3AF">No items listed</div>'}
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:20px">
-        ${totalRows}
+      <div style="display:grid;${colTpl};gap:8px;padding:8px 0;border-bottom:1.5px solid #1F3A5F;margin-bottom:4px">${headerRow}</div>
+      ${itemRows || '<div style="padding:24px 0;text-align:center;font-style:italic;font-size:14px;color:#C8A98D">No items listed</div>'}
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin-top:20px">
+        <div style="width:300px;display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+          <span style="font-size:12px;font-weight:300;color:#7A5C45">Items subtotal</span>
+          <span style="font-size:13px;color:#2a1f18">${num(goods)}</span>
+        </div>
+        <div style="width:300px;display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+          <span style="font-size:12px;font-weight:300;color:#7A5C45">Handling fee</span>
+          <span style="font-size:13px;color:#2a1f18">${fee?num(fee):'—'}</span>
+        </div>
+        <div style="width:300px;display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+          <span style="font-size:12px;font-weight:300;color:#7A5C45">International shipping</span>
+          <span style="font-size:13px;color:#2a1f18">${ship?num(ship):'—'}</span>
+        </div>
+        ${totalPaid > 0 ? `
+        <div style="width:300px;border-top:1.5px solid #1F3A5F;margin-top:4px;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:400;color:#7A5C45">Total</span>
+          <span style="font-size:14px;font-weight:400;color:#7A5C45">${num(grandTotal)} ${esc(ccy)}</span>
+        </div>
+        <div style="width:300px;display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:400;color:#2A5C35">Paid</span>
+          <span style="font-size:14px;font-weight:400;color:#2A5C35">−${num(totalPaid)} ${esc(ccy)}</span>
+        </div>` : ''}
+        <div style="width:300px;border-top:1.5px solid #1F3A5F;margin-top:4px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:${balanceDue<=0?'#2A5C35':'#1F3A5F'}">${balanceDue<=0?'Paid in full ✓':totalPaid>0?'Balance due':'Amount due'}</span>
+          <span style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:${balanceDue<=0?'#2A5C35':'#1F3A5F'};letter-spacing:-.01em">${balanceDue>0?`${num(balanceDue)} ${esc(ccy)}`:''}</span>
+        </div>
       </div>
     </div>
 
-    <!-- Pay note -->
-    <div style="background:#F5EFE6;border-radius:6px;padding:14px 18px;margin-bottom:16px;border-left:3px solid #18293F">
-      <p style="font-size:13px;font-weight:400;color:#374151;line-height:1.7;margin:0">${esc(payNote)}</p>
+    <!-- Payment note -->
+    <div style="background:#f0ebe3;border-radius:4px;padding:16px 20px;margin-bottom:24px;border-left:3px solid #C8A98D">
+      <p style="font-size:13px;font-weight:300;color:#4B372A;line-height:1.7">Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.</p>
     </div>
 
     <!-- Payment -->
-    <div style="background:#F5EFE6;border-radius:6px;padding:20px 22px;margin-bottom:24px">
-      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:14px">Payment</div>
-      ${payGrid}
+    <div style="background:#f5efe6;border-radius:4px;padding:28px 32px">
+      <div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#C8A98D;margin-bottom:16px">Payment</div>
+      ${payMethod==='wise'?`<div style="max-width:340px">${payBlocks}</div>`:payBlocks}
     </div>
 
     ${noteHtml}
 
     <!-- Tracking -->
-    <div style="background:#F0F4FF;border-radius:6px;padding:14px 18px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="background:#EEF3F8;border-radius:4px;padding:14px 20px;margin-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
       <div>
-        <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#4B5FCC;margin-bottom:3px">Order tracking</div>
-        <div style="font-size:12px;font-weight:400;color:#374151">Check your order status anytime.</div>
+        <div style="font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#4A6A8A;margin-bottom:4px">Order tracking</div>
+        <div style="font-size:12px;font-weight:300;color:#4B372A">Check your order status anytime — no login required.</div>
       </div>
-      <a href="https://studio2j.pages.dev/order/${esc(o.order_number)}" style="font-size:12px;font-weight:500;color:#18293F;text-decoration:none;white-space:nowrap;background:white;padding:8px 16px;border-radius:6px;border:1px solid #E5E7EB">Track ${esc(o.order_number)} &#8594;</a>
+      <a href="https://studio2j.pages.dev/order/${esc(o.order_number)}" style="font-size:12px;font-weight:500;color:#1F3A5F;text-decoration:none;white-space:nowrap;background:white;padding:8px 16px;border-radius:6px;border:1px solid rgba(31,58,95,.2)">Track order ${esc(o.order_number)} →</a>
     </div>
 
     <!-- Footer -->
-    <div style="padding-top:20px;border-top:1px solid #F3F4F6;display:flex;justify-content:space-between;align-items:center">
-      <div style="font-family:'Fraunces',Georgia,serif;font-size:13px;font-style:italic;color:#9CA3AF">Studio<em>2J</em> &#8212; Seoul &amp; Tokyo</div>
-      <div style="font-size:11px;color:#9CA3AF">studio2j25@gmail.com</div>
+    <div style="margin-top:24px;padding-top:20px;border-top:.5px solid #ede7de;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-family:Georgia,serif;font-size:13px;font-style:italic;color:#C8A98D">Studio<em>2J</em> — Seoul &amp; Tokyo</div>
+      <div style="font-size:11px;font-weight:300;color:#C8A98D">studio2j25@gmail.com</div>
     </div>
-
   </div>
-</div>
 </div>
 <script>window.onload=()=>window.print()</script>
 </body>
