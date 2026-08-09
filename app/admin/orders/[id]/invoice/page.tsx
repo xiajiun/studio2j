@@ -48,7 +48,6 @@ export default async function InvoicePage({
     if (i.total != null && i.total > 0) return sum + i.total
     return sum + (i.price ?? 0) * (i.qty ?? 1) + (i.dom_del ?? 0)
   }, 0)
-  // Always use live itemsTotal when items are present — goods_total can be stale
   const goods  = itemsTotal > 0 ? itemsTotal : (o.goods_total ?? 0)
   const fee    = o.service_fee   ?? 0
   const runner = o.runner_fee    ?? 0
@@ -74,29 +73,25 @@ export default async function InvoicePage({
     return (
       <>
         <AutoPrint />
-        <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
-        <style>{`
-          @page { size: A4; margin: 12mm; }
-          body { margin: 0; background: white; }
-        `}</style>
+        <div style={{ background: 'white', padding: '0' }}>
+          <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
+        </div>
+        <style>{`@page { size: A4; margin: 10mm; } body { margin: 0; background: white; }`}</style>
       </>
     )
   }
 
   return (
     <>
-      {/* Toolbar */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: 'rgba(245,239,230,0.95)', backdropFilter: 'blur(12px)',
+        background: 'rgba(254,250,240,0.95)', backdropFilter: 'blur(12px)',
         borderBottom: '0.5px solid rgba(122,92,69,0.12)',
         padding: '12px 32px', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap',
       }}>
-        <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '15px', fontWeight: 500, color: 'var(--dark-brown)', flex: 1 }}>
-          Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
-          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', marginLeft: '12px' }}>
-            {invoiceLabel}
-          </span>
+        <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '15px', fontWeight: 400, color: '#2C1810', flex: 1 }}>
+          Studio<em style={{ fontStyle: 'italic', color: '#1F3A5F' }}>2J</em>
+          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#C8A98D', marginLeft: '12px' }}>{invoiceLabel}</span>
         </span>
         <GmailDraftButton
           to={o.customer_email}
@@ -107,13 +102,12 @@ export default async function InvoicePage({
         <PrintButton printUrl={`/api/invoice-print/${o.order_number}`} />
         <a href={`/admin/orders/${params.id}`} style={{
           fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
-          color: 'var(--brown)', textDecoration: 'none',
+          color: '#7A5C45', textDecoration: 'none',
           border: '0.5px solid rgba(122,92,69,0.2)', padding: '9px 20px', borderRadius: '99px', background: 'white',
         }}>← Back</a>
       </div>
 
-      {/* Invoice body */}
-      <div style={{ background: '#f9f6f1', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
+      <div style={{ background: '#FEFAF0', minHeight: '100vh', paddingTop: '72px', paddingBottom: '60px' }}>
         <InvoiceBody o={o} fair={fair} items={items} addr={addr} ccy={ccy} hasDomDel={hasDomDel} goods={goods} fee={fee} runner={runner} ship={ship} grandTotal={grandTotal} totalPaid={totalPaid} balanceDue={balanceDue} payMethod={payMethod} payInfo={payInfo} invoiceLabel={invoiceLabel} payNote={payNote} />
       </div>
     </>
@@ -130,27 +124,36 @@ type InvoiceBodyProps = {
 }
 
 function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, runner, ship, grandTotal, totalPaid, balanceDue, payMethod, payInfo, invoiceLabel, payNote }: InvoiceBodyProps) {
+  const paid = balanceDue <= 0 && totalPaid > 0
   return (
-    <div id="invoice" style={{ maxWidth: '720px', margin: '0 auto', background: 'white', boxShadow: '0 4px 40px rgba(31,58,95,0.08)', borderRadius: '4px', fontFamily: 'Georgia, serif', color: '#2a1f18' }}>
-      <div style={{ background: '#1F3A5F', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+    <div id="invoice" style={{ maxWidth: '740px', margin: '0 auto', background: 'white', borderRadius: '16px', boxShadow: '0 2px 40px rgba(44,24,16,0.07), 0 0 0 0.5px rgba(122,92,69,0.1)', overflow: 'hidden', fontFamily: 'var(--font-inter), sans-serif', color: '#2C1810' }}>
+
+      {/* Header */}
+      <div style={{ background: '#FEFAF0', padding: '36px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '0.5px solid rgba(122,92,69,0.12)' }}>
         <div>
-          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 500, color: 'white', letterSpacing: '-0.02em', marginBottom: '4px' }}>
-            Studio<em style={{ fontStyle: 'italic', color: '#C8A98D' }}>2J</em>
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '30px', fontWeight: 400, color: '#2C1810', letterSpacing: '-0.02em', lineHeight: 1 }}>
+            Studio<em style={{ fontStyle: 'italic', color: '#1F3A5F' }}>2J</em>
           </div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,239,230,0.5)' }}>{invoiceLabel}</div>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A98D', marginTop: '6px' }}>{invoiceLabel}</div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 300, color: '#C8A98D', letterSpacing: '-0.01em' }}>{o.order_number}</div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'rgba(245,239,230,0.55)', marginTop: '4px' }}>{fmtDate(o.created_at)}</div>
+          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '24px', fontWeight: 300, color: '#1F3A5F', letterSpacing: '-0.01em' }}>{o.order_number}</div>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#C8A98D', marginTop: '4px' }}>{fmtDate(o.created_at)}</div>
+          {paid && (
+            <div style={{ marginTop: '8px', display: 'inline-block', background: '#D5E8D8', color: '#2A5C35', fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: '99px' }}>Paid in full</div>
+          )}
         </div>
       </div>
 
+      {/* Body */}
       <div style={{ padding: '40px 48px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginBottom: '40px' }}>
+
+        {/* Billed to + Order details */}
+        <div className="inv-billed" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginBottom: '40px', paddingBottom: '32px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
           <div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Billed to</div>
-            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', fontWeight: 400, color: '#1F3A5F', marginBottom: '6px' }}>{o.customer_name ?? addr?.name ?? '—'}</div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.7 }}>
+            <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Billed to</div>
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', fontWeight: 400, color: '#1F3A5F', marginBottom: '8px', letterSpacing: '-0.01em' }}>{o.customer_name ?? addr?.name ?? '—'}</div>
+            <div style={{ fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.8 }}>
               {o.customer_email}
               {addr?.phone     && <><br />{addr.phone}</>}
               {addr?.instagram && <><br />@{addr.instagram}</>}
@@ -160,119 +163,114 @@ function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, runner,
             </div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Order details</div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 2 }}>
-              <span style={{ color: '#4B372A', fontWeight: 500 }}>Type</span> {o.kind === 'proxy' ? 'Proxy buy' : o.kind === 'fair' ? 'Fair haul' : 'Personal request'}<br />
-              {fair && <><span style={{ color: '#4B372A', fontWeight: 500 }}>Fair</span> {fair.name} · {new Date(fair.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}<br /></>}
-              <span style={{ color: '#4B372A', fontWeight: 500 }}>Currency</span> {ccy}<br />
-              <span style={{ color: '#4B372A', fontWeight: 500 }}>Payment</span> {payInfo.label}
+            <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '12px' }}>Order details</div>
+            <div style={{ fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 2 }}>
+              <span style={{ color: '#2C1810', fontWeight: 500 }}>Type</span>{' '}
+              {o.kind === 'proxy' ? 'Proxy buy' : o.kind === 'fair' ? 'Fair haul' : 'Personal request'}<br />
+              {fair && <><span style={{ color: '#2C1810', fontWeight: 500 }}>Fair</span>{' '}{fair.name} · {new Date(fair.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}<br /></>}
+              <span style={{ color: '#2C1810', fontWeight: 500 }}>Currency</span>{' '}{ccy}<br />
+              <span style={{ color: '#2C1810', fontWeight: 500 }}>Payment</span>{' '}{payInfo.label}
             </div>
           </div>
         </div>
 
-        {/* Items */}
+        {/* Items table */}
         <div style={{ marginBottom: '32px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '8px 0', borderBottom: '1.5px solid #1F3A5F', marginBottom: '4px' }}>
-            {[...['Item', 'Colour', 'Ccy', 'Qty', 'Unit price'], ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`].map(h => (
-              <div key={h} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#7A5C45', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>{h}</div>
-            ))}
-          </div>
-          {items.length > 0 ? items.map((item, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 60px 90px 70px 90px' : '3fr 1fr 1fr 60px 90px 90px', gap: '8px', padding: '11px 0', borderBottom: '0.5px solid #ede7de', alignItems: 'start' }}>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18' }}>{i + 1}. {item.name}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.color ?? ''}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45' }}>{item.item_ccy ?? ccy}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.qty}</div>
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#2a1f18', textAlign: 'right' }}>{item.price ? item.price.toLocaleString() : '—'}</div>
-              {hasDomDel && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', color: '#7A5C45', textAlign: 'right' }}>{item.dom_del ? item.dom_del.toLocaleString() : '—'}</div>}
-              <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18', textAlign: 'right' }}>
-                {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty + (item.dom_del ?? 0)).toLocaleString() : '—'}
+          <div className="inv-table-scroll">
+            <div className="inv-table-inner">
+              <div style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 50px 88px 70px 88px' : '3fr 1fr 1fr 50px 88px 88px', gap: '8px', padding: '0 0 10px', borderBottom: '0.5px solid rgba(122,92,69,0.25)', marginBottom: '2px' }}>
+                {[...['Item', 'Colour', 'Ccy', 'Qty', 'Unit price'], ...(hasDomDel ? ['Dom.del'] : []), `Total (${ccy})`].map(h => (
+                  <div key={h} style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#C8A98D', textAlign: h.startsWith('Total') || h === 'Unit price' || h === 'Qty' || h === 'Dom.del' ? 'right' : 'left' }}>{h}</div>
+                ))}
               </div>
+              {items.length > 0 ? items.map((item, i) => (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: hasDomDel ? '3fr 1fr 1fr 50px 88px 70px 88px' : '3fr 1fr 1fr 50px 88px 88px', gap: '8px', padding: '12px 0', borderBottom: '0.5px solid rgba(122,92,69,0.07)', alignItems: 'start' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 400, color: '#2C1810' }}>{i + 1}. {item.name}</div>
+                  <div style={{ fontSize: '12px', color: '#7A5C45' }}>{item.color ?? ''}</div>
+                  <div style={{ fontSize: '12px', color: '#7A5C45' }}>{item.item_ccy ?? ccy}</div>
+                  <div style={{ fontSize: '13px', color: '#2C1810', textAlign: 'right' }}>{item.qty}</div>
+                  <div style={{ fontSize: '13px', color: '#2C1810', textAlign: 'right' }}>{item.price ? item.price.toLocaleString() : '—'}</div>
+                  {hasDomDel && <div style={{ fontSize: '12px', color: '#7A5C45', textAlign: 'right' }}>{item.dom_del ? item.dom_del.toLocaleString() : '—'}</div>}
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#2C1810', textAlign: 'right' }}>
+                    {item.total ? item.total.toLocaleString() : item.price && item.qty ? (item.price * item.qty + (item.dom_del ?? 0)).toLocaleString() : '—'}
+                  </div>
+                </div>
+              )) : (
+                <div style={{ padding: '32px 0', textAlign: 'center', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', color: '#C8A98D' }}>No items listed yet</div>
+              )}
             </div>
-          )) : (
-            <div style={{ padding: '24px 0', textAlign: 'center', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '14px', color: '#C8A98D' }}>No items listed</div>
-          )}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', marginTop: '20px' }}>
-            <TotalRow label="Items subtotal" value={goods.toLocaleString()} />
-            <TotalRow label="Handling fee" value={fee ? fee.toLocaleString() : '—'} />
-            {runner > 0 && <TotalRow label="Runner fee" value={runner.toLocaleString()} />}
-            <TotalRow label="International shipping" value={ship ? ship.toLocaleString() : '—'} />
+          </div>
+
+          {/* Totals */}
+          <div className="inv-totals" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginTop: '24px' }}>
+            <TotalRow label="Items subtotal" value={`${goods.toLocaleString()} ${ccy}`} />
+            <TotalRow label="Handling fee" value={fee ? `${fee.toLocaleString()} ${ccy}` : '—'} />
+            {runner > 0 && <TotalRow label="Runner / Transportation fee" value={`${runner.toLocaleString()} ${ccy}`} />}
+            <TotalRow label="International shipping" value={ship ? `${ship.toLocaleString()} ${ccy}` : '—'} />
             {totalPaid > 0 && (
               <>
-                <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#7A5C45' }}>Total</span>
-                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 400, color: '#7A5C45' }}>{grandTotal.toLocaleString()} {ccy}</span>
+                <div style={{ width: '300px', borderTop: '0.5px solid rgba(122,92,69,0.2)', marginTop: '6px', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>Total</span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#7A5C45' }}>{grandTotal.toLocaleString()} {ccy}</span>
                 </div>
                 <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: '#2A5C35' }}>Paid</span>
-                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 400, color: '#2A5C35' }}>−{totalPaid.toLocaleString()} {ccy}</span>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: '#2A5C35' }}>Paid</span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#2A5C35' }}>−{totalPaid.toLocaleString()} {ccy}</span>
                 </div>
               </>
             )}
-            <div style={{ width: '300px', borderTop: '1.5px solid #1F3A5F', marginTop: '4px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: balanceDue <= 0 ? '#2A5C35' : '#1F3A5F' }}>
-                {balanceDue <= 0 ? 'Paid in full ✓' : totalPaid > 0 ? 'Balance due' : 'Amount due'}
+            <div style={{ width: '300px', borderTop: '1px solid rgba(122,92,69,0.2)', marginTop: '6px', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: paid ? '#2A5C35' : '#1F3A5F' }}>
+                {paid ? 'Paid in full ✓' : totalPaid > 0 ? 'Balance due' : 'Amount due'}
               </span>
-              <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: balanceDue <= 0 ? '#2A5C35' : '#1F3A5F', letterSpacing: '-0.01em' }}>
-                {balanceDue > 0 ? `${balanceDue.toLocaleString()} ${ccy}` : ''}
-              </span>
+              {!paid && (
+                <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '26px', fontWeight: 300, color: '#1F3A5F', letterSpacing: '-0.02em' }}>
+                  {balanceDue.toLocaleString()} {ccy}
+                </span>
+              )}
             </div>
           </div>
         </div>
 
-        <div style={{ background: '#f0ebe3', borderRadius: '4px', padding: '16px 20px', marginBottom: '24px', borderLeft: '3px solid #C8A98D' }}>
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#4B372A', lineHeight: 1.7, margin: 0 }}>{payNote}</p>
+        {/* Pay note */}
+        <div style={{ background: '#F5EFE6', borderRadius: '12px', padding: '16px 20px', marginBottom: '20px', borderLeft: '3px solid #C8A98D' }}>
+          <p style={{ fontSize: '13px', fontWeight: 300, color: '#4B372A', lineHeight: 1.7, margin: 0 }}>{payNote}</p>
         </div>
 
-        <div style={{ background: '#f5efe6', borderRadius: '4px', padding: '28px 32px' }}>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '16px' }}>Payment</div>
-          <div style={{ display: 'grid', gridTemplateColumns: payMethod === 'wise' ? '1fr' : '1fr 1fr', gap: '16px' }}>
+        {/* Payment section */}
+        <div style={{ background: '#F5EFE6', borderRadius: '12px', padding: '24px 28px', marginBottom: '20px' }}>
+          <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '16px' }}>Payment</div>
+          <div className="inv-pay-grid" style={{ display: 'grid', gridTemplateColumns: payMethod === 'wise' ? '1fr' : '1fr 1fr', gap: '12px' }}>
             <PayBlock label="Wise (international)" link="https://wise.com/pay/me/keweih6" lines={[]} reference={o.order_number} highlight={payMethod === 'wise'} />
             {payMethod !== 'wise' && <PayBlock label={payInfo.label} lines={(payInfo as any).lines ?? []} reference={o.order_number} highlight />}
           </div>
         </div>
 
+        {/* Customer note */}
         {o.customer_notes && (
-          <div style={{ marginTop: '24px', padding: '20px 24px', borderLeft: '2px solid #C8A98D' }}>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '8px' }}>Note</div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.7, margin: 0 }}>{o.customer_notes}</p>
+          <div style={{ marginBottom: '20px', padding: '16px 20px', borderLeft: '2px solid #C8A98D', background: 'rgba(200,169,141,0.06)', borderRadius: '0 8px 8px 0' }}>
+            <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#C8A98D', marginBottom: '8px' }}>Note</div>
+            <p style={{ fontSize: '13px', fontWeight: 300, color: '#7A5C45', lineHeight: 1.7, margin: 0 }}>{o.customer_notes}</p>
           </div>
         )}
 
-        <div style={{ background: '#EEF3F8', borderRadius: '4px', padding: '14px 20px', marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        {/* Tracking */}
+        <div style={{ background: 'rgba(31,58,95,0.04)', borderRadius: '12px', padding: '16px 20px', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }} className="inv-track">
           <div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#4A6A8A', marginBottom: '4px' }}>Order tracking</div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#4B372A' }}>Check your order status anytime — no login required.</div>
+            <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '4px' }}>Order tracking</div>
+            <div style={{ fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>Check your order status anytime — no login required.</div>
           </div>
-          <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(31,58,95,0.2)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            Track order {o.order_number} →
+          <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 18px', borderRadius: '99px', border: '0.5px solid rgba(31,58,95,0.2)' }}>
+            Track {o.order_number} →
           </a>
         </div>
 
-        <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '0.5px solid #ede7de', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Footer */}
+        <div style={{ paddingTop: '20px', borderTop: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '13px', fontStyle: 'italic', color: '#C8A98D' }}>Studio<em>2J</em> — Seoul &amp; Tokyo</div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: '#C8A98D' }}>studio2j25@gmail.com</div>
+          <div style={{ fontSize: '11px', fontWeight: 300, color: '#C8A98D' }}>studio2j25@gmail.com</div>
         </div>
       </div>
-    </div>
-  )
-}
-
-function TotalRowBadge({ label, value, paid }: { label: string; value: string; paid?: boolean }) {
-  return (
-    <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>{label}</span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: paid !== undefined ? '#aaa' : '#2a1f18', textDecoration: paid ? 'line-through' : 'none' }}>{value}</span>
-        {paid !== undefined && (
-          <span style={{
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500,
-            padding: '2px 8px', borderRadius: '99px',
-            background: paid ? '#D5E8D8' : '#F5DDD5',
-            color: paid ? '#2A5C35' : '#8A3A20',
-          }}>{paid ? 'Paid ✓' : 'Unpaid'}</span>
-        )}
-      </span>
     </div>
   )
 }
@@ -281,21 +279,21 @@ function TotalRow({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '16px' }}>
       <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>{label}</span>
-      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2a1f18', whiteSpace: 'nowrap' }}>{value}</span>
+      <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: '#2C1810', whiteSpace: 'nowrap' }}>{value}</span>
     </div>
   )
 }
 
 function PayBlock({ label, lines, link, reference, highlight }: { label: string; lines: string[]; link?: string; reference: string; highlight?: boolean }) {
   return (
-    <div style={{ background: highlight ? 'white' : 'rgba(255,255,255,0.6)', borderRadius: '4px', padding: '16px 20px', border: highlight ? '1px solid #C8A98D' : '1px solid rgba(200,169,141,0.3)' }}>
-      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#4B372A', marginBottom: '10px', letterSpacing: '0.04em' }}>{label}</div>
+    <div style={{ background: highlight ? 'white' : 'rgba(255,255,255,0.5)', borderRadius: '10px', padding: '16px 18px', border: `0.5px solid ${highlight ? 'rgba(122,92,69,0.25)' : 'rgba(122,92,69,0.12)'}` }}>
+      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: '#2C1810', marginBottom: '10px', letterSpacing: '0.04em' }}>{label}</div>
       {link
-        ? <a href={link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#1F3A5F', fontWeight: 500, marginBottom: '8px', display: 'inline-block', textDecoration: 'none', background: '#E8F0F8', padding: '6px 14px', borderRadius: '6px' }}>Pay via Wise →</a>
-        : lines.map((l, i) => <div key={i} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: i === 0 ? 400 : 300, color: i === 0 ? '#4B372A' : '#7A5C45', marginBottom: '3px' }}>{l}</div>)
+        ? <a href={link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#1F3A5F', fontWeight: 500, display: 'inline-block', textDecoration: 'none', background: 'rgba(31,58,95,0.07)', padding: '6px 14px', borderRadius: '99px' }}>Pay via Wise →</a>
+        : lines.map((l, i) => <div key={i} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: i === 0 ? 400 : 300, color: i === 0 ? '#2C1810' : '#7A5C45', marginBottom: '3px' }}>{l}</div>)
       }
-      <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '0.5px solid rgba(122,92,69,0.15)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: '#7A5C45' }}>
-        Reference: <strong style={{ fontWeight: 500, color: '#4B372A' }}>{reference}</strong>
+      <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '0.5px solid rgba(122,92,69,0.12)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: '#7A5C45' }}>
+        Reference: <strong style={{ fontWeight: 500, color: '#2C1810' }}>{reference}</strong>
       </div>
     </div>
   )
