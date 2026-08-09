@@ -117,9 +117,9 @@ export async function GET(_req: Request, { params }: { params: { number: string 
       <span style="font-size:12px;color:#059669">Paid</span>
       <span style="font-size:14px;color:#059669">&#x2212;${num(totalPaid)} ${esc(ccy)}</span>
     </div>` : ''}
-    <div style="background:${paid ? '#F0FDF4' : '#18293F'};border-radius:6px;padding:14px 16px;margin-top:4px;display:flex;justify-content:space-between;align-items:center">
-      <span style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:${paid ? '#059669' : 'rgba(255,255,255,0.65)'}">${paid ? 'Paid in full &#10003;' : totalPaid > 0 ? 'Balance due' : 'Amount due'}</span>
-      ${!paid ? `<span style="font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:400;color:white;letter-spacing:-.01em">${num(balanceDue)} ${esc(ccy)}</span>` : `<span style="font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:400;color:#059669">${num(grandTotal)} ${esc(ccy)}</span>`}
+    <div style="border-top:1px solid #E5E7EB;margin-top:4px;padding-top:14px;display:flex;justify-content:space-between;align-items:baseline">
+      <span style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:${paid ? '#059669' : '#18293F'}">${paid ? 'Paid in full &#10003;' : totalPaid > 0 ? 'Balance due' : 'Amount due'}</span>
+      ${!paid ? `<span style="font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:400;color:#C8A98D;letter-spacing:-.01em">${num(balanceDue)} ${esc(ccy)}</span>` : `<span style="font-family:'Fraunces',Georgia,serif;font-size:20px;font-weight:400;color:#059669">${num(grandTotal)} ${esc(ccy)}</span>`}
     </div>
   `
 
@@ -174,7 +174,7 @@ body{font-family:'Inter',Arial,sans-serif;background:#F4F6F8;color:#111827;-webk
     </div>
     <div style="text-align:right">
       <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.4);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px">${esc(invoiceLabel)}</div>
-      <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:300;color:white;letter-spacing:-.01em;margin-bottom:4px">${esc(o.order_number)}</div>
+      <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:300;color:#C8A98D;letter-spacing:-.01em;margin-bottom:4px">${esc(o.order_number)}</div>
       <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.45)">${fmt(o.created_at)}</div>
       ${paid ? '<div style="margin-top:10px;display:inline-block;background:#22543D;color:#9AE6B4;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px">Paid in full</div>' : ''}
     </div>
@@ -206,13 +206,13 @@ body{font-family:'Inter',Arial,sans-serif;background:#F4F6F8;color:#111827;-webk
     </div>
 
     <!-- Pay note -->
-    <div style="background:#F9FAFB;border-radius:6px;padding:14px 18px;margin-bottom:24px;border-left:3px solid #18293F">
+    <div style="background:#F5EFE6;border-radius:6px;padding:14px 18px;margin-bottom:16px;border-left:3px solid #18293F">
       <p style="font-size:13px;font-weight:400;color:#374151;line-height:1.7;margin:0">${esc(payNote)}</p>
     </div>
 
     <!-- Payment -->
-    <div style="margin-bottom:24px">
-      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:12px">Payment</div>
+    <div style="background:#F5EFE6;border-radius:6px;padding:20px 22px;margin-bottom:24px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9CA3AF;margin-bottom:14px">Payment</div>
       ${payGrid}
     </div>
 

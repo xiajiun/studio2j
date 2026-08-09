@@ -130,7 +130,7 @@ function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee,
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '6px' }}>{invoiceLabel}</div>
-            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 300, color: 'white', letterSpacing: '-0.01em', marginBottom: '4px' }}>{o.order_number}</div>
+            <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 300, color: '#C8A98D', letterSpacing: '-0.01em', marginBottom: '4px' }}>{o.order_number}</div>
             <div style={{ fontSize: '12px', fontWeight: 300, color: 'rgba(255,255,255,0.45)' }}>{fmtDate(o.created_at)}</div>
             {paid && <div style={{ marginTop: '10px', display: 'inline-block', background: '#22543D', color: '#9AE6B4', fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: '4px' }}>Paid in full</div>}
           </div>
@@ -217,26 +217,26 @@ function CustomerInvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee,
                   </div>
                 </>
               )}
-              <div style={{ width: '300px', background: paid ? '#F0FDF4' : '#18293F', borderRadius: '6px', padding: '14px 16px', marginTop: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: paid ? '#059669' : 'rgba(255,255,255,0.65)' }}>
+              <div style={{ width: '300px', borderTop: '1px solid #E5E7EB', marginTop: '4px', paddingTop: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: paid ? '#059669' : '#18293F' }}>
                   {paid ? 'Paid in full ✓' : totalPaid > 0 ? 'Balance due' : 'Amount due'}
                 </span>
                 {!paid
-                  ? <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '24px', fontWeight: 400, color: 'white', letterSpacing: '-0.01em' }}>{balanceDue.toLocaleString()} {ccy}</span>
-                  : <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '18px', fontWeight: 400, color: '#059669' }}>{grandTotal.toLocaleString()} {ccy}</span>
+                  ? <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '28px', fontWeight: 400, color: '#C8A98D', letterSpacing: '-0.01em' }}>{balanceDue.toLocaleString()} {ccy}</span>
+                  : <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '20px', fontWeight: 400, color: '#059669' }}>{grandTotal.toLocaleString()} {ccy}</span>
                 }
               </div>
             </div>
           </div>
 
           {/* Pay note */}
-          <div style={{ background: '#F9FAFB', borderRadius: '6px', padding: '14px 18px', marginBottom: '24px', borderLeft: '3px solid #18293F' }}>
+          <div style={{ background: '#F5EFE6', borderRadius: '6px', padding: '14px 18px', marginBottom: '16px', borderLeft: '3px solid #18293F' }}>
             <p style={{ fontSize: '13px', fontWeight: 400, color: '#374151', lineHeight: 1.7, margin: 0 }}>{payNote}</p>
           </div>
 
           {/* Payment */}
-          <div style={{ marginBottom: '24px' }}>
-            <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: '12px' }}>Payment</div>
+          <div style={{ background: '#F5EFE6', borderRadius: '6px', padding: '20px 22px', marginBottom: '24px' }}>
+            <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: '14px' }}>Payment</div>
             <div className="inv-pay-grid" style={{ display: 'grid', gridTemplateColumns: payMethod === 'wise' ? '1fr' : '1fr 1fr', gap: '12px' }}>
               <PayBlock label="Wise (international)" link="https://wise.com/pay/me/keweih6" lines={[]} reference={o.order_number} highlight={payMethod === 'wise'} />
               {payMethod !== 'wise' && <PayBlock label={payInfo.label} lines={(payInfo as any).lines ?? []} reference={o.order_number} highlight />}
