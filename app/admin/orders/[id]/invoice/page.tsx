@@ -67,7 +67,7 @@ export default async function InvoicePage({
     ? balanceDue > 0
       ? `Thank you for your part payment of ${totalPaid.toLocaleString()} ${ccy}. Please complete the remaining balance of ${balanceDue.toLocaleString()} ${ccy} within 24 hours.`
       : `Payment received in full. Thank you!`
-    : 'Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.'
+    : 'Please complete the payment. This invoice covers item cost, service fee, and international shipping.'
 
   if (isPrint) {
     return (
@@ -269,7 +269,7 @@ function InvoiceBody({ o, fair, items, addr, ccy, hasDomDel, goods, fee, runner,
         <div className="inv-track" style={{ background: 'rgba(31,58,95,0.04)', borderRadius: '12px', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <div>
             <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1F3A5F', marginBottom: '4px' }}>Order tracking</div>
-            <div style={{ fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>Check your order status anytime — no login required.</div>
+            <div style={{ fontSize: '12px', fontWeight: 300, color: '#7A5C45' }}>Check your order status anytime.</div>
           </div>
           <a href={`https://studio2j.pages.dev/order/${o.order_number}`} target="_blank" rel="noreferrer" style={{ fontSize: '12px', fontWeight: 500, color: '#1F3A5F', textDecoration: 'none', whiteSpace: 'nowrap', background: 'white', padding: '8px 18px', borderRadius: '99px', border: '0.5px solid rgba(31,58,95,0.2)' }}>
             Track {o.order_number} →

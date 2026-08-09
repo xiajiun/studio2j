@@ -47,7 +47,7 @@ export async function GET(_req: Request, { params }: { params: { number: string 
     ? balanceDue > 0
       ? `Thank you for your part payment of ${num(totalPaid)} ${ccy}. Please complete the remaining balance of ${num(balanceDue)} ${ccy} within 24 hours.`
       : 'Payment received in full. Thank you!'
-    : 'Please complete payment within 24 hours. This invoice covers item cost, service fee, and international shipping.'
+    : 'Please complete the payment. This invoice covers item cost, service fee, and international shipping.'
 
   const colTpl = hasDomDel
     ? 'grid-template-columns:3fr 1fr 1fr 50px 88px 70px 88px'
@@ -226,7 +226,7 @@ body{font-family:'Inter',Arial,sans-serif;background:#FEFAF0;color:#2C1810;-webk
     <div style="background:rgba(31,58,95,.04);border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
       <div>
         <div style="font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#1F3A5F;margin-bottom:4px">Order tracking</div>
-        <div style="font-size:12px;font-weight:300;color:#7A5C45">Check your order status anytime &#8212; no login required.</div>
+        <div style="font-size:12px;font-weight:300;color:#7A5C45">Check your order status anytime.</div>
       </div>
       <a href="https://studio2j.pages.dev/order/${esc(o.order_number)}" style="font-size:12px;font-weight:500;color:#1F3A5F;text-decoration:none;white-space:nowrap;background:white;padding:8px 18px;border-radius:99px;border:.5px solid rgba(31,58,95,.2)">Track ${esc(o.order_number)} &#8594;</a>
     </div>
