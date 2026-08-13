@@ -473,7 +473,7 @@ export function OrderForm({ fairs, orderId, initial, customers }: {
               value={fxRate}
               onChange={e => setFxRate(e.target.value)}
             />
-            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'var(--dark-blue)', whiteSpace: 'nowrap' }}>{form.currency}</span>
+            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'var(--dark-blue)', whiteSpace: 'nowrap' }}>KRW</span>
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>· auto-fetched, editable</span>
           </div>
         )}
