@@ -21,7 +21,10 @@ export default async function AdminOrders({ searchParams }: { searchParams: { fi
   if (filter === 'active')            query = query.not('status', 'in', '(delivered,cancelled)')
   else if (filter !== 'all')          query = query.eq('status', filter as OrderStatus)
 
-  const { data: orders } = await query
+  const { data } = await query
+  // Active orders first, then delivered/cancelled; newest first within each group
+  const isClosed = (o: Order) => o.status === 'delivered' || o.status === 'cancelled'
+  const orders = ((data ?? []) as Order[]).sort((a, b) => Number(isClosed(a)) - Number(isClosed(b)))
 
   return (
     <div>
@@ -50,9 +53,9 @@ export default async function AdminOrders({ searchParams }: { searchParams: { fi
         ))}
       </div>
 
-      {orders && orders.length > 0 ? (
+      {orders.length > 0 ? (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {(orders as Order[]).map(o => <OrderCard key={o.id} order={o} adminView />)}
+          {orders.map(o => <OrderCard key={o.id} order={o} adminView />)}
         </div>
       ) : (
         <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)', textAlign: 'center', padding: '60px 0' }}>
