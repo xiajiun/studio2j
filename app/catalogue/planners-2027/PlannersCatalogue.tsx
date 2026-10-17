@@ -6,8 +6,8 @@ import { useLang } from '@/components/LangProvider'
 import { PLANNERS_2027, type BinderSize, type Planner2027, type PlannerFormat, type PlannerVariant, type SizeGroup } from '@/lib/planners-2027'
 
 // Layout tiles — weekly-memo is grouped with weekly-horizontal
-type LayoutKey = 'daily' | 'weekly-vertical' | 'weekly-horizontal' | 'monthly' | 'multi-year' | 'calendar'
-const LAYOUTS: LayoutKey[] = ['daily', 'weekly-vertical', 'weekly-horizontal', 'monthly', 'multi-year', 'calendar']
+type LayoutKey = 'daily' | 'weekly-vertical' | 'weekly-horizontal' | 'monthly' | 'multi-year' | 'calendar' | 'cover'
+const LAYOUTS: LayoutKey[] = ['daily', 'weekly-vertical', 'weekly-horizontal', 'monthly', 'multi-year', 'calendar', 'cover']
 const layoutOf = (f: PlannerFormat): LayoutKey => (f === 'weekly-memo' ? 'weekly-horizontal' : f)
 
 const SIZES: SizeGroup[] = ['large', 'medium', 'pocket']
@@ -86,6 +86,19 @@ function LayoutIcon({ kind, active }: { kind: LayoutKey | 'binder'; active: bool
         {pages}
         {[1, 2, 3, 4].map(i => <line key={`l${i}`} x1={R + 5} y1={T + 3 + i * 6} x2={R + W - 3} y2={T + 3 + i * 6} {...line} />)}
         {[8, 14, 20, 26, 32].map(y => <ellipse key={`r${y}`} cx={32} cy={y} rx={4.5} ry={1.8} fill="white" stroke={ink} strokeWidth={0.9} />)}
+      </svg>
+    )
+  }
+  if (kind === 'cover') {
+    // closed planner in a cover: spine, pen loop and a strap
+    return (
+      <svg width="52" height="33" viewBox="0 0 64 40" aria-hidden style={{ flexShrink: 0 }}>
+        <rect x={18} y={4} width={26} height={32} rx={3} fill="white" stroke={ink} strokeWidth={0.9} />
+        <line x1={22} y1={4} x2={22} y2={36} stroke={ink} strokeWidth={0.6} />
+        <rect x={44} y={14} width={4} height={10} rx={1.5} fill="none" stroke={ink} strokeWidth={0.8} />
+        <line x1={46} y1={10} x2={46} y2={30} stroke={ink} strokeWidth={1.2} strokeLinecap="round" />
+        <line x1={27} y1={11} x2={38} y2={11} stroke={ink} strokeWidth={1.2} />
+        <line x1={27} y1={15} x2={35} y2={15} {...line} />
       </svg>
     )
   }
@@ -174,7 +187,7 @@ function PlannerCard({ p, ring }: { p: Planner2027; ring: BinderSize | 'all' }) 
         )}
 
         <div style={{ fontFamily: inter, fontSize: '11.5px', fontWeight: 400, color: 'var(--brown)', marginTop: '10px', lineHeight: 1.5 }}>
-          {[s.formats[p.formats[0]], p.binder ? s.binderTag : null, variants.length ? null : p.sizes.join(' / '), p.dated ? s.dated : s.undated].filter(Boolean).join(' · ')}
+          {[s.formats[p.formats[0]], p.binder ? s.binderTag : null, variants.length ? null : p.sizes.join(' / '), p.formats.includes('cover') ? null : p.dated ? s.dated : s.undated].filter(Boolean).join(' · ')}
         </div>
 
         {variants.length > 0 && (
@@ -264,7 +277,7 @@ export function PlannersCatalogue() {
     if (layout !== 'all' && !p.formats.some(f => layoutOf(f) === layout)) return false
     if (effectiveCountry !== 'all' && p.country !== effectiveCountry) return false
     if (kind === 'binder' && !p.binder) return false
-    if (kind === 'bound' && p.binder) return false
+    if (kind === 'bound' && (p.binder || p.formats.includes('cover'))) return false
     if (binderMode && ring !== 'all' && !p.variants?.some(v => v.binderSize === ring)) return false
     if (!binderMode && size !== 'all' && p.sizeGroup !== size) return false
     if (dated !== 'all' && p.dated !== (dated === 'dated')) return false

@@ -3,6 +3,7 @@
 export type PlannerFormat =
   | 'daily' | 'weekly-vertical' | 'weekly-horizontal' | 'weekly-memo'
   | 'monthly' | 'multi-year' | 'calendar'
+  | 'cover'          // planner covers & cases (e.g. Hobonichi covers) — not a layout, gets its own tile
 
 // large = A4/B5/A5 · medium = B6/A6/TN Regular · pocket = A7/Passport/slim pocket
 export type SizeGroup = 'large' | 'medium' | 'pocket'

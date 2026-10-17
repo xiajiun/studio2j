@@ -19,18 +19,22 @@ import SocialProof from '@/components/SocialProof'
 import { PLANNERS_2027 } from '@/lib/planners-2027'
 import { fetchFurukawashikoNewArrivals } from '@/lib/furukawashiko'
 
-// Homepage teaser picks: alternate Korea / Japan so both sides show (JA mode filters to Korea)
+// Homepage "Planner season" teaser: these four first, then other picks alternating Korea / Japan.
+// JA mode keeps only Korean ones (PlannersFeature filters), so it shows the Korean pins + next Korean picks.
+const TEASER_IDS = ['kr-analoguekeeper-space-diary', 'jp-hobonichi-original', 'kr-beesket-the-present-diary', 'jp-midori-md-notebook-diary']
+const TEASER_SKIP = ['kr-ardium-planner-m']
+
 function plannerTeasers(): PlannerTeaser[] {
-  const bound = PLANNERS_2027.filter(p => p.pick && !p.binder)
-  const kr = bound.filter(p => p.country === 'KR')
-  const jp = bound.filter(p => p.country === 'JP')
-  const out: PlannerTeaser[] = []
+  const bound = PLANNERS_2027.filter(p => p.pick && !p.binder && !TEASER_SKIP.includes(p.id))
+  const pinned = TEASER_IDS.map(id => PLANNERS_2027.find(p => p.id === id)).filter(Boolean) as typeof bound
+  const rest = bound.filter(p => !TEASER_IDS.includes(p.id))
+  const kr = rest.filter(p => p.country === 'KR')
+  const jp = rest.filter(p => p.country === 'JP')
+  const ordered = [...pinned]
   for (let i = 0; i < Math.max(kr.length, jp.length); i++) {
-    for (const p of [kr[i], jp[i]]) {
-      if (p) out.push({ id: p.id, brand: p.brand, name: p.name, country: p.country, image: p.image, url: p.url, price: p.price, dated: p.dated })
-    }
+    for (const p of [kr[i], jp[i]]) if (p) ordered.push(p)
   }
-  return out
+  return ordered.map(p => ({ id: p.id, brand: p.brand, name: p.name, country: p.country, image: p.image, url: p.url, price: p.price, dated: p.dated }))
 }
 
 

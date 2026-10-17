@@ -161,11 +161,11 @@ const en = {
     layoutTitle: 'Which layout are you?', layoutAll: 'All layouts',
     formats: {
       daily: 'Daily', 'weekly-vertical': 'Weekly vertical', 'weekly-horizontal': 'Weekly horizontal',
-      'weekly-memo': 'Weekly + notes', monthly: 'Monthly', 'multi-year': 'Multi-year', calendar: 'Calendar',
+      'weekly-memo': 'Weekly + notes', monthly: 'Monthly', 'multi-year': 'Multi-year', calendar: 'Calendar', cover: 'Covers',
     },
     formatHints: {
       daily: 'A page a day', 'weekly-vertical': 'Hour-by-hour columns', 'weekly-horizontal': 'Your week on one spread',
-      monthly: 'Big picture, slim', 'multi-year': 'A few lines a day, for years', calendar: 'For your desk or wall',
+      monthly: 'Big picture, slim', 'multi-year': 'A few lines a day, for years', calendar: 'For your desk or wall', cover: 'Dress up your planner',
     },
     countryAll: 'All', countryKR: '🇰🇷 Korea', countryJP: '🇯🇵 Japan',
     sizeAll: 'Any size',
@@ -394,11 +394,11 @@ const ja: typeof en = {
     layoutTitle: 'あなたに合うレイアウトは？', layoutAll: 'すべてのレイアウト',
     formats: {
       daily: 'デイリー', 'weekly-vertical': 'ウィークリー（バーチカル）', 'weekly-horizontal': 'ウィークリー（ホリゾンタル）',
-      'weekly-memo': 'ウィークリー＋メモ', monthly: 'マンスリー', 'multi-year': '複数年日記', calendar: 'カレンダー',
+      'weekly-memo': 'ウィークリー＋メモ', monthly: 'マンスリー', 'multi-year': '複数年日記', calendar: 'カレンダー', cover: 'カバー',
     },
     formatHints: {
       daily: '1日1ページ', 'weekly-vertical': '時間軸で縦に管理', 'weekly-horizontal': '見開きで1週間',
-      monthly: '月を俯瞰・薄くて軽い', 'multi-year': '毎日数行を数年分', calendar: '卓上・壁掛け',
+      monthly: '月を俯瞰・薄くて軽い', 'multi-year': '毎日数行を数年分', calendar: '卓上・壁掛け', cover: '手帳をきせかえ',
     },
     countryAll: 'すべて', countryKR: '🇰🇷 韓国', countryJP: '',
     sizeAll: 'すべてのサイズ',
@@ -627,11 +627,11 @@ const zhTW: typeof en = {
     layoutTitle: '哪種版型適合你？', layoutAll: '全部版型',
     formats: {
       daily: '每日', 'weekly-vertical': '週計畫（直式）', 'weekly-horizontal': '週計畫（橫式）',
-      'weekly-memo': '週計畫＋筆記', monthly: '月計畫', 'multi-year': '多年日記', calendar: '月曆',
+      'weekly-memo': '週計畫＋筆記', monthly: '月計畫', 'multi-year': '多年日記', calendar: '月曆', cover: '書衣',
     },
     formatHints: {
       daily: '一日一頁', 'weekly-vertical': '直式時間軸', 'weekly-horizontal': '一週一跨頁',
-      monthly: '月份總覽，輕薄', 'multi-year': '每天幾行，記錄多年', calendar: '桌曆・掛曆',
+      monthly: '月份總覽，輕薄', 'multi-year': '每天幾行，記錄多年', calendar: '桌曆・掛曆', cover: '幫手帳換新衣',
     },
     countryAll: '全部', countryKR: '🇰🇷 韓國', countryJP: '🇯🇵 日本',
     sizeAll: '所有尺寸',
