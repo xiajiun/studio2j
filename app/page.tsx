@@ -17,7 +17,7 @@ import PlannersFeature, { type PlannerTeaser } from '@/components/PlannersFeatur
 import FeeEstimator from '@/components/FeeEstimator'
 import SocialProof from '@/components/SocialProof'
 import { PLANNERS_2027 } from '@/lib/planners-2027'
-import { fetchFurukawashikoNewArrivals } from '@/lib/furukawashiko'
+import { furukawashikoNewArrivals } from '@/lib/furukawashiko'
 
 // Homepage "Planner season" teaser: these four first, then other picks alternating Korea / Japan.
 // JA mode keeps only Korean ones (PlannersFeature filters), so it shows the Korean pins + next Korean picks.
@@ -78,8 +78,8 @@ export default async function Home() {
     }
   } catch {}
 
-  // Furukawashiko new arrivals carousel (cached 1 hour, same as Twenty)
-  const furukawashikoNew = await fetchFurukawashikoNewArrivals()
+  // Furukawashiko new arrivals — weekly snapshot refreshed Fridays 21:00 JST by a GitHub Action
+  const furukawashikoNew = furukawashikoNewArrivals()
 
   return (
     <>

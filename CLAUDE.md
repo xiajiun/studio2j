@@ -117,7 +117,9 @@ components/
                   → SocialProof (hidden until lib/social-proof.ts has real entries) → FAQ → OrderCTA → Footer
   FeeEstimator.tsx           uses lib/fee.ts serviceFee() — keep in sync with the fee rule above
   Hero mosaic                2 rows of live Twenty markets (1h cache) + 1 row of Furukawashiko new arrivals
-                             (lib/furukawashiko.ts, refreshed every Friday 21:00 JST; hidden in JA mode)
+                             (data/furukawashiko-new.json, refreshed Fridays 21:00 JST by
+                             .github/workflows/furukawashiko-weekly.yml → scripts/update-furukawashiko.ts;
+                             the shop blocks Cloudflare, so never fetch it at request time; hidden in JA mode)
   Colors/surfaces            one background (var(--cream)) everywhere — see DESIGN.md "Surfaces & text"
   LangProvider.tsx           React context; lang in localStorage 's2j-lang'
   dashboard/DashShell.tsx    flex layout; mobile: column with sticky top nav
