@@ -203,6 +203,41 @@ export const BRANDS: Brand[] = [
     description: 'Japanese planner brand — Da Vinci system planners beloved for their quality and customisability.',
     categories: ['planner', 'stationery'],
   },
+  {
+    name: 'Furukawashiko',
+    url: 'furukawashiko-online.shop',
+    region: 'Japan',
+    description: 'Mino washi paper maker (古川紙工) — washi stickers, letter sets, origami and illustrator-collab planner calendars, with new items every Friday.',
+    categories: ['stationery', 'planner', 'illustration'],
+  },
+  {
+    name: 'HIGHTIDE',
+    url: 'hightide.co.jp',
+    region: 'Japan',
+    description: 'Tokyo stationery and lifestyle maker — retro-inspired pens, Nahe pouches, original planners and desk goods.',
+    categories: ['stationery', 'planner', 'lifestyle'],
+  },
+  {
+    name: 'Yamada Stationery',
+    url: 'yamadastationery.jp',
+    region: 'Japan',
+    description: 'Mitaka, Tokyo select shop for stationery lovers since 2008 (山田文具店) — nostalgic stationery with a story, from Japan and abroad.',
+    categories: ['stationery', 'lifestyle'],
+  },
+  {
+    name: 'Mind Wave',
+    url: 'mindwave-store.com',
+    region: 'Japan',
+    description: 'Character stationery maker (マインドウェイブ) — stickers and goods starring Shibanban, Gorogoro Nyansuke and more, plus store-limited items.',
+    categories: ['stationery', 'illustration'],
+  },
+  {
+    name: 'Zakkaya Compus',
+    url: 'compus.base.shop',
+    region: 'Japan',
+    description: 'Zakka shop in Hamamatsu (雑貨屋コンパス) with artist-made stationery and goods. Its online store opens about once a month — dates are announced on Instagram.',
+    categories: ['stationery', 'lifestyle', 'illustration'],
+  },
 ]
 
 export const CATEGORY_LABELS: Record<BrandCategory, string> = {

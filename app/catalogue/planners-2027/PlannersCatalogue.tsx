@@ -11,6 +11,7 @@ const LAYOUTS: LayoutKey[] = ['daily', 'weekly-vertical', 'weekly-horizontal', '
 const layoutOf = (f: PlannerFormat): LayoutKey => (f === 'weekly-memo' ? 'weekly-horizontal' : f)
 
 const SIZES: SizeGroup[] = ['large', 'medium', 'pocket']
+const COLLAGE_IDS = ['kr-analoguekeeper-space-diary', 'jp-hobonichi-original', 'jp-binder-ashford-grace-monthly-calendar']
 const RING_SIZES: BinderSize[] = ['micro5', 'mini5', 'mini6', 'bible', 'narrow', 'a7', 'a6', 'b6', 'a5']
 
 const inter = 'var(--font-inter), sans-serif'
@@ -179,7 +180,7 @@ function PlannerCard({ p, ring }: { p: Planner2027; ring: BinderSize | 'all' }) 
         {variants.length > 0 && (
           <div style={{ marginTop: '10px' }}>
             <div style={{ fontFamily: inter, fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '5px' }}>
-              {fill(s.sizesCount, { n: String(variants.length) })}
+              {fill(p.variantKind === 'option' ? s.optionsCount : s.sizesCount, { n: String(variants.length) })}
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
               {variants.map((x, i) => {
@@ -275,11 +276,12 @@ export function PlannersCatalogue() {
   const anyFilter = layout !== 'all' || effectiveCountry !== 'all' || size !== 'all' || dated !== 'all' || brand !== 'all' || q !== '' || kind !== 'all' || ring !== 'all'
   function clearAll() { setLayout('all'); setCountry('all'); setSize('all'); setDated('all'); setBrand('all'); setQuery(''); setKind('all'); setRing('all') }
 
-  // Mix countries so the hero shows both Seoul and Tokyo picks (Korea-only in JA mode)
+  // Header photos: a Korean pick, a Japanese pick and an Ashford binder refill (front).
+  // In JA mode the Japanese ones are filtered out of `items`, so Korean picks fill the gaps.
   const collage = useMemo(() => {
-    const kr = items.filter(p => p.pick && !p.binder && p.country === 'KR')
-    const jp = items.filter(p => p.pick && !p.binder && p.country === 'JP')
-    return [kr[0], jp[0], kr[1] ?? jp[1]].filter(Boolean).concat(kr.slice(2)).slice(0, 3) as Planner2027[]
+    const chosen = COLLAGE_IDS.map(id => items.find(p => p.id === id)).filter(Boolean) as Planner2027[]
+    const fill = items.filter(p => p.pick && !p.binder && p.country === 'KR' && !chosen.includes(p))
+    return [...chosen, ...fill].slice(0, 3)
   }, [items])
 
   return (

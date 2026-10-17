@@ -14,6 +14,7 @@ const en = {
     reassure: 'Free quote within 24h · Nothing is charged until you approve',
     trustFairs: 'Fairs tracked', trustMarkets: 'Markets live now',
     liveCaption: 'Live Korean illustrator markets on Twenty — see all →',
+    furuCaption: 'Just in at Furukawashiko (Japan) — order any of these →',
   },
   services: {
     eyebrow: 'Our services',
@@ -181,7 +182,7 @@ const en = {
     binderTile: 'System binder', binderHint: 'Refills in every ring size', binderTag: 'Binder refill',
     ringAll: 'Any ring size',
     ringSizes: { micro5: 'Micro 5', mini5: 'Mini 5 (M5)', mini6: 'Mini 6 / Pocket', bible: 'Bible / Personal', narrow: 'Narrow', a7: 'A7 (6-ring)', a6: 'A6 (6-ring)', b6: 'B6', a5: 'A5 (6-ring)' },
-    sizesCount: '{n} sizes', brandSiteSize: 'Brand site · {size} ↗︎',
+    sizesCount: '{n} sizes', optionsCount: '{n} options', brandSiteSize: 'Brand site · {size} ↗︎',
     features: {
       tomoeRiver: 'Tomoe River paper', mdPaper: 'MD paper', thinPaper: 'Thin, light paper', fountainPen: 'Fountain-pen friendly',
       hourly: 'Hourly timeline', gantt: 'Gantt charts', monthTabs: 'Month index tabs', layFlat: 'Opens flat',
@@ -246,6 +247,7 @@ const ja: typeof en = {
     reassure: '24時間以内に無料でお見積もり・ご承認まで請求はありません',
     trustFairs: '追跡中のフェア', trustMarkets: '開催中のマーケット',
     liveCaption: '開催中の韓国イラストレーターマーケット — すべて見る →',
+    furuCaption: '',
   },
   services: {
     eyebrow: 'サービス',
@@ -413,7 +415,7 @@ const ja: typeof en = {
     binderTile: 'システム手帳', binderHint: '全リングサイズのリフィル', binderTag: 'リフィル',
     ringAll: 'すべてのリングサイズ',
     ringSizes: { micro5: 'マイクロ5', mini5: 'ミニ5', mini6: 'ミニ6', bible: 'バイブル', narrow: 'ナロー', a7: 'A7（6穴）', a6: 'A6（6穴）', b6: 'B6', a5: 'A5（6穴）' },
-    sizesCount: '{n}サイズ', brandSiteSize: '公式サイト · {size} ↗︎',
+    sizesCount: '{n}サイズ', optionsCount: '{n}種類', brandSiteSize: '公式サイト · {size} ↗︎',
     features: {
       tomoeRiver: 'トモエリバー紙', mdPaper: 'MDペーパー', thinPaper: '薄くて軽い紙', fountainPen: '万年筆OK',
       hourly: '時間軸つき', gantt: 'ガントチャート', monthTabs: '月インデックス', layFlat: '180度開く',
@@ -478,6 +480,7 @@ const zhTW: typeof en = {
     reassure: '24 小時內免費報價・確認前不收任何費用',
     trustFairs: '追蹤展覽', trustMarkets: '即時開放市集',
     liveCaption: '正在 Twenty 開放的韓國插畫師市集 — 查看全部 →',
+    furuCaption: '古川紙工 Furukawashiko（日本）新品上架 — 都能幫你代購 →',
   },
   services: {
     eyebrow: '我們的服務',
@@ -645,7 +648,7 @@ const zhTW: typeof en = {
     binderTile: '活頁手帳', binderHint: '各孔徑尺寸內頁', binderTag: '活頁內頁',
     ringAll: '所有孔徑尺寸',
     ringSizes: { micro5: 'Micro 5', mini5: 'M5（迷你5孔）', mini6: 'M6（迷你6孔）', bible: 'Bible（聖經本）', narrow: 'Narrow（窄版）', a7: 'A7（6孔）', a6: 'A6（6孔）', b6: 'B6', a5: 'A5（6孔）' },
-    sizesCount: '{n} 種尺寸', brandSiteSize: '官方網站 · {size} ↗︎',
+    sizesCount: '{n} 種尺寸', optionsCount: '{n} 種款式', brandSiteSize: '官方網站 · {size} ↗︎',
     features: {
       tomoeRiver: '巴川紙', mdPaper: 'MD 紙', thinPaper: '輕薄紙張', fountainPen: '適合鋼筆',
       hourly: '時間軸', gantt: '甘特圖', monthTabs: '月份索引', layFlat: '可攤平',

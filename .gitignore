@@ -9,3 +9,6 @@ node_modules/
 .DS_Store
 *.log
 .env*
+
+# Claude Code local settings (machine-specific permissions; may contain secrets)
+.claude/settings.local.json

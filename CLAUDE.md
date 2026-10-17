@@ -116,6 +116,8 @@ components/
   Homepage order: Hero → TrustStrip → PlannersFeature → Services → FeeEstimator → FairTracker
                   → SocialProof (hidden until lib/social-proof.ts has real entries) → FAQ → OrderCTA → Footer
   FeeEstimator.tsx           uses lib/fee.ts serviceFee() — keep in sync with the fee rule above
+  Hero mosaic                2 rows of live Twenty markets (1h cache) + 1 row of Furukawashiko new arrivals
+                             (lib/furukawashiko.ts, refreshed every Friday 21:00 JST; hidden in JA mode)
   Colors/surfaces            one background (var(--cream)) everywhere — see DESIGN.md "Surfaces & text"
   LangProvider.tsx           React context; lang in localStorage 's2j-lang'
   dashboard/DashShell.tsx    flex layout; mobile: column with sticky top nav
@@ -217,7 +219,8 @@ NEXT_PUBLIC_ADMIN_EMAIL=studio2j25@gmail.com
 
 ### `/catalogue/planners-2027`
 - Product catalogue (not a fair): 2027 planners/diaries from Japanese and Korean brands
-- Data hardcoded in `lib/planners-2027/` — `types.ts`, `japan.ts`, `korea.ts`; `index.ts` sorts picks first
+- Data hardcoded in `lib/planners-2027/` — `types.ts`, `japan.ts`, `korea.ts`, `calendars-jp.ts` (Midori 2027 calendars, grouped by design), `binders-jp.ts` / `binders-kr.ts` (system binder refills); `index.ts` sorts picks first
+- Header collage photos are pinned by id in `COLLAGE_IDS` (PlannersCatalogue.tsx)
 - Photos are **hotlinked** from official brand sites (`referrerPolicy="no-referrer"`, initial-letter fallback on error); every link goes to the official store
 - "Order via Studio2J" links to `/order/new?item=…&url=…`, which prefills the first item row
 - Fully translated via `t.planners` in `i18n.ts`; feature chips are `FeatureKey`s translated in `planners.features`

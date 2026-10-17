@@ -31,10 +31,10 @@ export default function Nav() {
 
   const links = [
     { href: '/',          label: t.nav.home },
+    { href: '/catalogue/planners-2027', label: t.nav.planners },
     { href: '/#tracker',  label: t.nav.fairs },
     { href: '/markets',   label: t.nav.markets },
     { href: '/brands',    label: t.nav.brands },
-    { href: '/catalogue/planners-2027', label: t.nav.planners },
     { href: '/#faq',      label: t.nav.faq },
   ]
 

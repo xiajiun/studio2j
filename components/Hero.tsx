@@ -2,25 +2,31 @@
 
 import { useLang } from '@/components/LangProvider'
 import type { TwentyMarket } from '@/lib/database.types'
+import type { ShopSlide } from '@/lib/furukawashiko'
 
 const inter = 'var(--font-inter), sans-serif'
 
-export default function Hero({ fairCount, marketCount, markets = [] }: {
+export default function Hero({ fairCount, marketCount, markets = [], shopSlides = [] }: {
   fairCount?: number
   marketCount?: number
   markets?: TwentyMarket[]
+  shopSlides?: ShopSlide[]   // Furukawashiko new arrivals
 }) {
-  const { t } = useLang()
+  const { lang, t } = useLang()
 
   // Live Twenty market covers as a 3-row mosaic (proof that markets are open right now)
   const clean = markets.filter(m => !m.market_name.includes('테스트') && m.market_cover)
-  const rows: TwentyMarket[][] = clean.length === 0 ? [] : [0, 1, 2].map(r => {
-    const start = Math.floor((clean.length * r) / 3)
+  const rows: TwentyMarket[][] = clean.length === 0 ? [] : [0, 1].map(r => {
+    const start = Math.floor((clean.length * r) / 2)
     const base = r === 1 ? [...clean].reverse() : [...clean.slice(start), ...clean.slice(0, start)]
     const row: TwentyMarket[] = []
     while (row.length < 12) row.push(...base)
     return row.slice(0, 12)
   })
+
+  // Furukawashiko new arrivals row — a Japanese brand, so hidden in Japanese mode (CLAUDE.md rule 10)
+  const shopRow: ShopSlide[] = []
+  if (lang !== 'ja' && shopSlides.length > 0) while (shopRow.length < 12) shopRow.push(...shopSlides)
 
   return (
     <section id="top" className="hero-section" style={{ minHeight: '100vh', paddingTop: '90px', overflow: 'hidden', background: 'var(--cream)' }}>
@@ -40,7 +46,7 @@ export default function Hero({ fairCount, marketCount, markets = [] }: {
 
         {/* Market mosaic: desktop right column | mobile order-1 */}
         <div className="hg-right">
-          {rows.length > 0 && (
+          {(rows.length > 0 || shopRow.length > 0) && (
             <div className="hg-carousel" style={{ animation: 'fadeIn 1.2s ease 0.2s both' }}>
               {rows.map((row, r) => (
                 <div key={r} className={`hg-row hg-row-${r}`}>
@@ -54,10 +60,31 @@ export default function Hero({ fairCount, marketCount, markets = [] }: {
                   </div>
                 </div>
               ))}
-              <a href="/markets" className="hg-caption" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: inter, fontSize: '12.5px', fontWeight: 400, color: 'var(--muted-blue)', textDecoration: 'none' }}>
-                <span className="live-dot" style={{ marginRight: 0 }} />
-                {t.hero.liveCaption}
-              </a>
+              {rows.length > 0 && (
+                <a href="/markets" className="hg-caption" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: inter, fontSize: '12.5px', fontWeight: 400, color: 'var(--muted-blue)', textDecoration: 'none' }}>
+                  <span className="live-dot" style={{ marginRight: 0 }} />
+                  {t.hero.liveCaption}
+                </a>
+              )}
+
+              {shopRow.length > 0 && (
+                <>
+                  <div className="hg-row hg-row-shop" style={{ marginTop: '18px' }}>
+                    <div style={{ display: 'flex', gap: '10px', animation: 'carouselRight 58s linear infinite', willChange: 'transform' }}>
+                      {[...shopRow, ...shopRow].map((s, i) => (
+                        <a key={i} href={s.url} target="_blank" rel="noreferrer" tabIndex={-1} aria-hidden className="hg-tile" title={s.title}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={s.image} alt="" loading="lazy" referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <a href="/order/new?url=https%3A%2F%2Fwww.furukawashiko-online.shop%2F" className="hg-caption" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: inter, fontSize: '12.5px', fontWeight: 400, color: 'var(--muted-blue)', textDecoration: 'none' }}>
+                    <span className="live-dot" style={{ marginRight: 0 }} />
+                    {t.hero.furuCaption}
+                  </a>
+                </>
+              )}
             </div>
           )}
         </div>

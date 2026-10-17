@@ -45,4 +45,5 @@ export interface Planner2027 {
   pick?: boolean            // Studio2J pick
   binder?: boolean          // system binder refill (loose-leaf for ring binders)
   variants?: PlannerVariant[] // every size, each linked; first one is the default
+  variantKind?: 'size' | 'option' // chip heading: "4 sizes" (default) or "4 options" when variants mix types/designs
 }

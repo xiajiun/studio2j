@@ -17,6 +17,7 @@ import PlannersFeature, { type PlannerTeaser } from '@/components/PlannersFeatur
 import FeeEstimator from '@/components/FeeEstimator'
 import SocialProof from '@/components/SocialProof'
 import { PLANNERS_2027 } from '@/lib/planners-2027'
+import { fetchFurukawashikoNewArrivals } from '@/lib/furukawashiko'
 
 // Homepage teaser picks: alternate Korea / Japan so both sides show (JA mode filters to Korea)
 function plannerTeasers(): PlannerTeaser[] {
@@ -73,6 +74,9 @@ export default async function Home() {
     }
   } catch {}
 
+  // Furukawashiko new arrivals carousel (cached 1 hour, same as Twenty)
+  const furukawashikoNew = await fetchFurukawashikoNewArrivals()
+
   return (
     <>
       <AuthRedirect />
@@ -81,6 +85,7 @@ export default async function Home() {
         markets={twentyMarkets}
         fairCount={fairs.length}
         marketCount={twentyMarkets.filter(m => !m.market_name.includes('테스트')).length}
+        shopSlides={furukawashikoNew}
       />
       <TrustStrip />
       <PlannersFeature picks={plannerTeasers()} />

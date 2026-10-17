@@ -352,7 +352,7 @@ nav.scrolled {
   .hg-content  { order: 3; padding: 24px 24px 64px !important; }
   .hg-right    { padding: 8px 0 0 !important; }
   .hg-tile     { width: 96px !important; height: 96px !important; border-radius: 12px !important; }
-  .hg-row-2    { display: none; }
+  .hg-row-1    { display: none; }
   .hg-caption  { margin-left: 24px !important; }
 
   /* Services */
