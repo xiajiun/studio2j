@@ -238,6 +238,20 @@ export const BRANDS: Brand[] = [
     description: 'Zakka shop in Hamamatsu (雑貨屋コンパス) with artist-made stationery and goods. Its online store opens about once a month — dates are announced on Instagram.',
     categories: ['stationery', 'lifestyle', 'illustration'],
   },
+  {
+    name: 'Fujihatosya',
+    url: 'fujihatosya.shop',
+    region: 'Japan',
+    description: 'System planner refill maker (藤鳩社) — illustrated 24 solar terms (二十四節気) 1-day-1-page Mini6 refills, plus artist collab refills in M5, M6 and Bible sizes.',
+    categories: ['planner', 'stationery', 'illustration'],
+  },
+  {
+    name: 'PLOTTER',
+    url: 'plotter-japan.net',
+    region: 'Japan',
+    description: 'Designphil\'s leather system binder brand — Japanese-made binders plus DP Paper diary refills and memo pads in Mini5, Mini, Narrow, Bible and A5.',
+    categories: ['planner', 'stationery'],
+  },
 ]
 
 export const CATEGORY_LABELS: Record<BrandCategory, string> = {
