@@ -51,7 +51,7 @@ export default async function AccountOrderDetail({ params }: { params: { number:
 
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)', marginBottom: '40px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         <span>{o.order_number}</span>
-        <span style={{ color: 'rgba(200,169,141,0.4)' }}>·</span>
+        <span style={{ color: 'rgba(168,203,224,0.4)' }}>·</span>
         <span>{new Date(o.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
       </div>
 
@@ -79,7 +79,7 @@ export default async function AccountOrderDetail({ params }: { params: { number:
       {o.customer_notes && (
         <div style={{ marginTop: '16px', padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '6px' }}>Note</div>
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7, margin: 0 }}>{o.customer_notes}</p>
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.7, margin: 0 }}>{o.customer_notes}</p>
         </div>
       )}
     </div>
@@ -88,7 +88,7 @@ export default async function AccountOrderDetail({ params }: { params: { number:
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)' }}>
       <span>{label}</span>
       <span style={{ color: 'var(--dark-brown)', fontWeight: 400 }}>{value}</span>
     </div>

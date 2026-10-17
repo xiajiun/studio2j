@@ -165,5 +165,5 @@ function P({ children }: { children: React.ReactNode }) {
 }
 
 function Divider() {
-  return <hr style={{ border: 'none', borderTop: '0.5px solid rgba(122,92,69,0.15)', margin: '0 0 64px' }} />
+  return <hr style={{ border: 'none', borderTop: '0.5px solid rgba(107,163,200,0.2)', margin: '0 0 64px' }} />
 }

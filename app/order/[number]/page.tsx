@@ -52,7 +52,7 @@ export default async function PublicOrderPage({ params }: { params: { number: st
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '36px', color: 'var(--dark-brown)', marginBottom: '6px', letterSpacing: '-0.02em' }}>
         {o.title}
       </h1>
-      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', marginBottom: '40px' }}>
+      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', marginBottom: '40px' }}>
         {STATUS_LABELS[o.status as keyof typeof STATUS_LABELS]}
       </p>
 
@@ -105,16 +105,16 @@ export default async function PublicOrderPage({ params }: { params: { number: st
       {o.customer_notes && (
         <div style={{ padding: '16px 20px', background: 'var(--beige)', borderRadius: '12px', marginBottom: '16px' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '6px' }}>Note from Studio2J</div>
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>{o.customer_notes}</p>
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.7 }}>{o.customer_notes}</p>
         </div>
       )}
 
       {/* Help + save link footer */}
-      <div style={{ marginTop: '40px', paddingTop: '24px', borderTop: '0.5px solid rgba(122,92,69,0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+      <div style={{ marginTop: '40px', paddingTop: '24px', borderTop: '0.5px solid rgba(107,163,200,0.17)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--tan)' }}>
           Questions? DM us on Instagram.
         </span>
-        <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(31,58,95,0.25)', padding: '8px 16px', borderRadius: '99px' }}>
+        <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(45,55,72,0.25)', padding: '8px 16px', borderRadius: '99px' }}>
           DM us @studio2j25 →
         </a>
       </div>

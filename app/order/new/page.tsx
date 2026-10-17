@@ -2,13 +2,13 @@
 
 export const runtime = 'edge'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useLang } from '@/components/LangProvider'
 
 const input: React.CSSProperties = {
   width: '100%', padding: '12px 16px', borderRadius: '10px',
-  border: '0.5px solid rgba(122,92,69,0.2)', background: 'white',
+  border: '0.5px solid rgba(107,163,200,0.25)', background: 'white',
   color: 'var(--dark-brown)', fontFamily: 'var(--font-inter), sans-serif',
   fontSize: '14px', fontWeight: 300, outline: 'none',
 }
@@ -28,6 +28,15 @@ export default function CustomerOrderForm() {
   const [loading, setLoading] = useState(false)
   const [done,    setDone]    = useState<string | null>(null)
   const [error,   setError]   = useState('')
+
+  // Prefill the first item from catalogue links: /order/new?item=…&url=…
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const name = (params.get('item') ?? '').trim().slice(0, 200)
+    const raw  = (params.get('url') ?? '').trim()
+    const url  = /^https?:\/\//i.test(raw) ? raw.slice(0, 1000) : ''
+    if (name || url) setItems([{ name, url, qty: '1' }])
+  }, [])
 
   function set(k: string, v: string) { setForm(p => ({ ...p, [k]: v })) }
   function setItem(i: number, k: keyof ItemRow, v: string) {
@@ -70,7 +79,7 @@ export default function CustomerOrderForm() {
             {f.successTitle} <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>✓</em>
           </div>
 
-          <div style={{ background: 'var(--beige)', borderRadius: '14px', padding: '20px 24px', marginBottom: '24px', border: '0.5px solid rgba(122,92,69,0.15)' }}>
+          <div style={{ background: 'var(--beige)', borderRadius: '14px', padding: '20px 24px', marginBottom: '24px', border: '0.5px solid rgba(107,163,200,0.2)' }}>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '8px' }}>Your order number</div>
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '14px' }}>{done}</div>
             <a href={`/order/${done}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, textDecoration: 'none', background: 'var(--dark-blue)', color: 'var(--cream)', padding: '10px 20px', borderRadius: '99px' }}>
@@ -83,7 +92,7 @@ export default function CustomerOrderForm() {
             {[f.step1, f.step2, f.step3, f.step4, f.step5].map((text, i) => (
               <div key={i} style={{ display: 'flex', gap: '14px', marginBottom: '12px' }}>
                 <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', color: 'var(--tan)', width: '20px', flexShrink: 0 }}>{i + 1}</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>{text}</div>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.7 }}>{text}</div>
               </div>
             ))}
           </div>
@@ -91,7 +100,7 @@ export default function CustomerOrderForm() {
           <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginBottom: '24px' }}>
             {f.questions} <a href="https://www.instagram.com/studio2j25/" target="_blank" rel="noreferrer" style={{ color: 'var(--dark-blue)' }}>@studio2j25</a>
           </p>
-          <Link href="/" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(122,92,69,0.2)', padding: '12px 24px', borderRadius: '99px' }}>
+          <Link href="/" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--brown)', textDecoration: 'none', border: '0.5px solid rgba(107,163,200,0.25)', padding: '12px 24px', borderRadius: '99px' }}>
             {f.backHome}
           </Link>
         </div>
@@ -101,7 +110,7 @@ export default function CustomerOrderForm() {
 
   return (
     <main style={{ minHeight: '100vh', background: 'var(--cream)', paddingBottom: '80px' }}>
-      <div style={{ padding: '20px 40px', borderBottom: '0.5px solid rgba(122,92,69,0.1)', marginBottom: '48px' }}>
+      <div style={{ padding: '20px 40px', borderBottom: '0.5px solid rgba(107,163,200,0.15)', marginBottom: '48px' }}>
         <Link href="/" style={{ textDecoration: 'none' }}>
           <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 500, color: 'var(--dark-brown)', letterSpacing: '-0.02em' }}>
             Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
@@ -115,16 +124,16 @@ export default function CustomerOrderForm() {
           {f.eyebrow}
         </div>
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(36px, 5vw, 56px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '16px' }}>
-          {f.title1}<br />you <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{f.titleEm}</em>
+          {f.title1}<br /><em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{f.titleEm}</em>
         </h1>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '20px', maxWidth: '520px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8, marginBottom: '20px', maxWidth: '520px' }}>
           {f.subtitle}
         </p>
 
         {/* Payment flow note */}
-        <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '16px 20px', marginBottom: '40px', border: '0.5px solid rgba(122,92,69,0.12)' }}>
+        <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '16px 20px', marginBottom: '40px', border: '0.5px solid rgba(107,163,200,0.17)' }}>
           <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>{f.noticeTitle}</div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8 }}>
+          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8 }}>
             <strong style={{ fontWeight: 500, color: 'var(--dark-brown)' }}>{f.notice1Title}</strong> {f.notice1}<br />
             <strong style={{ fontWeight: 500, color: 'var(--dark-brown)' }}>{f.notice2Title}</strong> {f.notice2}
           </div>
@@ -145,7 +154,7 @@ export default function CustomerOrderForm() {
                 <input style={input} value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+65 9123 4567" />
               </FormField>
               <FormField label={f.instagram}>
-                <div style={{ display: 'flex', alignItems: 'center', border: '0.5px solid rgba(122,92,69,0.2)', borderRadius: '10px', background: 'white', overflow: 'hidden' }}>
+                <div style={{ display: 'flex', alignItems: 'center', border: '0.5px solid rgba(107,163,200,0.25)', borderRadius: '10px', background: 'white', overflow: 'hidden' }}>
                   <span style={{ padding: '12px 12px 12px 16px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--tan)' }}>@</span>
                   <input style={{ ...input, border: 'none', borderRadius: 0, paddingLeft: 0 }} value={form.instagram} onChange={e => set('instagram', e.target.value)} placeholder="studio2j25" />
                 </div>
@@ -186,7 +195,7 @@ export default function CustomerOrderForm() {
                 </div>
               ))}
             </div>
-            <button type="button" onClick={addItem} style={{ marginTop: '10px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: 'var(--brown)', background: 'none', border: '0.5px solid rgba(122,92,69,0.2)', borderRadius: '99px', padding: '8px 18px', cursor: 'pointer' }}>
+            <button type="button" onClick={addItem} style={{ marginTop: '10px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: 'var(--brown)', background: 'none', border: '0.5px solid rgba(107,163,200,0.25)', borderRadius: '99px', padding: '8px 18px', cursor: 'pointer' }}>
               {f.addItem}
             </button>
           </FormSection>
@@ -206,7 +215,7 @@ export default function CustomerOrderForm() {
                   padding: '9px 18px', borderRadius: '99px', cursor: 'pointer',
                   background: form.payment_method === opt.value ? 'var(--dark-brown)' : 'transparent',
                   color: form.payment_method === opt.value ? 'var(--cream)' : 'var(--brown)',
-                  border: `0.5px solid ${form.payment_method === opt.value ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
+                  border: `0.5px solid ${form.payment_method === opt.value ? 'var(--dark-brown)' : 'rgba(107,163,200,0.25)'}`,
                   transition: 'all 0.15s',
                 }}>{opt.label}</button>
               ))}
@@ -220,7 +229,7 @@ export default function CustomerOrderForm() {
 
           {/* Service agreement */}
           <FormSection label={f.sectionTerms}>
-            <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '20px', fontSize: '13px', fontFamily: 'var(--font-inter), sans-serif', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, marginBottom: '16px' }}>
+            <div style={{ background: 'var(--beige)', borderRadius: '12px', padding: '20px', fontSize: '13px', fontFamily: 'var(--font-inter), sans-serif', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8, marginBottom: '16px' }}>
               <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginBottom: '8px' }}>{f.termsFeeTitle}</strong>
               {f.termsFeeBody}
               <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block', marginTop: '14px', marginBottom: '8px' }}>{f.termsPayTitle}</strong>
@@ -230,7 +239,7 @@ export default function CustomerOrderForm() {
             </div>
             <label style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer' }}>
               <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: '3px', flexShrink: 0, width: '16px', height: '16px', cursor: 'pointer' }} />
-              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7 }}>
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.7 }}>
                 {f.termsAgree}
               </span>
             </label>
@@ -240,8 +249,16 @@ export default function CustomerOrderForm() {
             <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', color: '#8A3A20', padding: '12px 16px', background: '#F5DDD5', borderRadius: '10px' }}>{error}</p>
           )}
 
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', background: 'rgba(191,220,207,0.25)', border: '0.5px solid rgba(191,220,207,0.9)', borderRadius: '14px', padding: '16px 18px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#BFDCCF', flexShrink: 0, marginTop: '6px' }} />
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(45,55,72,0.75)' }}>
+              <strong style={{ fontWeight: 500, color: 'var(--dark-brown)', display: 'block' }}>{f.reassureTitle}</strong>
+              {f.reassureBody}
+            </div>
+          </div>
+
           <button type="submit" disabled={loading || !agreed} style={{
-            background: agreed ? 'var(--dark-blue)' : 'rgba(31,58,95,0.3)',
+            background: agreed ? 'var(--dark-blue)' : 'rgba(45,55,72,0.3)',
             color: 'var(--cream)',
             fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 500,
             padding: '16px 40px', borderRadius: '99px', border: 'none',
@@ -260,7 +277,7 @@ export default function CustomerOrderForm() {
 function FormSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px', paddingBottom: '10px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
+      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px', paddingBottom: '10px', borderBottom: '0.5px solid rgba(107,163,200,0.15)' }}>
         {label}
       </div>
       {children}

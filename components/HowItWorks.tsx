@@ -33,9 +33,9 @@ function HowCard({ num, icon, title, body }: { num: string; icon: React.ReactNod
   return (
     <div style={{ background: 'var(--cream)', padding: '56px 44px', position: 'relative' }}>
       <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '80px', color: 'var(--beige)', lineHeight: 1, marginBottom: '20px', letterSpacing: '-0.03em' }}>{num}</div>
-      <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '52px', height: '52px', borderRadius: '14px', background: 'var(--beige)', marginBottom: '24px', border: '0.5px solid rgba(122,92,69,0.1)' }}>{icon}</div>
+      <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '52px', height: '52px', borderRadius: '14px', background: 'var(--beige)', marginBottom: '24px', border: '0.5px solid rgba(107,163,200,0.15)' }}>{icon}</div>
       <h3 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 400, fontSize: '24px', color: 'var(--dark-brown)', marginBottom: '14px', letterSpacing: '-0.01em' }}>{title}</h3>
-      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'var(--brown)' }}>{body}</p>
+      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'rgba(45,55,72,0.75)' }}>{body}</p>
     </div>
   )
 }

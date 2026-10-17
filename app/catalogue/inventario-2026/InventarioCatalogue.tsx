@@ -229,13 +229,13 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
   function cellBg(booth: string) {
     const brand = brandsByBooth[booth]?.[0]
     const cat = brand?.category ?? ''
-    return CATEGORY_COLORS[cat] ? CATEGORY_COLORS[cat] + '66' : 'rgba(122,92,69,0.08)'
+    return CATEGORY_COLORS[cat] ? CATEGORY_COLORS[cat] + '66' : 'rgba(107,163,200,0.13)'
   }
   function cellBorder(booth: string) {
     if (hovered === booth) return '#1F3A5F'
     const brand = brandsByBooth[booth]?.[0]
     const cat = brand?.category ?? ''
-    return CATEGORY_COLORS[cat] ?? 'rgba(122,92,69,0.2)'
+    return CATEGORY_COLORS[cat] ?? 'rgba(107,163,200,0.25)'
   }
 
   const W = 38, H = 26, GAP = 3
@@ -292,13 +292,13 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
         {Object.entries(CATEGORY_COLORS).map(([cat, color]) => (
           <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: color + '88', border: `1.5px solid ${color}` }} />
-            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--brown)' }}>{cat}</span>
+            <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'rgba(45,55,72,0.75)' }}>{cat}</span>
           </div>
         ))}
       </div>
 
       {/* Map */}
-      <div style={{ background: 'white', borderRadius: '16px', padding: '24px 20px', border: '0.5px solid rgba(122,92,69,0.1)', overflowX: 'auto' }}>
+      <div style={{ background: 'white', borderRadius: '16px', padding: '24px 20px', border: '0.5px solid rgba(107,163,200,0.15)', overflowX: 'auto' }}>
         <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', minWidth: 'max-content' }}>
 
           {/* Hall 2 */}
@@ -335,21 +335,21 @@ function BoothMap({ brands, onSelect }: { brands: CatalogueBrand[]; onSelect: (b
             zIndex: 8888, width: '380px',
             background: 'white', borderRadius: '12px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-            border: '0.5px solid rgba(122,92,69,0.15)', overflow: 'hidden',
+            border: '0.5px solid rgba(107,163,200,0.2)', overflow: 'hidden',
           }}>
           {popupBrands.map((b, i) => (
-            <div key={b.id} style={{ padding: '10px 16px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
+            <div key={b.id} style={{ padding: '10px 16px', borderBottom: '0.5px solid rgba(107,163,200,0.15)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
                   <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', marginBottom: '2px' }}>
                     {b.name}
-                    {i === 0 && <span style={{ fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 6px', borderRadius: '99px', marginLeft: '6px' }}>{popup}</span>}
+                    {i === 0 && <span style={{ fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(45,55,72,0.08)', padding: '1px 6px', borderRadius: '99px', marginLeft: '6px' }}>{popup}</span>}
                   </div>
                   {b.korean_name && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)' }}>{b.korean_name}</div>}
                   {b.instagram && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--dark-blue)', marginTop: '2px' }}>@{b.instagram}</div>}
                 </div>
                 {b.category && (
-                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--brown)', background: (CATEGORY_COLORS[b.category] ?? 'rgba(122,92,69,0.15)') + '55', padding: '2px 8px', borderRadius: '99px', flexShrink: 0, marginLeft: '8px' }}>
+                  <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--brown)', background: (CATEGORY_COLORS[b.category] ?? 'rgba(107,163,200,0.2)') + '55', padding: '2px 8px', borderRadius: '99px', flexShrink: 0, marginLeft: '8px' }}>
                     {b.category}
                   </span>
                 )}
@@ -378,7 +378,7 @@ function BrandIcon({ brand }: { brand: CatalogueBrand }) {
   const [ok, setOk] = useState(true)
   const src = brand.url ? `https://www.google.com/s2/favicons?domain=${brand.url}&sz=128` : null
   return (
-    <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--beige)', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+    <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--beige)', border: '0.5px solid rgba(107,163,200,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
       {src && ok
         ? <img src={src} alt={brand.name} onError={() => setOk(false)} style={{ width: '26px', height: '26px', objectFit: 'contain' }} />
         : <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--tan)' }}>{brand.name.charAt(0)}</span>}
@@ -392,15 +392,15 @@ function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: Catal
   const hasMultiple = shortcodes.length > 1
   const flag = brand.country === 'JP' ? '🇯🇵' : brand.country === 'INTL' ? '🌍' : '🇰🇷'
   return (
-    <div id={`brand-${brand.id}`} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', flexDirection: 'column' }}>
+    <div id={`brand-${brand.id}`} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(107,163,200,0.15)', display: 'flex', flexDirection: 'column' }}>
       <div style={{ padding: '14px 16px', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
         <BrandIcon brand={brand} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px', flexWrap: 'wrap' }}>
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', lineHeight: 1.3 }}>{brand.name}</span>
             <span style={{ fontSize: '11px' }}>{flag}</span>
-            {brand.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{brand.booth}</span>}
-            {hasMultiple && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--tan)', background: 'rgba(122,92,69,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{shortcodes.length} posts</span>}
+            {brand.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(45,55,72,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{brand.booth}</span>}
+            {hasMultiple && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--tan)', background: 'rgba(107,163,200,0.13)', padding: '1px 6px', borderRadius: '99px' }}>{shortcodes.length} posts</span>}
           </div>
           {brand.korean_name && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginBottom: '2px' }}>{brand.korean_name}</div>}
           {brand.instagram && (
@@ -412,7 +412,7 @@ function BrandCard({ brand, onView }: { brand: CatalogueBrand; onView: (b: Catal
         </div>
         {shortcodes.length > 0 && (
           <button type="button" onClick={() => onView(brand)}
-            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}>
+            style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(45,55,72,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}>
             View ↗︎
           </button>
         )}
@@ -436,7 +436,7 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
   padding: '8px 18px', borderRadius: '99px', cursor: 'pointer',
   background: active ? 'var(--dark-brown)' : 'transparent',
   color: active ? 'var(--cream)' : 'var(--brown)',
-  border: `0.5px solid ${active ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
+  border: `0.5px solid ${active ? 'var(--dark-brown)' : 'rgba(107,163,200,0.25)'}`,
 })
 
 export function InventarioCatalogue({ brands, totalCount }: { brands: CatalogueBrand[]; totalCount: number }) {
@@ -461,13 +461,13 @@ export function InventarioCatalogue({ brands, totalCount }: { brands: CatalogueB
       <div style={{ marginBottom: '48px' }}>
         <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Link href="/#tracker" style={{ color: 'var(--tan)', textDecoration: 'none' }}>← Fairs</Link>
-          <span style={{ color: 'rgba(200,169,141,0.3)' }}>·</span>
+          <span style={{ color: 'rgba(168,203,224,0.3)' }}>·</span>
           <span>INVENTARIO</span>
         </div>
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)', marginBottom: '16px' }}>
           INVENTARIO <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2026</em>
         </h1>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '8px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '8px' }}>
           June 10–14, 2026 · COEX THE PLATZ HALL, Seoul
         </p>
         <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--tan)', marginBottom: '32px' }}>
@@ -475,8 +475,8 @@ export function InventarioCatalogue({ brands, totalCount }: { brands: CatalogueB
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <a href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>Order from this fair →</a>
-          <a href="https://inventario.kr" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>Official site ↗︎</a>
-          <a href="https://www.instagram.com/inventario.seoul/" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>@inventario.seoul ↗︎</a>
+          <a href="https://inventario.kr" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(107,163,200,0.3)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>Official site ↗︎</a>
+          <a href="https://www.instagram.com/inventario.seoul/" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(107,163,200,0.3)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>@inventario.seoul ↗︎</a>
         </div>
       </div>
 

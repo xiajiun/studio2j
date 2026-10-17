@@ -1,33 +1,34 @@
 'use client'
 
 import { useLang } from '@/components/LangProvider'
-import type { FairRow, TwentyMarket } from '@/lib/database.types'
+import type { TwentyMarket } from '@/lib/database.types'
 
-function fairCatalogueUrl(fair: FairRow): string | undefined {
-  if (fair.catalogue_url) return fair.catalogue_url
-  const n = fair.name.toLowerCase()
-  if (n.includes('inventario')) return '/catalogue/inventario-2026'
-  if (n.includes('dotdot')) return '/catalogue/dotdotexpress'
-  return undefined
-}
+const inter = 'var(--font-inter), sans-serif'
 
-export default function Hero({ fairCount, marketCount, nextFair, markets = [] }: {
+export default function Hero({ fairCount, marketCount, markets = [] }: {
   fairCount?: number
   marketCount?: number
-  nextFair?: FairRow | null
   markets?: TwentyMarket[]
 }) {
   const { t } = useLang()
 
-  const img: React.CSSProperties = { width: '90px', height: '90px', objectFit: 'cover', flexShrink: 0, display: 'block' }
+  // Live Twenty market covers as a 3-row mosaic (proof that markets are open right now)
+  const clean = markets.filter(m => !m.market_name.includes('테스트') && m.market_cover)
+  const rows: TwentyMarket[][] = clean.length === 0 ? [] : [0, 1, 2].map(r => {
+    const start = Math.floor((clean.length * r) / 3)
+    const base = r === 1 ? [...clean].reverse() : [...clean.slice(start), ...clean.slice(0, start)]
+    const row: TwentyMarket[] = []
+    while (row.length < 12) row.push(...base)
+    return row.slice(0, 12)
+  })
 
   return (
-    <section id="top" className="hero-section" style={{ minHeight: '100vh', paddingTop: '90px', overflow: 'hidden', background: '#FEFAF0' }}>
+    <section id="top" className="hero-section" style={{ minHeight: '100vh', paddingTop: '90px', overflow: 'hidden', background: 'var(--cream)' }}>
       <div className="hero-grid">
 
-        {/* 1 — Headline: desktop col-1 row-1 | mobile order-2 */}
+        {/* Headline: desktop col-1 row-1 | mobile order-2 */}
         <div className="hg-headline">
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', fontFamily: inter, fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--brown)', textTransform: 'uppercase', marginBottom: '36px', animation: 'fadeUp 0.8s ease both' }}>
             <span style={{ width: '32px', height: '1px', background: 'var(--brown)', display: 'inline-block' }} />
             {t.hero.eyebrow}
           </div>
@@ -37,93 +38,51 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
           </h1>
         </div>
 
-        {/* Right column wrapper — desktop spans both rows | mobile display:contents so children can be ordered */}
+        {/* Market mosaic: desktop right column | mobile order-1 */}
         <div className="hg-right">
-
-        {/* 2 — Carousel: desktop top of right col | mobile order-1 */}
-        <div className="hg-carousel" style={{ animation: 'fadeIn 1.2s ease 0.2s both' }}>
-          {markets.length > 0 && (() => {
-            const clean = markets.filter(m => !m.market_name.includes('테스트'))
-            const row1: TwentyMarket[] = []
-            const row2: TwentyMarket[] = []
-            while (row1.length < 16) row1.push(...clean)
-            while (row2.length < 16) row2.push(...[...clean].reverse())
-            return (
-              <div style={{ width: '100%' }}>
-                <div style={{ overflow: 'hidden', marginBottom: '3px' }}>
-                  <div style={{ display: 'flex', gap: '3px', animation: 'carouselLeft 25s linear infinite', willChange: 'transform' }}>
-                    {[...row1, ...row1].map((m, i) => (
-                      <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
-                        <img src={m.market_cover} alt="" style={img} />
+          {rows.length > 0 && (
+            <div className="hg-carousel" style={{ animation: 'fadeIn 1.2s ease 0.2s both' }}>
+              {rows.map((row, r) => (
+                <div key={r} className={`hg-row hg-row-${r}`}>
+                  <div style={{ display: 'flex', gap: '10px', animation: `${r === 1 ? 'carouselRight' : 'carouselLeft'} ${46 + r * 8}s linear infinite`, willChange: 'transform' }}>
+                    {[...row, ...row].map((m, i) => (
+                      <a key={i} href="/markets" tabIndex={-1} aria-hidden className="hg-tile">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={m.market_cover} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                       </a>
                     ))}
                   </div>
                 </div>
-                <div style={{ overflow: 'hidden' }}>
-                  <div style={{ display: 'flex', gap: '3px', animation: 'carouselRight 25s linear infinite', willChange: 'transform' }}>
-                    {[...row2, ...row2].map((m, i) => (
-                      <a key={i} href="/markets" style={{ flexShrink: 0, display: 'block' }}>
-                        <img src={m.market_cover} alt="" style={img} />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ height: '48px', background: 'linear-gradient(to bottom, transparent, #FEFAF0)', marginTop: '-48px', position: 'relative', pointerEvents: 'none' }} />
-              </div>
-            )
-          })()}
-        </div>
-
-        {/* 4 — Cards: desktop bottom of right col | mobile order-3 */}
-        <div className="hg-cards">
-          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: 'var(--brown)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ width: '24px', height: '1px', background: 'rgba(107,163,200,0.4)', display: 'inline-block' }} />
-            {t.hero.stackLabel}
-          </div>
-
-          <CardWithSideImage imageUrl="https://play-lh.googleusercontent.com/b7e9gZ6r_9B2m2BEVWDf3aGzCztI5i-Ye13Sd_xoQ78yiH2nGY6nHUpcHfd7JJhLD-C9WEpjYa8TlJ3wj_uZJw=w240-h480-rw" imageFit="cover" imageBg="white">
-            <HeroCard name={t.hero.card1Name} loc={t.hero.card1Loc} tags={['illustration', 'artist popup']} chipVariant="open" chipLabel={t.hero.chipActive} delay="0s" shopUrl="/markets" shopLabel="View market" noMargin />
-          </CardWithSideImage>
-
-          {nextFair ? (
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
-              {nextFair.image_url && (
-                <div style={{ width: '130px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden' }}>
-                  <img src={nextFair.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                </div>
-              )}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <HeroCard name={nextFair.name} loc={`${nextFair.kind === 'popup' ? 'Popup' : 'Fair'} haul · ${nextFair.city}`} tags={nextFair.types.slice(0, 2)} chipVariant="urgent" chipLabel={t.hero.chipGoing} delay="0.15s" shopUrl={fairCatalogueUrl(nextFair)} shopLabel={fairCatalogueUrl(nextFair) ? 'See catalogue' : undefined} noMargin />
-              </div>
+              ))}
+              <a href="/markets" className="hg-caption" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: inter, fontSize: '12.5px', fontWeight: 400, color: 'var(--muted-blue)', textDecoration: 'none' }}>
+                <span className="live-dot" style={{ marginRight: 0 }} />
+                {t.hero.liveCaption}
+              </a>
             </div>
-          ) : (
-            <HeroCard name="Next fair haul" loc="Fair haul · Upcoming" tags={['illustration', 'in person']} chipVariant="open" chipLabel={t.hero.chipWatching} delay="0.15s" />
           )}
-
-          <CardWithSideImage imageUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/The_loft_corp_logo.svg/1280px-The_loft_corp_logo.svg.png" imageFit="contain" imageBg="white">
-            <HeroCard name={t.hero.card2Name} loc={t.hero.card2Loc} tags={['stationery', 'stickers']} chipVariant="open" delay="0.3s" noMargin />
-          </CardWithSideImage>
         </div>
 
-        </div> {/* end hg-right */}
-
-        {/* 3 — Content (body / CTAs / stats): desktop col-1 row-2 | mobile order-4 */}
+        {/* Body / CTAs / stats: desktop col-1 row-2 | mobile order-3 */}
         <div className="hg-content">
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: '1.8', color: 'var(--brown)', maxWidth: '440px', marginBottom: '44px', animation: 'fadeUp 0.8s ease 0.2s both' }}>
+          <p style={{ fontFamily: inter, fontSize: '16px', fontWeight: 300, lineHeight: '1.75', color: 'rgba(45,55,72,0.75)', maxWidth: '460px', marginBottom: '36px', animation: 'fadeUp 0.8s ease 0.2s both' }}>
             {t.hero.body}
           </p>
           <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', animation: 'fadeUp 0.8s ease 0.3s both' }}>
-            <a href="/markets" className="btn-primary-hero">{t.hero.cta1}</a>
-            <a href="/#tracker" className="btn-secondary-hero">{t.hero.cta2}</a>
+            <a href="/order/new" className="btn-primary-hero">{t.hero.cta1}</a>
+            <a href="/catalogue/planners-2027" className="btn-secondary-hero">{t.hero.cta2}</a>
           </div>
-          <div style={{ display: 'flex', gap: '48px', marginTop: '72px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px', fontFamily: inter, fontSize: '12.5px', fontWeight: 400, color: 'var(--muted-blue)', animation: 'fadeUp 0.8s ease 0.35s both' }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#BFDCCF', display: 'inline-block', flexShrink: 0 }} />
+            {t.hero.reassure}
+          </div>
+          <div style={{ display: 'flex', gap: '48px', marginTop: '56px', animation: 'fadeUp 0.8s ease 0.4s both' }}>
             {[
               { num: <>{fairCount ?? 14}<em style={{ fontStyle: 'italic' }}>+</em></>, label: t.hero.trustFairs },
               { num: <><span className="live-dot" style={{ display: 'inline-block', marginRight: '4px' }} />{marketCount ?? 0}</>, label: t.hero.trustMarkets },
             ].map(({ num, label }) => (
               <div key={label}>
                 <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-blue)', lineHeight: '1', letterSpacing: '-0.02em' }}>{num}</div>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', color: 'var(--tan)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{label}</div>
+                <div style={{ fontFamily: inter, fontSize: '11px', color: 'var(--tan)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{label}</div>
               </div>
             ))}
           </div>
@@ -131,63 +90,5 @@ export default function Hero({ fairCount, marketCount, nextFair, markets = [] }:
 
       </div>
     </section>
-  )
-}
-
-function CardWithSideImage({ imageUrl, imageFit = 'cover', imageBg = 'var(--cream)', children }: {
-  imageUrl: string; imageFit?: 'cover' | 'contain'; imageBg?: string; children: React.ReactNode
-}) {
-  return (
-    <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch', marginBottom: '10px' }}>
-      <div style={{ width: '130px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', background: imageBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: imageFit === 'contain' ? '10px' : '0' }}>
-        <img src={imageUrl} alt="" style={{ width: '100%', objectFit: imageFit, display: 'block' }} />
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
-    </div>
-  )
-}
-
-function HeroCard({ name, loc, tags, chipVariant, chipLabel, delay, shopUrl, shopExternal = false, shopLabel, noMargin }: {
-  name: string; loc: string; tags: string[]; chipVariant: 'urgent' | 'open'
-  chipLabel?: string; delay: string; shopUrl?: string; shopExternal?: boolean; shopLabel?: string; noMargin?: boolean
-}) {
-  const chipStyle = chipVariant === 'urgent'
-    ? { background: '#FCE8EA', color: '#8B3A42', border: '0.5px solid rgba(239,183,190,0.5)' }
-    : { background: 'rgba(107,163,200,0.12)', color: 'var(--dark-blue)', border: '0.5px solid rgba(107,163,200,0.3)' }
-
-  return (
-    <div
-      className="hero-fc-card"
-      style={{ background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(8px)', border: '0.5px solid rgba(107,163,200,0.15)', borderRadius: '14px', padding: '20px 22px', marginBottom: noMargin ? 0 : '10px', transition: 'all 0.3s ease', animation: `slideRight 0.6s ease ${delay} both` }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '16px', fontWeight: 400, color: 'var(--dark-brown)', marginBottom: '5px', letterSpacing: '-0.01em' }}>{name}</div>
-          <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(45,55,72,0.45)', letterSpacing: '0.02em' }}>{loc}</div>
-          <div style={{ display: 'flex', gap: '5px', marginTop: '10px', flexWrap: 'wrap' }}>
-            {tags.map(t => <span key={t} style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, padding: '3px 9px', borderRadius: '99px', letterSpacing: '0.02em', background: 'rgba(107,163,200,0.1)', color: 'var(--brown)' }}>{t}</span>)}
-          </div>
-          {shopUrl && (
-            <a
-              href={shopUrl}
-              {...(shopExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
-              style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', border: '0.5px solid rgba(74,138,181,0.25)', padding: '5px 12px', borderRadius: '99px', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}
-            >
-              {shopLabel
-                ? `${shopLabel} ↗︎`
-                : shopExternal
-                  ? shopUrl.includes('instagram') ? 'Instagram ↗︎' : 'Website ↗︎'
-                  : 'Shop now ↗︎'}
-            </a>
-          )}
-        </div>
-        {chipLabel && (
-          <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: '12px', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '4px', ...chipStyle }}>
-            {chipVariant === 'open' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#BFDCCF', animation: 'livePulse 2s ease-in-out infinite', flexShrink: 0, display: 'inline-block' }} />}
-            {chipLabel}
-          </span>
-        )}
-      </div>
-    </div>
   )
 }

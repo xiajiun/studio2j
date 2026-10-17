@@ -17,8 +17,8 @@ export default function Marquee() {
       background: 'var(--dark-brown)',
       padding: '22px 0',
       overflow: 'hidden',
-      borderTop: '0.5px solid rgba(245,239,230,0.08)',
-      borderBottom: '0.5px solid rgba(245,239,230,0.08)',
+      borderTop: '0.5px solid rgba(248,248,246,0.08)',
+      borderBottom: '0.5px solid rgba(248,248,246,0.08)',
     }}>
       <div style={{ display: 'flex', whiteSpace: 'nowrap', animation: 'marquee 40s linear infinite' }}>
         {doubled.map((name, i) => (
@@ -28,7 +28,7 @@ export default function Marquee() {
             fontSize: '18px',
             fontWeight: 300,
             letterSpacing: '0.02em',
-            color: 'rgba(245,239,230,0.7)',
+            color: 'rgba(248,248,246,0.7)',
             marginRight: '64px',
             display: 'inline-flex',
             alignItems: 'center',

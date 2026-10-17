@@ -4,7 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
-import Marquee from '@/components/Marquee'
 import FairTracker from '@/components/FairTracker'
 
 import OrderCTA from '@/components/OrderCTA'
@@ -13,8 +12,26 @@ import Footer from '@/components/Footer'
 import { FAIRS } from '@/lib/fairs'
 import type { FairRow, TwentyMarket } from '@/lib/database.types'
 import { AuthRedirect } from '@/components/AuthRedirect'
-import MarketStrip from '@/components/MarketStrip'
-import TwentyMarketsSection from '@/components/TwentyMarketsSection'
+import TrustStrip from '@/components/TrustStrip'
+import PlannersFeature, { type PlannerTeaser } from '@/components/PlannersFeature'
+import FeeEstimator from '@/components/FeeEstimator'
+import SocialProof from '@/components/SocialProof'
+import { PLANNERS_2027 } from '@/lib/planners-2027'
+
+// Homepage teaser picks: alternate Korea / Japan so both sides show (JA mode filters to Korea)
+function plannerTeasers(): PlannerTeaser[] {
+  const bound = PLANNERS_2027.filter(p => p.pick && !p.binder)
+  const kr = bound.filter(p => p.country === 'KR')
+  const jp = bound.filter(p => p.country === 'JP')
+  const out: PlannerTeaser[] = []
+  for (let i = 0; i < Math.max(kr.length, jp.length); i++) {
+    for (const p of [kr[i], jp[i]]) {
+      if (p) out.push({ id: p.id, brand: p.brand, name: p.name, country: p.country, image: p.image, url: p.url, price: p.price, dated: p.dated })
+    }
+  }
+  return out
+}
+
 
 export default async function Home() {
   // Fetch from Supabase; fall back to static data if DB not seeded yet
@@ -56,11 +73,6 @@ export default async function Home() {
     }
   } catch {}
 
-  const today = new Date()
-  const nextFair = fairs
-    .filter(f => f.going && new Date(f.date) >= today)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0] ?? null
-
   return (
     <>
       <AuthRedirect />
@@ -69,15 +81,15 @@ export default async function Home() {
         markets={twentyMarkets}
         fairCount={fairs.length}
         marketCount={twentyMarkets.filter(m => !m.market_name.includes('테스트')).length}
-        nextFair={nextFair}
       />
-      <Marquee />
+      <TrustStrip />
+      <PlannersFeature picks={plannerTeasers()} />
       <Services />
-      <TwentyMarketsSection markets={twentyMarkets} maxItems={4} />
+      <FeeEstimator />
       <FairTracker fairs={fairs} />
-
-      <OrderCTA />
+      <SocialProof />
       <FAQ />
+      <OrderCTA />
       <Footer />
     </>
   )

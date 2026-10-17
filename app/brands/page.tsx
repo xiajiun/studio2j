@@ -15,11 +15,11 @@ const REGIONS: { value: BrandRegion | 'all'; label: string }[] = [
 ]
 
 const TAG_COLORS: Record<BrandCategory, { bg: string; color: string }> = {
-  stationery:    { bg: 'var(--beige)',  color: 'var(--brown)' },
-  illustration:  { bg: '#EEF3F8',      color: '#1F3A5F' },
-  planner:       { bg: '#F0EBE3',      color: '#7A5C45' },
-  lifestyle:     { bg: '#F5F0E8',      color: '#4B372A' },
-  'art supplies':{ bg: '#ECF0EA',      color: '#3A5C2A' },
+  stationery:    { bg: '#E8F4FA', color: '#2A5070' },
+  illustration:  { bg: '#FCE8EA', color: '#8B3A42' },
+  planner:       { bg: '#FBF6DC', color: '#7A6010' },
+  lifestyle:     { bg: 'rgba(191,220,207,0.35)', color: '#2F5D4A' },
+  'art supplies':{ bg: '#EEF6FB', color: 'var(--muted-blue)' },
 }
 
 export default function BrandsPage() {
@@ -58,7 +58,7 @@ export default function BrandsPage() {
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 64px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '20px' }}>
           {b.title1}<br /><em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{b.titleEm}</em>
         </h1>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '48px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '48px' }}>
           {b.subtitle}
         </p>
 
@@ -71,7 +71,7 @@ export default function BrandsPage() {
               padding: '9px 20px', borderRadius: '99px', cursor: 'pointer',
               background: region === r.value ? 'var(--dark-brown)' : 'transparent',
               color: region === r.value ? 'var(--cream)' : 'var(--brown)',
-              border: `0.5px solid ${region === r.value ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
+              border: `0.5px solid ${region === r.value ? 'var(--dark-brown)' : 'rgba(107,163,200,0.25)'}`,
               transition: 'all 0.15s',
             }}>{r.label}</button>
           ))}
@@ -81,7 +81,7 @@ export default function BrandsPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{
-              padding: '9px 18px', borderRadius: '99px', border: '0.5px solid rgba(122,92,69,0.2)',
+              padding: '9px 18px', borderRadius: '99px', border: '0.5px solid rgba(107,163,200,0.25)',
               background: 'white', color: 'var(--dark-brown)',
               fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300,
               outline: 'none', minWidth: '180px',
@@ -131,7 +131,7 @@ export default function BrandsPage() {
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '28px', color: 'var(--cream)', letterSpacing: '-0.02em', marginBottom: '8px' }}>
               {b.ctaTitle} <em style={{ fontStyle: 'italic', color: 'var(--tan)' }}>{b.ctaEm}</em>
             </div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'rgba(245,239,230,0.6)', lineHeight: 1.7 }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'rgba(248,248,246,0.6)', lineHeight: 1.7 }}>
               {b.ctaBody}
             </p>
           </div>
@@ -150,7 +150,7 @@ function BrandLogo({ brand: b }: { brand: typeof BRANDS[0] }) {
   const initial = b.name.charAt(0).toUpperCase()
 
   return (
-    <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '0.5px solid rgba(122,92,69,0.1)' }}>
+    <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '0.5px solid rgba(107,163,200,0.15)' }}>
       {ok ? (
         <img src={src} alt={b.name} onError={() => setOk(false)} style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
       ) : (
@@ -168,8 +168,8 @@ function BrandCard({ brand: b, featured }: { brand: typeof BRANDS[0]; featured?:
       background: 'white',
       borderRadius: '18px',
       padding: '28px',
-      border: featured ? '0.5px solid rgba(31,58,95,0.18)' : '0.5px solid rgba(122,92,69,0.12)',
-      boxShadow: featured ? '0 4px 20px rgba(31,58,95,0.06)' : 'none',
+      border: featured ? '0.5px solid rgba(45,55,72,0.18)' : '0.5px solid rgba(107,163,200,0.17)',
+      boxShadow: featured ? '0 4px 20px rgba(45,55,72,0.06)' : 'none',
       display: 'flex',
       flexDirection: 'column',
       gap: '12px',
@@ -190,7 +190,7 @@ function BrandCard({ brand: b, featured }: { brand: typeof BRANDS[0]; featured?:
       </div>
 
       {/* Description */}
-      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.7, flex: 1 }}>
+      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.7, flex: 1 }}>
         {b.description}
       </p>
 

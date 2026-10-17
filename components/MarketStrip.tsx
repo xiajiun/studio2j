@@ -32,7 +32,7 @@ export default function MarketStrip({ markets }: { markets: TwentyMarket[] }) {
         <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '20px', color: 'var(--tan)' }}>
           {t.markets.eyebrow}
         </div>
-        <Link href="/markets" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'rgba(245,239,230,0.5)', textDecoration: 'none', letterSpacing: '0.04em' }}>
+        <Link href="/markets" style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 400, color: 'rgba(248,248,246,0.5)', textDecoration: 'none', letterSpacing: '0.04em' }}>
           {t.markets.seeAll}
         </Link>
       </div>

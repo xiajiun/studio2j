@@ -2,7 +2,7 @@
 
 You are maintaining the Studio2J production website. Live at **https://studio2j.pages.dev**, deployed via Cloudflare Pages from GitHub repo **xiajiun/studio2j**.
 
-`reference.html` is the source of truth for the homepage design only. The dashboards and order system are documented below.
+`reference.html` is the original homepage design, kept for history only — the live homepage was refurbished on 2026-10-17 (see DESIGN.md "Surfaces & text"). The dashboards and order system are documented below.
 
 ---
 
@@ -52,6 +52,8 @@ Seoul + Tokyo personal shopping service, founded 2025. Jin is in Korea, Jo is in
 | `/catalogue/sif-v21` | Public | Seoul Illustration Fair V.21 brand catalogue |
 | `/catalogue/inventario-2026` | Public | INVENTARIO 2026 brand catalogue |
 | `/catalogue/dotdotexpress` | Public | DOTDOTDOT v.7 brand catalogue with interactive booth map |
+| `/catalogue/planners-2027` | Public | 2027 planners & diaries (JP + KR), filter by layout/size, order prefill |
+| `/planner` | Public | Redirects to `/catalogue/planners-2027` |
 | `/policy` | Public | Privacy Policy, Terms of Service, Refund Policy |
 | `/order/new` | Public | Customer order form (translated EN/JA/ZH-TW) |
 | `/order/[number]` | Public | Order tracking (no login, tracking number links to carrier) |
@@ -111,6 +113,10 @@ components/
   FairTracker.tsx            tabs: Upcoming · Going · Deadline · Saved · All
                              "See catalogue" button auto-shows for INVENTARIO/dotdotdot fairs
   Services.tsx, HowItWorks.tsx, OrderCTA.tsx, FAQ.tsx, Footer.tsx  all translated
+  Homepage order: Hero → TrustStrip → PlannersFeature → Services → FeeEstimator → FairTracker
+                  → SocialProof (hidden until lib/social-proof.ts has real entries) → FAQ → OrderCTA → Footer
+  FeeEstimator.tsx           uses lib/fee.ts serviceFee() — keep in sync with the fee rule above
+  Colors/surfaces            one background (var(--cream)) everywhere — see DESIGN.md "Surfaces & text"
   LangProvider.tsx           React context; lang in localStorage 's2j-lang'
   dashboard/DashShell.tsx    flex layout; mobile: column with sticky top nav
   dashboard/DashNav.tsx      desktop sidebar + mobile hamburger
@@ -134,7 +140,7 @@ lib/
 
 ## Critical rules
 
-1. All homepage copy from `reference.html` must be preserved exactly.
+1. Homepage copy lives in `lib/i18n.ts` (EN + JA + ZH-TW) and was rewritten for conversion on 2026-10-17 (hero: "Korea & Japan won't ship? *We will.*"). `reference.html` copy is no longer binding — edit the i18n strings, and only change homepage copy when the user asks.
 2. Every server page/route: `export const runtime = 'edge'`.
 3. Never use `usePathname()` in DashShell components — hydration mismatch on CF Edge.
 4. Wordmark: `Studio<em>2J</em>` — no image, no SVG.
@@ -208,6 +214,15 @@ NEXT_PUBLIC_ADMIN_EMAIL=studio2j25@gmail.com
 - DOTDOTDOT v.7 — 166 brands synced from official booth layout PDF
 - Interactive booth map (A01–K16): hover shows Instagram embed popup
 - Brand data hardcoded in `app/catalogue/dotdotexpress/page.tsx`
+
+### `/catalogue/planners-2027`
+- Product catalogue (not a fair): 2027 planners/diaries from Japanese and Korean brands
+- Data hardcoded in `lib/planners-2027/` — `types.ts`, `japan.ts`, `korea.ts`; `index.ts` sorts picks first
+- Photos are **hotlinked** from official brand sites (`referrerPolicy="no-referrer"`, initial-letter fallback on error); every link goes to the official store
+- "Order via Studio2J" links to `/order/new?item=…&url=…`, which prefills the first item row
+- Fully translated via `t.planners` in `i18n.ts`; feature chips are `FeatureKey`s translated in `planners.features`
+- JA mode hides all `country: 'JP'` items and the country filter (rule 10)
+- Linked from Nav and Footer
 
 ---
 

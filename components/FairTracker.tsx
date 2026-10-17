@@ -68,7 +68,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
   ]
 
   return (
-    <section id="tracker" style={{ padding: '140px 0', background: '#FEFAF0' }} className="tracker-section">
+    <section id="tracker" style={{ padding: '120px 0 40px', background: 'var(--cream)' }} className="tracker-section">
       <div className="container">
         {/* Head */}
         <div style={{
@@ -111,7 +111,7 @@ export default function FairTracker({ fairs: FAIRS }: { fairs: FairRow[] }) {
           fontSize: '15px',
           fontWeight: 300,
           lineHeight: '1.75',
-          color: 'var(--brown)',
+          color: 'rgba(45,55,72,0.75)',
           maxWidth: '680px',
           marginBottom: '40px',
         }}>
@@ -278,7 +278,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
     <div className={`fair-card-item${f.featured ? ' fair-featured' : ''}`} style={{
       background: 'white',
       border: f.featured ? '0.5px solid rgba(74,138,181,0.3)' : '0.5px solid rgba(107,163,200,0.2)',
-      boxShadow: f.featured ? '0 4px 16px rgba(31,58,95,0.04)' : 'none',
+      boxShadow: f.featured ? '0 4px 16px rgba(45,55,72,0.04)' : 'none',
       borderRadius: '18px',
       cursor: 'pointer',
       transition: 'all 0.25s ease',
@@ -377,7 +377,7 @@ function FairCard({ fair: f, today, saved, onSave }: {
         .fair-card-item:hover {
           border-color: var(--brown) !important;
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(31,58,95,0.06) !important;
+          box-shadow: 0 8px 24px rgba(45,55,72,0.06) !important;
         }
         .fc-save-btn:hover {
           border-color: var(--brown) !important;
@@ -443,7 +443,7 @@ function EmailAlerts() {
           fontFamily: 'var(--font-inter), sans-serif',
           fontSize: '13px',
           fontWeight: 300,
-          color: 'rgba(245,239,230,0.6)',
+          color: 'rgba(248,248,246,0.6)',
           lineHeight: '1.7',
         }}>
           {tr.emailBody}
@@ -462,8 +462,8 @@ function EmailAlerts() {
               flex: 1,
               padding: '13px 20px',
               borderRadius: '99px',
-              border: '0.5px solid rgba(245,239,230,0.15)',
-              background: 'rgba(245,239,230,0.05)',
+              border: '0.5px solid rgba(248,248,246,0.15)',
+              background: 'rgba(248,248,246,0.05)',
               color: 'var(--cream)',
               fontFamily: 'var(--font-inter), sans-serif',
               fontSize: '13px',

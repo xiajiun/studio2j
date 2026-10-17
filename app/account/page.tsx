@@ -25,7 +25,7 @@ export default async function AccountPage() {
       <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: '40px', color: 'var(--dark-brown)', marginBottom: '8px', letterSpacing: '-0.03em' }}>
         Hello, <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>{name}</em>.
       </h1>
-      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'var(--brown)', marginBottom: '48px' }}>
+      <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', marginBottom: '48px' }}>
         {active.length} active · {past.length} completed
       </p>
 

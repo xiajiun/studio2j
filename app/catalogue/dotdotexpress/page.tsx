@@ -350,11 +350,11 @@ function BoothMap() {
                         cursor: isEmpty ? 'default' : 'pointer',
                         background: isEmpty ? 'transparent' :
                           hovered === booth ? 'var(--dark-blue)' :
-                          hasPost ? 'rgba(31,58,95,0.12)' : 'var(--beige)',
+                          hasPost ? 'rgba(45,55,72,0.12)' : 'var(--beige)',
                         color: isEmpty ? 'transparent' :
                           hovered === booth ? 'var(--cream)' :
                           hasPost ? 'var(--dark-blue)' : 'var(--tan)',
-                        border: isEmpty ? 'none' : `0.5px solid ${hovered === booth ? 'var(--dark-blue)' : hasPost ? 'rgba(31,58,95,0.2)' : 'rgba(122,92,69,0.15)'}`,
+                        border: isEmpty ? 'none' : `0.5px solid ${hovered === booth ? 'var(--dark-blue)' : hasPost ? 'rgba(45,55,72,0.2)' : 'rgba(107,163,200,0.2)'}`,
                         transition: 'all 0.1s',
                       }}
                       title={brandName ?? ''}
@@ -387,7 +387,7 @@ function BoothMap() {
           }}
         >
           {/* Brand info header */}
-          <div style={{ padding: '12px 16px', borderBottom: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--cream)' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '0.5px solid rgba(107,163,200,0.15)', display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--cream)' }}>
             <div>
               <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)' }}>
                 {popupBrand?.name ?? BOOTH_LAYOUT[popupBooth]}
@@ -398,7 +398,7 @@ function BoothMap() {
             </div>
             {popupBrand?.post && (
               <a href={popupBrand.post} target="_blank" rel="noreferrer"
-                style={{ marginLeft: 'auto', fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(31,58,95,0.08)', padding: '4px 10px', borderRadius: '99px', flexShrink: 0 }}>
+                style={{ marginLeft: 'auto', fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', textDecoration: 'none', background: 'rgba(45,55,72,0.08)', padding: '4px 10px', borderRadius: '99px', flexShrink: 0 }}>
                 Open ↗︎
               </a>
             )}
@@ -434,7 +434,7 @@ function BoothMap() {
       )}
 
       <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 300, color: 'var(--tan)', marginTop: '10px', display: 'flex', gap: '16px' }}>
-        <span><span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '2px', background: 'rgba(31,58,95,0.12)', marginRight: '5px', verticalAlign: 'middle' }} />Has post</span>
+        <span><span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '2px', background: 'rgba(45,55,72,0.12)', marginRight: '5px', verticalAlign: 'middle' }} />Has post</span>
         <span><span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '2px', background: 'var(--beige)', marginRight: '5px', verticalAlign: 'middle' }} />No post yet</span>
       </div>
     </div>
@@ -444,14 +444,14 @@ function BoothMap() {
 function BrandCard({ b }: { b: typeof BRANDS[0] }) {
   const shortcode = b.post?.match(/\/p\/([^/?]+)/)?.[1]
   return (
-    <div style={{ background: 'white', borderRadius: '14px', border: '0.5px solid rgba(122,92,69,0.1)', overflow: 'hidden' }}>
+    <div style={{ background: 'white', borderRadius: '14px', border: '0.5px solid rgba(107,163,200,0.15)', overflow: 'hidden' }}>
       {/* Top row */}
       <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <BrandIcon brand={b} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, color: 'var(--dark-brown)' }}>{b.name}</span>
-            {b.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 7px', borderRadius: '99px', flexShrink: 0 }}>{b.booth}</span>}
+            {b.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 600, color: 'var(--dark-blue)', background: 'rgba(45,55,72,0.08)', padding: '1px 7px', borderRadius: '99px', flexShrink: 0 }}>{b.booth}</span>}
           </div>
           {b.instagram && (
             <a href={`https://www.instagram.com/${b.instagram}/`} target="_blank" rel="noreferrer"
@@ -471,7 +471,7 @@ function BrandCard({ b }: { b: typeof BRANDS[0] }) {
           frameBorder="0"
           scrolling="no"
           loading="lazy"
-          style={{ display: 'block', border: 'none', borderTop: '0.5px solid rgba(122,92,69,0.08)' }}
+          style={{ display: 'block', border: 'none', borderTop: '0.5px solid rgba(107,163,200,0.13)' }}
         />
       )}
     </div>
@@ -482,7 +482,7 @@ function BrandIcon({ brand }: { brand: typeof BRANDS[0] }) {
   const [ok, setOk] = useState(true)
   const src = brand.image ?? (brand.url ? `https://www.google.com/s2/favicons?domain=${brand.url}&sz=128` : null)
   return (
-    <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: 'var(--beige)', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+    <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: 'var(--beige)', border: '0.5px solid rgba(107,163,200,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
       {src && ok ? (
         <img src={src} alt={brand.name} onError={() => setOk(false)} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
       ) : (
@@ -508,13 +508,13 @@ export default function DotDotExpressCataloguePage() {
           <div style={{ marginBottom: '64px' }}>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Link href="/#tracker" style={{ color: 'var(--tan)', textDecoration: 'none' }}>← Fairs</Link>
-              <span style={{ color: 'rgba(200,169,141,0.3)' }}>·</span>
+              <span style={{ color: 'rgba(168,203,224,0.3)' }}>·</span>
               <span>Seoul Illustration Market</span>
             </div>
             <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: 'var(--dark-brown)', marginBottom: '16px' }}>
               DOTDOTDOT <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>v.7</em>
             </h1>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '8px' }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '8px' }}>
               Seoul · Korean illustrator &amp; stationery market
             </p>
             {BRANDS.length > 0 && (
@@ -526,7 +526,7 @@ export default function DotDotExpressCataloguePage() {
               <a href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none', letterSpacing: '0.02em' }}>
                 Order from this fair →
               </a>
-              <a href="https://www.instagram.com/dot.dot.dot.express/" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>
+              <a href="https://www.instagram.com/dot.dot.dot.express/" target="_blank" rel="noreferrer" style={{ border: '0.5px solid rgba(107,163,200,0.3)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '12px 24px', borderRadius: '99px', textDecoration: 'none' }}>
                 @dot.dot.dot.express ↗︎
               </a>
             </div>
@@ -534,7 +534,7 @@ export default function DotDotExpressCataloguePage() {
 
           {/* Brands */}
           {BRANDS.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 0', borderTop: '0.5px solid rgba(122,92,69,0.1)' }}>
+            <div style={{ textAlign: 'center', padding: '80px 0', borderTop: '0.5px solid rgba(107,163,200,0.15)' }}>
               <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '20px', color: 'var(--tan)' }}>
                 Brand list coming soon.
               </p>
@@ -544,7 +544,7 @@ export default function DotDotExpressCataloguePage() {
             <BoothMap />
             {CATEGORIES.map(cat => (
               <div key={cat} style={{ marginBottom: '56px' }}>
-                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px', paddingBottom: '10px', borderBottom: '0.5px solid rgba(122,92,69,0.1)' }}>
+                <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '20px', paddingBottom: '10px', borderBottom: '0.5px solid rgba(107,163,200,0.15)' }}>
                   {cat}
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '8px' }}>

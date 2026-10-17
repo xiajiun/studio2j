@@ -126,20 +126,28 @@ Marquee animation duration: `40s linear infinite`.
 
 ---
 
-## Section background scheme
+## Surfaces & text (unified 2026-10-17)
 
-Alternates between warm ivory and cool off-white; dark sections act as visual breaks.
+One background everywhere — no alternating section tints.
 
-| Section             | Background          | Note                         |
-|---------------------|---------------------|------------------------------|
-| Hero                | `#FEFAF0`           | Warm ivory                   |
-| Marquee             | `var(--dark-brown)` | Dark break                   |
-| Services            | `#FEFAF0`           | Warm ivory (matches Hero)    |
-| TwentyMarketsSection| `var(--cream)`      | Cool off-white (differentiates)|
-| FairTracker         | `#FEFAF0`           | Warm ivory again             |
-| OrderCTA            | `var(--dark-brown)` | Dark break                   |
-| FAQ                 | `var(--cream)`      | Cool off-white               |
-| Footer              | `var(--dark-brown)` | Dark                         |
+| Use                         | Value                                   |
+|-----------------------------|-----------------------------------------|
+| Page / section background   | `var(--cream)` (#F8F8F6), every public page |
+| Cards                       | `white`, border `0.5px solid rgba(107,163,200,0.2)`, radius 16–22px |
+| Hairlines / dividers        | `rgba(107,163,200,0.15–0.2)`            |
+| Dark accents (sparingly)    | `var(--dark-brown)` cards only — featured service card, fee-estimate panel, closing "Send us a link" card (with a soft `--dark-blue` glow). No full-width dark bands; the footer is light |
+| Headings                    | `var(--dark-brown)`                     |
+| Body text                   | `rgba(45,55,72,0.75)` (dark-brown at 75%) |
+| Accents                     | `var(--dark-blue)` for italic `<em>`, links, numbers; `var(--brown)` for eyebrows and pills; `var(--tan)` for tiny labels |
+| On dark bands               | text `var(--cream)` / `rgba(248,248,246,0.65)`, accents `var(--tan)` |
+
+Legacy warm tints (`#FEFAF0`, `rgba(122,92,69,…)`, `rgba(31,58,95,…)`, `rgba(200,169,141,…)`, `rgba(245,239,230,…)`) are retired on public pages — use the sky equivalents above.
+
+### Buttons
+- **Primary on light backgrounds:** `var(--dark-blue)` fill, cream text, hover `var(--muted-blue)` — `.btn-primary-hero`, Nav "Place an order", catalogue order buttons.
+- **Primary on dark cards:** butter yellow `#F3E3A1` — `.btn-gold-order`.
+- **Secondary:** outline `rgba(74,138,181,0.45)`, `var(--dark-blue)` text — `.btn-secondary-hero`.
+- Filter pills: dark-brown fill when active (not a call to action).
 
 ---
 

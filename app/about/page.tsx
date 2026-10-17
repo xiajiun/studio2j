@@ -1,24 +1,16 @@
 export const runtime = 'edge'
 
 import Link from 'next/link'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 
 export const metadata = { title: 'About Us — Studio2J' }
 
 export default function AboutPage() {
   return (
-    <main style={{ minHeight: '100vh', background: 'var(--cream)' }}>
-
-      {/* Nav */}
-      <div style={{ padding: '20px 48px', borderBottom: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <span style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 500, color: 'var(--dark-brown)', letterSpacing: '-0.02em' }}>
-            Studio<em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>2J</em>
-          </span>
-        </Link>
-        <Link href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, padding: '10px 22px', borderRadius: '99px', textDecoration: 'none' }}>
-          Place an order
-        </Link>
-      </div>
+    <>
+    <Nav />
+    <main style={{ minHeight: '100vh', background: 'var(--cream)', paddingTop: '60px' }}>
 
       <div style={{ maxWidth: '820px', margin: '0 auto', padding: '80px 48px 100px' }}>
 
@@ -30,10 +22,10 @@ export default function AboutPage() {
         <h1 style={{ fontFamily: 'var(--font-fraunces), serif', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 64px)', color: 'var(--dark-brown)', letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: '28px' }}>
           Two friends,<br />one <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>studio</em>.
         </h1>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '16px', maxWidth: '620px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(45,55,72,0.75)', marginBottom: '16px', maxWidth: '620px' }}>
           Studio2J started with late-night voice notes between Seoul and Tokyo. We kept sending each other photos of stationery we&apos;d found — things the other couldn&apos;t get to — and eventually realised we weren&apos;t the only ones who wanted this.
         </p>
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '64px', maxWidth: '620px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(45,55,72,0.75)', marginBottom: '64px', maxWidth: '620px' }}>
           We see stationery as a vehicle for memory keeping. Writing with something beautiful, in a notebook that opens flat — it&apos;s a small act of care in a world that moves too fast.
         </p>
 
@@ -41,37 +33,37 @@ export default function AboutPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '64px' }} className="about-grid">
 
           {/* Jin */}
-          <div style={{ background: 'var(--beige)', borderRadius: '20px', padding: '40px', border: '0.5px solid rgba(122,92,69,0.1)' }}>
+          <div style={{ background: 'var(--beige)', borderRadius: '20px', padding: '40px', border: '0.5px solid rgba(107,163,200,0.15)' }}>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '10px' }}>
               Co-founder · Seoul 🇰🇷
             </div>
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'var(--dark-brown)', letterSpacing: '-0.02em', marginBottom: '6px' }}>Jin</div>
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', letterSpacing: '0.04em', marginBottom: '24px' }}>ISTP · Korea curator</div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '20px' }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(45,55,72,0.75)', marginBottom: '20px' }}>
               Jin sources from Seoul — from the big platforms like Twenty and 10×10, to the side-street shops in Hongdae and Yeonnam that no foreign site lists. Specialises in Korean character illustration markets and indie brands.
             </p>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)', marginBottom: '24px' }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(45,55,72,0.75)', marginBottom: '24px' }}>
               Views stationery as personal luxury — each piece chosen to recharge, not just to organise.
             </p>
-            <div style={{ borderTop: '0.5px solid rgba(122,92,69,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--dark-blue)' }}>
+            <div style={{ borderTop: '0.5px solid rgba(107,163,200,0.2)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--dark-blue)' }}>
               &ldquo;Stationery is my luxury.&rdquo;
             </div>
           </div>
 
           {/* Jo */}
           <div style={{ background: 'var(--dark-blue)', borderRadius: '20px', padding: '40px' }}>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,169,141,0.6)', marginBottom: '10px' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(168,203,224,0.6)', marginBottom: '10px' }}>
               Co-founder · Tokyo 🇯🇵
             </div>
             <div style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '32px', fontWeight: 400, color: 'white', letterSpacing: '-0.02em', marginBottom: '6px' }}>Jo</div>
-            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(200,169,141,0.5)', letterSpacing: '0.04em', marginBottom: '24px' }}>INFJ · Japan curator</div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(245,239,230,0.65)', marginBottom: '20px' }}>
+            <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'rgba(168,203,224,0.5)', letterSpacing: '0.04em', marginBottom: '24px' }}>INFJ · Japan curator</div>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(248,248,246,0.65)', marginBottom: '20px' }}>
               Jo curates from Tokyo — Hobonichi&apos;s Shibuya store, Loft, Sekaido for art supplies, and the smaller stationery shops that live and die by word of mouth. Obsessed with paper texture, notebook structure, and the quiet ritual of Japanese zakka culture.
             </p>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(245,239,230,0.65)', marginBottom: '24px' }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(248,248,246,0.65)', marginBottom: '24px' }}>
               Believes daily journaling is not a productivity hack — it&apos;s a way of paying attention.
             </p>
-            <div style={{ borderTop: '0.5px solid rgba(200,169,141,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--tan)' }}>
+            <div style={{ borderTop: '0.5px solid rgba(168,203,224,0.15)', paddingTop: '20px', fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--tan)' }}>
               &ldquo;Journaling is my daily ritual.&rdquo;
             </div>
           </div>
@@ -86,9 +78,9 @@ export default function AboutPage() {
             { num: '03', text: 'Korean and Japanese makers produce some of the finest paper goods in the world. More people should have access to them.' },
             { num: '04', text: 'Every order is handled personally. Every parcel leaves with a handwritten note. Care, not corporate.' },
           ].map(({ num, text }) => (
-            <div key={num} style={{ display: 'flex', gap: '24px', padding: '20px 0', borderBottom: '0.5px solid rgba(122,92,69,0.1)', alignItems: 'flex-start' }}>
+            <div key={num} style={{ display: 'flex', gap: '24px', padding: '20px 0', borderBottom: '0.5px solid rgba(107,163,200,0.15)', alignItems: 'flex-start' }}>
               <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--tan)', flexShrink: 0, width: '28px' }}>{num}</div>
-              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: 1.75, color: 'var(--brown)' }}>{text}</p>
+              <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, lineHeight: 1.75, color: 'rgba(45,55,72,0.75)' }}>{text}</p>
             </div>
           ))}
         </div>
@@ -98,12 +90,14 @@ export default function AboutPage() {
           <Link href="/order/new" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, padding: '14px 28px', borderRadius: '99px', textDecoration: 'none', letterSpacing: '0.02em' }}>
             Place an order →
           </Link>
-          <Link href="/brands" style={{ border: '0.5px solid rgba(122,92,69,0.25)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '14px 28px', borderRadius: '99px', textDecoration: 'none' }}>
+          <Link href="/brands" style={{ border: '0.5px solid rgba(107,163,200,0.3)', color: 'var(--brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 400, padding: '14px 28px', borderRadius: '99px', textDecoration: 'none' }}>
             Browse brands
           </Link>
         </div>
 
       </div>
     </main>
+    <Footer />
+    </>
   )
 }

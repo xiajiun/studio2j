@@ -14,10 +14,17 @@ const LANGS: { code: Lang; label: string }[] = [
 export default function Nav() {
   const [scrolled, setScrolled]       = useState(false)
   const [mobileOpen, setMobileOpen]   = useState(false)
+  const [orderBar, setOrderBar]       = useState(false)
   const { t, lang, setLang } = useLang()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
+    // Mobile "Place an order" bar: after the first screen, never on the order pages themselves
+    const onOrderPage = window.location.pathname.startsWith('/order')
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30)
+      setOrderBar(!onOrderPage && window.scrollY > 480)
+    }
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -27,10 +34,12 @@ export default function Nav() {
     { href: '/#tracker',  label: t.nav.fairs },
     { href: '/markets',   label: t.nav.markets },
     { href: '/brands',    label: t.nav.brands },
+    { href: '/catalogue/planners-2027', label: t.nav.planners },
     { href: '/#faq',      label: t.nav.faq },
   ]
 
   return (
+    <>
     <nav className={scrolled ? 'scrolled' : ''}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '2px', textDecoration: 'none' }}>
@@ -81,7 +90,7 @@ export default function Nav() {
             ))}
           </div>
 
-          <a href="/order/new" className="nav-cta-btn" style={{ background: '#F3E3A1', color: 'var(--dark-brown)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, letterSpacing: '0.04em', padding: '10px 22px', borderRadius: '99px', textDecoration: 'none', transition: 'all 0.2s ease', whiteSpace: 'nowrap' }}>
+          <a href="/order/new" className="nav-cta-btn" style={{ background: 'var(--dark-blue)', color: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 500, letterSpacing: '0.04em', padding: '10px 22px', borderRadius: '99px', textDecoration: 'none', transition: 'all 0.2s ease', whiteSpace: 'nowrap' }}>
             {t.nav.placeOrder}
           </a>
         </div>
@@ -91,7 +100,7 @@ export default function Nav() {
       {mobileOpen && (
         <div className="nav-mobile-menu" style={{
           position: 'fixed', top: '60px', left: 0, right: 0, zIndex: 998,
-          background: 'rgba(245,239,230,0.98)', backdropFilter: 'blur(12px)',
+          background: 'rgba(248,248,246,0.98)', backdropFilter: 'blur(12px)',
           borderBottom: '0.5px solid rgba(107,163,200,0.1)',
           padding: '12px 24px 20px',
           display: 'flex', flexDirection: 'column', gap: '2px',
@@ -99,18 +108,28 @@ export default function Nav() {
           {links.map(({ href, label }) => (
             <a key={href} href={href} onClick={() => setMobileOpen(false)} style={{
               fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300,
-              color: 'var(--brown)', textDecoration: 'none',
+              color: 'rgba(45,55,72,0.75)', textDecoration: 'none',
               padding: '10px 0', borderBottom: '0.5px solid rgba(107,163,200,0.08)',
             }}>{label}</a>
           ))}
           <a href="/order/new" onClick={() => setMobileOpen(false)} style={{
             display: 'inline-block', marginTop: '12px',
             fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500,
-            background: '#F3E3A1', color: 'var(--dark-brown)',
+            background: 'var(--dark-blue)', color: 'var(--cream)',
             padding: '12px 24px', borderRadius: '99px', textDecoration: 'none', textAlign: 'center',
           }}>{t.nav.placeOrder}</a>
         </div>
       )}
     </nav>
+
+    {/* Rendered outside <nav>: its backdrop-filter would trap position:fixed */}
+    <a href="/order/new" className={`mobile-order-bar${orderBar && !mobileOpen ? ' show' : ''}`} aria-hidden={!orderBar}>
+      <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
+        <span style={{ fontSize: '14px', fontWeight: 500 }}>{t.nav.placeOrder}</span>
+        <span style={{ fontSize: '11px', fontWeight: 300, opacity: 0.75 }}>{t.nav.orderBar}</span>
+      </span>
+      <span aria-hidden style={{ fontSize: '18px' }}>→</span>
+    </a>
+    </>
   )
 }

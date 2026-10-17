@@ -32,7 +32,7 @@ function BrandIcon({ brand }: { brand: CatalogueBrand }) {
   const [ok, setOk] = useState(true)
   const src = brand.url ? `https://www.google.com/s2/favicons?domain=${brand.url}&sz=128` : null
   return (
-    <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--beige)', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+    <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--beige)', border: '0.5px solid rgba(107,163,200,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
       {src && ok
         ? <img src={src} alt={brand.name} onError={() => setOk(false)} style={{ width: '26px', height: '26px', objectFit: 'contain' }} />
         : <span style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '16px', fontWeight: 300, color: 'var(--tan)' }}>{brand.name.charAt(0)}</span>}
@@ -52,15 +52,15 @@ function BrandCard({ brand, onView, saved, onToggleSave }: {
   const flag = brand.country === 'JP' ? '🇯🇵' : brand.country === 'INTL' ? '🌍' : '🇰🇷'
 
   return (
-    <div id={`brand-${brand.id}`} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(122,92,69,0.1)', display: 'flex', flexDirection: 'column' }}>
+    <div id={`brand-${brand.id}`} style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', border: '0.5px solid rgba(107,163,200,0.15)', display: 'flex', flexDirection: 'column' }}>
       <div style={{ padding: '14px 16px', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
         <BrandIcon brand={brand} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px', flexWrap: 'wrap' }}>
             <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--dark-brown)', lineHeight: 1.3 }}>{brand.name}</span>
             <span style={{ fontSize: '11px' }}>{flag}</span>
-            {brand.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{brand.booth}</span>}
-            {hasMultiple && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--tan)', background: 'rgba(122,92,69,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{shortcodes.length} posts</span>}
+            {brand.booth && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, color: 'var(--dark-blue)', background: 'rgba(45,55,72,0.08)', padding: '1px 6px', borderRadius: '99px' }}>{brand.booth}</span>}
+            {hasMultiple && <span style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 400, color: 'var(--tan)', background: 'rgba(107,163,200,0.13)', padding: '1px 6px', borderRadius: '99px' }}>{shortcodes.length} posts</span>}
           </div>
           {brand.korean_name && <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 300, color: 'var(--tan)', marginBottom: '2px' }}>{brand.korean_name}</div>}
           {brand.instagram && (
@@ -75,13 +75,13 @@ function BrandCard({ brand, onView, saved, onToggleSave }: {
             type="button"
             onClick={() => onToggleSave(brand)}
             title={saved ? '찜 취소' : '찜하기'}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: '2px', color: saved ? '#E85C6A' : 'rgba(122,92,69,0.25)', transition: 'color 0.15s, transform 0.15s', transform: saved ? 'scale(1.15)' : 'scale(1)' }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: '2px', color: saved ? '#E85C6A' : 'rgba(107,163,200,0.3)', transition: 'color 0.15s, transform 0.15s', transform: saved ? 'scale(1.15)' : 'scale(1)' }}
           >
             {saved ? '♥' : '♡'}
           </button>
           {shortcodes.length > 0 && (
             <button type="button" onClick={() => onView(brand)}
-              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(31,58,95,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '11px', fontWeight: 400, color: 'var(--dark-blue)', background: 'rgba(45,55,72,0.07)', border: 'none', borderRadius: '99px', padding: '4px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
               View ↗︎
             </button>
           )}
@@ -106,7 +106,7 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
   padding: '8px 18px', borderRadius: '99px', cursor: 'pointer',
   background: active ? 'var(--dark-brown)' : 'transparent',
   color: active ? 'var(--cream)' : 'var(--brown)',
-  border: `0.5px solid ${active ? 'var(--dark-brown)' : 'rgba(122,92,69,0.2)'}`,
+  border: `0.5px solid ${active ? 'var(--dark-brown)' : 'rgba(107,163,200,0.25)'}`,
 })
 
 const heartTabStyle = (active: boolean): React.CSSProperties => ({
@@ -193,7 +193,7 @@ export function GenericCatalogue({
           {fairName}
         </h1>
         {subtitle && (
-          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'var(--brown)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '8px' }}>
+          <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px', fontWeight: 300, color: 'rgba(45,55,72,0.75)', lineHeight: 1.8, maxWidth: '560px', marginBottom: '8px' }}>
             {subtitle}
           </p>
         )}
@@ -210,7 +210,7 @@ export function GenericCatalogue({
         <input
           value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search brands…"
-          style={{ padding: '8px 18px', borderRadius: '99px', border: '0.5px solid rgba(122,92,69,0.2)', background: 'transparent', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--dark-brown)', outline: 'none', minWidth: '180px' }}
+          style={{ padding: '8px 18px', borderRadius: '99px', border: '0.5px solid rgba(107,163,200,0.25)', background: 'transparent', fontFamily: 'var(--font-inter), sans-serif', fontSize: '12px', fontWeight: 300, color: 'var(--dark-brown)', outline: 'none', minWidth: '180px' }}
         />
         {categories.length > 1 && categories.map(cat => (
           <button key={cat} type="button" style={tabStyle(activeCategory === cat && !showSaved)} onClick={() => { setActiveCategory(cat); setShowSaved(false) }}>{cat}</button>

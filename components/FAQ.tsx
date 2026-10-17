@@ -35,7 +35,7 @@ export default function FAQ() {
   function toggle(key: string) { setOpen(prev => ({ ...prev, [key]: !prev[key] })) }
 
   return (
-    <section id="faq" className="faq-section" style={{ padding: '140px 0', background: 'var(--cream)' }}>
+    <section id="faq" className="faq-section" style={{ padding: '120px 0', background: 'var(--cream)' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '64px' }}>
           <div style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: 'var(--brown)', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px' }}>
@@ -61,7 +61,7 @@ export default function FAQ() {
                       <span className="faq-icon" style={{ fontFamily: 'var(--font-fraunces), serif', fontSize: '22px', fontWeight: 300, color: 'var(--brown)', flexShrink: 0 }}>+</span>
                     </div>
                     <div className="faq-a">
-                      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'var(--brown)' }}>{item.a}</div>
+                      <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.8, color: 'rgba(45,55,72,0.75)' }}>{item.a}</div>
                     </div>
                   </div>
                 )

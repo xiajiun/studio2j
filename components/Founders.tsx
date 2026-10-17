@@ -14,7 +14,7 @@ export default function Founders() {
           Two friends,<br />two <em style={{ fontStyle: 'italic', color: 'var(--dark-blue)' }}>cities</em>.
         </h2>
 
-        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.75, color: 'var(--brown)', maxWidth: '560px', marginBottom: '72px' }}>
+        <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '16px', fontWeight: 300, lineHeight: 1.75, color: 'rgba(45,55,72,0.75)', maxWidth: '560px', marginBottom: '72px' }}>
           Studio2J started with late-night voice notes between Seoul and Tokyo. We wanted a way to share what we were finding — and realised others did too.
         </p>
 
@@ -33,7 +33,7 @@ export default function Founders() {
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--tan)', marginBottom: '8px' }}>
               Korea curator
             </div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'var(--brown)', marginBottom: '28px' }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'rgba(45,55,72,0.75)', marginBottom: '28px' }}>
               Finds the hidden gems in Hongdae and Yeonnam. Specialises in Korean character illustration markets, indie brands, and stationery that doesn't look like everything else.
             </p>
             <div style={{ borderTop: '0.5px solid rgba(107,163,200,0.15)', paddingTop: '24px' }}>
@@ -55,7 +55,7 @@ export default function Founders() {
             <div style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(168,203,224,0.7)', marginBottom: '8px' }}>
               Japan curator
             </div>
-            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'rgba(245,239,230,0.65)', marginBottom: '28px' }}>
+            <p style={{ fontFamily: 'var(--font-inter), sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'rgba(248,248,246,0.65)', marginBottom: '28px' }}>
               Obsessed with paper quality, texture, and the Japanese zakka spirit. Sources from Loft, Hobonichi, and the small shops that don't have English sites.
             </p>
             <div style={{ borderTop: '0.5px solid rgba(168,203,224,0.15)', paddingTop: '24px' }}>

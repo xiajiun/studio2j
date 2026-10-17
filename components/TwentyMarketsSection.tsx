@@ -103,7 +103,7 @@ export default function TwentyMarketsSection({ markets: rawMarkets, standalone =
       <style jsx>{`
         .twenty-market-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 12px 32px rgba(31,58,95,0.08) !important;
+          box-shadow: 0 12px 32px rgba(45,55,72,0.08) !important;
         }
       `}</style>
     </section>
