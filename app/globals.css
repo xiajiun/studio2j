@@ -458,3 +458,6 @@ nav.scrolled {
 @media (max-width: 560px) {
   .trust-grid { grid-template-columns: 1fr !important; }
 }
+
+/* Admin orders: delete button */
+.order-delete-btn:hover { color: #8B3A42 !important; background: #FCE8EA !important; border-color: rgba(239,183,190,0.6) !important; }

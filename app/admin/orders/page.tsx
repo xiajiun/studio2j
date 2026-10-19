@@ -2,6 +2,7 @@ export const runtime = 'edge'
 
 import { createServiceClient as createClient } from '@/lib/supabase/server'
 import { OrderCard } from '@/components/dashboard/OrderCard'
+import { DeleteOrderButton } from '@/components/dashboard/DeleteOrderButton'
 import Link from 'next/link'
 import type { Order, OrderStatus } from '@/lib/database.types'
 
@@ -55,7 +56,12 @@ export default async function AdminOrders({ searchParams }: { searchParams: { fi
 
       {orders.length > 0 ? (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {orders.map(o => <OrderCard key={o.id} order={o} adminView />)}
+          {orders.map(o => (
+            <div key={o.id} className="admin-order-row" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px', alignItems: 'center' }}>
+              <OrderCard order={o} adminView />
+              <DeleteOrderButton id={o.id} orderNumber={o.order_number} title={o.title} paid={(o.paid_1_amount ?? 0) > 0} />
+            </div>
+          ))}
         </div>
       ) : (
         <p style={{ fontFamily: 'var(--font-fraunces), serif', fontStyle: 'italic', fontSize: '18px', color: 'var(--tan)', textAlign: 'center', padding: '60px 0' }}>
