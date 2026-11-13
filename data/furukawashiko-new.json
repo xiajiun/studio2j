@@ -1,11 +1,26 @@
 {
-  "updatedAt": "2026-11-06T18:39:13.455Z",
+  "updatedAt": "2026-11-13T18:54:43.329Z",
   "source": "https://www.furukawashiko-online.shop/",
   "slides": [
     {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/nenga_item",
-      "image": "https://shiyu200406.itembox.cloud/item/2027nenga20261106-fp.jpg",
-      "title": "年賀状"
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/series-fp/sanriocharacters_oyatsuparty",
+      "image": "https://shiyu200406.itembox.cloud/item/20261113_sanrio-furitsmarket-fp.jpg",
+      "title": "サンリオ"
+    },
+    {
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/item-fp/soebumisen-fp",
+      "image": "https://shiyu200406.itembox.cloud/item/20261113_soebumi20th-fp.jpg",
+      "title": "そえぶみ箋２０周年記念　限定商品"
+    },
+    {
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/item-fp/asobisen-fp",
+      "image": "https://shiyu200406.itembox.cloud/item/20261113_asobisen-fp.jpg",
+      "title": "遊び箋"
+    },
+    {
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/seasonal_calender",
+      "image": "https://shiyu200406.itembox.cloud/item/20260724-ivent-fp.jpg",
+      "title": "ひめくりカレンダー"
     },
     {
       "url": "https://www.furukawashiko-online.shop/c/fufufu-techo/item-fff/M6-fff/E-1506",
@@ -13,14 +28,24 @@
       "title": "mizutama革手帳"
     },
     {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/Wa-LifeWinter",
-      "image": "https://shiyu200406.itembox.cloud/item/ca_winteritem_fp.jpg",
-      "title": "冬商品"
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/nenga_item",
+      "image": "https://shiyu200406.itembox.cloud/item/2027nenga20261106-fp.jpg",
+      "title": "年賀状"
     },
     {
       "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/nenga_item",
       "image": "https://shiyu200406.itembox.cloud/item/ca_nenga2027.jpg",
       "title": "年賀アイテム"
+    },
+    {
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/Wa-LifeWinter",
+      "image": "https://shiyu200406.itembox.cloud/item/ca_winteritem_fp.jpg",
+      "title": "冬商品"
+    },
+    {
+      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/seasonal_calender",
+      "image": "https://shiyu200406.itembox.cloud/item/ca-calendar-fp.jpg",
+      "title": "カレンダー"
     },
     {
       "url": "https://www.furukawashiko-online.shop/c/furukawa-product/series-fp/chocolog",
@@ -33,49 +58,9 @@
       "title": "HONTOWATASHI"
     },
     {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/ivent-fp",
-      "image": "https://shiyu200406.itembox.cloud/item/20260724-ivent-fp.jpg",
-      "title": "イベント限定"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/fufufu-techo/illustrator-fff/tobimatsushoichiro-artist-fff",
-      "image": "https://shiyu200406.itembox.cloud/item/20260918-tobimatsu_fp.jpg",
-      "title": "トビマツショウイチロウ手帳カレンダー"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/seasonal_goods-fp/seasonal_calender",
-      "image": "https://shiyu200406.itembox.cloud/item/ca-calendar-fp.jpg",
-      "title": "カレンダー"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/series-fp/Le_Petit_Prince_fp",
-      "image": "https://shiyu200406.itembox.cloud/item/ca_le-little-prince-fp.jpg",
-      "title": "星の王子さま"
-    },
-    {
       "url": "https://www.furukawashiko-online.shop/c/furukawa-product/item-fp/stampbook",
       "image": "https://shiyu200406.itembox.cloud/item/ca-stamp-fp.jpg",
       "title": "スタンプ帳"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/illustrator-fp/inoueaya",
-      "image": "https://shiyu200406.itembox.cloud/item/ca_inoueaya_fp.jpg",
-      "title": "いのうえ彩"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/illustrator-fp/valo-artist-fp",
-      "image": "https://shiyu200406.itembox.cloud/item/ca_valoskitchen-fp.jpg",
-      "title": "valo"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/furukawa-product/series-fp/fumio-fp",
-      "image": "https://shiyu200406.itembox.cloud/item/ca-fumio20260828-fp.jpg",
-      "title": "史緒"
-    },
-    {
-      "url": "https://www.furukawashiko-online.shop/c/sanrio",
-      "image": "https://shiyu200406.itembox.cloud/item/ca-sanrio20260828-fp.jpg",
-      "title": "サンリオ"
     },
     {
       "url": "https://www.furukawashiko-online.shop/c/furukawa-product/series-fp/okasi-animals-fp",
